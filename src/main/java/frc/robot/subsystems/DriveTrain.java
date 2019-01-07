@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.TankDrive;
+import frc.robot.commands.*;
 
 /**
  * Add your docs here.
@@ -16,7 +16,6 @@ import frc.robot.commands.TankDrive;
 public class DriveTrain extends Subsystem {
 
   public DriveTrain() {
-    // Init DriveTrain
     System.out.println("Starting Drivetrain...");
   }
 
@@ -32,6 +31,7 @@ public class DriveTrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new TankDrive());
+    setDefaultCommand(new ArcadeDrive());
+    //setDefaultCommand(new TankDrive());
   }
 }

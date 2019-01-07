@@ -31,6 +31,16 @@ public class OI {
     return -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis);
   }
 
+  public double deadBand(double value, double min, double max) {
+    if (value > max) {
+      return max;
+    } else if (value < min) {
+      return min;
+    }
+    
+    return value;
+  }
+
   // KEEP THESE COMMENTS
   //// TRIGGERING COMMANDS WITH BUTTONS
   // Once you have a button, it's trivial to bind it to a button in one of
