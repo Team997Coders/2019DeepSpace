@@ -46,7 +46,7 @@ repositories {
 // Also defines JUnit 4.
 dependencies {
 
-    //compile ctre()
+    compile fileTree(include: ['*.jar'], dir: 'src/main/deploy')
 
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
@@ -61,4 +61,7 @@ dependencies {
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+    manifest {
+        attributes('Class-Path' : 'home/lvuser/deploy/SpartanLib-1.0.0.jar')
+    }
 }
