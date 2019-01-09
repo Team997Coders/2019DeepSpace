@@ -23,7 +23,15 @@ public class RobotMap {
 
       leftYAxis = 0,
       rightXAxis = 4,
-      rightYAxis = 5;
+      rightYAxis = 5,
+
+      leftVictor1 = 0,
+      leftVictor2 = 1,
+      rightVictor1 = 2,
+      rightVictor2 = 3,
+
+      leftTalon = 4,
+      rightTalon = 5;
 
   }
 
