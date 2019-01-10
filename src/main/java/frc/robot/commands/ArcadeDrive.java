@@ -26,7 +26,7 @@ public class ArcadeDrive extends Command {
     left = Robot.oi.deadBand(left, -1.0, 1.0);
     right = Robot.oi.deadBand(right, -1.0, 1.0);
 
-    Robot.driveTrain.setVolts(left, right);
+    //Robot.driveTrain.setVolts(left, right);
   }
 
   @Override
@@ -36,7 +36,7 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.stopVolts();
+    //Robot.driveTrain.stopVolts();
   }
 
   @Override

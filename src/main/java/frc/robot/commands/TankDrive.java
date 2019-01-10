@@ -23,7 +23,7 @@ public class TankDrive extends Command {
     double left = Robot.oi.getLeftYAxis();
     double right = Robot.oi.getRightYAxis();
 
-    Robot.driveTrain.setVolts(left, right);
+    //Robot.driveTrain.setVolts(left, right);
   }
 
   @Override
@@ -31,7 +31,7 @@ public class TankDrive extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.stopVolts();
+    //Robot.driveTrain.stopVolts();
   }
 
   @Override

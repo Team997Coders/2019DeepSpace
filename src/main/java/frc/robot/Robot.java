@@ -14,8 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import spartanlib.RoboMisc;
+import spartanlib.*;
 //import spartanlib.subsystem.drivetrain.TankDrive;
+import spartanlib.subsystem.drivetrain.TankDrive;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,9 +41,11 @@ public class Robot extends TimedRobot {
 
     System.out.println(RoboMisc.testFunction());
     // ADD SUBSYSTEMS HERE
-    driveTrain = new spartanlib.subsystem.drivetrain.TankDrive(RobotMap.Ports.leftTalon,
+    driveTrain = new TankDrive(RobotMap.Ports.leftTalon,
     RobotMap.Ports.rightTalon, RobotMap.Ports.leftVictor1, RobotMap.Ports.leftVictor2,
-    RobotMap.Ports.rightVictor1, RobotMap.Ports.rightVictor2, new TankDrive());
+    RobotMap.Ports.rightVictor1, RobotMap.Ports.rightVictor2);
+
+    driveTrain.setDefaultCommand(new ArcadeDrive());
 
     // NOT AFTER 'oi = new OI();'
     oi = new OI();
