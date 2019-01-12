@@ -8,15 +8,22 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.SparkySpin;
 
 public class OI {
 
   private Joystick gamepad1, gamepad2;
 
+  private JoystickButton spinspin;
+
   public OI() {
     gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
     gamepad2 = new Joystick(RobotMap.Ports.gamepad2);
+
+    spinspin = new JoystickButton(gamepad1, 1);
+    spinspin.whileHeld(new SparkySpin());
   }
 
   public double getLeftYAxis() {

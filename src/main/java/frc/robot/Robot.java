@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import spartanlib.*;
+import frc.robot.subsystems.DriveTrain;
 //import spartanlib.subsystem.drivetrain.TankDrive;
-import spartanlib.subsystem.drivetrain.TankDrive;
+import frc.robot.subsystems.NEOTesting;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,7 +27,8 @@ import spartanlib.subsystem.drivetrain.TankDrive;
  */
 public class Robot extends TimedRobot {
   public static OI oi;
-  public static spartanlib.subsystem.drivetrain.TankDrive driveTrain;
+  public static DriveTrain driveTrain;
+  public static NEOTesting neoTesting;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -38,14 +39,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
-    System.out.println(RoboMisc.testFunction());
     // ADD SUBSYSTEMS HERE
-    driveTrain = new TankDrive(RobotMap.Ports.leftTalon,
-    RobotMap.Ports.rightTalon, RobotMap.Ports.leftVictor1, RobotMap.Ports.leftVictor2,
-    RobotMap.Ports.rightVictor1, RobotMap.Ports.rightVictor2);
-
-    driveTrain.setDefaultCommand(new ArcadeDrive());
+    //driveTrain = new DriveTrain();
+    neoTesting = new NEOTesting();
 
     // NOT AFTER 'oi = new OI();'
     oi = new OI();
