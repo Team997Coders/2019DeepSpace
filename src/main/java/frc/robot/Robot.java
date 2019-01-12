@@ -25,6 +25,7 @@ import frc.robot.commands.*;
 public class Robot extends TimedRobot {
   public static OI oi;
   public static DriveTrain driveTrain;
+  public static BallManipulator ballManipulator;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // ADD SUBSYSTEMS HERE
     driveTrain = new DriveTrain();
+    ballManipulator = new BallManipulator();
 
     // NOT AFTER 'oi = new OI();'
     oi = new OI();
