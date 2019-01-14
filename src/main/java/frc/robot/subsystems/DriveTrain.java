@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.BlackHole;
+import frc.robot.RoboMisc;
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import frc.robot.misc.GearBox;
@@ -30,13 +30,13 @@ public class DriveTrain extends Subsystem {
   public DriveTrain() {
     System.out.println("Starting Drivetrain...");
 
-    // This uses the blackhole function standTalonSRXSetup(int, int, int, boolean) to initialize a Talon and 2 slave victors
-    leftBox = BlackHole.standTalonSRXSetup(RobotMap.Ports.leftTalon, RobotMap.Ports.leftVictor1, 
+    // This uses the RoboMisc function standTalonSRXSetup(int, int, int, boolean) to initialize a Talon and 2 slave victors
+    leftBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon, RobotMap.Ports.leftVictor1, 
       RobotMap.Ports.leftVictor2, false);
-    rightBox = BlackHole.standTalonSRXSetup(RobotMap.Ports.rightTalon, RobotMap.Ports.rightVictor1,
+    rightBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon, RobotMap.Ports.rightVictor1,
       RobotMap.Ports.rightVictor2, true);
 
-    // Grab the objects created by the blackhole function and store them in this class
+    // Grab the objects created by the RoboMisc function and store them in this class
     leftTalon = leftBox.talon;
     rightTalon = rightBox.talon;
     leftVictor1 = leftBox.victor1;
