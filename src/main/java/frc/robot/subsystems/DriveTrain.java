@@ -8,11 +8,14 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.BlackHole;
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import frc.robot.misc.GearBox;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SensorCollection;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -27,21 +30,85 @@ public class DriveTrain extends Subsystem {
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
 
   public DriveTrain() {
-    System.out.println("Starting Drivetrain...");
 
-    // This uses the blackhole function standTalonSRXSetup(int, int, int, boolean) to initialize a Talon and 2 slave victors
-    leftBox = BlackHole.standTalonSRXSetup(RobotMap.Ports.leftTalon, RobotMap.Ports.leftVictor1, 
-      RobotMap.Ports.leftVictor2, false);
-    rightBox = BlackHole.standTalonSRXSetup(RobotMap.Ports.rightTalon, RobotMap.Ports.rightVictor1,
-      RobotMap.Ports.rightVictor2, true);
+    leftTalon = new TalonSRX(RobotMap.Ports.leftTalon);
+    rightTalon = new TalonSRX(RobotMap.Ports.rightTalon);
+    leftVictor1 = new VictorSPX(RobotMap.Ports.leftVictor1);
+    leftVictor2 = new VictorSPX(RobotMap.Ports.leftVictor2);
+    rightVictor1 = new VictorSPX(RobotMap.Ports.rightVictor1);
+    rightVictor2 = new VictorSPX(RobotMap.Ports.rightVictor2);
 
-    // Grab the objects created by the blackhole function and store them in this class
-    leftTalon = leftBox.talon;
-    rightTalon = rightBox.talon;
-    leftVictor1 = leftBox.victor1;
-    leftVictor2 = leftBox.victor2;
-    rightVictor1 = rightBox.victor1;
-    rightVictor2 = rightBox.victor2;
+    leftVictor1.follow(leftTalon);
+    leftVictor2.follow(leftTalon);
+    rightVictor1.follow(rightTalon);
+    rightVictor2.follow(rightTalon);
+
+    leftTalon.setInverted(false);
+    rightTalon.setInverted(true);
+
+    leftVictor1.setInverted(false);
+    leftVictor2.setInverted(false);
+    rightVictor1.setInverted(true);
+    rightVictor2.setInverted(true);
+
+    leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		leftTalon.setSensorPhase(true);
+		rightTalon.setSensorPhase(true);
+		
+		leftTalon.setNeutralMode(NeutralMode.Coast);
+		rightTalon.setNeutralMode(NeutralMode.Coast);
+		
+		/* set the peak, nominal outputs */
+		leftTalon.configNominalOutputForward(0, 10);
+		leftTalon.configNominalOutputReverse(0, 10);
+		//leftTalon.configPeakOutputForward(1, 10);	//Use for PB
+		//leftTalon.configPeakOutputReverse(-1, 10); //Use for PB
+		leftTalon.configPeakOutputForward(0.6, 10);	//Use for extrasensitive CB
+		leftTalon.configPeakOutputReverse(-0.6, 10); //Use for extrasensitive CB
+		
+		leftTalon.configPeakCurrentLimit(40, 10);
+		leftTalon.configPeakCurrentDuration(100, 10);
+		leftTalon.configContinuousCurrentLimit(30, 10);
+    leftTalon.enableCurrentLimit(true);
+    
+		rightTalon.configNominalOutputForward(0, 10);
+		rightTalon.configNominalOutputReverse(0, 10);
+		//rightTalon.configPeakOutputForward(1, 10); //Use for PB
+		//rightTalon.configPeakOutputReverse(-1, 10); //Use for PB
+		rightTalon.configPeakOutputForward(0.6, 10);  //Use for extrasensitive CB
+		rightTalon.configPeakOutputReverse(-0.6, 10); //Use for extrasensitive CB
+		
+		rightTalon.configPeakCurrentLimit(40, 10);
+    rightTalon.configPeakCurrentDuration(100, 10);
+		rightTalon.configContinuousCurrentLimit(30, 10);
+    rightTalon.enableCurrentLimit(true);
+    
+		leftTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 40, 10);
+		//leftTalon.configOpenloopRamp(0.25, 10);
+		rightTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 40, 10);
+		//rightTalon.configOpenloopRamp(0.25, 10);
+		
+		/* set closed loop gains in slot0 */
+		leftTalon.config_kF(0, 0.1097, 10);
+    leftTalon.config_kP(0, 0.113333, 10);
+    //leftTalon.config_kP(0, SmartDashboard.getNumber("P", 0), 10);
+    leftTalon.config_kI(0, 0, 10);
+    //leftTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
+    leftTalon.config_kD(0, 0, 10);		
+    //leftTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
+
+		rightTalon.config_kF(0, 0.1097, 10);
+    rightTalon.config_kP(0, 0.113333, 10);
+    //rightTalon.config_kP(0, SmartDashboard.getNumber("P", 0), 10);
+    rightTalon.config_kI(0, 0, 10);
+    //rightTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
+    rightTalon.config_kD(0, 0, 10);	
+    //rightTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
+		
+		new SensorCollection(leftTalon);
+		new SensorCollection(rightTalon);
+    //shiftSolenoid = new DoubleSolenoid(RobotMap.Ports.gearPistonFor, RobotMap.Ports.gearPistonRev);
   }
 
   // Apply left and right as percentage voltage
