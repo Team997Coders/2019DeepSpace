@@ -31,8 +31,11 @@ public class RobotMap {
       rightVictor2 = 3,
 
       leftTalon = 4,
-      rightTalon = 5;
+      rightTalon = 5,
 
+      spark = 10,
+      encoder = 7,
+      encoder2 = 8;
   }
 
 }

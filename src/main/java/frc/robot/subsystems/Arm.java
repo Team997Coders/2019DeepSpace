@@ -7,26 +7,29 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Encoder;
+import com.revrobotics.CANDigitalInput.LimitSwitch;
 /**
  * Add your docs here.
  */
-public class Elevator extends Subsystem {
-  private Spark sparkMotor;
-  private Spark secondSparkMotor;
-  public Elevator() {
-    sparkMotor = new Spark(0);
-    secondSparkMotor = new Spark(1);
-  }
-  
+public class Arm extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  private Spark armMotor = new Spark(RobotMap.Ports.spark);
+  CANSparkMax sparkMax;
+
+  public void setVolts(double Volts) {
+    armMotor.set(Volts);
+  }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-  } 
+  }
 }
