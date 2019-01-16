@@ -17,6 +17,7 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.DriveTrain;
 //import spartanlib.subsystem.drivetrain.TankDrive;
 import frc.robot.subsystems.NEOTesting;
+import frc.robot.subsystems.LineFollowing;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static DriveTrain driveTrain;
   public static NEOTesting neoTesting;
+  public static LineFollowing lineFollowing;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -42,12 +44,14 @@ public class Robot extends TimedRobot {
     // ADD SUBSYSTEMS HERE
     //driveTrain = new DriveTrain();
     neoTesting = new NEOTesting();
-
+   
     // NOT AFTER 'oi = new OI();'
     oi = new OI();
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
+    lineFollowing = new LineFollowing();
+
   }
 
   /**
