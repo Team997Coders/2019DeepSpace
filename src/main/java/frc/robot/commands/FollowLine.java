@@ -10,9 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.LineFollowing;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Sensor extends Command {
-  public Sensor() {
+public class FollowLine extends Command {
+  public FollowLine() {
     requires(Robot.lineFollowing);
     requires(Robot.driveTrain);
   }
@@ -31,10 +32,14 @@ public class Sensor extends Command {
 
     if(Sensorsdata[1] == true){
       Robot.driveTrain.setVolts(.25, .25);
+      SmartDashboard.putString("Centered?", "Yes! :) ");
     }else if(Sensorsdata[0] == true){
       Robot.driveTrain.setVolts(-.25, .25);
+      SmartDashboard.putString("Centered?", "No! :( ");
     }else if(Sensorsdata[2] == true){
       Robot.driveTrain.setVolts(.25, -.25);
+      SmartDashboard.putString("Centered?", "No! :( ");
+
     }else {}
   }
 
