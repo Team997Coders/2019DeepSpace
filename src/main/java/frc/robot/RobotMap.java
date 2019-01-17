@@ -33,10 +33,11 @@ public class RobotMap {
       leftTalon = 4,
       rightTalon = 5,
 
-      sensorleft = 3,
-      sensorcenter = 4,
-      sensorright = 5;
+      linesensorleft = 3,  
+      linesensorcenter = 4,
+      linesensorright = 5;
 
   }
 
 }
+//TODO: Assign correct ports esp for Sensors

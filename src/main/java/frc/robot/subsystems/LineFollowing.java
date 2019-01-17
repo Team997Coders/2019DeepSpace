@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.DigitalOutput;
  * Add your docs here.
  */
 public class LineFollowing extends Subsystem {
-  private DigitalOutput sensorLeftOutput = new DigitalOutput(RobotMap.Ports.sensorleft);
-  private DigitalOutput sensorRightOutput = new DigitalOutput(RobotMap.Ports.sensorright);
-  private DigitalOutput sensorCenterOutput = new DigitalOutput(RobotMap.Ports.sensorcenter);
+  private DigitalOutput sensorLeftOutput = new DigitalOutput(RobotMap.Ports.linesensorleft);
+  private DigitalOutput sensorRightOutput = new DigitalOutput(RobotMap.Ports.linesensorright);
+  private DigitalOutput sensorCenterOutput = new DigitalOutput(RobotMap.Ports.linesensorcenter);
 
   public boolean[] returnOutput() {
 
