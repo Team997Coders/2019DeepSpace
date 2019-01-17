@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -18,6 +19,7 @@ import frc.robot.subsystems.DriveTrain;
 //import spartanlib.subsystem.drivetrain.TankDrive;
 import frc.robot.subsystems.NEOTesting;
 import frc.robot.subsystems.LineFollowing;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -50,7 +52,17 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
-    lineFollowing = new LineFollowing();
+    
+    DigitalInput sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
+
+    DigitalInput sensorRightInput = new DigitalInput(RobotMap.Ports.linesensorright);
+
+    DigitalInput sensorCenterInput = new DigitalInput(RobotMap.Ports.linesensorcenter);
+
+    LineFollowing lineFollowing = new LineFollowing(sensorLeftInput, sensorCenterInput, sensorRightInput);
+
+
+    // lineFollowing = new LineFollowing();
 
   }
 

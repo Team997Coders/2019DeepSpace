@@ -11,11 +11,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.DriveTrain;
 
 public class FollowLine extends Command {
-  public FollowLine() {
-    requires(Robot.lineFollowing);
-    requires(Robot.driveTrain);
+
+  private LineFollowing m_lineFollowing;
+  private DriveTrain m_driveTrain;
+
+
+  public FollowLine(LineFollowing lineFollowing, DriveTrain driveTrain){
+    m_lineFollowing = lineFollowing;
+    m_driveTrain = driveTrain;
+    requires(lineFollowing);
+    requires(driveTrain);
   }
 
   // Called just before this Command runs the first time
@@ -27,8 +35,26 @@ public class FollowLine extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
     
-    boolean[] Sensorsdata = Robot.lineFollowing.returnOutput();
+    if(m_lineFollowing.centerLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "Yes! :) ");
+      m_driveTrain.setVolts(.25, .25);
+    }else if(m_lineFollowing.rightLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      m_driveTrain.setVolts(-.25, .25);
+     }else if(m_lineFollowing.leftLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      m_driveTrain.setVolts(.25, -.25);
+    }else {
+      SmartDashboard.putString("Do you see the line?", "No");
+      m_driveTrain.setVolts(.25, .25);
+    }
+    
+   /* boolean[] Sensorsdata = Robot.lineFollowing.returnOutput();
 
     if(Sensorsdata[1] == true){
       SmartDashboard.putString("Do you see the line?", "Yes");
@@ -45,7 +71,7 @@ public class FollowLine extends Command {
     }else {
       SmartDashboard.putString("Do you see the line?", "No");
       Robot.driveTrain.setVolts(.25, .25);
-    }
+    }*/
   }
 
 
