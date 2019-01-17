@@ -20,11 +20,35 @@ import com.revrobotics.CANDigitalInput.LimitSwitch;
 public class Arm extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private Spark armMotor = new Spark(RobotMap.Ports.spark);
-  CANSparkMax sparkMax;
+  private Spark armMotor;
+  private CANSparkMax sparkMax;
+
+  // Read Encoder Vars
+  private final double MAX = 5;
+  private final double LIMIT = 4;
+  private double initRead = 0;
+  private double prevRead = -1;
+  private int revs = 0;
+  private int flipModifier = 1;
+
+  public Arm() {
+    armMotor = new Spark(RobotMap.Ports.spark);
+    //initRead = encoder read out
+  }
 
   public void setVolts(double Volts) {
     armMotor.set(Volts);
+  }
+
+  public double readEncoder() {
+    double newVal = 0; // Read data from encoder object
+    if (prevRead == -1) prevRead = newVal;
+    if (Math.abs(prevRead - newVal) > LIMIT) {
+      if (newVal > prevRead) revs -= flipModifier;
+      else if (newVal < prevRead) revs += flipModifier;
+    }
+    prevRead = newVal;
+    return (revs * MAX) + (newVal - initRead);
   }
 
   @Override
