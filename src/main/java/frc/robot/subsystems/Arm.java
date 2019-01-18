@@ -10,10 +10,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Encoder;
-import com.revrobotics.CANDigitalInput.LimitSwitch;
 /**
  * Add your docs here.
  */
@@ -32,23 +28,37 @@ public class Arm extends Subsystem {
   private int flipModifier = 1;
 
   public Arm() {
-    armMotor = new Spark(RobotMap.Ports.spark);
+    //armMotor = new Spark(RobotMap.Ports.spark);
     //initRead = encoder read out
+    initRead = 4.0;
   }
 
   public void setVolts(double Volts) {
     armMotor.set(Volts);
   }
 
-  public double readEncoder() {
-    double newVal = 0; // Read data from encoder object
-    if (prevRead == -1) prevRead = newVal;
+  public double readEncoder(double testInput) {
+    double newVal = testInput; // Read data from encoder object
+    
+    if (prevRead == -1) { 
+      prevRead = newVal; 
+    }
+
     if (Math.abs(prevRead - newVal) > LIMIT) {
-      if (newVal > prevRead) revs -= flipModifier;
-      else if (newVal < prevRead) revs += flipModifier;
+      if (newVal > prevRead) {
+        revs -= flipModifier;
+      } else {
+        revs += flipModifier;
+      }
     }
     prevRead = newVal;
     return (revs * MAX) + (newVal - initRead);
+  }
+
+  public void resetEncoder() {
+    revs = 0;
+    prevRead = -1;
+    initRead = 0; // Read data from encoder object
   }
 
   @Override

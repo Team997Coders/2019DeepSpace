@@ -43,11 +43,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // ADD SUBSYSTEMS HERE
     //driveTrain = new DriveTrain();
-    neoTesting = new NEOTesting();
+    //neoTesting = new NEOTesting();
+    arm = new Arm();
 
     // NOT AFTER 'oi = new OI();'
     oi = new OI();
-    arm = new Arm();
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
