@@ -7,41 +7,51 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.CANifier;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
 public class Arm extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private Spark armMotor;
+  //private Spark armMotor;
   private CANSparkMax sparkMax;
+
+  private CANifier dataBus;
 
   // Read Encoder Vars
   private final double MAX = 5;
-  private final double LIMIT = 4;
+  private final double LIMIT = 3;
   private double initRead = 0;
   private double prevRead = -1;
   private int revs = 0;
   private int flipModifier = 1;
 
   public Arm() {
-    //armMotor = new Spark(RobotMap.Ports.spark);
-    //initRead = encoder read out
+    dataBus = new CANifier(RobotMap.Ports.armCanifier);
+
     initRead = 4.0;
   }
 
-  public void setVolts(double Volts) {
-    armMotor.set(Volts);
+  public void setSpeed(double speed) {
+    sparkMax.set(speed);
   }
 
-  public double readEncoder(double testInput) {
-    double newVal = testInput; // Read data from encoder object
+  public double readEncoder(boolean test, double testInput) {
+    double newVal;
     
+    if (test) {
+      newVal = testInput; // Read test input
+    } else {
+      newVal = initRead; // Read encoder data
+    }
+
     if (prevRead == -1) { 
-      prevRead = newVal; 
+      prevRead = newVal;
     }
 
     if (Math.abs(prevRead - newVal) > LIMIT) {

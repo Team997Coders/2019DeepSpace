@@ -35,7 +35,10 @@ public class RobotMap {
 
       spark = 10,
       encoder = 7,
-      encoder2 = 8;
+      encoder2 = 8,
+
+      analogEncoder = 1,
+      armCanifier = 0;
   }
 
 }
