@@ -23,6 +23,8 @@ public class LineFollowing extends Subsystem {
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
+  private DigitalInput m_untrasonicSensorInput;
+
 
 @Inject
   public LineFollowing(@Named("sensorLeftInput") DigitalInput sensorLeftInput, 
@@ -30,6 +32,7 @@ public class LineFollowing extends Subsystem {
     m_sensorLeftInput = sensorLeftInput;
     m_sensorRightInput = sensorRightInput;
     m_sensorCenterInput = sensorCenterInput;
+    m_untrasonicSensorInput = untrasonicSensorInput;
 
 
   }
@@ -60,6 +63,13 @@ public class LineFollowing extends Subsystem {
     return(m_sensorCenterInput.get() && m_sensorRightInput.get());
   }
 
+  public boolean untrasonicDepositeSeen(){
+    return(m_untrasonucSensorInput.get());
+  }
+
+  public double ultrasonicVoltage() {
+    return m_untrasonucSensorInput.getVoltage();
+  }
 
   /*
 
