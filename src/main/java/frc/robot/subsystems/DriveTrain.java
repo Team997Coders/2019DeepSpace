@@ -28,6 +28,27 @@ public class DriveTrain extends Subsystem {
   private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
+  private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
+  //Test
+ 
+
+  public DriveTrain( TalonSRX leftTalon,  TalonSRX rightTalon,
+   VictorSPX leftVictor1, VictorSPX leftVictor2, 
+   VictorSPX rightVictor1, VictorSPX rightVictor2,
+   SensorCollection leftTalonSensorCollection, SensorCollection rightTaloSensorCollection){
+     this.leftTalon = leftTalon;
+     this.rightTalon = rightTalon;
+     this.leftVictor1 = leftVictor1;
+     this.leftVictor2 = leftVictor2;
+     this.rightVictor1 = rightVictor1;
+     this.rightVictor2 = rightVictor2;
+     this.leftTalonSensorCollection = leftTalonSensorCollection;
+     this.rightTaloSensorCollection = rightTaloSensorCollection;
+
+
+    this.setUp();
+
+  }
 
   public DriveTrain() {
 
@@ -37,7 +58,15 @@ public class DriveTrain extends Subsystem {
     leftVictor2 = new VictorSPX(RobotMap.Ports.leftVictor2);
     rightVictor1 = new VictorSPX(RobotMap.Ports.rightVictor1);
     rightVictor2 = new VictorSPX(RobotMap.Ports.rightVictor2);
+    leftTalonSensorCollection = new SensorCollection(leftTalon);
+    rightTaloSensorCollection = new SensorCollection(rightTalon);
 
+    this.setUp();
+
+    System.out.println("BIG BOI");
+  }
+
+  private void setUp(){
     leftVictor1.follow(leftTalon);
     leftVictor2.follow(leftTalon);
     rightVictor1.follow(rightTalon);
@@ -105,9 +134,8 @@ public class DriveTrain extends Subsystem {
     //rightTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
     rightTalon.config_kD(0, 0, 10);	
     //rightTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
-		
-		new SensorCollection(leftTalon);
-		new SensorCollection(rightTalon);
+		   
+
     //shiftSolenoid = new DoubleSolenoid(RobotMap.Ports.gearPistonFor, RobotMap.Ports.gearPistonRev);
   }
 
