@@ -12,7 +12,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
-import 
+
 
 public class FollowLine extends Command {
 
@@ -90,7 +90,7 @@ public class FollowLine extends Command {
         SmartDashboard.putString("Do you see two lines?", "No");
   
         m_driveTrain.setVolts(0, 0);
-        break;
+      break;
     }
 
     
@@ -180,7 +180,12 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(rightLineSeen == false && centerLineSeen == false && leftLineSeen == false){
+      return false;
+    }else{
+      return true;
+    }
+    
   }
 
   // Called once after isFinished returns true

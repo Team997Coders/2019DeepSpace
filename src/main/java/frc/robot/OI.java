@@ -13,14 +13,16 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class OI {
 
-  private Joystick gamepad1;//, gamepad2;
+  private Joystick gamepad1;//, gamepad2;\
+  JoystickButton followLine;
 
   //private JoystickButton spinspin;
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
     //gamepad2 = new Joystick(RobotMap.Ports.gamepad2);
-
+    followLine = new JoystickButton(gamepad1, RobotMap.Ports.followLine);
+    followLine.whenPressed(new FollowLine);
     //spinspin = new JoystickButton(gamepad1, 1);
     //spinspin.whileHeld(new SparkySpin());
   }
@@ -34,6 +36,7 @@ public class OI {
   }
 
   public double getRightYAxis() {
+    
     return -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis);
   }
 
