@@ -18,12 +18,17 @@ public class FollowLine extends Command {
   private LineFollowing m_lineFollowing;
   private DriveTrain m_driveTrain;
 
+  private boolean test = false;
 
-  public FollowLine(LineFollowing lineFollowing, DriveTrain driveTrain){
-    m_lineFollowing = lineFollowing;
+  public FollowLine() { // Use the static instances in Robot
+    requires(Robot.lineFollowing);
+    requires(Robot.driveTrain);
+  }
+
+  public FollowLine(LineFollowing lineFollowing, DriveTrain driveTrain) {
+    test = true;
     m_driveTrain = driveTrain;
-    requires(lineFollowing);
-    requires(driveTrain);
+    m_lineFollowing = lineFollowing;
   }
 
   // Called just before this Command runs the first time
@@ -38,65 +43,100 @@ public class FollowLine extends Command {
     
     System.out.println("Inside Command execute");
 
+    /*
+
+    So a switch for this command would look something like this
+
+    switch (true) { // What you want to compare the cases to
+      case Robot.lineFollowing.centerLineSeen():
+        // Do your processing
+        break; // Make sure you add this after every case
+      case etc...
+      default: // This will happen if none of the other cases are met
+        // add processing for the else {} bit here
+        break;
+    }
+
+    */
+
+    if (test) {
+      if(m_lineFollowing.centerLineSeen()){
+        SmartDashboard.putString("Do you see the line?", "Yes");
+        SmartDashboard.putString("Centered?", "Yes! :) ");
+        SmartDashboard.putString("Do you see two lines?", "No");
+  
+        m_driveTrain.setVolts(.25, .25);
+      }else if(m_lineFollowing.rightLineSeen()){
+        SmartDashboard.putString("Do you see the line?", "Yes");
+        SmartDashboard.putString("Centered?", "No! :( ");
+        SmartDashboard.putString("Do you see two lines?", "No");
+  
+        m_driveTrain.setVolts(.25, .15);
+      }else if(m_lineFollowing.leftLineSeen()){
+        SmartDashboard.putString("Do you see the line?", "Yes");
+        SmartDashboard.putString("Centered?", "No! :( ");
+        SmartDashboard.putString("Do you see two lines?", "No");
+  
+        m_driveTrain.setVolts(.15, .25);
+      }else if(m_lineFollowing.rightCenterLineSeen()){
+        SmartDashboard.putString("Do you see the line?", "Yes");
+        SmartDashboard.putString("Centered?", "No! :( ");
+        SmartDashboard.putString("Do you see two lines?", "Yes");
+  
+        m_driveTrain.setVolts(.25 , .2);
+      }else if(m_lineFollowing.leftCenterLineSeen()){
+        SmartDashboard.putString("Do you see the line?", "Yes");
+        SmartDashboard.putString("Centered?", "No! :( ");
+        SmartDashboard.putString("Do you see two lines?", "Yes");
+
+        m_driveTrain.setVolts(.2, .25);
+      }else{
+        SmartDashboard.putString("Do you see the line?", "No");
+        SmartDashboard.putString("Do you see two lines?", "No");
+  
+        m_driveTrain.setVolts(0, 0);
+      }
+
+      return;
+    }
     
-    if(m_lineFollowing.centerLineSeen()){
+    if(Robot.lineFollowing.centerLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "Yes! :) ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      m_driveTrain.setVolts(.25, .25);
-    }else if(m_lineFollowing.rightLineSeen()){
+      Robot.driveTrain.setVolts(.25, .25);
+    }else if(Robot.lineFollowing.rightLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      m_driveTrain.setVolts(.25, .15);
-    }else if(m_lineFollowing.leftLineSeen()){
+      Robot.driveTrain.setVolts(.25, .15);
+    }else if(Robot.lineFollowing.leftLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      m_driveTrain.setVolts(.15, .25);
-    }else if(m_lineFollowing.rightCenterLineSeen()){
+      Robot.driveTrain.setVolts(.15, .25);
+    }else if(Robot.lineFollowing.rightCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
 
-      m_driveTrain.setVolts(.25 , .2);
-    }else if(m_lineFollowing.leftCenterLineSeen()){
+      Robot.driveTrain.setVolts(.25 , .2);
+    }else if(Robot.lineFollowing.leftCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
 
 
-      m_driveTrain.setVolts(.2, .25);
+      Robot.driveTrain.setVolts(.2, .25);
     }else{
       SmartDashboard.putString("Do you see the line?", "No");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      m_driveTrain.setVolts(0, 0);
+      Robot.driveTrain.setVolts(0, 0);
     }
-
-
-    
-   /* boolean[] Sensorsdata = Robot.lineFollowing.returnOutput();
-
-    if(Sensorsdata[1] == true){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "Yes! :) ");
-      Robot.driveTrain.setVolts(.25, .25);
-    }else if(Sensorsdata[0] == true){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      Robot.driveTrain.setVolts(-.25, .25);
-     }else if(Sensorsdata[2] == true){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      Robot.driveTrain.setVolts(.25, -.25);
-    }else {
-      SmartDashboard.putString("Do you see the line?", "No");
-      Robot.driveTrain.setVolts(.25, .25);
-    }*/
   }
 
 

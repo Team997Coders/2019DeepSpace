@@ -30,7 +30,6 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static DriveTrain driveTrain;
   public static LineFollowing lineFollowing;
-  public static FollowLine followLine;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -58,7 +57,7 @@ public class Robot extends TimedRobot {
 
     lineFollowing = new LineFollowing(sensorLeftInput, sensorCenterInput, sensorRightInput);
 
-    followLine = new FollowLine(lineFollowing, driveTrain);
+    //followLine = new FollowLine(lineFollowing, driveTrain);
 
 
     // lineFollowing = new LineFollowing();
@@ -134,7 +133,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    Scheduler.getInstance().add(followLine);
+    Scheduler.getInstance().add(new FollowLine()); // Add the newly create command
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }

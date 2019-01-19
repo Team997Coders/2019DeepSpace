@@ -26,20 +26,14 @@ public class LineFollowingUnitTest {
         LineFollowing m_lineFollowing = mock(LineFollowing.class);
         DriveTrain m_driveTrain = mock(DriveTrain.class);
         FollowLine m_followLine = new FollowLine(m_lineFollowing, m_driveTrain);
-
         
         //Assemble
         when(m_lineFollowing.centerLineSeen()).thenReturn(true);
 
         //Act
-
-        
         m_followLine.execute();
 
-
-
         //Assert
-        
         verify(m_driveTrain, times(1)).setVolts(.25, .25);
 
     }
