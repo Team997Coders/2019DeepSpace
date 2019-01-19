@@ -47,58 +47,17 @@ public class FollowLine extends Command {
     
     System.out.println("Inside Command execute");
     SmartDashboard.putString("LineFollowing is Active!");
-    
+
 
    
 
     //So a switch for this command would look something like this
 
-    switch (true) { // What you want to compare the cases to
-      case Robot.lineFollowing.centerLineSeen(true):
-        SmartDashboard.putString("Do you see the line?", "Yes");
-        SmartDashboard.putString("Centered?", "Yes! :) ");
-        SmartDashboard.putString("Do you see two lines?", "No");
-
-        m_driveTrain.setVolts(.25, .25);
-      break; 
-      case Robot.linFollowing.rightLineSeen(true):
-        SmartDashboard.putString("Do you see the line?", "Yes");
-        SmartDashboard.putString("Centered?", "No! :( ");
-        SmartDashboard.putString("Do you see two lines?", "No");
-
-        m_driveTrain.setVolts(.25, .15);
-      break;
-      case Robot.lineFollowing.leftLineSeen(true):
-        SmartDashboard.putString("Do you see the line?", "Yes");
-        SmartDashboard.putString("Centered?", "No! :( ");
-        SmartDashboard.putString("Do you see two lines?", "No");
-
-        m_driveTrain.setVolts(.15, .25);
-      break;
-      case Robot.lineFollowing.rightCenterLineSeen(true):
-        SmartDashboard.putString("Do you see the line?", "Yes");
-        SmartDashboard.putString("Centered?", "No! :( ");
-        SmartDashboard.putString("Do you see two lines?", "Yes");
-
-        m_driveTrain.setVolts(.25 , .2);  
-      break;
-      case:Robot.lineFollowing.leftCenterLineSeen(true):
-        SmartDashboard.putString("Do you see the line?", "Yes");
-        SmartDashboard.putString("Centered?", "No! :( ");
-        SmartDashboard.putString("Do you see two lines?", "Yes");
-
-        m_driveTrain.setVolts(.2, .25);
-      break;
-      default:  
-        SmartDashboard.putString("Do you see the line?", "No");
-        SmartDashboard.putString("Do you see two lines?", "No");
   
-        m_driveTrain.setVolts(0, 0);
-      break;
     }
 
     
-    /*
+    
     if (test) {
       if(m_lineFollowing.centerLineSeen()){
         SmartDashboard.putString("Do you see the line?", "Yes");
@@ -130,6 +89,10 @@ public class FollowLine extends Command {
         SmartDashboard.putString("Do you see two lines?", "Yes");
 
         m_driveTrain.setVolts(.2, .25);
+      }else if(m_lineFollowing.ultrasonicDepositeSeen()){
+        SmartDashboard.putString("Do I see the deposite", "Yes");
+        SmartDashboard.putString("Distance","Volts: " + m_lineFollowing.ultrasonicVoltage())
+        m_driveTrain.setVolts(0,0);
       }else{
         SmartDashboard.putString("Do you see the line?", "No");
         SmartDashboard.putString("Do you see two lines?", "No");
