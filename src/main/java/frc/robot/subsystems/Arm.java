@@ -8,10 +8,19 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.CANifier;
+import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANDigitalInput.LimitSwitch;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.SparkySpin;
 /**
  * Add your docs here.
  */
@@ -20,8 +29,8 @@ public class Arm extends Subsystem {
   // here. Call these from Commands.
   //private Spark armMotor;
   private CANSparkMax sparkMax;
-
-  private CANifier dataBus;
+  public CANDigitalInput limitSwitch;
+  public AnalogInput encoder;
 
   // Read Encoder Vars
   private final double MAX = 5;
@@ -32,9 +41,17 @@ public class Arm extends Subsystem {
   private int flipModifier = 1;
 
   public Arm() {
-    dataBus = new CANifier(RobotMap.Ports.armCanifier);
 
-    initRead = 4.0;
+    sparkMax = new CANSparkMax(42, MotorType.kBrushless);
+    limitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
+    limitSwitch.enableLimitSwitch(true);
+    //sparkMax.setIdleMode(IdleMode.kBrake);
+
+    SmartDashboard.putBoolean("FWD Limit Switch", limitSwitch.get());
+    
+    encoder = new AnalogInput(3);
+
+    initRead = encoder.getVoltage();
   }
 
   public void setSpeed(double speed) {
@@ -47,7 +64,7 @@ public class Arm extends Subsystem {
     if (test) {
       newVal = testInput; // Read test input
     } else {
-      newVal = initRead; // Read encoder data
+      newVal = encoder.getVoltage(); // Read encoder data
     }
 
     if (prevRead == -1) { 
@@ -65,15 +82,12 @@ public class Arm extends Subsystem {
     return (revs * MAX) + (newVal - initRead);
   }
 
-  public void resetEncoder() {
-    revs = 0;
-    prevRead = -1;
-    initRead = 0; // Read data from encoder object
-  }
-
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new SparkySpin());
   }
+
+  public AnalogInput getEncoder() { return encoder; }
 }

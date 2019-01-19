@@ -29,7 +29,7 @@ import frc.robot.subsystems.Arm;
 public class Robot extends TimedRobot {
   public static OI oi;
   public static DriveTrain driveTrain;
-  public static NEOTesting neoTesting;
+  //public static NEOTesting neoTesting;
   public static Arm arm;
 
   Command autonomousCommand;
@@ -121,16 +121,29 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    System.out.println("--------------------");
+
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
   }
+
+  double lastTime = 0;
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    if (lastTime + 500 < System.currentTimeMillis()) {
+      lastTime = System.currentTimeMillis();
+      System.out.println("\n\n\n  " + arm.limitSwitch.get());
+      SmartDashboard.putBoolean("Limit Switch", arm.limitSwitch.get());
+    }
+
+    //arm.readEncoder(false, 0);
+
     Scheduler.getInstance().run();
   }
 

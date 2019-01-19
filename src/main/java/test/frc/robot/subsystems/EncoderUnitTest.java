@@ -12,7 +12,7 @@ import frc.robot.subsystems.Arm;
 
 public class EncoderUnitTest {
 
-    @Test
+    /*@Test
     public void TestEncoderOutput() {
         Arm arm = new Arm();
 
@@ -67,6 +67,6 @@ public class EncoderUnitTest {
 
     private double bugAvoidence(double a) {
         return ((double)((int)(a * 10000))) / 10000;
-    }
+    }*/
 
 }
