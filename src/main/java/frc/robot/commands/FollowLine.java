@@ -39,7 +39,7 @@ public class FollowLine extends Command {
   protected void execute() {
     
     System.out.println("Inside Command execute");
-    SmartDashboard.putString("LineFollowing is Active!");
+    SmartDashboard.putString("LineFollowing is Active!", "I think so?");
 
 
    
@@ -100,12 +100,15 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(m_lineFollowing.rightLineSeen() == false && m_lineFollowing.centerLineSeen() == false && m_lineFollowing.leftLineSeen() == false){
-      return false;
+    if(m_lineFollowing.rightLineSeen() == true || m_lineFollowing.centerLineSeen() == true || m_lineFollowing.leftLineSeen() == true){
+      if (m_lineFollowing.isCloseToTarget()) {
+        return true;
+      } else {
+        return false;
+      }
     }else{
       return true;
-    }
-    
+    }    
   }
 
   // Called once after isFinished returns true
