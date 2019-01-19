@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveTrain;
-//import spartanlib.subsystem.drivetrain.TankDrive;
-import frc.robot.subsystems.NEOTesting;
 import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -31,8 +29,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 public class Robot extends TimedRobot {
   public static OI oi;
   public static DriveTrain driveTrain;
-  public static NEOTesting neoTesting;
   public static LineFollowing lineFollowing;
+  public static FollowLine followLine;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -44,8 +42,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // ADD SUBSYSTEMS HERE
-    //driveTrain = new DriveTrain();
-    neoTesting = new NEOTesting();
+    driveTrain = new DriveTrain();
    
     // NOT AFTER 'oi = new OI();'
     oi = new OI();
@@ -59,7 +56,9 @@ public class Robot extends TimedRobot {
 
     DigitalInput sensorCenterInput = new DigitalInput(RobotMap.Ports.linesensorcenter);
 
-    LineFollowing lineFollowing = new LineFollowing(sensorLeftInput, sensorCenterInput, sensorRightInput);
+    lineFollowing = new LineFollowing(sensorLeftInput, sensorCenterInput, sensorRightInput);
+
+    followLine = new FollowLine(lineFollowing, driveTrain);
 
 
     // lineFollowing = new LineFollowing();
@@ -134,6 +133,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    Scheduler.getInstance().add(followLine);
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }

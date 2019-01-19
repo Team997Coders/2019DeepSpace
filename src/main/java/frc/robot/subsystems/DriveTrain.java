@@ -62,6 +62,8 @@ public class DriveTrain extends Subsystem {
     rightTaloSensorCollection = new SensorCollection(rightTalon);
 
     this.setUp();
+
+    System.out.println("BIG BOI");
   }
 
   private void setUp(){

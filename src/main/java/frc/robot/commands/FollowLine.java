@@ -35,24 +35,49 @@ public class FollowLine extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    
+    System.out.println("Inside Command execute");
 
     
     if(m_lineFollowing.centerLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "Yes! :) ");
+      SmartDashboard.putString("Do you see two lines?", "No");
+
       m_driveTrain.setVolts(.25, .25);
     }else if(m_lineFollowing.rightLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
-      m_driveTrain.setVolts(-.25, .25);
-     }else if(m_lineFollowing.leftLineSeen()){
+      SmartDashboard.putString("Do you see two lines?", "No");
+
+      m_driveTrain.setVolts(.25, .15);
+    }else if(m_lineFollowing.leftLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
-      m_driveTrain.setVolts(.25, -.25);
-    }else {
+      SmartDashboard.putString("Do you see two lines?", "No");
+
+      m_driveTrain.setVolts(.15, .25);
+    }else if(m_lineFollowing.rightCenterLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "Yes");
+
+      m_driveTrain.setVolts(.25 , .2);
+    }else if(m_lineFollowing.leftCenterLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "Yes");
+
+
+      m_driveTrain.setVolts(.2, .25);
+    }else{
       SmartDashboard.putString("Do you see the line?", "No");
-      m_driveTrain.setVolts(.25, .25);
+      SmartDashboard.putString("Do you see two lines?", "No");
+
+      m_driveTrain.setVolts(0, 0);
     }
+
+
     
    /* boolean[] Sensorsdata = Robot.lineFollowing.returnOutput();
 
@@ -85,11 +110,13 @@ public class FollowLine extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveTrain.setVolts(0, 0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

@@ -20,13 +20,12 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void execute() {
-    double left = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
-    double right = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
+    double left = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
+    double right = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
 
-    left = Robot.oi.deadBand(left, -1.0, 1.0);
-    right = Robot.oi.deadBand(right, -1.0, 1.0);
+    Robot.driveTrain.setVolts(left, right);
 
-    //Robot.driveTrain.setVolts(left, right);
+    System.out.println("BAHH");
   }
 
   @Override
@@ -36,9 +35,9 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    //Robot.driveTrain.stopVolts();
+    Robot.driveTrain.stopVolts();
   }
 
   @Override
-  protected void interrupted() { end(); }
+  protected void interrupted() { System.out.println("Interrupted"); end(); }
 }
