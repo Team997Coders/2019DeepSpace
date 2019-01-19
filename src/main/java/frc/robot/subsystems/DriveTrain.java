@@ -19,6 +19,9 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 /**
  * Add your docs here.
  */
@@ -31,11 +34,12 @@ public class DriveTrain extends Subsystem {
   private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
   //Test
  
-
-  public DriveTrain( TalonSRX leftTalon,  TalonSRX rightTalon,
-   VictorSPX leftVictor1, VictorSPX leftVictor2, 
-   VictorSPX rightVictor1, VictorSPX rightVictor2,
-   SensorCollection leftTalonSensorCollection, SensorCollection rightTaloSensorCollection){
+@Inject
+  public DriveTrain( @Named("leftTalon") TalonSRX leftTalon, @Named("rightTalon") TalonSRX rightTalon,
+   @Named("leftVictor1") VictorSPX leftVictor1, @Named("leftVictor2")VictorSPX leftVictor2, 
+   @Named("rightVictor1")VictorSPX rightVictor1, @Named("rightVictor2")VictorSPX rightVictor2,
+   @Named("leftTalonSensorCollection")SensorCollection leftTalonSensorCollection, 
+   @Named("rightTaloSensorCollection")SensorCollection rightTaloSensorCollection){
      this.leftTalon = leftTalon;
      this.rightTalon = rightTalon;
      this.leftVictor1 = leftVictor1;
@@ -50,21 +54,6 @@ public class DriveTrain extends Subsystem {
 
   }
 
-  public DriveTrain() {
-
-    leftTalon = new TalonSRX(RobotMap.Ports.leftTalon);
-    rightTalon = new TalonSRX(RobotMap.Ports.rightTalon);
-    leftVictor1 = new VictorSPX(RobotMap.Ports.leftVictor1);
-    leftVictor2 = new VictorSPX(RobotMap.Ports.leftVictor2);
-    rightVictor1 = new VictorSPX(RobotMap.Ports.rightVictor1);
-    rightVictor2 = new VictorSPX(RobotMap.Ports.rightVictor2);
-    leftTalonSensorCollection = new SensorCollection(leftTalon);
-    rightTaloSensorCollection = new SensorCollection(rightTalon);
-
-    this.setUp();
-
-    System.out.println("BIG BOI");
-  }
 
   private void setUp(){
     leftVictor1.follow(leftTalon);
