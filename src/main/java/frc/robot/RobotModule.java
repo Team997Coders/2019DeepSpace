@@ -51,9 +51,9 @@ public class RobotModule extends AbstractModule {
 
         //SensorCollection
         bind(SensorCollection.class).annotatedWith(Names.named("leftTalonSensorCollection")).toProvider(() 
-        -> new SensorCollection(RobotMap.Ports.leftTalon)).in(Singleton.class);
+        -> new SensorCollection(new TalonSRX(RobotMap.Ports.leftTalon))).in(Singleton.class);
         bind(SensorCollection.class).annotatedWith(Names.named("rightTalonSensorCollection")).toProvider(() 
-        -> new SensorCollection(RobotMap.Ports.rightTalon)).in(Singleton.class);
+        -> new SensorCollection(new TalonSRX(RobotMap.Ports.rightTalon))).in(Singleton.class);
     }
 
 }

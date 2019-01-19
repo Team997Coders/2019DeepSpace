@@ -46,7 +46,7 @@ public class FollowLine extends Command {
     //So a switch for this command would look something like this
 
   
-    }
+  
 
     
     
@@ -82,10 +82,6 @@ public class FollowLine extends Command {
         SmartDashboard.putString("Do you see two lines?", "Yes");
 
         m_driveTrain.setVolts(.2, .25);
-      }else if(m_lineFollowing.ultrasonicDepositeSeen()){
-        SmartDashboard.putString("Do I see the deposite", "Yes");
-        SmartDashboard.putString("Distance","Volts: " + m_lineFollowing.ultrasonicVoltage())
-        m_driveTrain.setVolts(0,0);
       }else{
         SmartDashboard.putString("Do you see the line?", "No");
         SmartDashboard.putString("Do you see two lines?", "No");
@@ -96,6 +92,7 @@ public class FollowLine extends Command {
       return;
     }
   }
+  
 
 
 
@@ -113,7 +110,7 @@ public class FollowLine extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
+    m_driveTrain.setVolts(0, 0);
   }
 
   // Called when another command which requires one or more of the same

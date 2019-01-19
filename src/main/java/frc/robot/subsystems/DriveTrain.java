@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import frc.robot.commands.ArcadeDrive;
 
 
 import com.google.inject.Inject;
@@ -32,6 +33,7 @@ public class DriveTrain extends Subsystem {
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
   private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
+  private ArcadeDrive defaultCommand;
   //Test
  
 @Inject
@@ -39,7 +41,8 @@ public class DriveTrain extends Subsystem {
    @Named("leftVictor1") VictorSPX leftVictor1, @Named("leftVictor2")VictorSPX leftVictor2, 
    @Named("rightVictor1")VictorSPX rightVictor1, @Named("rightVictor2")VictorSPX rightVictor2,
    @Named("leftTalonSensorCollection")SensorCollection leftTalonSensorCollection, 
-   @Named("rightTaloSensorCollection")SensorCollection rightTaloSensorCollection){
+   @Named("rightTaloSensorCollection")SensorCollection rightTaloSensorCollection,
+   ArcadeDrive defaultCommand){
      this.leftTalon = leftTalon;
      this.rightTalon = rightTalon;
      this.leftVictor1 = leftVictor1;
@@ -48,6 +51,7 @@ public class DriveTrain extends Subsystem {
      this.rightVictor2 = rightVictor2;
      this.leftTalonSensorCollection = leftTalonSensorCollection;
      this.rightTaloSensorCollection = rightTaloSensorCollection;
+     this.defaultCommand = defaultCommand;
 
 
     this.setUp();
@@ -144,7 +148,7 @@ public class DriveTrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new ArcadeDrive());
+    setDefaultCommand(defaultCommand);
     //setDefaultCommand(new TankDrive());
   }
 }

@@ -7,12 +7,35 @@
 
 package frc.robot.commands;
 
+import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.Joystick;
 
 public class ArcadeDrive extends Command {
-  public ArcadeDrive() {
-    requires(Robot.driveTrain);
+  private Joystick gamepad1;  
+  private DriveTrain driveTrain;
+
+  
+  public ArcadeDrive(Joystick gamepad1, DriveTrain driveTrain) {
+    this.gamepad1 = gamepad1; 
+    this.driveTrain = driveTrain;
+    requires(driveTrain);
+    
+  }
+
+  private double getLeftYAxis() {
+    return -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis);
+  }
+
+  private double getRightXAxis() {
+    return gamepad1.getRawAxis(RobotMap.Ports.rightXAxis);
+  }
+
+  private double getRightYAxis() {
+    
+    return -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis);
   }
 
   @Override
@@ -20,10 +43,10 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void execute() {
-    double left = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
-    double right = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
+    double left = getLeftYAxis() + getRightXAxis();
+    double right = getLeftYAxis() - getRightXAxis();
 
-    Robot.driveTrain.setVolts(left, right);
+    driveTrain.setVolts(left, right);
 
     System.out.println("BAHH");
   }
@@ -35,7 +58,7 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.stopVolts();
+    driveTrain.stopVolts();
   }
 
   @Override
