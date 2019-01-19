@@ -31,11 +31,9 @@ public class FollowLine extends Command {
     boolean[] Sensorsdata = Robot.lineFollowing.returnOutput();
 
     if(Sensorsdata[1] == true){
-      SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "Yes! :) ");
       Robot.driveTrain.setVolts(.25, .25);
     }else if(Sensorsdata[0] == true){
-      SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       Robot.driveTrain.setVolts(-.25, .25);
      }else if(Sensorsdata[2] == true){
