@@ -19,6 +19,9 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -30,7 +33,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static DriveTrain driveTrain;
   public static LineFollowing lineFollowing;
-
+  private final Injector m_injector;
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -38,10 +41,16 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
+
+  public Robot(){
+    super();
+    m_injector = Guice.createInjector(new RobotModule());
+
+  }
   @Override
   public void robotInit() {
     // ADD SUBSYSTEMS HERE
-    driveTrain = new DriveTrain();
+    driveTrain = m_injector.getInstance(DriveTrain.class);
     
    
     // NOT AFTER 'oi = new OI();'

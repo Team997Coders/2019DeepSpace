@@ -20,13 +20,6 @@ public class FollowLine extends Command {
 
   private boolean test = false;
 
-  public FollowLine() { // Use the static instances in Robot
-    m_driveTrain = Robot.driveTrain;
-    m_lineFollowing = Robot.lineFollowing;
-    requires(m_driveTrain);
-    requires(m_lineFollowing);
-  }
-
   public FollowLine(LineFollowing lineFollowing, DriveTrain driveTrain) {
     test = true;
     m_driveTrain = driveTrain;
@@ -58,6 +51,7 @@ public class FollowLine extends Command {
 
     
     
+
     if (test) {
       if(m_lineFollowing.centerLineSeen()){
         SmartDashboard.putString("Do you see the line?", "Yes");
@@ -70,7 +64,7 @@ public class FollowLine extends Command {
         SmartDashboard.putString("Centered?", "No! :( ");
         SmartDashboard.putString("Do you see two lines?", "No");
   
-        m_driveTrain.setVolts(.25, .15);git status
+        m_driveTrain.setVolts(.25, .15);
       }else if(m_lineFollowing.leftLineSeen()){
         SmartDashboard.putString("Do you see the line?", "Yes");
         SmartDashboard.putString("Centered?", "No! :( ");
@@ -102,13 +96,14 @@ public class FollowLine extends Command {
       
       return;
     }
+  }
 
 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(rightLineSeen == false && centerLineSeen == false && leftLineSeen == false){
+    if(m_lineFollowing.rightLineSeen() == false && m_lineFollowing.centerLineSeen() == false && m_lineFollowing.leftLineSeen() == false){
       return false;
     }else{
       return true;
