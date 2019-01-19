@@ -46,6 +46,8 @@ public class FollowLine extends Command {
   protected void execute() {
     
     System.out.println("Inside Command execute");
+    SmartDashboard.putString("LineFollowing is Active!");
+    
 
    
 
