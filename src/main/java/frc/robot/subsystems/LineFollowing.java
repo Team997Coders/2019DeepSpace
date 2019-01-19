@@ -8,8 +8,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import com.google.inject.Inject;
@@ -65,12 +63,9 @@ public class LineFollowing extends Subsystem {
     return(m_sensorCenterInput.get() && m_sensorRightInput.get());
   }
 
-  public boolean untrasonicDepositeSeen(){
-    return(m_untrasonucSensorInput.get());
-  }
-
-  public double ultrasonicVoltage() {
-    return m_untrasonucSensorInput.getVoltage();
+  public boolean isCloseToTarget() {
+    // Assume voltage goes down as we get closer to target
+    return m_untrasonicSensorInput.getAverageVoltage() < 0.5;
   }
 
   /*
