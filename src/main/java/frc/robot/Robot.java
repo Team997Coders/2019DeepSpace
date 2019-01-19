@@ -22,6 +22,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -30,10 +33,9 @@ import com.google.inject.Injector;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static OI oi;
-  public static DriveTrain driveTrain;
-  public static LineFollowing lineFollowing;
   private final Injector m_injector;
+  private Joystick gamepad1;
+  private JoystickButton followlinebutton;
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -45,32 +47,19 @@ public class Robot extends TimedRobot {
   public Robot(){
     super();
     m_injector = Guice.createInjector(new RobotModule());
+    gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
+    followlinebutton = new JoystickButton(gamepad1, RobotMap.Ports.followLinebutton);
+
 
   }
   @Override
   public void robotInit() {
     // ADD SUBSYSTEMS HERE
-    driveTrain = m_injector.getInstance(DriveTrain.class);
+    followlinebutton.whenPressed(m_injector.getInstance(FollowLine.class));
     
-   
-    // NOT AFTER 'oi = new OI();'
-    oi = new OI();
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
-    
-    DigitalInput sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
-
-    DigitalInput sensorRightInput = new DigitalInput(RobotMap.Ports.linesensorright);
-
-    DigitalInput sensorCenterInput = new DigitalInput(RobotMap.Ports.linesensorcenter);
-
-    lineFollowing = new LineFollowing(sensorLeftInput, sensorCenterInput, sensorRightInput);
-
-    //followLine = new FollowLine(lineFollowing, driveTrain);
-
-
-    // lineFollowing = new LineFollowing();
 
   }
 
@@ -143,7 +132,6 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    Scheduler.getInstance().add(new FollowLine()); // Add the newly create command
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }

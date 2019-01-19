@@ -97,7 +97,7 @@ public class FollowLine extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
+    m_driveTrain.setVolts(0, 0);
   }
 
   // Called when another command which requires one or more of the same

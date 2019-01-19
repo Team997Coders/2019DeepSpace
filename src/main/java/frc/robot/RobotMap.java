@@ -36,7 +36,7 @@ public class RobotMap {
       linesensorleft = 1,  
       linesensorcenter = 3,
       linesensorright = 2,
-      followLine = 1;
+      followLinebutton = 1;
 
   }
 
