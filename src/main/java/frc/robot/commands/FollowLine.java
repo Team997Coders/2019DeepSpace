@@ -38,6 +38,36 @@ public class FollowLine extends Command {
   @Override
   protected void execute() {
     
+<<<<<<< HEAD
+=======
+    System.out.println("Inside Command execute");
+    SmartDashboard.putString("LineFollowing is Active!");
+    
+
+   
+
+    //So a switch for this command would look something like this
+
+    switch (true) { // What you want to compare the cases to
+      case Robot.lineFollowing.centerLineSeen(true):
+        SmartDashboard.putString("Do you see the line?", "Yes");
+        SmartDashboard.putString("Centered?", "Yes! :) ");
+        SmartDashboard.putString("Do you see two lines?", "No");
+
+        m_driveTrain.setVolts(.25, .25);
+      break; 
+      case Robot.linFollowing.rightLineSeen(true):
+        SmartDashboard.putString("Do you see the line?", "Yes");
+        SmartDashboard.putString("Centered?", "No! :( ");
+        SmartDashboard.putString("Do you see two lines?", "No");
+
+        m_driveTrain.setVolts(.25, .15);
+      break;
+      case Robot.lineFollowing.leftLineSeen(true):
+        SmartDashboard.putString("Do you see the line?", "Yes");
+        SmartDashboard.putString("Centered?", "No! :( ");
+        SmartDashboard.putString("Do you see two lines?", "No");
+>>>>>>> 5ef9dda0d61040590737b6d152463a9788a75609
 
     if (test) {
       if(m_lineFollowing.centerLineSeen()){
