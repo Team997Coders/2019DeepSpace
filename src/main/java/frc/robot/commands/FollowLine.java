@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 
 public class FollowLine extends Command {
-
   private LineFollowing m_lineFollowing;
   private DriveTrain m_driveTrain;
 
