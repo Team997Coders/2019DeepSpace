@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -23,12 +24,13 @@ public class LineFollowing extends Subsystem {
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
-  private DigitalInput m_untrasonicSensorInput;
+  private AnalogInput m_untrasonicSensorInput;
 
 
 @Inject
   public LineFollowing(@Named("sensorLeftInput") DigitalInput sensorLeftInput, 
-  @Named("sensorCenterInput") DigitalInput sensorCenterInput, @Named("sensorRightInput")DigitalInput sensorRightInput) {
+  @Named("sensorCenterInput") DigitalInput sensorCenterInput, @Named("sensorRightInput")DigitalInput sensorRightInput,
+  @Named("untrasonicSensorInput") AnalogInput untrasonicSensorInput) {
     m_sensorLeftInput = sensorLeftInput;
     m_sensorRightInput = sensorRightInput;
     m_sensorCenterInput = sensorCenterInput;
