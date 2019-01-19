@@ -16,6 +16,17 @@
       "name": "WPILib roboRIO Debug",
       "request": "launch",
       "desktop": false,
+    },
+    {
+      "type": "java",
+      "name": "JUnit",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "mainClass": "org.junit.runner.JUnitCore",
+      "sourcePaths": ["${workspaceRoot}/src/test/java"]
+    
+
+
     }
   ]
 }
