@@ -15,6 +15,14 @@ package frc.robot;
  */
 public class RobotMap {
 
+  public class Values {
+    public static final double 
+    platform = 4.023333333333,
+    habToShuttleDistance = 172.25/12,
+    lv2HabToLv1HabDistance = 96.69035/12,
+    middleHabLv1ToLineOnShuttle = 138.56349/12;
+
+}
   public class Ports {
     
     public static final int 

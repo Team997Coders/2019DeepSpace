@@ -10,9 +10,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class PDriveForward extends Command {
-  public PDriveForward() {
+public class DriveToDistance extends Command {
+  double distance;
+  double minError = 3;
+  public DriveToDistance(double setpoint) {
     requires(Robot.driveTrain);
+    setpoint = distance;
+    
+
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -29,21 +34,39 @@ public class PDriveForward extends Command {
     
   }
 
+  protected double encoderDistance() {
+    return (Robot.driveTrain.getLeftEncoderTicks() + Robot.driveTrain.getRightEncoderTicks())/ 2;
+  }
+  
+
+  protected double distanceError() {
+
+    return distance - this.encoderDistance();
+  }
+
+  protected boolean onTarget() {
+    return distanceError() < minError;
+
+  }
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    
+    Robot.driveTrain.stopVolts();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
+    System.out.println("(PDTD-INTERRUPTED) I got interrupted!! D:");
   }
 }

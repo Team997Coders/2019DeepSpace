@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
-
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.BlackHole;
 import frc.robot.RobotMap;
@@ -51,6 +51,33 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
+  public double getLeftEncoderTicks() {
+		/* CTRE Magnetic Encoder relative, same as Quadrature */
+		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+		return leftTalon.getSelectedSensorPosition(0);
+	}
+
+	public double getRightEncoderTicks() {
+		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+		return rightTalon.getSelectedSensorPosition(0);
+	}
+
+	public double getLeftEncoderRate() {
+		return leftTalon.getSelectedSensorVelocity(0);
+	}
+
+	public double getRightEncoderRate() {
+		return rightTalon.getSelectedSensorVelocity(0);
+	}
+
+	public void resetEncoders() {
+		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+		leftTalon.setSelectedSensorPosition(0, 0, 10);
+		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+		rightTalon.setSelectedSensorPosition(0, 0, 10);
+    System.out.println("Encoders reset!");
+  }
+
   // Set the percentage of volts to 0
   public void stopVolts() {
     // Set Motor Volts to 0
@@ -65,3 +92,4 @@ public class DriveTrain extends Subsystem {
     //setDefaultCommand(new TankDrive());
   }
 }
+
