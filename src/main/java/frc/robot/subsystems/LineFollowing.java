@@ -71,7 +71,7 @@ public class LineFollowing extends Subsystem {
     return(m_sensorCenterInput.get() && m_sensorRightInput.get());
   }
 
-  // TODO: IF we thought this proximity sensor might be used in other ways,
+  // IF we thought this proximity sensor might be used in other ways,
   // we might break up this functionality into its own subsystem. Not sure
   // that we will so it's ok for now that it lives here.
   public boolean isCloseToTarget() {
