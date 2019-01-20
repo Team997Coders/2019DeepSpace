@@ -7,60 +7,26 @@
 
 package frc.robot.guice.modules;
 
-import com.ctre.phoenix.motorcontrol.SensorCollection;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
-import com.google.inject.name.Names;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.AnalogInput;
-
-import frc.robot.RobotMap;
-import frc.robot.guice.providers.*;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /*
- * Add your docs here.
+ * Simulate a static class (since Java does not support static outer classes)
+ * that gives back an injector for the robot program
  */
-public class RobotModule extends AbstractModule {
-  @Override
-  protected void configure(){
+public final class RobotModule {
+  /**
+   * A private constructor makes it so this class cannot be instantiated
+   */
+  private RobotModule() {}
 
-    //Talon
-    bind(TalonSRX.class).annotatedWith(Names.named("leftTalon")).toProvider(
-      LeftTalonProvider.class).in(Singleton.class);
-    bind(TalonSRX.class).annotatedWith(Names.named("rightTalon")).toProvider(
-      RightTalonProvider.class).in(Singleton.class);
-
-    //VictorSPX
-    bind(VictorSPX.class).annotatedWith(Names.named("leftVictor1")).toProvider(() 
-      -> new VictorSPX(RobotMap.Ports.leftVictor1)).in(Singleton.class);
-    bind(VictorSPX.class).annotatedWith(Names.named("leftVictor2")).toProvider(() 
-      -> new VictorSPX(RobotMap.Ports.leftVictor2)).in(Singleton.class);
-    bind(VictorSPX.class).annotatedWith(Names.named("rightVictor1")).toProvider(() 
-      -> new VictorSPX(RobotMap.Ports.rightVictor1)).in(Singleton.class);
-    bind(VictorSPX.class).annotatedWith(Names.named("rightVictor2")).toProvider(() 
-      -> new VictorSPX(RobotMap.Ports.rightVictor2)).in(Singleton.class);
-
-    //Digitigal Input
-    bind(DigitalInput.class).annotatedWith(Names.named("sensorLeftInput")).toProvider(() 
-      -> new DigitalInput(RobotMap.Ports.linesensorleft)).in(Singleton.class);
-    bind(DigitalInput.class).annotatedWith(Names.named("sensorCenterInput")).toProvider(() 
-      -> new DigitalInput(RobotMap.Ports.linesensorcenter)).in(Singleton.class);
-    bind(DigitalInput.class).annotatedWith(Names.named("sensorRightInput")).toProvider(() 
-      -> new DigitalInput(RobotMap.Ports.linesensorright)).in(Singleton.class);
-
-    //SensorCollection
-    bind(SensorCollection.class).annotatedWith(Names.named("leftTalonSensorCollection")).toProvider(
-      LeftTalonSensorCollectionProvider.class).in(Singleton.class);
-    bind(SensorCollection.class).annotatedWith(Names.named("rightTalonSensorCollection")).toProvider(
-      RightTalonSensorCollectionProvider.class).in(Singleton.class);
-
-    //AnalogInput
-    bind(AnalogInput.class).annotatedWith(Names.named("ultrasonicSensorInput")).toProvider(() 
-      -> new AnalogInput(RobotMap.Ports.ultrasonicsensor)).in(Singleton.class);
+  /**
+   * Create a guice injector that wires up all dependencies
+   * for the robot program.
+   * 
+   * @return  The master injector
+   */
+  public static Injector createInjector() {
+    return Guice.createInjector(new LineFollowing(), new DriveTrain());
   }
 }
-

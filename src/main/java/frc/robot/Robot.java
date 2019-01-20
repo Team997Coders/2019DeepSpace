@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import frc.robot.guice.modules.RobotModule;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,7 +28,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * project.
  */
 public class Robot extends TimedRobot {
+  // All hardware references are contained within this injector
   private final Injector m_injector;
+
   private Joystick gamepad1;
   private JoystickButton followlinebutton;
   Command autonomousCommand;
@@ -37,7 +38,7 @@ public class Robot extends TimedRobot {
 
   public Robot(){
     super();
-    m_injector = Guice.createInjector(new RobotModule());
+    m_injector = RobotModule.createInjector();
   }
 
   /**

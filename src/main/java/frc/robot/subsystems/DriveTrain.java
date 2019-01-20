@@ -16,12 +16,12 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import frc.robot.misc.GearBox;
-import frc.robot.commands.ArcadeDrive;
+//import frc.robot.misc.GearBox;
+import frc.robot.guice.annotations.DriveTrain.*;
 
 /**
  * Add your docs here.
@@ -29,33 +29,34 @@ import frc.robot.commands.ArcadeDrive;
 public class DriveTrain extends Subsystem {
 
   // GearBox class stores information for the motor controllers for one gearbox
-  private GearBox leftBox, rightBox;
+  //private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
   private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
-  private ArcadeDrive defaultCommand;
+  private Command defaultCommand;
   //Test
  
   @Inject
-  public DriveTrain( @Named("leftTalon") TalonSRX leftTalon, @Named("rightTalon") TalonSRX rightTalon,
-   @Named("leftVictor1") VictorSPX leftVictor1, @Named("leftVictor2")VictorSPX leftVictor2, 
-   @Named("rightVictor1")VictorSPX rightVictor1, @Named("rightVictor2")VictorSPX rightVictor2,
-   @Named("leftTalonSensorCollection") SensorCollection leftTalonSensorCollection, 
-   @Named("rightTalonSensorCollection") SensorCollection rightTaloSensorCollection,
-   ArcadeDrive defaultCommand){
-     this.leftTalon = leftTalon;
-     this.rightTalon = rightTalon;
-     this.leftVictor1 = leftVictor1;
-     this.leftVictor2 = leftVictor2;
-     this.rightVictor1 = rightVictor1;
-     this.rightVictor2 = rightVictor2;
-     this.leftTalonSensorCollection = leftTalonSensorCollection;
-     this.rightTaloSensorCollection = rightTaloSensorCollection;
-     this.defaultCommand = defaultCommand;
-
+  public DriveTrain(@LeftTalon TalonSRX leftTalon, 
+      @RightTalon TalonSRX rightTalon,
+      @LeftVictor1 VictorSPX leftVictor1, 
+      @LeftVictor2 VictorSPX leftVictor2, 
+      @RightVictor1 VictorSPX rightVictor1, 
+      @RightVictor2 VictorSPX rightVictor2,
+      @LeftTalonSensorCollection SensorCollection leftTalonSensorCollection, 
+      @RightTalonSensorCollection SensorCollection rightTaloSensorCollection,
+      @DriveTrainStyle Command defaultCommand){
+    this.leftTalon = leftTalon;
+    this.rightTalon = rightTalon;
+    this.leftVictor1 = leftVictor1;
+    this.leftVictor2 = leftVictor2;
+    this.rightVictor1 = rightVictor1;
+    this.rightVictor2 = rightVictor2;
+    this.leftTalonSensorCollection = leftTalonSensorCollection;
+    this.rightTaloSensorCollection = rightTaloSensorCollection;
+    this.defaultCommand = defaultCommand;
 
     this.setUp();
-
   }
 
 
