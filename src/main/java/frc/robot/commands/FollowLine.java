@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import com.google.inject.Inject;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,6 +22,7 @@ public class FollowLine extends Command {
   private LineFollowing m_lineFollowing;
   private DriveTrain m_driveTrain;
 
+  @Inject
   public FollowLine(LineFollowing lineFollowing, DriveTrain driveTrain) {
     m_driveTrain = driveTrain;
     m_lineFollowing = lineFollowing;
