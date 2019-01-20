@@ -32,12 +32,12 @@ public class OI {
     @Inject
     public Gamepad1Provider(FollowLine followLine) {
       this.followLine = followLine;
+      this.gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
+      this.followLineButton = new JoystickButton(gamepad1, RobotMap.Ports.followLinebutton);
+      this.followLineButton.whenPressed(followLine);
     }
 
     public Joystick get() {
-      gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
-      followLineButton = new JoystickButton(gamepad1, RobotMap.Ports.followLinebutton);
-      followLineButton.whenPressed(followLine);
       return gamepad1;
     }
   }
