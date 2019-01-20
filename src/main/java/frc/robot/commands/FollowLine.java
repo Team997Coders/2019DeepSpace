@@ -41,16 +41,6 @@ public class FollowLine extends Command {
     SmartDashboard.putString("LineFollowing is Active!", "I think so?");
 
 
-   
-
-    //So a switch for this command would look something like this
-
-  
-  
-
-    
-    
-
     if (test) {
       if(m_lineFollowing.centerLineSeen()){
         SmartDashboard.putString("Do you see the line?", "Yes");
