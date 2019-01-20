@@ -12,6 +12,10 @@ import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 
+/**
+ * Follow a line on the floor and stop when range is close
+ * to target.
+ */
 public class FollowLine extends Command {
   private LineFollowing m_lineFollowing;
   private DriveTrain m_driveTrain;
