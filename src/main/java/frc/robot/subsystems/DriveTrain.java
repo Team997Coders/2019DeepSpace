@@ -155,7 +155,7 @@ public class DriveTrain extends Subsystem {
   /**
    * Turn right (without having to remember which wheel to slow down ;-)
    * Use the gain to control how fast the fastest wheel will go and offset
-   * to control how fast the slower wheel will go in realtion to the faster wheel.
+   * to control how fast the slower wheel will go in relation to the faster wheel.
    * 
    * @param gain    Number between 0 and 1 representing the factor of full power
    * @param offset  Number between 0 and 1 representing the factor applied to gain for slower wheel
@@ -165,10 +165,10 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, gain * offset);
   }
 
-    /**
+  /**
    * Turn right (without having to remember which wheel to slow down ;-)
    * Use the gain to control how fast the fastest wheel will go and offset
-   * to control how fast the slower wheel will go in realtion to the faster wheel.
+   * to control how fast the slower wheel will go in relation to the faster wheel.
    * 
    * @param gain    Number between 0 and 1 representing the factor of full power
    * @param offset  Number between 0 and 1 representing the factor applied to gain for slower wheel
@@ -178,6 +178,11 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, gain);
   }
 
+  /**
+   * Well, it's pretty obvious, no?
+   * 
+   * @param gain  Number between 0 and 1 representing the factor of full power
+   */
   public void driveStraight(double gain) {
     setVolts(gain, gain);
   }
