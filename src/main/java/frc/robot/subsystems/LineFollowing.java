@@ -64,6 +64,7 @@ public class LineFollowing extends Subsystem {
   }
 
   public boolean isCloseToTarget() {
+    // TODO: Read datasheet and confirm this is correct!
     // Assume voltage goes down as we get closer to target
     return m_ultrasonicSensorInput.getAverageVoltage() < 0.5;
   }
