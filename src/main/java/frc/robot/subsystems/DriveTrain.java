@@ -36,25 +36,6 @@ public class DriveTrain extends Subsystem {
   private Command driveTrainStyle;
   //Test
  
-<<<<<<< HEAD
-@Inject
-  public DriveTrain( @Named("leftTalon") TalonSRX leftTalon, @Named("rightTalon") TalonSRX rightTalon,
-   @Named("leftVictor1") VictorSPX leftVictor1, @Named("leftVictor2")VictorSPX leftVictor2, 
-   @Named("rightVictor1")VictorSPX rightVictor1, @Named("rightVictor2")VictorSPX rightVictor2,
-   @Named("leftTalonSensorCollection")SensorCollection leftTalonSensorCollection, 
-   @Named("rightTalonSensorCollection")SensorCollection rightTaloSensorCollection,
-   ArcadeDrive defaultCommand){
-     this.leftTalon = leftTalon;
-     this.rightTalon = rightTalon;
-     this.leftVictor1 = leftVictor1;
-     this.leftVictor2 = leftVictor2;
-     this.rightVictor1 = rightVictor1;
-     this.rightVictor2 = rightVictor2;
-     this.leftTalonSensorCollection = leftTalonSensorCollection;
-     this.rightTaloSensorCollection = rightTaloSensorCollection;
-     this.defaultCommand = defaultCommand;
-
-=======
   @Inject
   public DriveTrain(@LeftTalon TalonSRX leftTalon, 
       @RightTalon TalonSRX rightTalon,
@@ -74,7 +55,6 @@ public class DriveTrain extends Subsystem {
     this.leftTalonSensorCollection = leftTalonSensorCollection;
     this.rightTaloSensorCollection = rightTaloSensorCollection;
     this.driveTrainStyle = driveTrainStyle;
->>>>>>> 955cf6b3feaeab718ad6202cd39be853d62d60e4
 
     this.setUp();
   }

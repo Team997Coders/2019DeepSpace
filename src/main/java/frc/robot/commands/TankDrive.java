@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import com.google.inject.Inject;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -18,6 +20,7 @@ public class TankDrive extends Command {
   private Joystick gamepad1;  
   private DriveTrain driveTrain;
 
+  @Inject
   public TankDrive(@Gamepad1 Joystick gamepad1, DriveTrain driveTrain) {
     this.gamepad1 = gamepad1;
     this.driveTrain = driveTrain;
