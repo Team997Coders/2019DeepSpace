@@ -29,6 +29,9 @@ public class FollowLine extends Command {
   }
 
   // Called repeatedly when this Command is scheduled to run
+  // TODO: Define your gain parameters as constants
+  // TODO: Use drivetrain convenience methods to turn right and left
+  // instead of setVolts.
   @Override
   protected void execute() {
     
