@@ -14,18 +14,16 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 /**
- * Add your docs here.
+ * Three sensor subsystem to detect whether white tape ahead of target is seen
+ * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
-
-  //Test
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
   private AnalogInput m_ultrasonicSensorInput;
 
-
-@Inject
+  @Inject
   public LineFollowing(@Named("sensorLeftInput") DigitalInput sensorLeftInput, 
   @Named("sensorCenterInput") DigitalInput sensorCenterInput, @Named("sensorRightInput")DigitalInput sensorRightInput,
   @Named("ultrasonicSensorInput") AnalogInput ultrasonicSensorInput) {
@@ -33,8 +31,6 @@ public class LineFollowing extends Subsystem {
     m_sensorRightInput = sensorRightInput;
     m_sensorCenterInput = sensorCenterInput;
     m_ultrasonicSensorInput = ultrasonicSensorInput;
-
-
   }
 
   public void initDefaultCommand(){}
@@ -53,6 +49,10 @@ public class LineFollowing extends Subsystem {
 
   public boolean anyLineSeen(){
     return(m_sensorCenterInput.get() || m_sensorLeftInput.get() || m_sensorRightInput.get());
+  }
+
+  public boolean noLineSeen() {
+    return !anyLineSeen();
   }
 
   public boolean leftCenterLineSeen(){
