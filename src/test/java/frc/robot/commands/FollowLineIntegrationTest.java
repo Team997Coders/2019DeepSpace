@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
  * Add your docs here.
  */
 // Almost ready...
-public class LineFollowingIntegrationTest {/*
+public class FollowLineIntegrationTest {/*
 
   private DigitalInput m_center;
   private DigitalInput m_left;

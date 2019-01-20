@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 /**
  * Add your docs here.
  */
-public class LineFollowingUnitTest {
+public class FollowLineUnitTest {
 
     @Test
     public void goStraightIfCenterSeen(){
@@ -35,8 +35,17 @@ public class LineFollowingUnitTest {
 
         //Assert
         verify(m_driveTrain, times(1)).setVolts(.25, .25);
-
     }
 
+    // TODO: Implement
+    // @Test
+    //public void turnRightIfRightSeen() {
+    //  
+    //}
 
+    // TODO: Now implement this test!
+    //@Test
+    //public void itStopsWhenCloseToTarget() {
+    //
+    //}
 }

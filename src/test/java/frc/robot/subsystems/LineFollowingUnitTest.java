@@ -7,21 +7,23 @@
 
 package frc.robot.subsystems;
 
-/*import org.junit.Before;
+import org.junit.Before;
 import org.junit.Test;
 import  static org.junit.Assert.assertTrue;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import static org.mockito.Mockito.*;*/
+import static org.mockito.Mockito.*;
 
 /**
  * Add your docs here.
  */
-public class LineFollowUnitTest {/*
+public class LineFollowingUnitTest {
 
     private DigitalInput center;
     private DigitalInput left;
     private DigitalInput right;
+    private AnalogInput distance;
     private LineFollowing lineFollowing;
 
     @Before
@@ -29,7 +31,8 @@ public class LineFollowUnitTest {/*
         left = mock(DigitalInput.class);
         center = mock(DigitalInput.class);
         right = mock(DigitalInput.class);
-        lineFollowing = new LineFollowing(left, center, right);
+        distance = mock(AnalogInput.class);
+        lineFollowing = new LineFollowing(left, center, right, distance);
 
     }
 
@@ -85,5 +88,4 @@ public class LineFollowUnitTest {/*
         assertTrue( lineFollowing.rightCenterLineSeen());
     }
 
-
-*/}
+}

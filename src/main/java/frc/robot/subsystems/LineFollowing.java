@@ -7,36 +7,40 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import com.google.inject.Inject;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+import frc.robot.guice.annotations.LineFollowing.SensorCenterInput;
+import frc.robot.guice.annotations.LineFollowing.SensorLeftInput;
+import frc.robot.guice.annotations.LineFollowing.SensorRightInput;
+import frc.robot.guice.annotations.LineFollowing.UltrasonicSensorInput;
 
 /**
- * Add your docs here.
+ * Three sensor subsystem to detect whether white tape ahead of target is seen
+ * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
-
-  //Test
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
-  private AnalogInput m_untrasonicSensorInput;
+  private AnalogInput m_ultrasonicSensorInput;
 
-
-@Inject
-  public LineFollowing(@Named("sensorLeftInput") DigitalInput sensorLeftInput, 
-  @Named("sensorCenterInput") DigitalInput sensorCenterInput, @Named("sensorRightInput")DigitalInput sensorRightInput,
-  @Named("untrasonicSensorInput") AnalogInput untrasonicSensorInput) {
+  @Inject
+  public LineFollowing(@SensorLeftInput DigitalInput sensorLeftInput, 
+      @SensorCenterInput DigitalInput sensorCenterInput, 
+      @SensorRightInput DigitalInput sensorRightInput,
+      @UltrasonicSensorInput AnalogInput ultrasonicSensorInput) {
     m_sensorLeftInput = sensorLeftInput;
     m_sensorRightInput = sensorRightInput;
     m_sensorCenterInput = sensorCenterInput;
-    m_untrasonicSensorInput = untrasonicSensorInput;
-
-
+    m_ultrasonicSensorInput = ultrasonicSensorInput;
   }
 
+  @Override
   public void initDefaultCommand(){}
 
   public boolean leftLineSeen(){
@@ -55,6 +59,10 @@ public class LineFollowing extends Subsystem {
     return(m_sensorCenterInput.get() || m_sensorLeftInput.get() || m_sensorRightInput.get());
   }
 
+  public boolean noLineSeen() {
+    return !anyLineSeen();
+  }
+
   public boolean leftCenterLineSeen(){
     return(m_sensorCenterInput.get() && m_sensorLeftInput.get());
   }
@@ -63,16 +71,16 @@ public class LineFollowing extends Subsystem {
     return(m_sensorCenterInput.get() && m_sensorRightInput.get());
   }
 
+  // IF we thought this proximity sensor might be used in other ways,
+  // we might break up this functionality into its own subsystem. Not sure
+  // that we will so it's ok for now that it lives here.
   public boolean isCloseToTarget() {
-    // Assume voltage goes down as we get closer to target
-    return m_untrasonicSensorInput.getAverageVoltage() < 0.5;
+    // TODO: Read datasheet and confirm this is correct!
+    // Assume voltage goes down as we get closer to target.
+    // What voltage is the right distance? Put in a private function
+    // that converts voltage to distance and then put in a constant
+    // for the threshold distance so that we can easily see what distance
+    // we want to stop at.
+    return m_ultrasonicSensorInput.getAverageVoltage() < 0.5;
   }
-
-  /*
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }*/
 }

@@ -14,12 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-
-import com.google.inject.Guice;
+import frc.robot.guice.modules.RobotModule;
 import com.google.inject.Injector;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,30 +25,23 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * project.
  */
 public class Robot extends TimedRobot {
+  // All hardware references are contained within this injector
   private final Injector m_injector;
-  private Joystick gamepad1;
-  private JoystickButton followlinebutton;
+
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
+
+  public Robot(){
+    super();
+    m_injector = RobotModule.createInjector();
+  }
 
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
-
-  public Robot(){
-    super();
-    m_injector = Guice.createInjector(new RobotModule());
-    gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
-    followlinebutton = new JoystickButton(gamepad1, RobotMap.Ports.followLinebutton);
-
-
-  }
   @Override
-  public void robotInit() {
-    // ADD SUBSYSTEMS HERE
-    followlinebutton.whenPressed(m_injector.getInstance(FollowLine.class));
-    
+  public void robotInit() {    
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);

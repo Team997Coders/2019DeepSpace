@@ -7,10 +7,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
-import frc.robot.commands.*;
-import frc.robot.misc.GearBox;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -18,24 +14,29 @@ import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import frc.robot.commands.ArcadeDrive;
-
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
+
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+//import frc.robot.misc.GearBox;
+import frc.robot.guice.annotations.DriveTrain.*;
+
 /**
  * Add your docs here.
  */
 public class DriveTrain extends Subsystem {
 
   // GearBox class stores information for the motor controllers for one gearbox
-  private GearBox leftBox, rightBox;
+  //private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
   private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
-  private ArcadeDrive defaultCommand;
+  private Command driveTrainStyle;
   //Test
  
+<<<<<<< HEAD
 @Inject
   public DriveTrain( @Named("leftTalon") TalonSRX leftTalon, @Named("rightTalon") TalonSRX rightTalon,
    @Named("leftVictor1") VictorSPX leftVictor1, @Named("leftVictor2")VictorSPX leftVictor2, 
@@ -53,9 +54,29 @@ public class DriveTrain extends Subsystem {
      this.rightTaloSensorCollection = rightTaloSensorCollection;
      this.defaultCommand = defaultCommand;
 
+=======
+  @Inject
+  public DriveTrain(@LeftTalon TalonSRX leftTalon, 
+      @RightTalon TalonSRX rightTalon,
+      @LeftVictor1 VictorSPX leftVictor1, 
+      @LeftVictor2 VictorSPX leftVictor2, 
+      @RightVictor1 VictorSPX rightVictor1, 
+      @RightVictor2 VictorSPX rightVictor2,
+      @LeftTalonSensorCollection SensorCollection leftTalonSensorCollection, 
+      @RightTalonSensorCollection SensorCollection rightTaloSensorCollection,
+      @DriveTrainStyle Command driveTrainStyle){
+    this.leftTalon = leftTalon;
+    this.rightTalon = rightTalon;
+    this.leftVictor1 = leftVictor1;
+    this.leftVictor2 = leftVictor2;
+    this.rightVictor1 = rightVictor1;
+    this.rightVictor2 = rightVictor2;
+    this.leftTalonSensorCollection = leftTalonSensorCollection;
+    this.rightTaloSensorCollection = rightTaloSensorCollection;
+    this.driveTrainStyle = driveTrainStyle;
+>>>>>>> 955cf6b3feaeab718ad6202cd39be853d62d60e4
 
     this.setUp();
-
   }
 
 
@@ -132,23 +153,71 @@ public class DriveTrain extends Subsystem {
     //shiftSolenoid = new DoubleSolenoid(RobotMap.Ports.gearPistonFor, RobotMap.Ports.gearPistonRev);
   }
 
-  // Apply left and right as percentage voltage
+  /**
+   * Apply a factor between 0 and 1 as a percentage of voltage
+   * @param left  Gain between 0 and 1 for left wheel
+   * @param right Gain between 0 and 1 for right wheel
+   */
   public void setVolts(double left, double right) {
     leftTalon.set(ControlMode.PercentOutput, left);
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
-  // Set the percentage of volts to 0
-  public void stopVolts() {
+  /**
+   * Stop the drive train
+   */
+  public void stop() {
     // Set Motor Volts to 0
     //System.out.println("Stop Volts Called");
-    leftTalon.set(ControlMode.PercentOutput, 0);
-    rightTalon.set(ControlMode.PercentOutput, 0);
+    driveStraight(0);
   }
 
+  /**
+   * Turn right (without having to remember which wheel to slow down ;-)
+   * Use the gain to control how fast the fastest wheel will go and offset
+   * to control how fast the slower wheel will go in relation to the faster wheel.
+   * 
+   * @param gain    Number between 0 and 1 representing the factor of full power
+   * @param offset  Number between 0 and 1 representing the factor applied to gain for slower wheel
+   */
+  public void turnRight(double gain, double offset) {
+    leftTalon.set(ControlMode.PercentOutput, gain);
+    rightTalon.set(ControlMode.PercentOutput, gain * offset);
+  }
+
+  /**
+   * Turn right (without having to remember which wheel to slow down ;-)
+   * Use the gain to control how fast the fastest wheel will go and offset
+   * to control how fast the slower wheel will go in relation to the faster wheel.
+   * 
+   * @param gain    Number between 0 and 1 representing the factor of full power
+   * @param offset  Number between 0 and 1 representing the factor applied to gain for slower wheel
+   */
+  public void turnLeft(double gain, double offset) {
+    leftTalon.set(ControlMode.PercentOutput, gain * offset);
+    rightTalon.set(ControlMode.PercentOutput, gain);
+  }
+
+  /**
+   * Well, it's pretty obvious, no?
+   * 
+   * @param gain  Number between 0 and 1 representing the factor of full power
+   */
+  public void driveStraight(double gain) {
+    setVolts(gain, gain);
+  }
+
+  /**
+   * Set the drive train style by setting the default command for
+   * the drive train using a command that defines the style. The style
+   * is annotated with "@DriveTrainStyle" and the style is selected 
+   * in the DriveTrain guice module configure method with a binding
+   * to the desired command.
+   * 
+   * @see frc.robot.guice.modules.DriveTrain#configure()
+   */
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(defaultCommand);
-    //setDefaultCommand(new TankDrive());
+    setDefaultCommand(driveTrainStyle);
   }
 }
