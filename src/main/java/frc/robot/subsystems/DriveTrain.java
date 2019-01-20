@@ -40,8 +40,8 @@ public class DriveTrain extends Subsystem {
   public DriveTrain( @Named("leftTalon") TalonSRX leftTalon, @Named("rightTalon") TalonSRX rightTalon,
    @Named("leftVictor1") VictorSPX leftVictor1, @Named("leftVictor2")VictorSPX leftVictor2, 
    @Named("rightVictor1")VictorSPX rightVictor1, @Named("rightVictor2")VictorSPX rightVictor2,
-   @Named("leftTalonSensorCollection")SensorCollection leftTalonSensorCollection, 
-   @Named("rightTaloSensorCollection")SensorCollection rightTaloSensorCollection,
+   @Named("leftTalonSensorCollection") SensorCollection leftTalonSensorCollection, 
+   @Named("rightTalonSensorCollection") SensorCollection rightTaloSensorCollection,
    ArcadeDrive defaultCommand){
      this.leftTalon = leftTalon;
      this.rightTalon = rightTalon;
