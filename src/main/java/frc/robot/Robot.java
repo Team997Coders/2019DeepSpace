@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-
+import frc.robot.guice.modules.RobotModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -35,22 +35,22 @@ public class Robot extends TimedRobot {
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
+  public Robot(){
+    super();
+    m_injector = Guice.createInjector(new RobotModule());
+  }
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
-
-  public Robot(){
-    super();
-    m_injector = Guice.createInjector(new RobotModule());
+  @Override
+  public void robotInit() {
+    // wire up operator interface components
     gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
     followlinebutton = new JoystickButton(gamepad1, RobotMap.Ports.followLinebutton);
 
-
-  }
-  @Override
-  public void robotInit() {
-    // ADD SUBSYSTEMS HERE
+    // wire up a button to start line following
     followlinebutton.whenPressed(m_injector.getInstance(FollowLine.class));
     
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());

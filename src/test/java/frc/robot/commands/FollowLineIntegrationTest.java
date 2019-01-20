@@ -7,7 +7,7 @@
 
 package frc.robot.commands;
 
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LineFollowing;
 
@@ -19,24 +19,49 @@ import static org.mockito.Mockito.*;
 /**
  * Add your docs here.
  */
-public class LineFollowingUnitTest {
+// Almost ready...
+public class FollowLineIntegrationTest {/*
+
+  private DigitalInput m_center;
+  private DigitalInput m_left;
+  private DigitalInput m_right;
+  private LineFollowing m_lineFollowing;
+
+
+  private DriveTrain m_driveTrain;
+  private FollowLine m_followLine;
+
+  @Before
+    public void initMocks() {
+        m_left = mock(DigitalInput.class);
+        m_center = mock(DigitalInput.class);
+        m_right = mock(DigitalInput.class);
+        m_lineFollowing = new LineFollowing(m_left, m_center, m_right);
+
+        m_driveTrain = new DriveTrain();
+        m_followLine = new FollowLine(m_lineFollowing, m_driveTrain);
+    }
+
 
     @Test
     public void goStraightIfCenterSeen(){
-        LineFollowing m_lineFollowing = mock(LineFollowing.class);
-        DriveTrain m_driveTrain = mock(DriveTrain.class);
-        FollowLine m_followLine = new FollowLine(m_lineFollowing, m_driveTrain);
+      
         
         //Assemble
-        when(m_lineFollowing.centerLineSeen()).thenReturn(true);
+        when(m_center.get()).thenReturn(true);
 
         //Act
+
+        
         m_followLine.execute();
 
+
+
         //Assert
+        
         verify(m_driveTrain, times(1)).setVolts(.25, .25);
 
     }
 
 
-}
+  */}

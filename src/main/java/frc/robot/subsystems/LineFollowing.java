@@ -22,17 +22,17 @@ public class LineFollowing extends Subsystem {
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
-  private AnalogInput m_untrasonicSensorInput;
+  private AnalogInput m_ultrasonicSensorInput;
 
 
 @Inject
   public LineFollowing(@Named("sensorLeftInput") DigitalInput sensorLeftInput, 
   @Named("sensorCenterInput") DigitalInput sensorCenterInput, @Named("sensorRightInput")DigitalInput sensorRightInput,
-  @Named("untrasonicSensorInput") AnalogInput untrasonicSensorInput) {
+  @Named("ultrasonicSensorInput") AnalogInput ultrasonicSensorInput) {
     m_sensorLeftInput = sensorLeftInput;
     m_sensorRightInput = sensorRightInput;
     m_sensorCenterInput = sensorCenterInput;
-    m_untrasonicSensorInput = untrasonicSensorInput;
+    m_ultrasonicSensorInput = ultrasonicSensorInput;
 
 
   }
@@ -65,7 +65,7 @@ public class LineFollowing extends Subsystem {
 
   public boolean isCloseToTarget() {
     // Assume voltage goes down as we get closer to target
-    return m_untrasonicSensorInput.getAverageVoltage() < 0.5;
+    return m_ultrasonicSensorInput.getAverageVoltage() < 0.5;
   }
 
   /*

@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -47,8 +46,6 @@ public class ArcadeDrive extends Command {
     double right = getLeftYAxis() - getRightXAxis();
 
     driveTrain.setVolts(left, right);
-
-    System.out.println("BAHH");
   }
 
   @Override
@@ -58,9 +55,11 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    driveTrain.stopVolts();
+    driveTrain.stop();
   }
 
   @Override
-  protected void interrupted() { System.out.println("Interrupted"); end(); }
+  protected void interrupted() {
+    end();
+  }
 }
