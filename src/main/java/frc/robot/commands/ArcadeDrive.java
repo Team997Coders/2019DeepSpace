@@ -13,13 +13,15 @@ import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.Joystick;
 
+import com.google.inject.Inject;
+
 public class ArcadeDrive extends Command {
   private Joystick gamepad1;  
   private DriveTrain driveTrain;
 
-  
-  public ArcadeDrive(Joystick gamepad1, DriveTrain driveTrain) {
-    this.gamepad1 = gamepad1; 
+@Inject
+  public ArcadeDrive(DriveTrain driveTrain) {
+    this.gamepad1 = new Joystick(0);
     this.driveTrain = driveTrain;
     requires(driveTrain);
     

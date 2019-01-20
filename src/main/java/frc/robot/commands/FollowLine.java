@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import javax.inject.Inject;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.LineFollowing;
@@ -17,10 +19,11 @@ public class FollowLine extends Command {
   private LineFollowing m_lineFollowing;
   private DriveTrain m_driveTrain;
 
-  private boolean test = false;
 
+  //private boolean test = false;
+@Inject
   public FollowLine(LineFollowing lineFollowing, DriveTrain driveTrain) {
-    test = true;
+    //test = true;
     m_driveTrain = driveTrain;
     m_lineFollowing = lineFollowing;
     requires(m_driveTrain);
@@ -41,7 +44,7 @@ public class FollowLine extends Command {
     SmartDashboard.putString("LineFollowing is Active!", "I think so?");
 
 
-    if (test) {
+   // if (test) {
       if(m_lineFollowing.centerLineSeen()){
         SmartDashboard.putString("Do you see the line?", "Yes");
         SmartDashboard.putString("Centered?", "Yes! :) ");
@@ -78,10 +81,10 @@ public class FollowLine extends Command {
   
         m_driveTrain.setVolts(0, 0);
       }
-      
-      return;
-    }
+      //return;
+    //}
   }
+
   
 
 
