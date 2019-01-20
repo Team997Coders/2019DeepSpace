@@ -14,31 +14,31 @@ import frc.robot.RobotMap;
 import frc.robot.guice.annotations.OI.Gamepad1;
 import frc.robot.subsystems.DriveTrain;
 
-public class ArcadeDrive extends Command {
+public class TankDrive extends Command {
   private Joystick gamepad1;  
   private DriveTrain driveTrain;
 
-  public ArcadeDrive(@Gamepad1 Joystick gamepad1, DriveTrain driveTrain) {
-    this.gamepad1 = gamepad1; 
+  public TankDrive(@Gamepad1 Joystick gamepad1, DriveTrain driveTrain) {
+    this.gamepad1 = gamepad1;
     this.driveTrain = driveTrain;
     requires(driveTrain);
-  }
-
-  private double getLeftYAxis() {
-    return -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis);
-  }
-
-  private double getRightXAxis() {
-    return gamepad1.getRawAxis(RobotMap.Ports.rightXAxis);
   }
 
   @Override
   protected void initialize() { }
 
+  private double getLeftYAxis() {
+    return -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis);
+  }
+
+  private double getRightYAxis() {    
+    return -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis);
+  }
+
   @Override
   protected void execute() {
-    double left = getLeftYAxis() + getRightXAxis();
-    double right = getLeftYAxis() - getRightXAxis();
+    double left = getLeftYAxis();
+    double right = getRightYAxis();
 
     driveTrain.setVolts(left, right);
   }

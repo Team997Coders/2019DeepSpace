@@ -14,9 +14,8 @@ import frc.robot.commands.ArcadeDrive;
 import frc.robot.guice.annotations.DriveTrain.*;
 import frc.robot.guice.providers.DriveTrain.*;
 
-
 /*
- * Add your docs here.
+ * DriveTrain hardware and default command bindings
  */
 public class DriveTrain extends AbstractModule {
   @Override

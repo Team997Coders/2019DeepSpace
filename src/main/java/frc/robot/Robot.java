@@ -17,9 +17,6 @@ import frc.robot.commands.*;
 import frc.robot.guice.modules.RobotModule;
 import com.google.inject.Injector;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -31,8 +28,6 @@ public class Robot extends TimedRobot {
   // All hardware references are contained within this injector
   private final Injector m_injector;
 
-  private Joystick gamepad1;
-  private JoystickButton followlinebutton;
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -46,14 +41,7 @@ public class Robot extends TimedRobot {
    * used for any initialization code.
    */
   @Override
-  public void robotInit() {
-    // wire up operator interface components
-    gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
-    followlinebutton = new JoystickButton(gamepad1, RobotMap.Ports.followLinebutton);
-
-    // wire up a button to start line following
-    followlinebutton.whenPressed(m_injector.getInstance(FollowLine.class));
-    
+  public void robotInit() {    
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);

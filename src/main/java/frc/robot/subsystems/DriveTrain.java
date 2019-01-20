@@ -33,7 +33,7 @@ public class DriveTrain extends Subsystem {
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
   private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
-  private Command defaultCommand;
+  private Command driveTrainStyle;
   //Test
  
   @Inject
@@ -45,7 +45,7 @@ public class DriveTrain extends Subsystem {
       @RightVictor2 VictorSPX rightVictor2,
       @LeftTalonSensorCollection SensorCollection leftTalonSensorCollection, 
       @RightTalonSensorCollection SensorCollection rightTaloSensorCollection,
-      @DriveTrainStyle Command defaultCommand){
+      @DriveTrainStyle Command driveTrainStyle){
     this.leftTalon = leftTalon;
     this.rightTalon = rightTalon;
     this.leftVictor1 = leftVictor1;
@@ -54,7 +54,7 @@ public class DriveTrain extends Subsystem {
     this.rightVictor2 = rightVictor2;
     this.leftTalonSensorCollection = leftTalonSensorCollection;
     this.rightTaloSensorCollection = rightTaloSensorCollection;
-    this.defaultCommand = defaultCommand;
+    this.driveTrainStyle = driveTrainStyle;
 
     this.setUp();
   }
@@ -182,9 +182,17 @@ public class DriveTrain extends Subsystem {
     setVolts(gain, gain);
   }
 
+  /**
+   * Set the drive train style by setting the default command for
+   * the drive train using a command that defines the style. The style
+   * is annotated with "@DriveTrainStyle" and the style is selected 
+   * in the DriveTrain guice module configure method with a binding
+   * to the desired command.
+   * 
+   * @see frc.robot.guice.modules.DriveTrain#configure()
+   */
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(defaultCommand);
-    //setDefaultCommand(new TankDrive());
+    setDefaultCommand(driveTrainStyle);
   }
 }
