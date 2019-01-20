@@ -11,7 +11,9 @@ import frc.robot.guice.annotations.DriveTrain.RightTalon;
 
 /**
  * Hardware providers for the DriveTrain that could not easily
- * be provided via anonymous functions in the bindings. 
+ * be provided via anonymous functions in the bindings.
+ * 
+ * @see https://github.com/google/guice/wiki/ProviderBindings
  */
 public class DriveTrain {
 

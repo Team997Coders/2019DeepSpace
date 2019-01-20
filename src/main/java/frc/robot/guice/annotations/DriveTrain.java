@@ -8,6 +8,11 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 
+/**
+ * Define binding annotations for DriveTrain subsystem
+ * 
+ * @see https://github.com/google/guice/wiki/BindingAnnotations
+ */
 public class DriveTrain {
   @BindingAnnotation @Target({ FIELD, PARAMETER, METHOD }) @Retention(RUNTIME)
   public @interface LeftTalon {}
