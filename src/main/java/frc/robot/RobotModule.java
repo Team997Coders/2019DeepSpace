@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 
 import com.google.inject.AbstractModule;
@@ -54,6 +55,10 @@ public class RobotModule extends AbstractModule {
         -> new SensorCollection(new TalonSRX(RobotMap.Ports.leftTalon))).in(Singleton.class);
         bind(SensorCollection.class).annotatedWith(Names.named("rightTalonSensorCollection")).toProvider(() 
         -> new SensorCollection(new TalonSRX(RobotMap.Ports.rightTalon))).in(Singleton.class);
+
+        //AnalogInput
+        bind(AnalogInput.class).annotatedWith(Names.named("untrasonicSensorInput")).toProvider(() 
+      -> new AnalogInput(RobotMap.Ports.ultrasonicsensor)).in(Singleton.class);
     }
 
 }
