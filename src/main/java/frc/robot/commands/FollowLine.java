@@ -82,7 +82,7 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Robot.lineFollowing.rightLineSeen() == true || Robot.lineFollowing.centerLineSeen() == true || Robot.lineFollowing.leftLineSeen() == true){
+    /*if(Robot.lineFollowing.rightLineSeen() == true || Robot.lineFollowing.centerLineSeen() == true || Robot.lineFollowing.leftLineSeen() == true){
       if (Robot.lineFollowing.isCloseToTarget()) {
         return true;
       } else {
@@ -90,7 +90,8 @@ public class FollowLine extends Command {
       }
     }else{
       return true;
-    }    
+    } */
+    return false;   
   }
 
   // Called once after isFinished returns true

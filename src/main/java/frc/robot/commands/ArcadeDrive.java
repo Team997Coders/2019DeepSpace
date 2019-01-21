@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
@@ -25,9 +26,12 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void execute() {
-    System.out.println("Arcade Execute");
+    //System.out.println("Arcade Execute");
     double left = Robot.oi.getLeftY() + Robot.oi.getRightX();
     double right = Robot.oi.getLeftY() - Robot.oi.getRightX();
+
+    SmartDashboard.putNumber("Left Voltage", left);
+    SmartDashboard.putNumber("RIght Voltage", right);
 
     Robot.driveTrain.setVolts(left, right);
   }

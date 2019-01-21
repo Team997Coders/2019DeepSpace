@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.FollowLine;
 
 /**
  * Add your docs here.
@@ -21,6 +22,9 @@ public class OI {
 
     public OI() {
         gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
+
+        followLine = new JoystickButton(gamepad1, 1);
+        followLine.whileHeld(new FollowLine());
     }
 
     public double getLeftY() {
