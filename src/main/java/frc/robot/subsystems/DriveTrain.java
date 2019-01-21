@@ -22,6 +22,12 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
  */
 public class DriveTrain extends Subsystem {
 
+  public boolean decell = false;
+
+  // Decell Data
+  private double dampRate = 0.01;
+  private double prevL = 0, prevR = 0;
+
   // GearBox class stores information for the motor controllers for one gearbox
   private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
@@ -31,10 +37,10 @@ public class DriveTrain extends Subsystem {
     System.out.println("Starting Drivetrain...");
 
     // This uses the RoboMisc function standTalonSRXSetup(int, int, int, boolean) to initialize a Talon and 2 slave victors
-    leftBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon, RobotMap.Ports.leftVictor1, 
-      RobotMap.Ports.leftVictor2, false);
-    rightBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon, RobotMap.Ports.rightVictor1,
-      RobotMap.Ports.rightVictor2, true);
+    leftBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon,
+      RobotMap.Ports.leftVictor1, RobotMap.Ports.leftVictor2, false);
+    rightBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon,
+      RobotMap.Ports.rightVictor1, RobotMap.Ports.rightVictor2, true);
 
     // Grab the objects created by the RoboMisc function and store them in this class
     leftTalon = leftBox.talon;
@@ -57,6 +63,21 @@ public class DriveTrain extends Subsystem {
     //System.out.println("Stop Volts Called");
     leftTalon.set(ControlMode.PercentOutput, 0);
     rightTalon.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void setVoltsDecell(double left, double right) {
+    double L = left;
+    double R = right;
+
+    if (Math.abs(left) > Math.abs(prevL) + dampRate) {
+      L = prevL + ((prevL / Math.abs(prevL)) * dampRate);
+    }
+
+    if (Math.abs(right) > Math.abs(prevR) + dampRate) {
+      R = prevR + ((prevR / Math.abs(prevR)) * dampRate);
+    }
+
+    setVolts(L, R);
   }
 
   @Override
