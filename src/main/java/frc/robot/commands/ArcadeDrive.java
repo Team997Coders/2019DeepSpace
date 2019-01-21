@@ -16,8 +16,6 @@ import frc.robot.RobotMap;
 import frc.robot.guice.annotations.OI.Gamepad1;
 import frc.robot.subsystems.DriveTrain;
 
-import com.google.inject.Inject;
-
 public class ArcadeDrive extends Command {
   private Joystick gamepad1;  
   private DriveTrain driveTrain;

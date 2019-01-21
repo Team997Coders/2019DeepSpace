@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import frc.robot.guice.modules.RobotModule;
+import frc.robot.subsystems.DriveTrain;
+
 import com.google.inject.Injector;
 
 /**
@@ -41,7 +43,13 @@ public class Robot extends TimedRobot {
    * used for any initialization code.
    */
   @Override
-  public void robotInit() {    
+  public void robotInit() {
+    // Tickle guice by instantiating the drive train...this should
+    // force the default command to instantiate (ArcadeDrive in this case),
+    // and also the gamepad to instantiate, which is a requirement of the 
+    // ArcadeDrive.
+    DriveTrain driveTrain = m_injector.getInstance(DriveTrain.class);
+
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
