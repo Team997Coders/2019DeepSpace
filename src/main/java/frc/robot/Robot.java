@@ -14,9 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.guice.annotations.DriveTrain.DriveTrainStyle;
 import frc.robot.guice.modules.RobotModule;
-import frc.robot.guice.providers.DriveTrain.DriveTrainStyleProvider;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 /**
@@ -39,7 +40,7 @@ public class Robot extends TimedRobot {
   public Robot(){
     super();
     m_injector = RobotModule.createInjector();
-    defaultDriveTrain = m_injector.getProvider(DriveTrainStyleProvider.class).get().get();
+    defaultDriveTrain = m_injector.getInstance(ArcadeDrive.class);
   }
 
   /**

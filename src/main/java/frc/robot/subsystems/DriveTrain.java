@@ -19,7 +19,7 @@ import com.google.inject.Inject;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+import frc.robot.commands.ArcadeDrive;
 //import frc.robot.misc.GearBox;
 import frc.robot.guice.annotations.DriveTrain.*;
 
@@ -33,7 +33,7 @@ public class DriveTrain extends Subsystem {
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
   private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
-  private Command driveTrainStyle;
+//  private ArcadeDrive driveTrainStyle;
   //Test
  
   @Inject
@@ -44,8 +44,7 @@ public class DriveTrain extends Subsystem {
       @RightVictor1 VictorSPX rightVictor1, 
       @RightVictor2 VictorSPX rightVictor2,
       @LeftTalonSensorCollection SensorCollection leftTalonSensorCollection, 
-      @RightTalonSensorCollection SensorCollection rightTaloSensorCollection,
-      @DriveTrainStyle Command driveTrainStyle){
+      @RightTalonSensorCollection SensorCollection rightTaloSensorCollection) {
     this.leftTalon = leftTalon;
     this.rightTalon = rightTalon;
     this.leftVictor1 = leftVictor1;
@@ -54,7 +53,7 @@ public class DriveTrain extends Subsystem {
     this.rightVictor2 = rightVictor2;
     this.leftTalonSensorCollection = leftTalonSensorCollection;
     this.rightTaloSensorCollection = rightTaloSensorCollection;
-    this.driveTrainStyle = driveTrainStyle;
+//    this.driveTrainStyle = driveTrainStyle;
 
     this.setUp();
   }
@@ -198,6 +197,6 @@ public class DriveTrain extends Subsystem {
    */
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(driveTrainStyle);
+//    setDefaultCommand(driveTrainStyle);
   }
 }
