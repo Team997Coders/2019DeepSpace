@@ -50,8 +50,6 @@ dependencies {
 
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
-    compile 'com.google.inject:guice:4.2.2'
-    implementation 'com.google.inject:guice:4.2.2'
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'

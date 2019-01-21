@@ -7,23 +7,19 @@
 
 package frc.robot.commands;
 
-import com.google.inject.Inject;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.RobotMap;
-import frc.robot.guice.annotations.OI.Gamepad1;
 import frc.robot.subsystems.DriveTrain;
 
 public class ArcadeDrive extends Command {
   private Joystick gamepad1;  
   private DriveTrain driveTrain;
 
-  @Inject
-  public ArcadeDrive(@Gamepad1 Joystick gamepad1, DriveTrain driveTrain) {
-    this.gamepad1 = gamepad1; 
-    this.driveTrain = driveTrain;
+  public ArcadeDrive() {
+    Joystick gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
+    DriveTrain driveTrian = new DriveTrain();
     requires(driveTrain);
   }
 

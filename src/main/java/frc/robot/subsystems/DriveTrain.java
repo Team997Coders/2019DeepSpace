@@ -15,13 +15,12 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import com.google.inject.Inject;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
 //import frc.robot.misc.GearBox;
-import frc.robot.guice.annotations.DriveTrain.*;
 
 /**
  * Add your docs here.
@@ -35,26 +34,17 @@ public class DriveTrain extends Subsystem {
   private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
   private ArcadeDrive driveTrainStyle;
   //Test
- 
-  @Inject
-  public DriveTrain(@LeftTalon TalonSRX leftTalon, 
-      @RightTalon TalonSRX rightTalon,
-      @LeftVictor1 VictorSPX leftVictor1, 
-      @LeftVictor2 VictorSPX leftVictor2, 
-      @RightVictor1 VictorSPX rightVictor1, 
-      @RightVictor2 VictorSPX rightVictor2,
-      @LeftTalonSensorCollection SensorCollection leftTalonSensorCollection, 
-      @RightTalonSensorCollection SensorCollection rightTaloSensorCollection,
-      ArcadeDrive driveTrainStyle) {
-    this.leftTalon = leftTalon;
-    this.rightTalon = rightTalon;
-    this.leftVictor1 = leftVictor1;
-    this.leftVictor2 = leftVictor2;
-    this.rightVictor1 = rightVictor1;
-    this.rightVictor2 = rightVictor2;
-    this.leftTalonSensorCollection = leftTalonSensorCollection;
-    this.rightTaloSensorCollection = rightTaloSensorCollection;
-    this.driveTrainStyle = driveTrainStyle;
+
+  public DriveTrain() {
+    TalonSRX leftTalon = new TalonSRX(RobotMap.Ports.leftTalon);
+    TalonSRX rightTalon = new TalonSRX(RobotMap.Ports.rightTalon);
+    VictorSPX leftVictor1 = new VictorSPX(RobotMap.Ports.leftVictor1);
+    VictorSPX leftVictor2 = new VictorSPX(RobotMap.Ports.leftVictor2);
+    VictorSPX rightVictor1 = new VictorSPX(RobotMap.Ports.rightVictor1);
+    VictorSPX rightVictor2 = new VictorSPX(RobotMap.Ports.rightVictor2);
+    SensorCollection leftTalonSensorCollection = new SensorCollection(leftTalon);
+    SensorCollection rightTalonSensorCollection = new SensorCollection(rightTalon);
+    ArcadeDrive driveTrainStyle = new ArcadeDrive();
 
     this.setUp();
   }

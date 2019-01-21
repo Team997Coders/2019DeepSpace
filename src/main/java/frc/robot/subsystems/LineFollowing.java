@@ -7,38 +7,33 @@
 
 package frc.robot.subsystems;
 
-import com.google.inject.Inject;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-
-import frc.robot.guice.annotations.LineFollowing.SensorCenterInput;
-import frc.robot.guice.annotations.LineFollowing.SensorLeftInput;
-import frc.robot.guice.annotations.LineFollowing.SensorRightInput;
-import frc.robot.guice.annotations.LineFollowing.UltrasonicSensorInput;
+import frc.robot.RobotMap;
 
 /**
  * Three sensor subsystem to detect whether white tape ahead of target is seen
  * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
-  private final int HATCHDISTANCELIMIT = 65; 
+  private final int HATCHDISTANCELIMIT = 75; 
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
   private AnalogInput m_ultrasonicSensorInput;
 
-  @Inject
-  public LineFollowing(@SensorLeftInput DigitalInput sensorLeftInput, 
-      @SensorCenterInput DigitalInput sensorCenterInput, 
-      @SensorRightInput DigitalInput sensorRightInput,
-      @UltrasonicSensorInput AnalogInput ultrasonicSensorInput) {
-    m_sensorLeftInput = sensorLeftInput;
-    m_sensorRightInput = sensorRightInput;
-    m_sensorCenterInput = sensorCenterInput;
-    m_ultrasonicSensorInput = ultrasonicSensorInput;
+
+  
+  
+
+  public LineFollowing() {
+    DigitalInput sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
+    DigitalInput sensorRightInput = new DigitalInput(RobotMap.Ports.linesensorright);
+    DigitalInput sensorCenterInput = new DigitalInput(RobotMap.Ports.linesensorcenter);
+    AnalogInput ultrasonicSensorInput = new AnalogInput(RobotMap.Ports.ultrasonicsensor);
   }
 
   @Override

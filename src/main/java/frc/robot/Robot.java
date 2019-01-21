@@ -15,11 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import frc.robot.guice.annotations.DriveTrain.DriveTrainStyle;
-import frc.robot.guice.modules.RobotModule;
-
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LineFollowing;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,20 +26,17 @@ import com.google.inject.Injector;
  * project.
  */
 public class Robot extends TimedRobot {
-  // All hardware references are contained within this injector
-  private final Injector m_injector;
 
   // Will the getInstance call get the ArcadeDrive? It should.
-  private final Command defaultDriveTrain;
+  //private final Command defaultDriveTrain;
+  public static OI oi;
+  public static DriveTrain driveTrain;
+  public static LineFollowing lineFollowing;
 
+  
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
-  public Robot(){
-    super();
-    m_injector = RobotModule.createInjector();
-    defaultDriveTrain = m_injector.getInstance(ArcadeDrive.class);
-  }
 
   /**
    * This function is run when the robot is first started up and should be
@@ -50,6 +44,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    driveTrain = new DriveTrain();
+    lineFollowing = new LineFollowing();
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
@@ -129,7 +125,7 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
     // Start your engines
-    defaultDriveTrain.start();
+    //defaultDriveTrain.start();
   }
 
   /**
