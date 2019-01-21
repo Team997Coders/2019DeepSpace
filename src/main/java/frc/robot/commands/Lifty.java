@@ -9,6 +9,7 @@ package frc.robot.commands;
 import  frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
+// Make a retract command
 public class Lifty extends Command {
   public Lifty() {
     requires(Robot.liftgear);
@@ -43,5 +44,7 @@ public class Lifty extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    // Call end(); Doesn't matter really in this case but its good practice I guess. For other commands that dont
+    // finish after one execute
   }
 }
