@@ -16,7 +16,13 @@ public class ArcadeDrive extends Command {
   }
 
   @Override
-  protected void initialize() { }
+  protected void initialize() {
+    if (Robot.driveTrain.decell) {
+      Robot.driveTrain.setBrake();
+    } else {
+      Robot.driveTrain.setCoast();
+    }
+  }
 
   @Override
   protected void execute() {

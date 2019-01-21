@@ -8,12 +8,16 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RoboMisc;
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import frc.robot.misc.GearBox;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -49,6 +53,9 @@ public class DriveTrain extends Subsystem {
     leftVictor2 = leftBox.victor2;
     rightVictor1 = rightBox.victor1;
     rightVictor2 = rightBox.victor2;
+
+    resetEncoders();
+    setCoast();
   }
 
   // Apply left and right as percentage voltage
@@ -78,6 +85,62 @@ public class DriveTrain extends Subsystem {
     }
 
     setVolts(L, R);
+  }
+
+  public void setPosition(double left, double right) {
+    leftTalon.set(ControlMode.Position, left);
+    rightTalon.set(ControlMode.Position, right);
+  }
+
+  public double leftEncoderTicks() {
+    leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+    return leftTalon.getSelectedSensorPosition(0);
+  }
+
+  public double rightEncoderTicks() {
+    rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+    return rightTalon.getSelectedSensorPosition(0);
+  }
+
+  public void resetEncoders() {
+    leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+		leftTalon.setSelectedSensorPosition(0, 0, 10);
+		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+    rightTalon.setSelectedSensorPosition(0, 0, 10);
+  }
+
+  public void setPIDValues(double p, double i, double d) {
+    leftTalon.config_kP(0, p, 0);
+    rightTalon.config_kP(0, p, 0);
+    leftTalon.config_kP(0, i, 0);
+    rightTalon.config_kP(0, i, 0);
+    leftTalon.config_kP(0, d, 0);
+    rightTalon.config_kP(0, d, 0);
+  }
+
+  public void setBrake() {
+		leftTalon.setNeutralMode(NeutralMode.Brake);
+		rightTalon.setNeutralMode(NeutralMode.Brake);
+		
+		leftVictor1.setNeutralMode(NeutralMode.Brake);
+		rightVictor1.setNeutralMode(NeutralMode.Brake);
+		leftVictor2.setNeutralMode(NeutralMode.Brake);
+		rightVictor2.setNeutralMode(NeutralMode.Brake);
+	}
+	
+	public void setCoast() {
+		leftTalon.setNeutralMode(NeutralMode.Coast);
+		rightTalon.setNeutralMode(NeutralMode.Coast);
+		
+		leftVictor1.setNeutralMode(NeutralMode.Coast);
+		rightVictor1.setNeutralMode(NeutralMode.Coast);
+		leftVictor2.setNeutralMode(NeutralMode.Coast);
+		rightVictor2.setNeutralMode(NeutralMode.Coast);
+}
+
+  public void updateSmartDashboard() {
+    SmartDashboard.putNumber("Left Ticks DriveTrain", leftEncoderTicks());
+    SmartDashboard.putNumber("RIght Ticks DriveTrain", rightEncoderTicks());
   }
 
   @Override

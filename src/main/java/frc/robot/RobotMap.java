@@ -35,4 +35,13 @@ public class RobotMap {
 
   }
 
+  public class Values {
+
+    public static final double
+      P = 0.0002,
+      I = 0.0,
+      D = 0.0;
+
+  }
+
 }
