@@ -43,5 +43,6 @@ public class BallIntake extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    // The only way this function will stop is if its interrupted. You need to call end(); to properly stop it
   }
 }
