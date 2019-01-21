@@ -81,7 +81,9 @@ public class LineFollowing extends Subsystem {
     // that converts voltage to distance and then put in a constant
     // for the threshold distance so that we can easily see what distance
     // we want to stop at.
-//    return m_ultrasonicSensorInput.getAverageVoltage() < 0.5;
-    return false;
+
+
+   return m_ultrasonicSensorInput.getAverageVoltage() < 0.5;
+    
   }
 }

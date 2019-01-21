@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -65,6 +66,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
+    AnalogInput sensor = m_injector.getInstance(AnalogInput.class);
+    System.out.println("Get avaerage voltage" + sensor.getAverageVoltage());
+
   }
 
   /**
