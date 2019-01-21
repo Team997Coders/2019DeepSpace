@@ -47,7 +47,9 @@ public class Robot extends TimedRobot {
     // Tickle guice by instantiating the drive train...this should
     // force the default command to instantiate (ArcadeDrive in this case),
     // and also the gamepad to instantiate, which is a requirement of the 
-    // ArcadeDrive.
+    // ArcadeDrive. The question is...does this need to be stored off
+    // in member variable? I don't think so because the Command scheduler
+    // holds on to things once created.
     DriveTrain driveTrain = m_injector.getInstance(DriveTrain.class);
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
