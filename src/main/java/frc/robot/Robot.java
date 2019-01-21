@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.guice.annotations.DriveTrain.DriveTrainStyle;
 import frc.robot.guice.modules.RobotModule;
-import frc.robot.subsystems.DriveTrain;
 
 import com.google.inject.Injector;
 
@@ -30,12 +30,16 @@ public class Robot extends TimedRobot {
   // All hardware references are contained within this injector
   private final Injector m_injector;
 
+  // Will the getInstance call get the ArcadeDrive? It should.
+  private final @DriveTrainStyle Command defaultDriveTrain;
+
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
   public Robot(){
     super();
     m_injector = RobotModule.createInjector();
+    defaultDriveTrain = m_injector.getInstance(Command.class);
   }
 
   /**
@@ -44,14 +48,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Tickle guice by instantiating the drive train...this should
-    // force the default command to instantiate (ArcadeDrive in this case),
-    // and also the gamepad to instantiate, which is a requirement of the 
-    // ArcadeDrive. The question is...does this need to be stored off
-    // in member variable? I don't think so because the Command scheduler
-    // holds on to things once created.
-    DriveTrain driveTrain = m_injector.getInstance(DriveTrain.class);
-
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
@@ -130,6 +126,8 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+    // Start your engines
+    defaultDriveTrain.start();
   }
 
   /**
