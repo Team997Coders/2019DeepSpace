@@ -25,16 +25,11 @@ import com.google.inject.Injector;
  * project.
  */
 public class Robot extends TimedRobot {
-  // All hardware references are contained within this injector
-  private final Injector m_injector;
+
+  public static OI oi;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
-
-  public Robot(){
-    super();
-    m_injector = RobotModule.createInjector();
-  }
 
   /**
    * This function is run when the robot is first started up and should be
@@ -42,6 +37,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {    
+
+    oi = new OI();
+
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);

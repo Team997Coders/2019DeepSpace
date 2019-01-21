@@ -28,11 +28,8 @@ public class LineFollowing extends Subsystem {
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
   private AnalogInput m_ultrasonicSensorInput;
-
-  @Inject
-  public LineFollowing(@SensorLeftInput DigitalInput sensorLeftInput, 
-      @SensorCenterInput DigitalInput sensorCenterInput, 
-      @SensorRightInput DigitalInput sensorRightInput,
+  public LineFollowing(DigitalInput sensorLeftInput, DigitalInput sensorCenterInput, 
+      DigitalInput sensorRightInput,
       @UltrasonicSensorInput AnalogInput ultrasonicSensorInput) {
     m_sensorLeftInput = sensorLeftInput;
     m_sensorRightInput = sensorRightInput;

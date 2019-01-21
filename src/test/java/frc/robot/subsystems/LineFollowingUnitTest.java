@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Add your docs here.
- */
+ *
 public class LineFollowingUnitTest {
 
     private DigitalInput center;
@@ -88,4 +88,4 @@ public class LineFollowingUnitTest {
         assertTrue( lineFollowing.rightCenterLineSeen());
     }
 
-}
+}*/
