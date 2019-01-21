@@ -24,7 +24,7 @@ public class OI {
         gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
 
         followLine = new JoystickButton(gamepad1, 1);
-        followLine.whileHeld(new FollowLine());
+        followLine.whenPressed(new FollowLine());
     }
 
     public double getLeftY() {

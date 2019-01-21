@@ -55,13 +55,8 @@ public class LineFollowing extends Subsystem {
   // we might break up this functionality into its own subsystem. Not sure
   // that we will so it's ok for now that it lives here.
   public boolean isCloseToTarget() {
-    // TODO: Read datasheet and confirm this is correct!
-    // Assume voltage goes down as we get closer to target.
-    // What voltage is the right distance? Put in a private function
-    // that converts voltage to distance and then put in a constant
-    // for the threshold distance so that we can easily see what distance
-    // we want to stop at.
-    return m_ultrasonicSensorInput.getVoltage() < 0.5;
+
+    return m_ultrasonicSensorInput.getValue() < 75;
   }
 
   @Override
