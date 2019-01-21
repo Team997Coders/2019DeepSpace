@@ -17,6 +17,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class BallManipulator extends Subsystem {
    private VictorSPX ballMotor;
+   
+   // You need a constructor to actually instantiate your VictorSPX and configure it
+   // public BallManipulator() { }
 
    public void ballIntake(){    
      ballMotor.set(ControlMode.PercentOutput, 1);
