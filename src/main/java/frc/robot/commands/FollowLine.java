@@ -43,7 +43,6 @@ public class FollowLine extends Command {
   protected void execute() {
     
     SmartDashboard.putString("LineFollowing is Active!", "I think so?");
-    System.out.println("Processing");
 
     if(m_lineFollowing.centerLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");

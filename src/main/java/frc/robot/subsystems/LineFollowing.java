@@ -24,6 +24,7 @@ import frc.robot.guice.annotations.LineFollowing.UltrasonicSensorInput;
  * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
+  private final int HATCHDISTANCELIMIT = 65; 
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
@@ -83,7 +84,7 @@ public class LineFollowing extends Subsystem {
     // we want to stop at.
 
 
-   return m_ultrasonicSensorInput.getAverageVoltage() < 0.5;
-    
+    System.out.println(m_ultrasonicSensorInput.getValue());
+    return (m_ultrasonicSensorInput.getValue() < HATCHDISTANCELIMIT);
   }
 }

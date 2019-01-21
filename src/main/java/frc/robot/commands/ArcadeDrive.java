@@ -25,7 +25,6 @@ public class ArcadeDrive extends Command {
     this.gamepad1 = gamepad1; 
     this.driveTrain = driveTrain;
     requires(driveTrain);
-    System.out.println("Arcade Init");
   }
 
   private double getLeftYAxis() {
@@ -41,7 +40,6 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void execute() {
-    System.out.println("Arcade Execute");
     double left = getLeftYAxis() + getRightXAxis();
     double right = getLeftYAxis() - getRightXAxis();
 
