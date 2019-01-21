@@ -27,6 +27,6 @@ public final class RobotModule {
    * @return  The master injector
    */
   public static Injector createInjector() {
-    return Guice.createInjector(new LineFollowing(), new DriveTrain());
+    return Guice.createInjector(new LineFollowing(), new DriveTrain(), new OI());
   }
 }
