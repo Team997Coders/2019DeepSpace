@@ -19,9 +19,8 @@ import frc.robot.commands.FollowLine;
  */
 public class OI {
   public static class Gamepad1Provider implements Provider<Joystick> {
-    FollowLine followLine;
-    Joystick gamepad1;
-    JoystickButton followLineButton;
+    private final Joystick gamepad1;
+    private final JoystickButton followLineButton;
 
     /**
      * The gamepad needs the commands that will execute when actions
@@ -31,7 +30,6 @@ public class OI {
      */
     @Inject
     public Gamepad1Provider(FollowLine followLine) {
-      this.followLine = followLine;
       this.gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
       this.followLineButton = new JoystickButton(gamepad1, RobotMap.Ports.followLinebutton);
       this.followLineButton.whenPressed(followLine);

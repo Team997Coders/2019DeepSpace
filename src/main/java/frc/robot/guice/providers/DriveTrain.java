@@ -30,7 +30,7 @@ public class DriveTrain {
   }
 
   public static class LeftTalonSensorCollectionProvider implements Provider<SensorCollection> {
-    private TalonSRX leftTalon;
+    private final TalonSRX leftTalon;
   
     @Inject
     public LeftTalonSensorCollectionProvider(@LeftTalon TalonSRX leftTalon) {
@@ -43,7 +43,7 @@ public class DriveTrain {
   }
 
   public static class RightTalonSensorCollectionProvider implements Provider<SensorCollection> {
-    private TalonSRX rightTalon;
+    private final TalonSRX rightTalon;
 
     @Inject
     public RightTalonSensorCollectionProvider(@RightTalon TalonSRX rightTalon) {
