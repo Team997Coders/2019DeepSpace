@@ -21,6 +21,7 @@ public class HatchManipulator extends Subsystem {
   public boolean hatchPistonState;
 
   public HatchManipulator() {
+    // Instantiate hatchPiston
   }
   public void extend() {
     hatchPiston.set(Value.kForward);
