@@ -17,19 +17,19 @@ import frc.robot.guice.annotations.DriveTrain.RightTalon;
  */
 public class DriveTrain {
 
-  public class LeftTalonProvider implements Provider<TalonSRX> {
+  public static class LeftTalonProvider implements Provider<TalonSRX> {
     public TalonSRX get() {
       return new TalonSRX(RobotMap.Ports.leftTalon);
     }
   }
 
-  public class RightTalonProvider implements Provider<TalonSRX> {
+  public static class RightTalonProvider implements Provider<TalonSRX> {
     public TalonSRX get() {
       return new TalonSRX(RobotMap.Ports.rightTalon);
     }
   }
 
-  public class LeftTalonSensorCollectionProvider implements Provider<SensorCollection> {
+  public static class LeftTalonSensorCollectionProvider implements Provider<SensorCollection> {
     private TalonSRX leftTalon;
   
     @Inject
@@ -42,7 +42,7 @@ public class DriveTrain {
     }
   }
 
-  public class RightTalonSensorCollectionProvider implements Provider<SensorCollection> {
+  public static class RightTalonSensorCollectionProvider implements Provider<SensorCollection> {
     private TalonSRX rightTalon;
 
     @Inject

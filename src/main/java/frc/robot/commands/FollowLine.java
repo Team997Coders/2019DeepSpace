@@ -22,6 +22,7 @@ public class FollowLine extends Command {
   private LineFollowing m_lineFollowing;
   private DriveTrain m_driveTrain;
   
+@Inject
   public FollowLine(LineFollowing lineFollowing, DriveTrain driveTrain) {
     m_driveTrain = driveTrain;
     m_lineFollowing = lineFollowing;
@@ -42,6 +43,7 @@ public class FollowLine extends Command {
   protected void execute() {
     
     SmartDashboard.putString("LineFollowing is Active!", "I think so?");
+    System.out.println("Processing");
 
     if(m_lineFollowing.centerLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");

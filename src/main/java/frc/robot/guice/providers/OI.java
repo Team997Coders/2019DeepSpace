@@ -18,7 +18,7 @@ import frc.robot.commands.FollowLine;
  * @see https://github.com/google/guice/wiki/ProviderBindings
  */
 public class OI {
-  public class Gamepad1Provider implements Provider<Joystick> {
+  public static class Gamepad1Provider implements Provider<Joystick> {
     FollowLine followLine;
     Joystick gamepad1;
     JoystickButton followLineButton;
