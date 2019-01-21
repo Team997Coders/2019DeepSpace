@@ -1,23 +1,10 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
-
-import com.google.inject.Inject;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-
-import frc.robot.guice.annotations.LineFollowing.SensorCenterInput;
-import frc.robot.guice.annotations.LineFollowing.SensorLeftInput;
-import frc.robot.guice.annotations.LineFollowing.SensorRightInput;
-import frc.robot.guice.annotations.LineFollowing.UltrasonicSensorInput;
+import frc.robot.RobotMap;
 
 /**
  * Three sensor subsystem to detect whether white tape ahead of target is seen
@@ -28,17 +15,13 @@ public class LineFollowing extends Subsystem {
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
   private AnalogInput m_ultrasonicSensorInput;
-  public LineFollowing(DigitalInput sensorLeftInput, DigitalInput sensorCenterInput, 
-      DigitalInput sensorRightInput,
-      @UltrasonicSensorInput AnalogInput ultrasonicSensorInput) {
-    m_sensorLeftInput = sensorLeftInput;
-    m_sensorRightInput = sensorRightInput;
-    m_sensorCenterInput = sensorCenterInput;
-    m_ultrasonicSensorInput = ultrasonicSensorInput;
-  }
 
-  @Override
-  public void initDefaultCommand(){}
+  public LineFollowing() {
+    m_sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
+    m_sensorRightInput = new DigitalInput(RobotMap.Ports.linesensorright);
+    m_sensorCenterInput = new DigitalInput(RobotMap.Ports.linesensorcenter);
+    m_ultrasonicSensorInput = new AnalogInput(RobotMap.Ports.ultrasonicsensor);
+  }
 
   public boolean leftLineSeen(){
     return(m_sensorLeftInput.get());
@@ -78,6 +61,9 @@ public class LineFollowing extends Subsystem {
     // that converts voltage to distance and then put in a constant
     // for the threshold distance so that we can easily see what distance
     // we want to stop at.
-    return m_ultrasonicSensorInput.getAverageVoltage() < 0.5;
+    return m_ultrasonicSensorInput.getVoltage() < 0.5;
   }
+
+  @Override
+  public void initDefaultCommand(){ }
 }

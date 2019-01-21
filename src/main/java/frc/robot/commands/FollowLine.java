@@ -7,27 +7,19 @@
 
 package frc.robot.commands;
 
-import com.google.inject.Inject;
-
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.Robot;
 
 /**
  * Follow a line on the floor and stop when range is close
  * to target.
  */
 public class FollowLine extends Command {
-  private LineFollowing m_lineFollowing;
-  private DriveTrain m_driveTrain;
-  
-@Inject
-  public FollowLine(LineFollowing lineFollowing, DriveTrain driveTrain) {
-    m_driveTrain = driveTrain;
-    m_lineFollowing = lineFollowing;
-    requires(m_driveTrain);
-    requires(m_lineFollowing);
+
+  public FollowLine() {
+    requires(Robot.driveTrain);
+    requires(Robot.lineFollowing);
   }
 
   // Called just before this Command runs the first time
@@ -45,41 +37,41 @@ public class FollowLine extends Command {
     SmartDashboard.putString("LineFollowing is Active!", "I think so?");
     System.out.println("Processing");
 
-    if(m_lineFollowing.centerLineSeen()){
+    if(Robot.lineFollowing.centerLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "Yes! :) ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      m_driveTrain.setVolts(.25, .25);
-    }else if(m_lineFollowing.rightLineSeen()){
+      Robot.driveTrain.setVolts(.25, .25);
+    }else if(Robot.lineFollowing.rightLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      m_driveTrain.setVolts(.25, .15);
-    }else if(m_lineFollowing.leftLineSeen()){
+      Robot.driveTrain.setVolts(.25, .15);
+    }else if(Robot.lineFollowing.leftLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      m_driveTrain.setVolts(.15, .25);
-    }else if(m_lineFollowing.rightCenterLineSeen()){
+      Robot.driveTrain.setVolts(.15, .25);
+    }else if(Robot.lineFollowing.rightCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
 
-      m_driveTrain.setVolts(.25 , .2);
-    }else if(m_lineFollowing.leftCenterLineSeen()){
+      Robot.driveTrain.setVolts(.25 , .2);
+    }else if(Robot.lineFollowing.leftCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
 
-      m_driveTrain.setVolts(.2, .25);
+      Robot.driveTrain.setVolts(.2, .25);
     }else{
       SmartDashboard.putString("Do you see the line?", "No");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      m_driveTrain.stop();
+      Robot.driveTrain.setVolts(0, 0);
     }      
   }
 
@@ -90,8 +82,8 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(m_lineFollowing.rightLineSeen() == true || m_lineFollowing.centerLineSeen() == true || m_lineFollowing.leftLineSeen() == true){
-      if (m_lineFollowing.isCloseToTarget()) {
+    if(Robot.lineFollowing.rightLineSeen() == true || Robot.lineFollowing.centerLineSeen() == true || Robot.lineFollowing.leftLineSeen() == true){
+      if (Robot.lineFollowing.isCloseToTarget()) {
         return true;
       } else {
         return false;
@@ -104,7 +96,7 @@ public class FollowLine extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    m_driveTrain.stop();
+    Robot.driveTrain.setVolts(0, 0);
   }
 
   // Called when another command which requires one or more of the same

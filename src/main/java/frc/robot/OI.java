@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 /**
  * Add your docs here.
  */
@@ -14,8 +17,22 @@ public class OI {
 
     private Joystick gamepad1;
 
+    private JoystickButton followLine;
+
     public OI() {
-        gamepad1 = new Joystick(RobotMap.gamepad1);
+        gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
+    }
+
+    public double getLeftY() {
+        return -gamepad1.getRawAxis(1);
+    }
+
+    public double getRightX() {
+        return gamepad1.getRawAxis(4);
+    }
+
+    public double getRightY() {
+        return -gamepad1.getRawAxis(5);
     }
 
 }

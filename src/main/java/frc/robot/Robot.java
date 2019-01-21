@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import frc.robot.guice.modules.RobotModule;
-import com.google.inject.Injector;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LineFollowing;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,16 +27,28 @@ import com.google.inject.Injector;
 public class Robot extends TimedRobot {
 
   public static OI oi;
+  public static DriveTrain driveTrain;
+  public static LineFollowing lineFollowing;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
+
+  public Robot(DriveTrain a, LineFollowing b) {
+    driveTrain = a;
+    lineFollowing = b;
+  }
+
+  public Robot() { super(); }
 
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
-  public void robotInit() {    
+  public void robotInit() {
+
+    driveTrain = new DriveTrain();
+    lineFollowing = new LineFollowing();
 
     oi = new OI();
 

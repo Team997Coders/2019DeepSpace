@@ -15,12 +15,12 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import com.google.inject.Inject;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+import frc.robot.RobotMap;
+import frc.robot.commands.ArcadeDrive;
 import frc.robot.misc.GearBox;
+import frc.robot.RoboMisc;
 
 /**
  * Add your docs here.

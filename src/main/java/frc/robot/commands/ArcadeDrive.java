@@ -7,35 +7,17 @@
 
 package frc.robot.commands;
 
-import com.google.inject.Inject;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-
+import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.guice.annotations.OI.Gamepad1;
 import frc.robot.subsystems.DriveTrain;
 
-import com.google.inject.Inject;
-
 public class ArcadeDrive extends Command {
-  private Joystick gamepad1;  
-  private DriveTrain driveTrain;
 
-  @Inject
-  public ArcadeDrive(@Gamepad1 Joystick gamepad1, DriveTrain driveTrain) {
-    this.gamepad1 = gamepad1; 
-    this.driveTrain = driveTrain;
-    requires(driveTrain);
+  public ArcadeDrive() {
+    requires(Robot.driveTrain);
     System.out.println("Arcade Init");
-  }
-
-  private double getLeftYAxis() {
-    return -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis);
-  }
-
-  private double getRightXAxis() {
-    return gamepad1.getRawAxis(RobotMap.Ports.rightXAxis);
   }
 
   @Override
@@ -44,10 +26,10 @@ public class ArcadeDrive extends Command {
   @Override
   protected void execute() {
     System.out.println("Arcade Execute");
-    double left = getLeftYAxis() + getRightXAxis();
-    double right = getLeftYAxis() - getRightXAxis();
+    double left = Robot.oi.getLeftY() + Robot.oi.getRightX();
+    double right = Robot.oi.getLeftY() - Robot.oi.getRightX();
 
-    driveTrain.setVolts(left, right);
+    Robot.driveTrain.setVolts(left, right);
   }
 
   @Override
@@ -57,7 +39,7 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    driveTrain.stop();
+    Robot.driveTrain.setVolts(0, 0);
   }
 
   @Override
