@@ -12,11 +12,14 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * Add your docs here.
+ * Add your docs here
  */
 public class LiftGear extends Subsystem {
   private DoubleSolenoid piston1, piston2;
   public boolean piston1State, piston2State;
+  
+  // How will you be able to use piston1 and piston2 if they are null allocated objects??? How will you fix this???
+  // Hint hint: use a constructor
   
   public void extend() {
     piston1.set(Value.kForward);
