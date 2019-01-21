@@ -44,8 +44,6 @@ public class DriveTrain extends AbstractModule {
       RightTalonSensorCollectionProvider.class).in(Singleton.class);
 
     // Default DriveTrain style
-    // This is a really slick way to change out the drive train style without
-    // touching the DriveTrain class
-    bind(Command.class).annotatedWith(DriveTrainStyle.class).to(ArcadeDrive.class);
+    bind(Command.class).annotatedWith(DriveTrainStyle.class).toProvider(DriveTrainStyleProvider.class);
   }
 }

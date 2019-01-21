@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import frc.robot.guice.annotations.DriveTrain.DriveTrainStyle;
 import frc.robot.guice.modules.RobotModule;
+import frc.robot.guice.providers.DriveTrain.DriveTrainStyleProvider;
 
 import com.google.inject.Injector;
 
@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   private final Injector m_injector;
 
   // Will the getInstance call get the ArcadeDrive? It should.
-  private final @DriveTrainStyle Command defaultDriveTrain;
+  private final Command defaultDriveTrain;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   public Robot(){
     super();
     m_injector = RobotModule.createInjector();
-    defaultDriveTrain = m_injector.getInstance(Command.class);
+    defaultDriveTrain = m_injector.getProvider(DriveTrainStyleProvider.class).get().get();
   }
 
   /**
