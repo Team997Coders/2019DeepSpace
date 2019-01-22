@@ -31,14 +31,12 @@ public class OI {
     return -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis);
   }
 
-  public double deadBand(double value, double min, double max) {
-    if (value > max) {
-      return max;
-    } else if (value < min) {
-      return min;
+  public double deadBand(double value, double dead) {
+    if (Math.abs(value) < dead) {
+      return 0;
+    } else {
+      return value;
     }
-    
-    return value;
   }
 
   // KEEP THESE COMMENTS

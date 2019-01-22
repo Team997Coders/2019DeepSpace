@@ -29,8 +29,8 @@ public class ArcadeDrive extends Command {
     double left = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
     double right = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
 
-    left = Robot.oi.deadBand(left, -1.0, 1.0);
-    right = Robot.oi.deadBand(right, -1.0, 1.0);
+    left = Robot.oi.deadBand(left, 0.005);
+    right = Robot.oi.deadBand(right, 0.005);
 
     if (Robot.driveTrain.decell) {
       Robot.driveTrain.setVoltsDecell(left, right);
