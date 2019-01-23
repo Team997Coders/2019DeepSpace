@@ -9,26 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 
 public class ArcadeDrive extends Command {
-  private Joystick gamepad1;  
-  private DriveTrain driveTrain;
 
   public ArcadeDrive() {
-    Joystick gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
-    DriveTrain driveTrian = new DriveTrain();
-    requires(driveTrain);
-  }
-
-  private double getLeftYAxis() {
-    return -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis);
-  }
-
-  private double getRightXAxis() {
-    return gamepad1.getRawAxis(RobotMap.Ports.rightXAxis);
+    requires(Robot.driveTrain);
   }
 
   @Override
@@ -36,10 +24,10 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void execute() {
-    double left = getLeftYAxis() + getRightXAxis();
-    double right = getLeftYAxis() - getRightXAxis();
+    double left = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
+    double right = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
 
-    driveTrain.setVolts(left, right);
+    Robot.driveTrain.setVolts(left, right);
   }
 
   @Override
@@ -49,7 +37,7 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    driveTrain.stop();
+    Robot.driveTrain.stop();
   }
 
   @Override

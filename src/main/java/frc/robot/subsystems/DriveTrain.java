@@ -31,20 +31,19 @@ public class DriveTrain extends Subsystem {
   //private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
-  private SensorCollection leftTalonSensorCollection, rightTaloSensorCollection;
+  private SensorCollection leftTalonSensorCollection, rightTalonSensorCollection;
   private ArcadeDrive driveTrainStyle;
   //Test
 
   public DriveTrain() {
-    TalonSRX leftTalon = new TalonSRX(RobotMap.Ports.leftTalon);
-    TalonSRX rightTalon = new TalonSRX(RobotMap.Ports.rightTalon);
-    VictorSPX leftVictor1 = new VictorSPX(RobotMap.Ports.leftVictor1);
-    VictorSPX leftVictor2 = new VictorSPX(RobotMap.Ports.leftVictor2);
-    VictorSPX rightVictor1 = new VictorSPX(RobotMap.Ports.rightVictor1);
-    VictorSPX rightVictor2 = new VictorSPX(RobotMap.Ports.rightVictor2);
-    SensorCollection leftTalonSensorCollection = new SensorCollection(leftTalon);
-    SensorCollection rightTalonSensorCollection = new SensorCollection(rightTalon);
-    ArcadeDrive driveTrainStyle = new ArcadeDrive();
+    leftTalon = new TalonSRX(RobotMap.Ports.leftTalon);
+    rightTalon = new TalonSRX(RobotMap.Ports.rightTalon);
+    leftVictor1 = new VictorSPX(RobotMap.Ports.leftVictor1);
+    leftVictor2 = new VictorSPX(RobotMap.Ports.leftVictor2);
+    rightVictor1 = new VictorSPX(RobotMap.Ports.rightVictor1);
+    rightVictor2 = new VictorSPX(RobotMap.Ports.rightVictor2);
+    leftTalonSensorCollection = new SensorCollection(leftTalon);
+    rightTalonSensorCollection = new SensorCollection(rightTalon);
 
     this.setUp();
   }
@@ -77,8 +76,8 @@ public class DriveTrain extends Subsystem {
 		leftTalon.configNominalOutputReverse(0, 10);
 		//leftTalon.configPeakOutputForward(1, 10);	//Use for PB
 		//leftTalon.configPeakOutputReverse(-1, 10); //Use for PB
-		leftTalon.configPeakOutputForward(0.6, 10);	//Use for extrasensitive CB
-		leftTalon.configPeakOutputReverse(-0.6, 10); //Use for extrasensitive CB
+		leftTalon.configPeakOutputForward(0.4, 10);	//Use for extrasensitive CB
+		leftTalon.configPeakOutputReverse(-0.4, 10); //Use for extrasensitive CB
 		
 		leftTalon.configPeakCurrentLimit(40, 10);
 		leftTalon.configPeakCurrentDuration(100, 10);
@@ -89,8 +88,8 @@ public class DriveTrain extends Subsystem {
 		rightTalon.configNominalOutputReverse(0, 10);
 		//rightTalon.configPeakOutputForward(1, 10); //Use for PB
 		//rightTalon.configPeakOutputReverse(-1, 10); //Use for PB
-		rightTalon.configPeakOutputForward(0.6, 10);  //Use for extrasensitive CB
-		rightTalon.configPeakOutputReverse(-0.6, 10); //Use for extrasensitive CB
+		rightTalon.configPeakOutputForward(0.4, 10);  //Use for extrasensitive CB
+		rightTalon.configPeakOutputReverse(-0.4, 10); //Use for extrasensitive CB
 		
 		rightTalon.configPeakCurrentLimit(40, 10);
     rightTalon.configPeakCurrentDuration(100, 10);
@@ -187,6 +186,6 @@ public class DriveTrain extends Subsystem {
    */
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(driveTrainStyle);
+    setDefaultCommand(new ArcadeDrive());
   }
 }

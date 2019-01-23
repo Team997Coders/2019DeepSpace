@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
  * Add your docs here.
  */
 public class FollowLineUnitTest {
+    /*
 
     @Test
     public void goStraightIfCenterSeen(){
@@ -47,5 +48,5 @@ public class FollowLineUnitTest {
     //@Test
     //public void itStopsWhenCloseToTarget() {
     //
-    //}
+    //}*/
 }

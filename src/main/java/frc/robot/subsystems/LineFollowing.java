@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 /**
@@ -19,7 +20,7 @@ import frc.robot.RobotMap;
  * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
-  private final int HATCHDISTANCELIMIT = 75; 
+  private final int HATCHDISTANCELIMIT = 80; 
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
@@ -30,10 +31,10 @@ public class LineFollowing extends Subsystem {
   
 
   public LineFollowing() {
-    DigitalInput sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
-    DigitalInput sensorRightInput = new DigitalInput(RobotMap.Ports.linesensorright);
-    DigitalInput sensorCenterInput = new DigitalInput(RobotMap.Ports.linesensorcenter);
-    AnalogInput ultrasonicSensorInput = new AnalogInput(RobotMap.Ports.ultrasonicsensor);
+    m_sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
+    m_sensorRightInput = new DigitalInput(RobotMap.Ports.linesensorright);
+    m_sensorCenterInput = new DigitalInput(RobotMap.Ports.linesensorcenter);
+    m_ultrasonicSensorInput = new AnalogInput(RobotMap.Ports.ultrasonicsensor);
   }
 
   @Override
@@ -79,7 +80,7 @@ public class LineFollowing extends Subsystem {
     // we want to stop at.
 
 
-    System.out.println(m_ultrasonicSensorInput.getValue());
-    return (m_ultrasonicSensorInput.getValue() < HATCHDISTANCELIMIT);
+    SmartDashboard.putNumber("Ultrasonic sensor", m_ultrasonicSensorInput.getValue());
+    return (m_ultrasonicSensorInput.getValue() < 0);
   }
 }

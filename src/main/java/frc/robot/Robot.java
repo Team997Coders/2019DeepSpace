@@ -46,6 +46,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
+
+    oi = new OI();
+
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
@@ -133,6 +136,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    lineFollowing.isCloseToTarget();
+
     Scheduler.getInstance().run();
   }
 
