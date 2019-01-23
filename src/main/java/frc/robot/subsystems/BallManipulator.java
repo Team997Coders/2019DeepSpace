@@ -11,12 +11,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
 public class BallManipulator extends Subsystem {
    private VictorSPX ballMotor;
+
+  public BallManipulator(){
+     ballMotor = new VictorSPX(RobotMap.Ports.ballMotor);
+  }
    
    // You need a constructor to actually instantiate your VictorSPX and configure it
    // public BallManipulator() { }
