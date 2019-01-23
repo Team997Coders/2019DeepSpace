@@ -39,8 +39,8 @@ public class SwitchPiston extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
-    return false; // You want this true so it doesn't constantly open and close and have a f***ing seizure
+  protected boolean isFinished(){
+    return true; // You want this true so it doesn't constantly open and close and have a flipping seizure
   }
 
   // Called once after isFinished returns true
@@ -52,6 +52,6 @@ public class SwitchPiston extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    // Call end();
+   end();
   }
 }
