@@ -12,6 +12,7 @@ import frc.robot.BlackHole;
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import frc.robot.misc.GearBox;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -76,6 +77,30 @@ public class DriveTrain extends Subsystem {
 		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
 		rightTalon.setSelectedSensorPosition(0, 0, 10);
     System.out.println("Encoders reset!");
+  }
+
+
+  public void driveToPosition(double position) {
+    leftTalon.set(ControlMode.Position, position);
+    rightTalon.set(ControlMode.Position, position);
+  }
+
+  public void configurePid(){
+    //leftTalon.config_kF(0, 0.1097, 10);
+    //leftTalon.config_kP(0, 0.113333, 10);
+    leftTalon.config_kP(0, SmartDashboard.getNumber("P", 0), 10);
+    //leftTalon.config_kI(0, 0, 10);
+    leftTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
+    //leftTalon.config_kD(0, 0, 10);		
+    leftTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
+
+		//rightTalon.config_kF(0, 0.1097, 10);
+    //rightTalon.config_kP(0, 0.113333, 10);
+    rightTalon.config_kP(0, SmartDashboard.getNumber("P", 0), 10);
+    //rightTalon.config_kI(0, 0, 10);
+    rightTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
+    //rightTalon.config_kD(0, 0, 10);	
+    rightTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
   }
 
   // Set the percentage of volts to 0

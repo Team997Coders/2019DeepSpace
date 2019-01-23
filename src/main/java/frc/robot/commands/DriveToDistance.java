@@ -15,7 +15,7 @@ public class DriveToDistance extends Command {
   double minError = 3;
   public DriveToDistance(double setpoint) {
     requires(Robot.driveTrain);
-    setpoint = distance;
+    distance = setpoint;
     
 
     // Use requires() here to declare subsystem dependencies
@@ -30,11 +30,11 @@ public class DriveToDistance extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.setVolts(.5, .5);
+    Robot.driveTrain.driveToPosition(distance);
     
   }
 
-  protected double encoderDistance() {
+  /*protected double encoderDistance() {
     return (Robot.driveTrain.getLeftEncoderTicks() + Robot.driveTrain.getRightEncoderTicks())/ 2;
   }
   
@@ -47,7 +47,7 @@ public class DriveToDistance extends Command {
   protected boolean onTarget() {
     return distanceError() < minError;
 
-  }
+  }*/
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
