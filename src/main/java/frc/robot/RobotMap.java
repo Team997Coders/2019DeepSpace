@@ -13,6 +13,8 @@ package frc.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
+import edu.wpi.first.wpilibj.SerialPort;
+
 public class RobotMap {
 
   public class Values {
@@ -23,7 +25,7 @@ public class RobotMap {
     middleHabLv1ToLineOnShuttle = 138.56349/12;
 
 }
-  public class Ports {
+  public static class Ports {
     
     public static final int 
       gamepad1 = 0,
@@ -40,6 +42,8 @@ public class RobotMap {
 
       leftTalon = 4,
       rightTalon = 5;
+
+      public static final SerialPort.Port AHRSPort = SerialPort.Port.kUSB;
 
   }
 
