@@ -20,7 +20,7 @@ public class FollowLine extends Command {
   private double powerMotor = 0.8;
   private double noPowerMotor = -.5;
   private double normal = .1; //for double line seen
-  private double stright = .35;
+  private double straight = .35;
 
 
   public FollowLine() {
@@ -42,7 +42,7 @@ public class FollowLine extends Command {
 
     if(Robot.lineFollowing.centerLineSeen()){
 
-      Robot.driveTrain.setVolts(stright, stright);
+      Robot.driveTrain.setVolts(straight, straight);
 
     }else if(Robot.lineFollowing.rightLineSeen()){
 
