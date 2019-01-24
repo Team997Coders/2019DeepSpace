@@ -31,7 +31,9 @@ public class RobotMap {
       rightVictor2 = 3,
 
       leftTalon = 4,
-      rightTalon = 5;
+      rightTalon = 5,
+
+      ballMotor = 9;
 
   }
 
