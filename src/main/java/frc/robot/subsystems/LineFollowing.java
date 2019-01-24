@@ -20,7 +20,7 @@ import frc.robot.RobotMap;
  * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
-  private final int HATCHDISTANCELIMIT = 80; 
+  private final int HATCHDISTANCELIMIT = 65; 
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
@@ -81,6 +81,6 @@ public class LineFollowing extends Subsystem {
 
 
     SmartDashboard.putNumber("Ultrasonic sensor", m_ultrasonicSensorInput.getValue());
-    return (m_ultrasonicSensorInput.getValue() < 0);
+    return (m_ultrasonicSensorInput.getValue() < HATCHDISTANCELIMIT);
   }
 }

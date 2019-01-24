@@ -17,6 +17,12 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class FollowLine extends Command {
 
+  private double powerMotor = 0.8;
+  private double noPowerMotor = -.5;
+  private double normal = .1; //for double line seen
+  private double stright = .35;
+
+
   public FollowLine() {
     requires(Robot.driveTrain);
     requires(Robot.lineFollowing);
@@ -42,31 +48,31 @@ public class FollowLine extends Command {
       SmartDashboard.putString("Centered?", "Yes! :) ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      Robot.driveTrain.setVolts(.35, .35);
+      Robot.driveTrain.setVolts(stright, stright);
     }else if(Robot.lineFollowing.rightLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      Robot.driveTrain.setVolts(.35, .15);
+      Robot.driveTrain.setVolts(powerMotor, noPowerMotor);
     }else if(Robot.lineFollowing.leftLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
 
-      Robot.driveTrain.setVolts(.15, .35);
+      Robot.driveTrain.setVolts(noPowerMotor, powerMotor); 
     }else if(Robot.lineFollowing.rightCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
 
-      Robot.driveTrain.setVolts(.35 , .2);
+      Robot.driveTrain.setVolts(powerMotor , normal); 
     }else if(Robot.lineFollowing.leftCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
 
-      Robot.driveTrain.setVolts(.2, .35);
+      Robot.driveTrain.setVolts(normal, powerMotor); 
     }else{
       SmartDashboard.putString("Do you see the line?", "No");
       SmartDashboard.putString("Do you see two lines?", "No");
