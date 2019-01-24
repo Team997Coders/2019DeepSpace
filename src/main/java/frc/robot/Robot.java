@@ -24,8 +24,10 @@ import frc.robot.commands.*;
  */
 public class Robot extends TimedRobot {
   public static OI oi;
-  public static DriveTrain driveTrain;
+  //(no drieTrain in merge)public static DriveTrain driveTrain;
   public static BallManipulator ballManipulator;
+  //public static DriveTrain driveTrain;
+  public static HatchManipulator hatchManipulator;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -37,8 +39,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // ADD SUBSYSTEMS HERE
-    driveTrain = new DriveTrain();
+    //(no drive train in merge)driveTrain = new DriveTrain();
     ballManipulator = new BallManipulator();
+    
+    //driveTrain = new DriveTrain();
 
     // NOT AFTER 'oi = new OI();'
     oi = new OI();
