@@ -39,45 +39,31 @@ public class FollowLine extends Command {
   // instead of setVolts.
   @Override
   protected void execute() {
-    
-    SmartDashboard.putString("LineFollowing is Active!", "I think so?");
-    System.out.println("Processing");
 
     if(Robot.lineFollowing.centerLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "Yes! :) ");
-      SmartDashboard.putString("Do you see two lines?", "No");
 
       Robot.driveTrain.setVolts(stright, stright);
+
     }else if(Robot.lineFollowing.rightLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      SmartDashboard.putString("Do you see two lines?", "No");
 
       Robot.driveTrain.setVolts(powerMotor, noPowerMotor);
+
     }else if(Robot.lineFollowing.leftLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      SmartDashboard.putString("Do you see two lines?", "No");
 
       Robot.driveTrain.setVolts(noPowerMotor, powerMotor); 
+
     }else if(Robot.lineFollowing.rightCenterLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      SmartDashboard.putString("Do you see two lines?", "Yes");
 
       Robot.driveTrain.setVolts(powerMotor , normal); 
+
     }else if(Robot.lineFollowing.leftCenterLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      SmartDashboard.putString("Do you see two lines?", "Yes");
 
       Robot.driveTrain.setVolts(normal, powerMotor); 
+
     }else{
-      SmartDashboard.putString("Do you see the line?", "No");
-      SmartDashboard.putString("Do you see two lines?", "No");
 
       Robot.driveTrain.setVolts(0, 0);
+      
     }      
   }
 
@@ -88,7 +74,7 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if((Robot.lineFollowing.rightLineSeen() == true || Robot.lineFollowing.centerLineSeen() == true) || Robot.lineFollowing.leftLineSeen() == true){
+    if(Robot.lineFollowing.centerLineSeen() == true){
       if (Robot.lineFollowing.isCloseToTarget()) {
         System.out.println("I am finished");
         return true;
@@ -96,14 +82,14 @@ public class FollowLine extends Command {
         return false;
       }
     }else{
-      return true;
+      return false;
     }   
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
+    Robot.driveTrain.stop();
   }
 
   // Called when another command which requires one or more of the same
