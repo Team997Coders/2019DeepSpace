@@ -20,7 +20,7 @@ import frc.robot.RobotMap;
  * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
-  private final int HATCHDISTANCELIMIT = 90; 
+  private final int HATCHDISTANCELIMIT = 91; 
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
