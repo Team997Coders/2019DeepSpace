@@ -40,25 +40,25 @@ public class FollowLine extends Command {
   @Override
   protected void execute() {
 
-    if(Robot.lineFollowing.centerLineSeen()){
+    if(Robot.lineFollowing.leftCenterLineSeen()){
 
-      Robot.driveTrain.setVolts(straight, straight);
-
-    }else if(Robot.lineFollowing.rightLineSeen()){
-
-      Robot.driveTrain.setVolts(powerMotor, noPowerMotor);
-
-    }else if(Robot.lineFollowing.leftLineSeen()){
-
-      Robot.driveTrain.setVolts(noPowerMotor, powerMotor); 
+      Robot.driveTrain.setVolts(normal, powerMotor);
 
     }else if(Robot.lineFollowing.rightCenterLineSeen()){
 
-      Robot.driveTrain.setVolts(powerMotor , normal); 
+      Robot.driveTrain.setVolts(powerMotor , normal);
+    
+    }else if(Robot.lineFollowing.leftLineSeen()){
 
-    }else if(Robot.lineFollowing.leftCenterLineSeen()){
+      Robot.driveTrain.setVolts(noPowerMotor, powerMotor);
+    
+    }else if(Robot.lineFollowing.rightLineSeen()){
 
-      Robot.driveTrain.setVolts(normal, powerMotor); 
+      Robot.driveTrain.setVolts(powerMotor, noPowerMotor);; 
+
+    }else if(Robot.lineFollowing.centerLineSeen()){
+
+      Robot.driveTrain.setVolts(straight, straight);
 
     }else{
 
