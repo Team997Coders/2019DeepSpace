@@ -42,5 +42,13 @@ public class RobotMap {
 
   }
 
+  public static class Values{
+    
+    public static double 
+    inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
+    tcksPerFoot = ((49152/(3.97*Math.PI)))*.9; //3940, //encoder ticks per foot
+
+  }
+
 }
 

@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
 //import frc.robot.misc.GearBox;
@@ -33,7 +34,8 @@ public class DriveTrain extends Subsystem {
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
   private SensorCollection leftTalonSensorCollection, rightTalonSensorCollection;
   private ArcadeDrive driveTrainStyle;
-  //Test
+  
+  int delayCount = 0;
 
   public DriveTrain() {
     leftTalon = new TalonSRX(RobotMap.Ports.leftTalon);
@@ -187,5 +189,41 @@ public class DriveTrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new ArcadeDrive());
+  }
+
+  public double getLeftEncoderTicks() {
+		/* CTRE Magnetic Encoder relative, same as Quadrature */
+		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+		return leftTalon.getSelectedSensorPosition(0);
+	}
+
+	public double getRightEncoderTicks() {
+		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+		return rightTalon.getSelectedSensorPosition(0);
+	}
+
+	public double getLeftEncoderRate() {
+		return leftTalon.getSelectedSensorVelocity(0);
+	}
+
+	public double getRightEncoderRate() {
+		return rightTalon.getSelectedSensorVelocity(0);
+	}
+  public void updateDashboard(){
+    if (delayCount ==10){
+      SmartDashboard.putNumber("DT - Left master voltage", leftTalon.getMotorOutputVoltage());
+      SmartDashboard.putNumber("DT - Left master voltage", leftTalon.getMotorOutputVoltage());
+			SmartDashboard.putNumber("DT - Right master voltage", rightTalon.getMotorOutputVoltage());
+			SmartDashboard.putNumber("DT - Left Encoder", getLeftEncoderTicks());
+			SmartDashboard.putNumber("DT - Right Encoder", getRightEncoderTicks());
+			SmartDashboard.putNumber("DT - Left Encoder distance in inches", getLeftEncoderTicks()*RobotMap.Values.inchesPerTick);
+			SmartDashboard.putNumber("DT - Right Encoder distance in inches", getRightEncoderTicks()*RobotMap.Values.inchesPerTick);
+			SmartDashboard.putNumber("DT - Left Encoder Velocity", leftTalon.getSelectedSensorVelocity(0));
+			SmartDashboard.putNumber("DT - Right EncoderVelocity", rightTalon.getSelectedSensorVelocity(0));
+
+			delayCount = 0;
+		} else {
+			delayCount++;
+		}		
   }
 }
