@@ -22,7 +22,7 @@ public class OI {
     gamepad2 = new Joystick(RobotMap.Ports.gamepad2);
 
     followLine = new JoystickButton(gamepad1, 1);
-    followLine.whenPressed(new FollowLine());
+    followLine.whenPressed(new FollowLine(1000));
   }
 
   public double getLeftYAxis() {

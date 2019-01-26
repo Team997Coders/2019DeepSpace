@@ -212,7 +212,6 @@ public class DriveTrain extends Subsystem {
   public void updateDashboard(){
     if (delayCount ==10){
       SmartDashboard.putNumber("DT - Left master voltage", leftTalon.getMotorOutputVoltage());
-      SmartDashboard.putNumber("DT - Left master voltage", leftTalon.getMotorOutputVoltage());
 			SmartDashboard.putNumber("DT - Right master voltage", rightTalon.getMotorOutputVoltage());
 			SmartDashboard.putNumber("DT - Left Encoder", getLeftEncoderTicks());
 			SmartDashboard.putNumber("DT - Right Encoder", getRightEncoderTicks());

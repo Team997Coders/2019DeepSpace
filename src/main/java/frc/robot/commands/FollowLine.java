@@ -8,7 +8,9 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
+import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.command.Command;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Follow a line on the floor and stop when range is close
@@ -20,11 +22,13 @@ public class FollowLine extends Command {
   private double noPowerMotor = -.5;
   private double normal = .1; //for double line seen
   private double straight = .35;
+  private long extratimems;
+  private long starts;
 
-
-  public FollowLine() {
+  public FollowLine(long extratimems) {
     requires(Robot.driveTrain);
     requires(Robot.lineFollowing);
+    this.extratimems = extratimems;
   }
 
   // Called just before this Command runs the first time
@@ -36,6 +40,8 @@ public class FollowLine extends Command {
   // TODO: Define your gain parameters as constants
   // TODO: Use drivetrain convenience methods to turn right and left
   // instead of setVolts.
+
+
   @Override
   protected void execute() {
 
@@ -59,30 +65,35 @@ public class FollowLine extends Command {
 
       Robot.driveTrain.setVolts(straight, straight);
 
-    }else{
-
-      Robot.driveTrain.setVolts(0, 0);
-      
+    }else{ 
+        this.starts = System.currentTimeMillis();
     }      
   }
-
-  
+ 
 
 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Robot.lineFollowing.centerLineSeen() == true){
-      if (Robot.lineFollowing.isCloseToTarget()) {
-        System.out.println("I am finished");
+    if(Robot.lineFollowing.noLineSeen()){
+      if((starts + extratimems)<System.currentTimeMillis()){
         return true;
-      } else {
-        return false;
+      }else{
+        if(Robot.lineFollowing.centerLineSeen() == true){
+          if (Robot.lineFollowing.isCloseToTarget()) {
+            System.out.println("I am finished");
+            return true;
+          } else {
+            return false;
+          }
+        }else{
+          return false;
+        }   
       }
     }else{
       return false;
-    }   
+    }
   }
 
   // Called once after isFinished returns true
