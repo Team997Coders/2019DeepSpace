@@ -13,7 +13,7 @@ public class AutoCenter extends CommandGroup {
    * Add your docs here.
    */
   public AutoCenter() {
-addSequential(new DriveToDistance(1));
+    addSequential(new DriveToDistance(1));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
