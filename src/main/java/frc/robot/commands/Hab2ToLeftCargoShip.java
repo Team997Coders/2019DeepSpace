@@ -9,19 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class Hab1ToRocket extends CommandGroup {
+public class Hab2ToLeftCargoShip extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public Hab1ToRocket() {
-<<<<<<< HEAD
-
-    addSequential(new DriveToDistance(24.14 / 12));//gets off platform
-    addSequential(new DriveToAngle(41.9425));//Turns robot in direction of rocket
-    addSequential(new DriveToDistance(158.628 / 12));//goes to the rocket
-
-=======
->>>>>>> 6882204a07c5c1d8b8f3d88a62666237e3d404fb
+  public Hab2ToLeftCargoShip() {
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
