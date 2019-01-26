@@ -22,12 +22,12 @@ public class RobotMap {
     platform = 4.023333333333,
     habToShuttleDistance = 172.25/12,
     lv2HabToLv1HabDistance = 96.69035/12,
-    middleHabLv1ToLineOnShuttle = 138.56349/12;
+    middleHabLv1ToLineOnShuttle = 138.56349/12,
+    ticksInFoot = 10; //change value
+  }
 
-}
   public static class Ports {
-    
-    public static final int 
+    public static final int
       gamepad1 = 0,
       gamepad2 = 1,
 
@@ -44,7 +44,6 @@ public class RobotMap {
       rightTalon = 5;
 
       public static final SerialPort.Port AHRSPort = SerialPort.Port.kUSB;
-
   }
 
 }
