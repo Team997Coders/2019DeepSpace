@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -34,5 +35,8 @@ public class HatchManipulator extends Subsystem {
   }
   @Override
   public void initDefaultCommand() {
+  }
+  public void updateDashboard(){
+    SmartDashboard.putBoolean("HatPiston Extended", hatchPistonState);
   }
 }

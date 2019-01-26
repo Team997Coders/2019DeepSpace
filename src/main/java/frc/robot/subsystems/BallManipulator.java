@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 /**
@@ -37,6 +38,8 @@ public class BallManipulator extends Subsystem {
    public void stopMotor(){
      ballMotor.set(ControlMode.PercentOutput, 0);
    }
+
+   
   // here. Call these from Commands.
 
   @Override
@@ -44,4 +47,8 @@ public class BallManipulator extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+  public void updateDashboard(){
+    SmartDashboard.putNumber("BallManipulator Volts", ballMotor.getMotorOutputVoltage());
+  }
+  
 }
