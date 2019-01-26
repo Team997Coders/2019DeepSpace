@@ -48,7 +48,7 @@ public class BallManipulator extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
   public void updateDashboard(){
-    SmartDashboard.putNumber("BallManipulator Volts", ballMotor.getMotorOutputVoltage());
+    SmartDashboard.putNumber("BallManipulator Volts", ballMotor.getSelectedSensorVelocity());
   }
   
 }
