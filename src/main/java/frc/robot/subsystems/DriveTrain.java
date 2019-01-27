@@ -134,6 +134,16 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
+  public void setBrake() {
+    leftTalon.setNeutralMode(NeutralMode.Brake);
+		rightTalon.setNeutralMode(NeutralMode.Brake);
+  }
+
+  public void setCoast() {
+    leftTalon.setNeutralMode(NeutralMode.Coast);
+		rightTalon.setNeutralMode(NeutralMode.Coast);
+  }
+
   /**
    * Stop the drive train
    */

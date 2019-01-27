@@ -8,8 +8,12 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -22,8 +26,9 @@ public class FollowLine extends Command {
   private double noPowerMotor = -.5;
   private double normal = .1; //for double line seen
   private double straight = .35;
-  private long extratimems;
+  private long extratimems = 1000;
   private long starts;
+  private boolean firstTime = false;
 
   public FollowLine(long extratimems) {
     requires(Robot.driveTrain);
@@ -34,6 +39,7 @@ public class FollowLine extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {    
+    firstTime = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -45,30 +51,51 @@ public class FollowLine extends Command {
   @Override
   protected void execute() {
 
-    if(Robot.lineFollowing.leftCenterLineSeen()){
-
-      Robot.driveTrain.setVolts(normal, powerMotor);
-
-    }else if(Robot.lineFollowing.rightCenterLineSeen()){
-
-      Robot.driveTrain.setVolts(powerMotor , normal);
-    
-    }else if(Robot.lineFollowing.leftLineSeen()){
-
-      Robot.driveTrain.setVolts(noPowerMotor, powerMotor);
-    
-    }else if(Robot.lineFollowing.rightLineSeen()){
-
-      Robot.driveTrain.setVolts(powerMotor, noPowerMotor);; 
-
-    }else if(Robot.lineFollowing.centerLineSeen()){
-
-      Robot.driveTrain.setVolts(straight, straight);
-
-    }else{ 
+    if(Robot.lineFollowing.noLineSeen()){
+      if(this.firstTime == false){
         this.starts = System.currentTimeMillis();
-    }      
-  }
+        firstTime = true;
+      }
+      else{
+        if((starts + extratimems) > System.currentTimeMillis()){
+  
+          Robot.driveTrain.setVolts(straight, straight);
+        
+        }
+        else{
+  
+          Robot.driveTrain.stop();
+  
+        }
+      }
+    }
+  else{
+      if(Robot.lineFollowing.leftCenterLineSeen()){
+
+        Robot.driveTrain.setVolts(normal, powerMotor);
+
+      }else if(Robot.lineFollowing.rightCenterLineSeen()){
+
+        Robot.driveTrain.setVolts(powerMotor , normal);
+    
+      }else if(Robot.lineFollowing.leftLineSeen()){
+
+        Robot.driveTrain.setVolts(noPowerMotor, powerMotor);
+    
+      }else if(Robot.lineFollowing.rightLineSeen()){
+
+        Robot.driveTrain.setVolts(powerMotor, noPowerMotor);; 
+
+      }else if(Robot.lineFollowing.centerLineSeen()){
+
+        Robot.driveTrain.setVolts(straight, straight);
+
+      }else{
+
+        Robot.driveTrain.stop();
+      }
+    }
+  }      
  
 
 
@@ -76,22 +103,15 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Robot.lineFollowing.noLineSeen()){
-      if((starts + extratimems)<System.currentTimeMillis()){
+    if(Robot.lineFollowing.centerLineSeen() == true){
+      if (Robot.lineFollowing.isCloseToTarget()) {
+        SmartDashboard.putString("Are you done?", "Yes!");
         return true;
-      }else{
-        if(Robot.lineFollowing.centerLineSeen() == true){
-          if (Robot.lineFollowing.isCloseToTarget()) {
-            System.out.println("I am finished");
-            return true;
-          } else {
-            return false;
-          }
-        }else{
-          return false;
-        }   
+    } else {
+        return false;
       }
-    }else{
+    } 
+    else{
       return false;
     }
   }
