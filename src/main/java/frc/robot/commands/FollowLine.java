@@ -28,7 +28,7 @@ public class FollowLine extends Command {
   private double straight = .35;
   private long extratimems = 1000;
   private long starts;
-  private boolean firstTime = false;
+  private boolean firstTime;
 
   public FollowLine(long extratimems) {
     requires(Robot.driveTrain);
@@ -39,7 +39,7 @@ public class FollowLine extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {    
-    firstTime = false;
+    firstTime = true;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -52,15 +52,23 @@ public class FollowLine extends Command {
   protected void execute() {
 
     if(Robot.lineFollowing.noLineSeen()){
-      if(this.firstTime == false){
+      if(this.firstTime == true){
         this.starts = System.currentTimeMillis();
-        firstTime = true;
+        firstTime = false;
       }
       else{
         if((starts + extratimems) > System.currentTimeMillis()){
   
           Robot.driveTrain.setVolts(straight, straight);
         
+        }
+        else if(Robot.lineFollowing.anyLineSeen()){
+
+          //need to have a brake then start the other big else statement
+          //I think this is the right statement
+         
+          //Robot.driveTrain.setBrake();
+
         }
         else{
   
@@ -103,7 +111,7 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Robot.lineFollowing.centerLineSeen() == true){
+    if(Robot.lineFollowing.centerLineSeen()){
       if (Robot.lineFollowing.isCloseToTarget()) {
         SmartDashboard.putString("Are you done?", "Yes!");
         return true;
@@ -127,5 +135,6 @@ public class FollowLine extends Command {
   @Override
   protected void interrupted() {
     end();
+    //Should it run this method when this is interrupted; it will stop the drivetrain untill another command runs
   }
 }
