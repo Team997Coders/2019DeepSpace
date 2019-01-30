@@ -13,9 +13,6 @@ import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
-import java.util.concurrent.TimeUnit;
-
 /**
  * Follow a line on the floor and stop when range is close
  * to target.
@@ -29,6 +26,7 @@ public class FollowLine extends Command {
   private long extratimems = 1000;
   private long starts;
   private boolean firstTime;
+  private boolean backup;
 
   public FollowLine(long extratimems) {
     requires(Robot.driveTrain);
@@ -40,6 +38,8 @@ public class FollowLine extends Command {
   @Override
   protected void initialize() {    
     firstTime = true;
+    backup = false;
+    Robot.driveTrain.setBrake();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -55,6 +55,7 @@ public class FollowLine extends Command {
       if(this.firstTime == true){
         this.starts = System.currentTimeMillis();
         firstTime = false;
+        
       }
       else{
         if((starts + extratimems) > System.currentTimeMillis()){
@@ -63,16 +64,13 @@ public class FollowLine extends Command {
         
         }
         else if(Robot.lineFollowing.anyLineSeen()){
-
-          //need to have a brake then start the other big else statement
-          //I think this is the right statement
          
-          //Robot.driveTrain.setBrake();
+          Robot.driveTrain.setBrake();
 
         }
         else{
   
-          Robot.driveTrain.stop();
+          Robot.driveTrain.setVolts(0,0);
   
         }
       }
@@ -100,7 +98,7 @@ public class FollowLine extends Command {
 
       }else{
 
-        Robot.driveTrain.stop();
+        Robot.driveTrain.setVolts(0,0);
       }
     }
   }      
@@ -127,9 +125,10 @@ public class FollowLine extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.stop();
-  }
+    Robot.driveTrain.setVolts(0,0);
+    Robot.driveTrain.setCoast();
 
+  }
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
