@@ -43,8 +43,7 @@ public class FollowLine extends Command {
   }
 
   // Called repeatedly when this Command is scheduled to run
-  // TODO: Define your gain parameters as constants
-  // TODO: Use drivetrain convenience methods to turn right and left
+  // TODO: add different value on the motor power when the ultrasensor value is smaller
   // instead of setVolts.
 
 
