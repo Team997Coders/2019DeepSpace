@@ -9,13 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class DriveToDistance extends Command {
   double distance;
   double minError = 3;
   public DriveToDistance(double setpoint) {
     requires(Robot.driveTrain);
-    distance = setpoint;
+    distance = setpoint * RobotMap.Values.ticksInFoot; //changes parameter (feet) to ticks
     
 
     // Use requires() here to declare subsystem dependencies
