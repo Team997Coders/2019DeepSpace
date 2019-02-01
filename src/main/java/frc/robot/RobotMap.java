@@ -15,8 +15,25 @@ package frc.robot;
  */
 public class RobotMap {
   public static class Ports {
-    public static int GamePad1 = 0;
-    public static int buttonB = 2;
+    public static int
+    
+      GamePad1 = 0,
+      buttonB = 2,
+
+      landingForward = 1,
+      landingReverse = 0,
+
+      leftYAxis = 1,
+      rightXAxis = 4,
+      rightYAxis = 5,
+      
+      leftVictor1 = 5,
+      leftVictor2 = 6,
+      rightVictor1 = 3,
+      rightVictor2 = 4,
+
+      leftTalon = 7,
+      rightTalon = 1;
   }
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.

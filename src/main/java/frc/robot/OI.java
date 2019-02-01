@@ -21,8 +21,43 @@ public class OI {
   JoystickButton liftyButton;
 
   public OI() {
-  gamepad1 = new Joystick(RobotMap.Ports.GamePad1);
-  liftyButton = new JoystickButton(gamepad1, RobotMap.Ports.buttonB);
-  liftyButton.whenPressed(new Lifty());
+    gamepad1 = new Joystick(RobotMap.Ports.GamePad1);
+
+    liftyButton = new JoystickButton(gamepad1, RobotMap.Ports.buttonB);
+    liftyButton.whenPressed(new ToggleLandingGear());
+  }
+
+  public double getLeftYAxis() {
+    return bing(0.05, -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis), -1, 1);
+  }
+
+  public double getRightXAxis() {
+    return bing(0.05, gamepad1.getRawAxis(RobotMap.Ports.rightXAxis), -1, 1);
+  }
+
+  public double getRightYAxis() {
+    return bing(0.05, -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis), -1, 1);
+  }
+
+  public double deadBand(double value, double dead) {
+    if (Math.abs(value) < dead) {
+      return 0;
+    } else {
+      return value;
+    }
+  }
+
+  public double bing(double dead, double val, double min, double max) {
+    return clamp(min, max, deadBand(val, dead));
+  }
+
+  public double clamp(double min, double max, double val) {
+    if (min > val) {
+      return min;
+    } else if (max < val) {
+      return max;
+    } else {
+      return val;
+    }
   }
 }
