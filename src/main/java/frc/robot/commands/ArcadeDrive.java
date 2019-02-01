@@ -26,8 +26,8 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void execute() {
-    double left = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
-    double right = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
+    double left = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
+    double right = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
 
     left = Robot.oi.deadBand(left, 0.005);
     right = Robot.oi.deadBand(right, 0.005);

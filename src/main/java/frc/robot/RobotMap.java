@@ -21,17 +21,17 @@ public class RobotMap {
       gamepad1 = 0,
       gamepad2 = 1,
 
-      leftYAxis = 0,
+      leftYAxis = 1,
       rightXAxis = 4,
       rightYAxis = 5,
 
-      leftVictor1 = 0,
-      leftVictor2 = 1,
-      rightVictor1 = 2,
-      rightVictor2 = 3,
+      leftVictor1 = 2,
+      leftVictor2 = 3,
+      rightVictor1 = 5,
+      rightVictor2 = 6,
 
-      leftTalon = 4,
-      rightTalon = 5;
+      leftTalon = 1,
+      rightTalon = 4;
 
   }
 

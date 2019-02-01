@@ -32,8 +32,8 @@ public class RoboMisc {
 
         a.setInverted(reverse);
 
-        b.setInverted(false);
-        c.setInverted(false);
+        b.setInverted(reverse);
+        c.setInverted(reverse);
 
         a.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		a.setSensorPhase(true);
