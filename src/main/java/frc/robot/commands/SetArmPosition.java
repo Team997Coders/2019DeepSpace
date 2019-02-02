@@ -7,35 +7,46 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class SparkySpin extends Command {
-  public SparkySpin() {
-    requires(Robot.neoTesting);
+public class SetArmPosition extends Command {
+
+  private double setpoint, tolerance;
+
+  public SetArmPosition(double setpoint, double tolerance) {
+
+    this.setpoint = setpoint;
+    this.tolerance = tolerance;
+
+    requires(Robot.arm);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.arm.releaseBrake();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.neoTesting.setSpeed(Robot.oi.getLeftYAxis());
+    Robot.arm.pidController.setReference(setpoint - Robot.arm.readEncoder(), ControlType.kPosition);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return (Robot.arm.readEncoder() > setpoint - tolerance) && (Robot.arm.readEncoder() < setpoint + tolerance);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.neoTesting.setSpeed(0);
+    Robot.arm.setSpeed(0);
+    Robot.arm.engageBrake();
   }
 
   // Called when another command which requires one or more of the same

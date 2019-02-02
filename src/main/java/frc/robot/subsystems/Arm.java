@@ -8,7 +8,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.CANifier.PWMChannel;
+import com.revrobotics.CANDigitalInput;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -16,12 +23,14 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Arm extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  //private Spark armMotor;
-  private CANSparkMax sparkMax;
 
+  public CANPIDController pidController;
+
+  private CANSparkMax sparkMax;
   private CANifier dataBus;
+  private CANDigitalInput frontLimitSwitch, backLimitSwitch;
+
+  private Solenoid discBrake;
 
   // Read Encoder Vars
   private final double MAX = 5;
@@ -32,23 +41,32 @@ public class Arm extends Subsystem {
   private int flipModifier = 1;
 
   public Arm() {
+
+    sparkMax = new CANSparkMax(RobotMap.Ports.armSpark, MotorType.kBrushless);
+    pidController = sparkMax.getPIDController();
+    pidController.setP(RobotMap.Values.armPidP);
+    pidController.setI(RobotMap.Values.armPidI);
+    pidController.setD(RobotMap.Values.armPidD);
+
     dataBus = new CANifier(RobotMap.Ports.armCanifier);
 
-    initRead = 4.0;
+    discBrake = new Solenoid(RobotMap.Ports.discBrake);
+
+    initRead = getRawEncoder();
   }
 
   public void setSpeed(double speed) {
     sparkMax.set(speed);
   }
 
-  public double readEncoder(boolean test, double testInput) {
-    double newVal;
+  public double readEncoder() {
+    double newVal = getRawEncoder();
     
-    if (test) {
+    /*if (test) {
       newVal = testInput; // Read test input
     } else {
-      newVal = initRead; // Read encoder data
-    }
+      newVal = getRawEncoder(); // Read encoder data
+    }*/
 
     if (prevRead == -1) { 
       prevRead = newVal;
@@ -69,6 +87,20 @@ public class Arm extends Subsystem {
     revs = 0;
     prevRead = -1;
     initRead = 0; // Read data from encoder object
+  }
+
+  private double getRawEncoder() {
+    double[] a = new double[2];
+    dataBus.getPWMInput(PWMChannel.PWMChannel0, a);
+    return a[0];
+  }
+
+  public void engageBrake() {
+    discBrake.set(true);
+  }
+
+  public void releaseBrake() {
+    discBrake.set(false);
   }
 
   @Override

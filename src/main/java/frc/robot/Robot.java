@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import frc.robot.subsystems.DriveTrain;
 //import spartanlib.subsystem.drivetrain.TankDrive;
-import frc.robot.subsystems.NEOTesting;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -28,8 +26,6 @@ import frc.robot.subsystems.Arm;
  */
 public class Robot extends TimedRobot {
   public static OI oi;
-  public static DriveTrain driveTrain;
-  public static NEOTesting neoTesting;
   public static Arm arm;
 
   Command autonomousCommand;
@@ -42,8 +38,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // ADD SUBSYSTEMS HERE
-    //driveTrain = new DriveTrain();
-    //neoTesting = new NEOTesting();
     arm = new Arm();
 
     // NOT AFTER 'oi = new OI();'

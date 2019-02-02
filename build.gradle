@@ -57,13 +57,13 @@ dependencies {
     //testCompile 'org.mockito:mockito-core:2.23.4'
 }
 
-sourceSets {
+/*sourceSets {
     test {
         java {
             srcDirs = ["src/main/java/test"]  // Note @Peter's comment below
         }
     }
-}
+}*/
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib
@@ -71,9 +71,9 @@ sourceSets {
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
-    manifest {
+    /*manifest {
         //attributes('Class-Path' : 'home/lvuser/deploy/SpartanLib-1.0.0.jar')
         //attributes('Class-Path' : 'home/lvuser/deploy/*.jar')
         attributes('Class-Path' : fileTree(include: ['*.jar'], dir: 'src/main/deploy'))
-    }
+    }*/
 }

@@ -33,12 +33,20 @@ public class RobotMap {
       leftTalon = 4,
       rightTalon = 5,
 
-      spark = 10,
-      encoder = 7,
-      encoder2 = 8,
+      armSpark = 10,
+      armCanifier = 0,
 
-      analogEncoder = 1,
-      armCanifier = 0;
+      discBrake = 1; /* Placeholder */
+  }
+
+  public class Values {
+
+    public static final double
+      armPidP = 0.1,
+      armPidI = 0,
+      armPidD = 0,
+      armPidK = 0;
+
   }
 
 }
