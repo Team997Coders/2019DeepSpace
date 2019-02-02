@@ -7,51 +7,46 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
-import frc.robot.RobotMap;
-import frc.robot.subsystems.DriveTrain;
+public class AutoRetract extends Command {
 
-public class TankDrive extends Command {
-  private Joystick gamepad1;  
-  private DriveTrain driveTrain;
+  private boolean retracted = false;
 
-  public TankDrive(Joystick gamepad1, DriveTrain driveTrain) {
-    this.gamepad1 = gamepad1;
-    this.driveTrain = driveTrain;
-    requires(driveTrain);
+  public AutoRetract() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.liftGear);
   }
 
+  // Called just before this Command runs the first time
   @Override
-  protected void initialize() { }
-
-  private double getLeftYAxis() {
-    return -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis);
+  protected void initialize() {
   }
 
-  private double getRightYAxis() {    
-    return -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis);
-  }
-
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double left = getLeftYAxis();
-    double right = getRightYAxis();
-
-    driveTrain.setVolts(left, right);
+    if (Robot.liftGear.getIRSensorVoltage() > 0.95) {
+      retracted = true;
+      Robot.liftGear.retract();
+    }
   }
 
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return retracted;
   }
 
+  // Called once after isFinished returns true
   @Override
   protected void end() {
-    driveTrain.stop();
   }
 
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
     end();

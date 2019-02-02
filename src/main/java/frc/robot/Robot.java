@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutoDoNothing;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LiftGear;
+import frc.robot.subsystems.LineFollowing;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,22 +25,33 @@ import frc.robot.subsystems.LiftGear;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  // Will the getInstance call get the ArcadeDrive? It should.
+  //private final Command defaultDriveTrain;
   public static OI oi;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
+  public static LineFollowing lineFollowing;
 
+  
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
-  
+
+  /**
+   * This function is run when the robot is first started up and should be
+   * used for any initialization code.
+   */
   @Override
   public void robotInit() {
-    liftGear = new LiftGear();
+    liftGear = new LiftGear();  
     driveTrain = new DriveTrain();
+    lineFollowing = new LineFollowing();
 
     oi = new OI();
-    chooser.setDefaultOption("Default Auto", null);
+    chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
+
   }
 
   @Override
@@ -72,13 +85,21 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+    // Start your engines
+    //defaultDriveTrain.start();
   }
 
   @Override
   public void teleopPeriodic() {
+    lineFollowing.isCloseToTarget();
+
     Scheduler.getInstance().run();
   }
 

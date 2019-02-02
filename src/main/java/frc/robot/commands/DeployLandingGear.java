@@ -28,7 +28,7 @@ public class DeployLandingGear extends Command {
   
   @Override
   protected boolean isFinished() {
-    return Robot.liftGear.getIRVoltage() < 0.4;
+    return Robot.liftGear.getIRSensorVoltage() < 0.4;
   }
 
   @Override

@@ -34,7 +34,14 @@ public class RobotMap {
       rightVictor2 = 3,
 
       leftTalon = 4,
-      rightTalon = 1;
+      rightTalon = 1,
+
+      linesensorleft = 1,  
+      linesensorcenter = 3,
+      linesensorright = 2,
+      followLinebutton = 1,
+
+      ultrasonicsensor = 2;
 
   }
 

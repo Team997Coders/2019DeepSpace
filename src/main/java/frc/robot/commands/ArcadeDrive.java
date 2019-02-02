@@ -3,7 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+
 public class ArcadeDrive extends Command {
+
   public ArcadeDrive() {
     requires(Robot.driveTrain);
   }
@@ -24,9 +26,6 @@ public class ArcadeDrive extends Command {
     double left = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
     double right = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
 
-    left = Robot.oi.deadBand(left, 0.005);
-    right = Robot.oi.deadBand(right, 0.005);
-
     if (Robot.driveTrain.decell) {
       Robot.driveTrain.setVoltsDecel(left, right);
     } else {
@@ -41,9 +40,11 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.stopVolts();
+    Robot.driveTrain.stop();
   }
 
   @Override
-  protected void interrupted() { end(); }
+  protected void interrupted() {
+    end();
+  }
 }

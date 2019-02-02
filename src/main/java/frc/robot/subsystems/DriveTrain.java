@@ -2,17 +2,17 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RoboMisc;
 import frc.robot.RobotMap;
-import frc.robot.commands.*;
-import frc.robot.misc.GearBox;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SensorCollection;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import frc.robot.commands.ArcadeDrive;
+//import frc.robot.misc.GearBox;
 
 /**
  * This is ourr drivetrain. This year I split up the configuration for the drivetrain
@@ -30,36 +30,101 @@ public class DriveTrain extends Subsystem {
   private double prevL = 0, prevR = 0;
 
   // GearBox class stores information for the motor controllers for one gearbox
-  private GearBox leftBox, rightBox;
+  //private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
 
+  //Test
+
   public DriveTrain() {
-    System.out.println("Starting Drivetrain...");
+    leftTalon = new TalonSRX(RobotMap.Ports.leftTalon);
+    rightTalon = new TalonSRX(RobotMap.Ports.rightTalon);
+    leftVictor1 = new VictorSPX(RobotMap.Ports.leftVictor1);
+    leftVictor2 = new VictorSPX(RobotMap.Ports.leftVictor2);
+    rightVictor1 = new VictorSPX(RobotMap.Ports.rightVictor1);
+    rightVictor2 = new VictorSPX(RobotMap.Ports.rightVictor2);
 
-    // This uses the RoboMisc function standTalonSRXSetup(int, int, int, boolean) to initialize a Talon and 2 slave victors
-    leftBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon,
-      RobotMap.Ports.leftVictor1, RobotMap.Ports.leftVictor2, false);
-    rightBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon,
-      RobotMap.Ports.rightVictor1, RobotMap.Ports.rightVictor2, true);
+    this.setUp();
+  }
 
-    // Grab the objects created by the RoboMisc function and store them in this class
-    leftTalon = leftBox.talon;
-    rightTalon = rightBox.talon;
-    leftVictor1 = leftBox.victor1;
-    leftVictor2 = leftBox.victor2;
-    rightVictor1 = rightBox.victor1;
-    rightVictor2 = rightBox.victor2;
 
-    resetEncoders();
-    setCoast();
+  private void setUp(){
+    leftVictor1.follow(leftTalon);
+    leftVictor2.follow(leftTalon);
+    rightVictor1.follow(rightTalon);
+    rightVictor2.follow(rightTalon);
+
+    leftTalon.setInverted(false);
+    rightTalon.setInverted(true);
+
+    leftVictor1.setInverted(false);
+    leftVictor2.setInverted(false);
+    rightVictor1.setInverted(true);
+    rightVictor2.setInverted(true);
+
+    leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		leftTalon.setSensorPhase(true);
+		rightTalon.setSensorPhase(true);
+		
+		leftTalon.setNeutralMode(NeutralMode.Coast);
+		rightTalon.setNeutralMode(NeutralMode.Coast);
+		
+		/* set the peak, nominal outputs */
+		leftTalon.configNominalOutputForward(0, 10);
+		leftTalon.configNominalOutputReverse(0, 10);
+		//leftTalon.configPeakOutputForward(1, 10);	//Use for PB
+		//leftTalon.configPeakOutputReverse(-1, 10); //Use for PB
+		leftTalon.configPeakOutputForward(0.4, 10);	//Use for extrasensitive CB
+		leftTalon.configPeakOutputReverse(-0.4, 10); //Use for extrasensitive CB
+		
+		leftTalon.configPeakCurrentLimit(40, 10);
+		leftTalon.configPeakCurrentDuration(100, 10);
+		leftTalon.configContinuousCurrentLimit(30, 10);
+    leftTalon.enableCurrentLimit(true);
+    
+		rightTalon.configNominalOutputForward(0, 10);
+		rightTalon.configNominalOutputReverse(0, 10);
+		//rightTalon.configPeakOutputForward(1, 10); //Use for PB
+		//rightTalon.configPeakOutputReverse(-1, 10); //Use for PB
+		rightTalon.configPeakOutputForward(0.4, 10);  //Use for extrasensitive CB
+		rightTalon.configPeakOutputReverse(-0.4, 10); //Use for extrasensitive CB
+		
+		rightTalon.configPeakCurrentLimit(40, 10);
+    rightTalon.configPeakCurrentDuration(100, 10);
+		rightTalon.configContinuousCurrentLimit(30, 10);
+    rightTalon.enableCurrentLimit(true);
+    
+		leftTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 40, 10);
+		//leftTalon.configOpenloopRamp(0.25, 10);
+		rightTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 40, 10);
+		//rightTalon.configOpenloopRamp(0.25, 10);
+		
+		/* set closed loop gains in slot0 */
+		leftTalon.config_kF(0, 0.1097, 10);
+    leftTalon.config_kP(0, 0.113333, 10);
+    //leftTalon.config_kP(0, SmartDashboard.getNumber("P", 0), 10);
+    leftTalon.config_kI(0, 0, 10);
+    //leftTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
+    leftTalon.config_kD(0, 0, 10);		
+    //leftTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
+
+		rightTalon.config_kF(0, 0.1097, 10);
+    rightTalon.config_kP(0, 0.113333, 10);
+    //rightTalon.config_kP(0, SmartDashboard.getNumber("P", 0), 10);
+    rightTalon.config_kI(0, 0, 10);
+    //rightTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
+    rightTalon.config_kD(0, 0, 10);	
+    //rightTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
+		   
+
+    //shiftSolenoid = new DoubleSolenoid(RobotMap.Ports.gearPistonFor, RobotMap.Ports.gearPistonRev);
   }
 
   /**
-   * Set a percent input to the left and right talons
-   * 
-   * @param left Percentage input for the left talon.
-   * @param right Percentage input for the right talon.
+   * Apply a factor between 0 and 1 as a percentage of voltage
+   * @param left  Gain between 0 and 1 for left wheel
+   * @param right Gain between 0 and 1 for right wheel
    */
   public void setVolts(double left, double right) {
     leftTalon.set(ControlMode.PercentOutput, left);
@@ -67,13 +132,46 @@ public class DriveTrain extends Subsystem {
   }
 
   /**
-   * Sets the percentage input for the left and right talon to zero
+   * Stop the drive train
    */
-  public void stopVolts() {
+  public void stop() {
     // Set Motor Volts to 0
-    //System.out.println("Stop Volts Called");
-    leftTalon.set(ControlMode.PercentOutput, 0);
-    rightTalon.set(ControlMode.PercentOutput, 0);
+    driveStraight(0);
+  }
+
+  /**
+   * Turn right (without having to remember which wheel to slow down ;-)
+   * Use the gain to control how fast the fastest wheel will go and offset
+   * to control how fast the slower wheel will go in relation to the faster wheel.
+   * 
+   * @param gain    Number between 0 and 1 representing the factor of full power
+   * @param offset  Number between 0 and 1 representing the factor applied to gain for slower wheel
+   */
+  public void turnRight(double gain, double offset) {
+    leftTalon.set(ControlMode.PercentOutput, gain);
+    rightTalon.set(ControlMode.PercentOutput, gain * offset);
+  }
+
+  /**
+   * Turn right (without having to remember which wheel to slow down ;-)
+   * Use the gain to control how fast the fastest wheel will go and offset
+   * to control how fast the slower wheel will go in relation to the faster wheel.
+   * 
+   * @param gain    Number between 0 and 1 representing the factor of full power
+   * @param offset  Number between 0 and 1 representing the factor applied to gain for slower wheel
+   */
+  public void turnLeft(double gain, double offset) {
+    leftTalon.set(ControlMode.PercentOutput, gain * offset);
+    rightTalon.set(ControlMode.PercentOutput, gain);
+  }
+
+  /**
+   * Well, it's pretty obvious, no?
+   * 
+   * @param gain  Number between 0 and 1 representing the factor of full power
+   */
+  public void driveStraight(double gain) {
+    setVolts(gain, gain);
   }
 
   /**
@@ -224,6 +322,5 @@ public class DriveTrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new ArcadeDrive());
-    //setDefaultCommand(new TankDrive());
   }
 }

@@ -9,7 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.*;
+import frc.robot.commands.FollowLine;
+import frc.robot.commands.DeployLandingGear;
+import frc.robot.commands.RetractLandingGear;
+
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -21,6 +24,8 @@ public class OI {
   JoystickButton deployLandingGear;
   JoystickButton retractLandingGear;
 
+  private JoystickButton followLine;
+
   public OI() {
     gamepad1 = new Joystick(RobotMap.Ports.GamePad1);
 
@@ -29,6 +34,9 @@ public class OI {
 
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Ports.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
+
+    followLine = new JoystickButton(gamepad1, 1);
+    followLine.whileHeld(new FollowLine());
   }
 
   public double getLeftYAxis() {
@@ -60,11 +68,11 @@ public class OI {
       return val;
     }
   }
-  
+
   public double bing(double dead, double val, double min, double max) {
     return clamp(min, max, deadBand(val, dead));
   }
-  
+
   // KEEP THESE COMMENTS
   //// TRIGGERING COMMANDS WITH BUTTONS
   // Once you have a button, it's trivial to bind it to a button in one of

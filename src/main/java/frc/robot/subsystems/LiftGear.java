@@ -8,12 +8,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotMap;
 
 /**
  * Add your docs here
@@ -57,7 +54,7 @@ public class LiftGear extends Subsystem {
    * @return The voltage from the sensor. (For proto bot) Either around 1 ish for on
    * the ground or around 0.3 ish for up in the air
    */
-  public double getIRVoltage() {
+  public double getIRSensorVoltage() {
     return distanceIR.getVoltage();
   }
 
