@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 /**
  * Add your docs here.
@@ -83,10 +84,24 @@ public class Arm extends Subsystem {
     return (revs * MAX) + (newVal - initRead);
   }
 
-  public void resetEncoder() {
-    revs = 0;
-    prevRead = -1;
-    initRead = 0; // Read data from encoder object
+  public class Point {
+    public double x ,y;
+    public Point(double x, double y) {
+      this.x = x; this.y = y;
+    }
+  }
+
+  public Point cubicBezier(Point p0, Point p1, Point p2, Point p3, t) {
+    pFinal = new Point(0, 0);
+    double newX = Math.pow(1 - t, 3) * p0.x +
+                    Math.pow(1 - t, 2) * 3 * t * p1.x +
+                    (1 - t) * 3 * t * t * p2.x + t * t * t * p3.x;
+    double newY = Math.pow(1 - t, 3) * p0.y +
+                    Math.pow(1 - t, 2) * 3 * t * p1.y +
+                    (1 - t) * 3 * t * t * p2.y + t * t * t * p3.y;
+    pFinal.x = newX;
+    pFinal.y = newY;
+    return pFinal;
   }
 
   private double getRawEncoder() {
@@ -105,7 +120,5 @@ public class Arm extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
   }
 }
