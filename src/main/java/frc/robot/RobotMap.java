@@ -27,22 +27,24 @@ public class RobotMap {
       leftYAxis = 1,
       rightXAxis = 4,
       rightYAxis = 5,
-      
+
       leftVictor1 = 5,
       leftVictor2 = 6,
-      rightVictor1 = 3,
-      rightVictor2 = 4,
+      rightVictor1 = 2,
+      rightVictor2 = 3,
 
       leftTalon = 4,
       rightTalon = 1;
-  }
-  // For example to map the left and right motors, you could define the
-  // following variables to use with your drivetrain subsystem.
-  // public static int leftMotor = 1;
-  // public static int rightMotor = 2;
 
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
-  // public static int rangefinderPort = 1;
-  // public static int rangefinderModule = 1;
+  }
+
+  public class Values {
+
+    public static final double
+      P = 0.0002,
+      I = 0.0,
+      D = 0.0;
+
+  }
+
 }

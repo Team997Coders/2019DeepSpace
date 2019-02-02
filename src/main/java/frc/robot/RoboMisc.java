@@ -13,7 +13,7 @@ import frc.robot.misc.GearBox;
  * Add your docs here.
  */
 public class RoboMisc {
-
+  
   // This creates the Talon and 2 slave Victors for our standard half of the
   // drivetrain
   public static GearBox standTalonSRXSetup(int talon, int victor1, int victor2, boolean reverse) {

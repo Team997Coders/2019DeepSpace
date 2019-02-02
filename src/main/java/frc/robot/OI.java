@@ -17,7 +17,7 @@ import frc.robot.commands.*;
  */
 public class OI {
 
-  Joystick gamepad1; 
+  Joystick gamepad1, gamepad2;
   JoystickButton deployLandingGear;
   JoystickButton retractLandingGear;
 
@@ -51,10 +51,6 @@ public class OI {
     }
   }
 
-  public double bing(double dead, double val, double min, double max) {
-    return clamp(min, max, deadBand(val, dead));
-  }
-
   public double clamp(double min, double max, double val) {
     if (min > val) {
       return min;
@@ -64,4 +60,25 @@ public class OI {
       return val;
     }
   }
+  
+  public double bing(double dead, double val, double min, double max) {
+    return clamp(min, max, deadBand(val, dead));
+  }
+  
+  // KEEP THESE COMMENTS
+  //// TRIGGERING COMMANDS WITH BUTTONS
+  // Once you have a button, it's trivial to bind it to a button in one of
+  // three ways:
+
+  // Start the command when the button is pressed and let it run the command
+  // until it is finished as determined by it's isFinished method.
+  // button.whenPressed(new ExampleCommand());
+
+  // Run the command while the button is being held down and interrupt it once
+  // the button is released.
+  // button.whileHeld(new ExampleCommand());
+
+  // Start the command when the button is released and let it run the command
+  // until it is finished as determined by it's isFinished method.
+  // button.whenReleased(new ExampleCommand());
 }
