@@ -20,8 +20,8 @@ public class RobotMap {
       GamePad1 = 0,
       buttonB = 2,
 
-      landingForward = 1,
-      landingReverse = 0,
+      landingForward = 0,
+      landingReverse = 1,
 
       leftYAxis = 1,
       rightXAxis = 4,
@@ -32,7 +32,7 @@ public class RobotMap {
       rightVictor1 = 3,
       rightVictor2 = 4,
 
-      leftTalon = 7,
+      leftTalon = 4,
       rightTalon = 1;
   }
   // For example to map the left and right motors, you could define the

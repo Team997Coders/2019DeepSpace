@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    updateSmartDashboard();
   }
 
   /**
@@ -130,5 +131,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+
+  public void updateSmartDashboard() {
+    liftGear.updateSmartDashboard();
   }
 }
