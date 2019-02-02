@@ -11,8 +11,12 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
-//import frc.robot.misc.GearBox;
+import frc.robot.misc.GearBox;
+import frc.robot.RoboMisc;
 
 /**
  * This is ourr drivetrain. This year I split up the configuration for the drivetrain
@@ -30,7 +34,7 @@ public class DriveTrain extends Subsystem {
   private double prevL = 0, prevR = 0;
 
   // GearBox class stores information for the motor controllers for one gearbox
-  //private GearBox leftBox, rightBox;
+  private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
 
@@ -116,27 +120,26 @@ public class DriveTrain extends Subsystem {
     //rightTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
     rightTalon.config_kD(0, 0, 10);	
     //rightTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
-		   
-
-    //shiftSolenoid = new DoubleSolenoid(RobotMap.Ports.gearPistonFor, RobotMap.Ports.gearPistonRev);
   }
 
-  /**
-   * Apply a factor between 0 and 1 as a percentage of voltage
-   * @param left  Gain between 0 and 1 for left wheel
-   * @param right Gain between 0 and 1 for right wheel
-   */
+  // Apply left and right as percentage voltage
   public void setVolts(double left, double right) {
     leftTalon.set(ControlMode.PercentOutput, left);
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
-  /**
-   * Stop the drive train
-   */
-  public void stop() {
+  // Set the percentage of volts to 0
+  public void stopVolts() {
     // Set Motor Volts to 0
-    driveStraight(0);
+    //System.out.println("Stop Volts Called");
+    leftTalon.set(ControlMode.PercentOutput, 0);
+    rightTalon.set(ControlMode.PercentOutput, 0);
+  }
+
+  @Override
+  public void initDefaultCommand() {
+    setDefaultCommand(new ArcadeDrive());
+    //setDefaultCommand(new TankDrive());
   }
 
   /**
@@ -317,10 +320,5 @@ public class DriveTrain extends Subsystem {
     SmartDashboard.putNumber("Right Ticks DriveTrain", rightEncoderTicks());
     SmartDashboard.putNumber("Left Velocity Drivetrain", leftEncoderVelocity());
     SmartDashboard.putNumber("Right Velocity Drivetrain", rightEncoderVelocity());
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    setDefaultCommand(new ArcadeDrive());
   }
 }

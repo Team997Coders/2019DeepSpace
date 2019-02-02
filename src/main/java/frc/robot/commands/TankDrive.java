@@ -9,37 +9,25 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 
 public class TankDrive extends Command {
-  private Joystick gamepad1;  
-  private DriveTrain driveTrain;
 
-  public TankDrive(Joystick gamepad1, DriveTrain driveTrain) {
-    this.gamepad1 = gamepad1;
-    this.driveTrain = driveTrain;
-    requires(driveTrain);
+  public TankDrive() {
+    requires(Robot.driveTrain);
   }
 
   @Override
   protected void initialize() { }
 
-  private double getLeftYAxis() {
-    return -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis);
-  }
-
-  private double getRightYAxis() {    
-    return -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis);
-  }
-
   @Override
   protected void execute() {
-    double left = getLeftYAxis();
-    double right = getRightYAxis();
+    double left = Robot.oi.getLeftY();
+    double right = Robot.oi.getRightY();
 
-    driveTrain.setVolts(left, right);
+    Robot.driveTrain.setVolts(left, right);
   }
 
   @Override
@@ -49,7 +37,7 @@ public class TankDrive extends Command {
 
   @Override
   protected void end() {
-    driveTrain.stop();
+    Robot.driveTrain.setVolts(0, 0);
   }
 
   @Override

@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Add your docs here.
- */
+ *
 public class LineFollowingUnitTest {
 
    /*
@@ -90,3 +90,4 @@ public class LineFollowingUnitTest {
     }
 */
 }
+*/

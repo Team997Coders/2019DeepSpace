@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.AutoDoNothing;
+import frc.robot.commands.*;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
@@ -25,6 +26,10 @@ import frc.robot.subsystems.LineFollowing;
  * project.
  */
 public class Robot extends TimedRobot {
+  
+  public static OI oi;
+  public static DriveTrain driveTrain;
+  public static LineFollowing lineFollowing;
 
   // Will the getInstance call get the ArcadeDrive? It should.
   //private final Command defaultDriveTrain;
@@ -37,17 +42,24 @@ public class Robot extends TimedRobot {
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
+  public Robot(DriveTrain a, LineFollowing b) {
+    driveTrain = a;
+    lineFollowing = b;
+  }
+
+  public Robot() { super(); }
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    liftGear = new LiftGear();  
+    liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
 
     oi = new OI();
+    
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);

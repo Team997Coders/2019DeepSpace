@@ -1,15 +1,19 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-
+import frc.robot.RobotMap;
+import frc.robot.subsystems.DriveTrain;
 
 public class ArcadeDrive extends Command {
 
   public ArcadeDrive() {
     requires(Robot.driveTrain);
+    System.out.println("Arcade Init");
   }
-
+  
   @Override
   protected void initialize() {
     if (Robot.driveTrain.decell) {

@@ -7,9 +7,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * Follow a line on the floor and stop when range is close
@@ -41,32 +41,32 @@ public class FollowLine extends Command {
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "Yes! :) ");
       SmartDashboard.putString("Do you see two lines?", "No");
-
-      Robot.driveTrain.setVolts(.35, .35);
+      
+      Robot.driveTrain.setVolts(.25, .25);
     }else if(Robot.lineFollowing.rightLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
-
-      Robot.driveTrain.setVolts(.35, .15);
+      
+      Robot.driveTrain.setVolts(.25, .15);
     }else if(Robot.lineFollowing.leftLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
-
-      Robot.driveTrain.setVolts(.15, .35);
+      
+      Robot.driveTrain.setVolts(.15, .25);
     }else if(Robot.lineFollowing.rightCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
-
-      Robot.driveTrain.setVolts(.35 , .2);
+      
+      Robot.driveTrain.setVolts(.25 , .2);
     }else if(Robot.lineFollowing.leftCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
-
-      Robot.driveTrain.setVolts(.2, .35);
+      
+      Robot.driveTrain.setVolts(.2, .25);
     }else{
       SmartDashboard.putString("Do you see the line?", "No");
       SmartDashboard.putString("Do you see two lines?", "No");
@@ -74,24 +74,20 @@ public class FollowLine extends Command {
       Robot.driveTrain.setVolts(0, 0);
     }      
   }
-
   
-
-
-
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if((Robot.lineFollowing.rightLineSeen() == true || Robot.lineFollowing.centerLineSeen() == true) || Robot.lineFollowing.leftLineSeen() == true){
+    /*if(Robot.lineFollowing.rightLineSeen() == true || Robot.lineFollowing.centerLineSeen() == true || Robot.lineFollowing.leftLineSeen() == true){
       if (Robot.lineFollowing.isCloseToTarget()) {
-        System.out.println("I am finished");
         return true;
       } else {
         return false;
       }
     }else{
       return true;
-    }   
+    } */
+    return false;
   }
 
   // Called once after isFinished returns true
