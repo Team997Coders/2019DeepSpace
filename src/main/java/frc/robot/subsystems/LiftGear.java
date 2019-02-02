@@ -23,43 +23,51 @@ public class LiftGear extends Subsystem {
   private Solenoid piston;
   private AnalogInput distanceIR;
 
-  public boolean pistonState;
-  
-  // How will you be able to use piston1 and piston2 if they are null allocated objects??? How will you fix this???
-  // Hint hint: use a constructor
-
   public LiftGear() {
     piston = new Solenoid(0);
     piston.set(false);
-    pistonState = false;
 
     distanceIR = new AnalogInput(1);
   }
   
+  /**
+   * Extends the single solenoid piston
+   */
   public void extend() {
     piston.set(true);
-    pistonState = true;
   }
 
+  /**
+   * Retracts the single solenoid piston
+   */
   public void retract() {
     piston.set(false);
-    pistonState = false;
   }
 
+  /**
+   * Gives you the current state of the piston
+   * 
+   * @return True for piston is extended and False for retracted
+   */
+  public boolean getPistonState() { return piston.get(); }
+
+  /**
+   * Gets the voltage coming for the Infared Sensor's analog input
+   * 
+   * @return The voltage from the sensor. (For proto bot) Either around 1 ish for on
+   * the ground or around 0.3 ish for up in the air
+   */
   public double getIRVoltage() {
     return distanceIR.getVoltage();
   }
 
+  /**
+   * Updates the SmartDashboard with subsystem data
+   */
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Distance IR", distanceIR.getVoltage());
   }
-  
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
 
   @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+  public void initDefaultCommand() { }
 }

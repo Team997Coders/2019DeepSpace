@@ -12,8 +12,6 @@ import frc.robot.Robot;
 
 public class AutoRetractLandingGear extends Command {
 
-  private boolean retracted = false;
-
   public AutoRetractLandingGear() {
     requires(Robot.liftGear);
   }
@@ -23,14 +21,16 @@ public class AutoRetractLandingGear extends Command {
   
   @Override
   protected void execute() {
+
+    // If the IR sensor detects the platform
     if (Robot.liftGear.getIRVoltage() > 0.95) {
-      retracted = true;
       Robot.liftGear.retract();
     }
+
   }
   
   @Override
-  protected boolean isFinished() { return retracted; }
+  protected boolean isFinished() { return !Robot.liftGear.getPistonState(); }
   
   @Override
   protected void end() { }

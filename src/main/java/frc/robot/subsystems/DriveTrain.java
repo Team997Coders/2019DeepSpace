@@ -15,7 +15,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 /**
- * Add your docs here.
+ * This is ourr drivetrain. This year I split up the configuration for the drivetrain
+ * into another class so this one isn't comically long. We have a few different methods
+ * such as normal set volts and stop volts. Along with SetVoltsDecel and SetPosition.
+ * NOTE: Grayson hates deceleration code but he reeeealllly needs it. Also not sure
+ * if the decel code works so definetly check that first. Make sure the dampRate doesn't need adjusting.
  */
 public class DriveTrain extends Subsystem {
 
@@ -51,13 +55,20 @@ public class DriveTrain extends Subsystem {
     setCoast();
   }
 
-  // Apply left and right as percentage voltage
+  /**
+   * Set a percent input to the left and right talons
+   * 
+   * @param left Percentage input for the left talon.
+   * @param right Percentage input for the right talon.
+   */
   public void setVolts(double left, double right) {
     leftTalon.set(ControlMode.PercentOutput, left);
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
-  // Set the percentage of volts to 0
+  /**
+   * Sets the percentage input for the left and right talon to zero
+   */
   public void stopVolts() {
     // Set Motor Volts to 0
     //System.out.println("Stop Volts Called");
@@ -65,7 +76,14 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, 0);
   }
 
-  public void setVoltsDecell(double left, double right) {
+  /**
+   * Sets the percentage input for the left and right talon
+   * but with a deceleration dampener.
+   * 
+   * @param left Percentage input for the left talon
+   * @param right Percentage input for the right talon
+   */
+  public void setVoltsDecel(double left, double right) {
     double L = left;
     double R = right;
 
@@ -80,45 +98,84 @@ public class DriveTrain extends Subsystem {
     setVolts(L, R);
   }
 
+  /**
+   * Sets the desired tick position for the left and right talon
+   * 
+   * @param left Desired tick position for the left talon
+   * @param right Desired tick position for the right talon
+   */
   public void setPosition(double left, double right) {
     leftTalon.set(ControlMode.Position, left);
     rightTalon.set(ControlMode.Position, right);
   }
 
+  /**
+   * Gets the left talon's position output
+   * 
+   * @return Current tick position of the left talon's encoder
+   */
   public double leftEncoderTicks() {
     leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     return leftTalon.getSelectedSensorPosition(0);
   }
 
+  /**
+   * Gets the right talon's position output
+   * 
+   * @return Current tick position of the right talon's encoder
+   */
   public double rightEncoderTicks() {
     rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     return rightTalon.getSelectedSensorPosition(0);
   }
-  
+
+  /**
+   * Gets the left talon's velocity output
+   * 
+   * @return Current tick velocity of the left talon's encoder
+   */
   public double leftEncoderVelocity() {
     leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     return leftTalon.getSelectedSensorVelocity(0);
   }
 
+  /**
+   * Gets the right talon's velocity output
+   * 
+   * @return Current tick velocity of the right talon's encoder
+   */
   public double rightEncoderVelocity() {
     rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     return rightTalon.getSelectedSensorVelocity(0);
   }
   
+  /**
+   * Resets the encoders for both talons to 0
+   */
   public void resetEncoders() {
     leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
 		leftTalon.setSelectedSensorPosition(0, 0, 10);
 		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
     rightTalon.setSelectedSensorPosition(0, 0, 10);
   }
-  
+
+  /**
+   * Gets PID constants from the SmartDashboard and then uses setPIDValues(double, double, double)
+   */
   public void setPIDValues() {
-    double p = SmartDashboard.getNumber("P", 0);
+    double p = SmartDashboard.getNumber("P", 1);
     double i = SmartDashboard.getNumber("I", 0);
     double d = SmartDashboard.getNumber("D", 0);
     setPIDValues(p, i, d);
   }
   
+  /**
+   * Sets the parameter PID constants to the talons
+   * 
+   * @param p Proportional PID constant
+   * @param i Integral PID constant
+   * @param d derivative PID constant
+   */
   public void setPIDValues(double p, double i, double d) {
     leftTalon.config_kP(0, p, 0);
     rightTalon.config_kP(0, p, 0);
@@ -128,6 +185,9 @@ public class DriveTrain extends Subsystem {
     rightTalon.config_kP(0, d, 0);
   }
 
+  /**
+   * Sets the talons and their follow victors into BrakeMode
+   */
   public void setBrake() {
 		leftTalon.setNeutralMode(NeutralMode.Brake);
 		rightTalon.setNeutralMode(NeutralMode.Brake);
@@ -137,7 +197,10 @@ public class DriveTrain extends Subsystem {
 		leftVictor2.setNeutralMode(NeutralMode.Brake);
 		rightVictor2.setNeutralMode(NeutralMode.Brake);
 	}
-	
+  
+  /**
+   * Sets the talons and their follow victors into CoastMode
+   */
 	public void setCoast() {
 		leftTalon.setNeutralMode(NeutralMode.Coast);
 		rightTalon.setNeutralMode(NeutralMode.Coast);
@@ -146,8 +209,11 @@ public class DriveTrain extends Subsystem {
 		rightVictor1.setNeutralMode(NeutralMode.Coast);
 		leftVictor2.setNeutralMode(NeutralMode.Coast);
 		rightVictor2.setNeutralMode(NeutralMode.Coast);
-}
+  }
 
+  /**
+   * Updates the SmartDashboard with subsystem data
+   */
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Left Ticks DriveTrain", leftEncoderTicks());
     SmartDashboard.putNumber("Right Ticks DriveTrain", rightEncoderTicks());

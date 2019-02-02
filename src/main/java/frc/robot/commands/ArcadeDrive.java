@@ -28,7 +28,7 @@ public class ArcadeDrive extends Command {
     right = Robot.oi.deadBand(right, 0.005);
 
     if (Robot.driveTrain.decell) {
-      Robot.driveTrain.setVoltsDecell(left, right);
+      Robot.driveTrain.setVoltsDecel(left, right);
     } else {
       Robot.driveTrain.setVolts(left, right);
     }

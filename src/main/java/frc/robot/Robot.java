@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
+
     oi = new OI();
     chooser.setDefaultOption("Default Auto", null);
     // chooser.addOption("My Auto", new MyAutoCommand());

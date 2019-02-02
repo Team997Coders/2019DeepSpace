@@ -21,7 +21,7 @@ public class DeployLandingGear extends Command {
   
   @Override
   protected void execute() {
-    if (!Robot.liftGear.pistonState) {
+    if (!Robot.liftGear.getPistonState()) {
       Robot.liftGear.extend();
     }
   }
