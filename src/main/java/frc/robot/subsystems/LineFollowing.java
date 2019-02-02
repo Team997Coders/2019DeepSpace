@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 /**
@@ -11,11 +12,12 @@ import frc.robot.RobotMap;
  * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
+  //private final int HATCHDISTANCELIMIT = 80; 
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
   private AnalogInput m_ultrasonicSensorInput;
-
+  
   public LineFollowing() {
     m_sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
     m_sensorRightInput = new DigitalInput(RobotMap.Ports.linesensorright);
@@ -23,19 +25,19 @@ public class LineFollowing extends Subsystem {
     m_ultrasonicSensorInput = new AnalogInput(RobotMap.Ports.ultrasonicsensor);
   }
 
-  public boolean leftLineSeen(){
+  public boolean leftLineSeen() {
     return(m_sensorLeftInput.get());
   }
 
-  public boolean rightLineSeen(){
+  public boolean rightLineSeen() {
     return(m_sensorRightInput.get());
   }
 
-  public boolean centerLineSeen(){
+  public boolean centerLineSeen() {
     return(m_sensorCenterInput.get());
   }
 
-  public boolean anyLineSeen(){
+  public boolean anyLineSeen() {
     return(m_sensorCenterInput.get() || m_sensorLeftInput.get() || m_sensorRightInput.get());
   }
 
@@ -55,7 +57,6 @@ public class LineFollowing extends Subsystem {
   // we might break up this functionality into its own subsystem. Not sure
   // that we will so it's ok for now that it lives here.
   public boolean isCloseToTarget() {
-
     return m_ultrasonicSensorInput.getValue() < 75;
   }
 

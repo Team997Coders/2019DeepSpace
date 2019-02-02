@@ -41,31 +41,31 @@ public class FollowLine extends Command {
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "Yes! :) ");
       SmartDashboard.putString("Do you see two lines?", "No");
-
+      
       Robot.driveTrain.setVolts(.25, .25);
     }else if(Robot.lineFollowing.rightLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
-
+      
       Robot.driveTrain.setVolts(.25, .15);
     }else if(Robot.lineFollowing.leftLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "No");
-
+      
       Robot.driveTrain.setVolts(.15, .25);
     }else if(Robot.lineFollowing.rightCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
-
+      
       Robot.driveTrain.setVolts(.25 , .2);
     }else if(Robot.lineFollowing.leftCenterLineSeen()){
       SmartDashboard.putString("Do you see the line?", "Yes");
       SmartDashboard.putString("Centered?", "No! :( ");
       SmartDashboard.putString("Do you see two lines?", "Yes");
-
+      
       Robot.driveTrain.setVolts(.2, .25);
     }else{
       SmartDashboard.putString("Do you see the line?", "No");
@@ -74,11 +74,7 @@ public class FollowLine extends Command {
       Robot.driveTrain.setVolts(0, 0);
     }      
   }
-
   
-
-
-
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
@@ -91,7 +87,7 @@ public class FollowLine extends Command {
     }else{
       return true;
     } */
-    return false;   
+    return false;
   }
 
   // Called once after isFinished returns true

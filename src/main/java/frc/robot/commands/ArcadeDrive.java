@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -20,20 +13,28 @@ public class ArcadeDrive extends Command {
     requires(Robot.driveTrain);
     System.out.println("Arcade Init");
   }
-
+  
   @Override
-  protected void initialize() { }
+  protected void initialize() {
+    if (Robot.driveTrain.decell) {
+      Robot.driveTrain.setBrake();
+    } else {
+      Robot.driveTrain.setCoast();
+    }
+
+    Robot.driveTrain.resetEncoders();
+  }
 
   @Override
   protected void execute() {
-    //System.out.println("Arcade Execute");
-    double left = Robot.oi.getLeftY() + Robot.oi.getRightX();
-    double right = Robot.oi.getLeftY() - Robot.oi.getRightX();
+    double left = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
+    double right = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
 
-    SmartDashboard.putNumber("Left Voltage", left);
-    SmartDashboard.putNumber("RIght Voltage", right);
-
-    Robot.driveTrain.setVolts(left, right);
+    if (Robot.driveTrain.decell) {
+      Robot.driveTrain.setVoltsDecel(left, right);
+    } else {
+      Robot.driveTrain.setVolts(left, right);
+    }
   }
 
   @Override
@@ -43,7 +44,7 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
+    Robot.driveTrain.stop();
   }
 
   @Override
