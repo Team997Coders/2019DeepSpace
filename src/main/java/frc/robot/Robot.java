@@ -130,13 +130,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    if (lastTime + 500 < System.currentTimeMillis()) {
-      lastTime = System.currentTimeMillis();
-      System.out.println("\n\n\n  " + arm.limitSwitch.get());
-      SmartDashboard.putBoolean("Limit Switch", arm.limitSwitch.get());
-    }
-
-    //arm.readEncoder(false, 0);
 
     Scheduler.getInstance().run();
   }
