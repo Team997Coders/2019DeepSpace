@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -101,14 +94,31 @@ public class DriveTrain extends Subsystem {
     rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     return rightTalon.getSelectedSensorPosition(0);
   }
+  
+  public double leftEncoderVelocity() {
+    leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+    return leftTalon.getSelectedSensorVelocity(0);
+  }
 
+  public double rightEncoderVelocity() {
+    rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+    return rightTalon.getSelectedSensorVelocity(0);
+  }
+  
   public void resetEncoders() {
     leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
 		leftTalon.setSelectedSensorPosition(0, 0, 10);
 		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
     rightTalon.setSelectedSensorPosition(0, 0, 10);
   }
-
+  
+  public void setPIDValues() {
+    double p = SmartDashboard.getNumber("P", 0);
+    double i = SmartDashboard.getNumber("I", 0);
+    double d = SmartDashboard.getNumber("D", 0);
+    setPIDValues(p, i, d);
+  }
+  
   public void setPIDValues(double p, double i, double d) {
     leftTalon.config_kP(0, p, 0);
     rightTalon.config_kP(0, p, 0);
@@ -140,7 +150,9 @@ public class DriveTrain extends Subsystem {
 
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Left Ticks DriveTrain", leftEncoderTicks());
-    SmartDashboard.putNumber("RIght Ticks DriveTrain", rightEncoderTicks());
+    SmartDashboard.putNumber("Right Ticks DriveTrain", rightEncoderTicks());
+    SmartDashboard.putNumber("Left Velocity Drivetrain", leftEncoderVelocity());
+    SmartDashboard.putNumber("Right Velocity Drivetrain", rightEncoderVelocity());
   }
 
   @Override

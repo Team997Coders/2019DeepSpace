@@ -9,26 +9,38 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.*;
 
+/**
+ * This class is the glue that binds the controls on the physical operator
+ * interface to the commands and command groups that allow control of the robot.
+ */
 public class OI {
 
-  private Joystick gamepad1, gamepad2;
+  Joystick gamepad1, gamepad2;
+  JoystickButton deployLandingGear;
+  JoystickButton retractLandingGear;
 
   public OI() {
-    gamepad1 = new Joystick(RobotMap.Ports.gamepad1);
-    gamepad2 = new Joystick(RobotMap.Ports.gamepad2);
+    gamepad1 = new Joystick(RobotMap.Ports.GamePad1);
+
+    deployLandingGear = new JoystickButton(gamepad1, RobotMap.Ports.buttonB);
+    deployLandingGear.whenPressed(new DeployLandingGear());
+
+    retractLandingGear = new JoystickButton(gamepad1, RobotMap.Ports.buttonBack);
+    retractLandingGear.whenPressed(new RetractLandingGear());
   }
 
   public double getLeftYAxis() {
-    return -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis);
+    return bing(0.05, -gamepad1.getRawAxis(RobotMap.Ports.leftYAxis), -1, 1);
   }
 
   public double getRightXAxis() {
-    return gamepad1.getRawAxis(RobotMap.Ports.rightXAxis);
+    return bing(0.05, gamepad1.getRawAxis(RobotMap.Ports.rightXAxis), -1, 1);
   }
 
   public double getRightYAxis() {
-    return -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis);
+    return bing(0.05, -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis), -1, 1);
   }
 
   public double deadBand(double value, double dead) {
@@ -39,6 +51,20 @@ public class OI {
     }
   }
 
+  public double clamp(double min, double max, double val) {
+    if (min > val) {
+      return min;
+    } else if (max < val) {
+      return max;
+    } else {
+      return val;
+    }
+  }
+  
+  public double bing(double dead, double val, double min, double max) {
+    return clamp(min, max, deadBand(val, dead));
+  }
+  
   // KEEP THESE COMMENTS
   //// TRIGGERING COMMANDS WITH BUTTONS
   // Once you have a button, it's trivial to bind it to a button in one of

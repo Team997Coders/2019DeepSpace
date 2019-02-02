@@ -14,12 +14,15 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
-
-  public class Ports {
+  public static class Ports {
+    public static int
     
-    public static final int 
-      gamepad1 = 0,
-      gamepad2 = 1,
+      GamePad1 = 0,
+      buttonB = 2,
+      buttonBack = 7,
+
+      landingForward = 0,
+      landingReverse = 1,
 
       leftYAxis = 1,
       rightXAxis = 4,
