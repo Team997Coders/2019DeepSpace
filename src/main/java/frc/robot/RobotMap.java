@@ -19,6 +19,7 @@ public class RobotMap {
     
       GamePad1 = 0,
       buttonB = 2,
+      buttonBack = 7,
 
       landingForward = 0,
       landingReverse = 1,

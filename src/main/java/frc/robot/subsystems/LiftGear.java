@@ -46,6 +46,10 @@ public class LiftGear extends Subsystem {
     pistonState = false;
   }
 
+  public double getIRVoltage() {
+    return distanceIR.getVoltage();
+  }
+
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Distance IR", distanceIR.getVoltage());
   }

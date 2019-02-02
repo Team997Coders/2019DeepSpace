@@ -18,13 +18,17 @@ import frc.robot.commands.*;
 public class OI {
 
   Joystick gamepad1; 
-  JoystickButton liftyButton;
+  JoystickButton deployLandingGear;
+  JoystickButton retractLandingGear;
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Ports.GamePad1);
 
-    liftyButton = new JoystickButton(gamepad1, RobotMap.Ports.buttonB);
-    liftyButton.whenPressed(new ToggleLandingGear());
+    deployLandingGear = new JoystickButton(gamepad1, RobotMap.Ports.buttonB);
+    deployLandingGear.whenPressed(new DeployLandingGear());
+
+    retractLandingGear = new JoystickButton(gamepad1, RobotMap.Ports.buttonBack);
+    retractLandingGear.whenPressed(new RetractLandingGear());
   }
 
   public double getLeftYAxis() {
