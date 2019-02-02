@@ -25,13 +25,13 @@ public class RobotMap {
       rightXAxis = 4,
       rightYAxis = 5,
 
-      leftVictor1 = 2,
-      leftVictor2 = 3,
-      rightVictor1 = 5,
-      rightVictor2 = 6,
+      leftVictor1 = 5,
+      leftVictor2 = 6,
+      rightVictor1 = 2,
+      rightVictor2 = 3,
 
-      leftTalon = 1,
-      rightTalon = 4;
+      leftTalon = 4,
+      rightTalon = 1;
 
   }
 

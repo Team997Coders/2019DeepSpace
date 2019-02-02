@@ -24,8 +24,8 @@ public class RoboMisc {
     // This creates the Talon and 2 slave Victors for our standard half of the drivetrain
     public static GearBox standTalonSRXSetup(int talon, int victor1, int victor2, boolean reverse) {
         TalonSRX a = new TalonSRX(talon);
-        VictorSPX b = new VictorSPX(RobotMap.Ports.leftVictor1);
-        VictorSPX c = new VictorSPX(RobotMap.Ports.leftVictor2);
+        VictorSPX b = new VictorSPX(victor1);
+        VictorSPX c = new VictorSPX(victor2);
 
         b.follow(a);
         c.follow(a);
