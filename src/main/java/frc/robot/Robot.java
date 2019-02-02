@@ -26,11 +26,6 @@ import frc.robot.subsystems.LineFollowing;
  * project.
  */
 public class Robot extends TimedRobot {
-  
-  public static OI oi;
-  public static DriveTrain driveTrain;
-  public static LineFollowing lineFollowing;
-
   // Will the getInstance call get the ArcadeDrive? It should.
   //private final Command defaultDriveTrain;
   public static OI oi;
