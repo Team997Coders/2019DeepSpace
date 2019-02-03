@@ -62,4 +62,9 @@ public class LineFollowing extends Subsystem {
 
   @Override
   public void initDefaultCommand(){ }
+
+  public void updateSmarts() {
+    SmartDashboard.putNumber("Ultrasonic", m_ultrasonicSensorInput.getValue());
+    SmartDashboard.putBoolean("Line Lock", centerLineSeen() && !leftLineSeen() && !rightLineSeen());
+  }
 }

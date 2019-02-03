@@ -7,6 +7,7 @@ import frc.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -120,6 +121,9 @@ public class DriveTrain extends Subsystem {
     //rightTalon.config_kI(0, SmartDashboard.getNumber("I", 0), 10);
     rightTalon.config_kD(0, 0, 10);	
     //rightTalon.config_kD(0, SmartDashboard.getNumber("D", 0), 10);
+
+    new SensorCollection(leftTalon);
+		new SensorCollection(rightTalon);
   }
 
   // Apply left and right as percentage voltage
