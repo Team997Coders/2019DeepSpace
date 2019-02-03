@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.io.IOException;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,9 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
+import frc.robot.vision.CameraVisionClient;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,6 +34,11 @@ public class Robot extends TimedRobot {
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static LineFollowing lineFollowing;
+  // Note this could be null and because we continue to wire these up
+  // in this manner, guards will have to be put around all accesses.
+  // Otherwise null pointer exceptions will drive you crazy, in the case
+  // we do not connect to the Pi for some reason.
+  public static CameraVisionClient cameraVisionClient;
 
   
   Command autonomousCommand;
@@ -52,6 +59,16 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
+
+    // Connect to remote vision subsystem
+    try {
+      cameraVisionClient = new CameraVisionClient("10.9.97.6");
+    } catch (IOException e) {
+      // TODO: What is going to be the timing of roborio network availability, boot speed,
+      // and Pi boot speed? Need to test.
+      System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
+      System.out.println("Robot will proceed blind.");
+    }
 
     oi = new OI();
     
