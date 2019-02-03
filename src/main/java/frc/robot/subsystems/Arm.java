@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifier.PWMChannel;
 import com.revrobotics.CANDigitalInput;
@@ -34,8 +36,8 @@ public class Arm extends Subsystem {
   private Solenoid discBrake;
 
   // Read Encoder Vars
-  private final double MAX = 5;
-  private final double LIMIT = 3;
+  private final double MAX = 1.022;
+  private final double LIMIT = 0.5;
   private double initRead = 0;
   private double prevRead = -1;
   private int revs = 0;
@@ -87,7 +89,8 @@ public class Arm extends Subsystem {
   private double getRawEncoder() {
     double[] a = new double[2];
     dataBus.getPWMInput(PWMChannel.PWMChannel0, a);
-    return a[0];
+    SmartDashboard.putNumber("Duty Cycle", a[1]);
+    return a[0] / 1000;
   }
 
   public void engageBrake() {
@@ -100,5 +103,10 @@ public class Arm extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
+  }
+
+  public void updateSmarts() {
+    SmartDashboard.putNumber("Absolute Raw", getRawEncoder());
+    SmartDashboard.putNumber("Absolute Parsed", readEncoder());
   }
 }

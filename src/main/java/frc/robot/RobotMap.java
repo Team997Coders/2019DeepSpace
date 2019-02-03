@@ -34,7 +34,7 @@ public class RobotMap {
       rightTalon = 5,
 
       armSpark = 10,
-      armCanifier = 0,
+      armCanifier = 23,
 
       discBrake = 1; /* Placeholder */
   }
