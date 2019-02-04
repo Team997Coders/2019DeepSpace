@@ -15,10 +15,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
+import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
-import frc.robot.vision.CameraVisionClient;
+import frc.robot.vision.cameravisionclient.CameraVisionClient;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static LineFollowing lineFollowing;
+  public static CameraMount cameraMount;
   // Note this could be null and because we continue to wire these up
   // in this manner, guards will have to be put around all accesses.
   // Otherwise null pointer exceptions will drive you crazy, in the case
@@ -59,6 +61,7 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
+    cameraMount = new CameraMount(0, 120, 10, 170);
 
     // Connect to remote vision subsystem
     try {

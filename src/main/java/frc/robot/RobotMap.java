@@ -51,7 +51,10 @@ public class RobotMap {
       linesensorright = 2,
       followLinebutton = 1,
 
-      ultrasonicsensor = 2;
+      ultrasonicsensor = 2,
+
+      panservo = 0,                 // TODO: Need to check this
+      tiltservo = 1;                // TODO: Need to check this
 
   }
 

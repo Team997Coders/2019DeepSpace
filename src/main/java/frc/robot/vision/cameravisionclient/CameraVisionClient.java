@@ -1,4 +1,4 @@
-package frc.robot.vision;
+package frc.robot.vision.cameravisionclient;
 
 import java.io.Closeable;
 import java.io.IOException;
