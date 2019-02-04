@@ -120,9 +120,11 @@ public class ProcessCameraMountCommands extends Command {
       JoystickValueProvider panValueProvider,
       JoystickValueProvider tiltValueProvider,
       CameraMount cameraMount) throws IOException {
+
     // TODO: Put in guards
+
     // The CameraMount subsystem will be used.
-    requires(Robot.cameraMount);
+    requires(cameraMount);
     // Wire up dependencies.
     this.cameraMountServer = cameraMountServer;
     this.cameraMountServerThread = cameraMountServerThread;

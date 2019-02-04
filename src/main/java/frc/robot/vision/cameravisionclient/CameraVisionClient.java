@@ -109,7 +109,7 @@ public class CameraVisionClient implements Closeable {
           System.out.println("CameraVisionClient connected.");
         }
       } catch (Exception e) {
-        // do nothing
+        System.out.println("CameraVisionClient not connected.");
       }
     }
   }
