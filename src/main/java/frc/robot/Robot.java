@@ -37,16 +37,18 @@ public class Robot extends TimedRobot {
   public static LineFollowing lineFollowing;
   public static CameraMount cameraMount;
   // Note this could be null and because we continue to wire these up
-  // in this manner, guards will have to be put around all accesses.
+  // in this manner (statics), guards will have to be put around all accesses.
   // Otherwise null pointer exceptions will drive you crazy, in the case
   // we do not connect to the Pi for some reason.
   public static CameraVisionClient cameraVisionClient;
+  public PanTiltCamera panTiltCamera;
 
   
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
   public Robot(DriveTrain a, LineFollowing b) {
+    super();
     driveTrain = a;
     lineFollowing = b;
   }
@@ -74,7 +76,14 @@ public class Robot extends TimedRobot {
     }
 
     oi = new OI();
-    
+
+    // Because there is no hardware subsystem directly hooked up
+    // to this command (it is a proxy for calling CameraVision on Pi)
+    // there is not default command to keep this active. So manually start
+    // here...
+    panTiltCamera = new PanTiltCamera();
+    panTiltCamera.start();
+
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);

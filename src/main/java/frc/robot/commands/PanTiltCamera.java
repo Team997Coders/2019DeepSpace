@@ -15,12 +15,16 @@ public class PanTiltCamera extends Command {
     // Pan/Tilt servos will be exclusively controlled by a sockets command processor.
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
 
-  // Called repeatedly when this Command is scheduled to run
+  /**
+   * Simply forward pan/tilt commands (in otherwords, the current value
+   * of the vision operator interface joystick) to the CameraVisionClient.
+   * It will decide whether the servos will move and send commands back
+   * for the ProcessCameraMountCommands command to actualy move servos.
+   */
   @Override
   protected void execute() {
     if (Robot.cameraVisionClient != null) {
