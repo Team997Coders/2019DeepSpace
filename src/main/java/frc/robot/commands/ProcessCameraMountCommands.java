@@ -144,7 +144,12 @@ public class ProcessCameraMountCommands extends Command {
     cameraMountServer.acceptWhenAvailable();
   }
 
-  // Called repeatedly when this Command is scheduled to run
+  /**
+   * Each pump will check to see if a socket is available from a client
+   * connection attempt (presumable from the CameraVision application),
+   * and if so, will call the process method on the command processor
+   * to make the CameraMount servos move, if requested.
+   */
   @Override
   protected void execute() {
     // Trap IO errors...socket disconnects and such

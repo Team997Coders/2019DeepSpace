@@ -15,11 +15,13 @@ public class CameraMountServer implements Runnable, Closeable {
   private Socket socket;
   private volatile boolean accepting;
   private volatile boolean socketAvailable;
+  private volatile boolean stop;
 
   public CameraMountServer(ServerSocket serverSocket) {
     this.serverSocket = serverSocket;
     accepting = false;
     socketAvailable = false;
+    stop = false;
   }
 
   /**
@@ -42,6 +44,13 @@ public class CameraMountServer implements Runnable, Closeable {
   }
 
   /**
+   * Signal to stop running the thread processing loop.
+   */
+  public void stop() {
+    stop = true;
+  } 
+
+  /**
    * Get a socket based on a connection attempt from the CameraVision application.
    * @return  A socket ready for IO.
    */
@@ -58,6 +67,7 @@ public class CameraMountServer implements Runnable, Closeable {
    * method.
    */
   public void close() {
+    stop();
     if (socket != null) {
       if (!socket.isClosed() && socket.isConnected()) {
         try {
@@ -74,7 +84,7 @@ public class CameraMountServer implements Runnable, Closeable {
    * Main entry point for a thread running this server.
    */
   public void run() {
-    while (!Thread.currentThread().isInterrupted()) {
+    while (!Thread.currentThread().isInterrupted() && !stop) {
       // Get a socket so we can get ultimately get the streams for command processing
       try {
         // Only one accept will be allowed at a time...
@@ -84,7 +94,7 @@ public class CameraMountServer implements Runnable, Closeable {
           socket = serverSocket.accept();
           // Disable NAGLE algo so that reply packets are not held up.
           socket.setTcpNoDelay(true);
-          System.out.println("CameraMountServer command connection established...");
+          System.out.println("CameraMountServer command connection established.");
           // Set our flag telling the consumer a socket is fired
           // up and ready to go for command processing.
           socketAvailable = true;
