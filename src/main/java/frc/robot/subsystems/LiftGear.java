@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Add your docs here
+ * This subsystem manipulates the LiftGear
  */
 public class LiftGear extends Subsystem {
 

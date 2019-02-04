@@ -25,37 +25,79 @@ public class LineFollowing extends Subsystem {
     m_ultrasonicSensorInput = new AnalogInput(RobotMap.Ports.ultrasonicsensor);
   }
 
+  /**
+   * Returns a boolean representing whether or not the left linesensor is seeing white
+   * 
+   * @return True if white is seen. False if not
+   */
   public boolean leftLineSeen() {
     return(m_sensorLeftInput.get());
   }
 
+  /**
+   * Returns a boolean representing whether or not the right linesensor is seeing white
+   * 
+   * @return True if white is seen. False if not
+   */
   public boolean rightLineSeen() {
     return(m_sensorRightInput.get());
   }
 
+  /**
+   * Returns a boolean representing whether or not the middle linesensor is seeing white
+   * 
+   * @return True if white is seen. False if not
+   */
   public boolean centerLineSeen() {
     return(m_sensorCenterInput.get());
   }
 
+  /**
+   * Returns a boolean representing whether or not any of the linesensors see any white
+   * 
+   * @return True if white is seen. False if not
+   */
   public boolean anyLineSeen() {
     return(m_sensorCenterInput.get() || m_sensorLeftInput.get() || m_sensorRightInput.get());
   }
 
+  /**
+   * Returns boolean representing no white is seen by any sensor.
+   * This function is !anyLineSeen();
+   * 
+   * @return True if not white is seen. False if there is
+   */
   public boolean noLineSeen() {
     return !anyLineSeen();
   }
 
+  /**
+   * Returns boolean dependent on the middle and left sensors see white
+   * 
+   * @return True if middle and left sensors see white. False if only one or neither see white
+   */
   public boolean leftCenterLineSeen(){
     return(m_sensorCenterInput.get() && m_sensorLeftInput.get());
   }
 
+  /**
+   * Returns boolean dependent on the middle and right sensors see white
+   * 
+   * @return True if middle and right sensors see white. False if only on or neither see white
+   */
   public boolean rightCenterLineSeen(){
     return(m_sensorCenterInput.get() && m_sensorRightInput.get());
   }
 
-  // IF we thought this proximity sensor might be used in other ways,
-  // we might break up this functionality into its own subsystem. Not sure
-  // that we will so it's ok for now that it lives here.
+  /**
+   * Returns boolean whether the value from the ultrasonicSensor is close to the target.
+   * WARNING: I'm pretty sure we will be using a Infared Sensor so I will depricate
+   *     this function for now.
+   * 
+   * @return True if the value is less than the target value. False if not
+   * 
+   * @deprecated
+   */
   public boolean isCloseToTarget() {
     return m_ultrasonicSensorInput.getValue() < 75;
   }
@@ -63,6 +105,9 @@ public class LineFollowing extends Subsystem {
   @Override
   public void initDefaultCommand(){ }
 
+  /**
+   * Sets all relevant data within LineFollowing to SmartDashboard
+   */
   public void updateSmarts() {
     SmartDashboard.putNumber("Ultrasonic", m_ultrasonicSensorInput.getValue());
     SmartDashboard.putBoolean("Line Lock", centerLineSeen() && !leftLineSeen() && !rightLineSeen());
