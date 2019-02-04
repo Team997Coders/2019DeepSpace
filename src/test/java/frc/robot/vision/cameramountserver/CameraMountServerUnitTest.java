@@ -52,11 +52,11 @@ public class CameraMountServerUnitTest {
 
     // Act
     // Wait for thread to run a bit
-    Thread.sleep(50);
+    Thread.sleep(100);
     // Now allow server to accept a socket
     cameraMountServer.acceptWhenAvailable();
     // Wait for thread to digest state change
-    Thread.sleep(50);
+    Thread.sleep(100);
 
     // Assert
     assertEquals(true, cameraMountServer.isSocketAvailable());
@@ -72,10 +72,10 @@ public class CameraMountServerUnitTest {
 
     // Act
     // Wait for thread to run a bit
-    Thread.sleep(50);
+    Thread.sleep(100);
     cameraMountServer.stop();
     // Wait for thread to digest state change
-    Thread.sleep(50);
+    Thread.sleep(100);
 
     // Assert
     assertEquals(false, thread.isAlive());
@@ -95,11 +95,11 @@ public class CameraMountServerUnitTest {
 
     // Act
     // Wait for thread to run a bit
-    Thread.sleep(50);
+    Thread.sleep(100);
     // Now allow server to accept a socket
     cameraMountServer.acceptWhenAvailable();
     // Wait for thread to digest state change
-    Thread.sleep(50);
+    Thread.sleep(100);
 
     // Assert
     assertEquals(socketMock, cameraMountServer.getSocket());
@@ -121,11 +121,11 @@ public class CameraMountServerUnitTest {
 
     // Act
     // Wait for thread to run a bit
-    Thread.sleep(50);
+    Thread.sleep(100);
     // Now allow server to accept a socket
     cameraMountServer.acceptWhenAvailable();
     // Wait for thread to digest state change
-    Thread.sleep(50);
+    Thread.sleep(100);
     // Simulate a try-with-resources close
     cameraMountServer.close();
 

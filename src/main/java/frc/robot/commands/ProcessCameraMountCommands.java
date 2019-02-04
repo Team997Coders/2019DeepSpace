@@ -188,7 +188,7 @@ public class ProcessCameraMountCommands extends Command {
           cameraMount);
       }
     } catch (IOException e) {
-      System.out.println(String.format("ProcessCameraMountCommands has socket error; reason=%s; continuing...", e));
+      System.out.println(String.format("ProcessCameraMountCommands has socket error; reason=%s; continuing...", e.getMessage()));
       // Socket has an error, probably because the client disconnected
       // So set flag so we do not continue processing until another good
       // socket is available.
