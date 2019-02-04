@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.io.IOException;
+
 import org.team997coders.spartanlib.hardware.roborio.Servo;
 import org.team997coders.spartanlib.interfaces.IServo;
 
@@ -73,6 +75,10 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    //setDefaultCommand(new ProcessCameraMountCommands());
+    try {
+      setDefaultCommand(new ProcessCameraMountCommands());
+    } catch (IOException e) {
+      System.out.println(String.format("Cannot process default command for CameraMount. Pan/tilt will not work. Error=%s", e));
+    }
   } 
 }

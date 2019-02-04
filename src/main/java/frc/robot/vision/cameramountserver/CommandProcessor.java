@@ -132,54 +132,48 @@ public class CommandProcessor {
    *   <li>[hex integer]:[hex integer] - Sent in response to the 'a' command
    * </ul>
    */
-  public void process() {
-    try {  
-      char input = (char) m_input.read();
-      switch(input) {
-        case '0': case '1': case '2': case '3': case '4':
-        case '5': case '6': case '7': case '8': case '9':
-          m_valueBuilder.addNumeral(input);
-          acknowledge(input, false);
-          break;
-        case '-':
-          m_valueBuilder.setNegative();
-          acknowledge(input, false);
-          break;
-        case 'p':
-          m_panValueProvider.setValue(m_valueBuilder.getValue());
-          m_slewCamera.start();
-          acknowledge(input, true);
-          m_valueBuilder.reset();
-          break;
-        case 't':
-          m_tiltValueProvider.setValue(m_valueBuilder.getValue());
-          m_slewCamera.start();
-          acknowledge(input, true);
-          m_valueBuilder.reset();
-          break;
-        case 'c':
-          m_centerCamera.start();
-          acknowledge(input, true);
-          m_valueBuilder.reset();
-          break;
-        case 'a':
-          replytoAngle(input);
-          m_valueBuilder.reset();
-          break;
-        case 'e':
-          echo = !echo;
-          acknowledge(input, true);
-          m_valueBuilder.reset();
-          break;
-        case 'r':
-          acknowledge(input, true);
-          m_valueBuilder.reset();
-          break;
-      }
-    } catch (Exception e) {
-      if (echo) {
-        System.err.println(e);
-      }
+  public void process() throws IOException {
+    char input = (char) m_input.read();
+    switch(input) {
+      case '0': case '1': case '2': case '3': case '4':
+      case '5': case '6': case '7': case '8': case '9':                 // Here comes a numeral for a value-based command
+        m_valueBuilder.addNumeral(input);
+        acknowledge(input, false);
+        break;
+      case '-':                                                         // Negative value coming your way
+        m_valueBuilder.setNegative();
+        acknowledge(input, false);
+        break;
+      case 'p':                                                         // Pan pan man
+        m_panValueProvider.setValue(m_valueBuilder.getValue());
+        m_slewCamera.start();
+        acknowledge(input, true);
+        m_valueBuilder.reset();
+        break;
+      case 't':                                                         // Tilt away
+        m_tiltValueProvider.setValue(m_valueBuilder.getValue());
+        m_slewCamera.start();
+        acknowledge(input, true);
+        m_valueBuilder.reset();
+        break;
+      case 'c':                                                         // Center yourself
+        m_centerCamera.start();
+        acknowledge(input, true);
+        m_valueBuilder.reset();
+        break;
+      case 'a':                                                         // Give me my angles
+        replytoAngle(input);
+        m_valueBuilder.reset();
+        break;
+      case 'e':                                                         // Echo commands back (for the telnet user)
+        echo = !echo;
+        acknowledge(input, true);
+        m_valueBuilder.reset();
+        break;
+      case 'r':                                                         // Ready tickler
+        acknowledge(input, true);
+        m_valueBuilder.reset();
+        break;
     }
   }
 }
