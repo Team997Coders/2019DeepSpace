@@ -14,19 +14,32 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
-
-  public class Ports {
+  public static class Ports {
+    public static int
     
-    public static final int 
-      gamepad1 = 0,
-      gamepad2 = 1,
+      GamePad1 = 0,
+      GamePad2 = 1,           // TODO: Need to check this
+      buttonA = 1,            // TODO: Need to check this
+      buttonB = 2,
+      buttonX = 3,            // TODO: Need to check this
+      buttonY = 4,            // TODO: Need to check this
+      buttonLeftShoulder = 5,       // TODO: Need to check this
+      buttonRightShoulder = 6,      // TODO: Need to check this
+      buttonLeftThumbstick = 7,     // TODO: Need to check this
+      buttonRightThumbstick = 8,    // TODO: Need to check this
+      buttonLeftTrigger = 9,        // TODO: Need to check this
+      buttonRightTrigger = 10,      // TODO: Need to checl this
+      buttonBack = 7,
 
-      leftYAxis = 0,
+      landingForward = 0,
+      landingReverse = 1,
+
+      leftYAxis = 1,
       rightXAxis = 4,
       rightYAxis = 5,
 
-      leftVictor1 = 0,
-      leftVictor2 = 1,
+      leftVictor1 = 5,
+      leftVictor2 = 6,
       rightVictor1 = 2,
       rightVictor2 = 3,
 
@@ -37,6 +50,19 @@ public class RobotMap {
       armCanifier = 23,
 
       discBrake = 1; /* Placeholder */
+
+
+      ballMotor=9;
+
+ 
+
+    linesensorleft=1,linesensorcenter=3,linesensorright=2,followLinebutton=1,
+
+    ultrasonicsensor=2,
+
+    panservo=0, // TODO: Need to check this
+    tiltservo=1; // TODO: Need to check this
+
   }
 
   public class Values {
@@ -45,7 +71,9 @@ public class RobotMap {
       armPidP = 0.1,
       armPidI = 0,
       armPidD = 0,
-      armPidK = 0;
+      armPidK = 0;=======P=0.0002,I=0.0,D=0.0;<<<<<<<HEAD
+
+  
 
   }
 
