@@ -17,6 +17,7 @@ import frc.robot.commands.VisionPressRightTrigger;
 import frc.robot.commands.VisionPressX;
 import frc.robot.commands.VisionPressY;
 
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -24,6 +25,8 @@ import frc.robot.commands.VisionPressY;
 public class OI {
 
   private Joystick gamepad1, gamepad2;
+
+
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton followLine;

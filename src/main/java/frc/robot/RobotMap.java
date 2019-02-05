@@ -46,26 +46,44 @@ public class RobotMap {
       leftTalon = 4,
       rightTalon = 1,
 
-      ballMotor = 5, //TODO: Need to check this
-
       linesensorleft = 1,  
       linesensorcenter = 3,
       linesensorright = 2,
       followLinebutton = 1,
+      ultrasonicsensor=2,
 
-      ultrasonicsensor = 2,
+      ballMotor=9,
+
+
+      armSpark = 10,
+      armCanifier = 23,
+
+      discBrake = 1, /* Placeholder */
+
+
+    panservo=0, // TODO: Need to check this
+    tiltservo=1; // TODO: Need to check this
+
+  }
+
+  public class Values {
+
+    public static final double
+      inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
+      tcksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
+    
+      armPidP = 0.1,
+      armPidI = 0,
+      armPidD = 0,
+      armPidK = 0,
+
+      P=0.0002,
+      I=0.0,
+      D=0.0,
+
 
       panservo = 0,                 // TODO: Need to check this
       tiltservo = 1;                // TODO: Need to check this
 
-  }
-  public static class Values{
-    
-    public static double 
-    inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
-    tcksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
-    P = 0.0002,
-    I = 0.0,
-    D = 0.0; 
   }
 }

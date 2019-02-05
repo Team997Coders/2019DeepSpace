@@ -15,7 +15,12 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
+
+//import spartanlib.subsystem.drivetrain.TankDrive;
+import frc.robot.subsystems.Arm;
+
 import frc.robot.subsystems.BallManipulator;
+
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
@@ -35,6 +40,12 @@ public class Robot extends TimedRobot {
   //private final Command defaultDriveTrain;
   public static OI oi;
 
+
+  public static Arm arm;
+
+
+
+
   //(no drieTrain in merge)public static DriveTrain driveTrain;
   public static BallManipulator ballManipulator;
   //public static DriveTrain driveTrain;
@@ -53,6 +64,8 @@ public class Robot extends TimedRobot {
   public PanTiltCamera panTiltCamera;
 
   
+
+
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -70,11 +83,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    // ADD SUBSYSTEMS HERE
+    arm = new Arm();
+
     //(no drive train in merge)driveTrain = new DriveTrain();
     ballManipulator = new BallManipulator();
     
     //driveTrain = new DriveTrain();
+
 
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
@@ -90,6 +105,7 @@ public class Robot extends TimedRobot {
       System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
       System.out.println("Robot will proceed blind.");
     }
+
 
     oi = new OI();
 
@@ -108,6 +124,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    arm.updateSmarts();
     updateSmartDashboard();
   }
 
@@ -141,6 +158,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    System.out.println("--------------------");
+
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
@@ -148,9 +168,18 @@ public class Robot extends TimedRobot {
     //defaultDriveTrain.start();
   }
 
+
+  double lastTime = 0;
+
+  /**
+   * This function is called periodically during operator control.
+   */
+  
+
   @Override
   public void teleopPeriodic() {
     lineFollowing.isCloseToTarget();
+
 
     SmartDashboard.putNumber("UltraSensor value", Robot.lineFollowing.m_ultrasonicSensorInput.getValue());
 
@@ -179,6 +208,7 @@ public class Robot extends TimedRobot {
       SmartDashboard.putString("Do you see the line?", "No");
       SmartDashboard.putString("Do you see two lines?", "No");
     }     
+
 
     Scheduler.getInstance().run();
   }
