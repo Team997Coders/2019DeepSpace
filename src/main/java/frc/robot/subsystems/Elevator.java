@@ -29,6 +29,11 @@ public class Elevator extends Subsystem {
   private Encoder encoder;
   public int index = 0;
   public double[]  heightList;
+  public boolean gamePieceType; 
+  //This is to switch between balls and hatches for elevator heights.
+  //// Balls = true Hatches = false
+  public boolean yeet;
+
 
    public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);

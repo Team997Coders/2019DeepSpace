@@ -30,7 +30,19 @@ public class RobotMap {
     masterElevatorMotor= 7,
     followerElevatorMotor = 8,
     elevatorEncoderPort1 = 3217589,
-    elevatorEncoderPort2 = 3452354;
+    elevatorEncoderPort2 = 3452354,
+
+    buttonA= 1,
+    buttonB= 2,
+    buttonX= 3,
+    buttonY= 4,
+
+    leftTrigger = 2,
+    rightTrigger= 3,
+
+    dPadY = 1,
+    dPadX = 0;
+
 
     
   }
