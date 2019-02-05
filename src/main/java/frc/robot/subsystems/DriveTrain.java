@@ -14,7 +14,6 @@ import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,10 +40,12 @@ public class DriveTrain extends Subsystem {
   private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
+
   private SensorCollection leftTalonSensorCollection, rightTalonSensorCollection;
   private ArcadeDrive driveTrainStyle;
   
   int delayCount = 0;
+
 
   public DriveTrain() {
     System.out.println("Starting Drivetrain...");
@@ -274,3 +275,4 @@ public class DriveTrain extends Subsystem {
 		}		
   }
 }
+

@@ -13,7 +13,6 @@ import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 /**
  * Follow a line on the floor and stop when range is close
  * to target.
@@ -83,7 +82,7 @@ public class FollowLine extends Command {
       }else if(Robot.lineFollowing.rightCenterLineSeen()){
 
         Robot.driveTrain.setVolts(powerMotor , normal);
-
+    
       }else if(Robot.lineFollowing.leftLineSeen()){
 
         Robot.driveTrain.setVolts(noPowerMotor, powerMotor);
@@ -113,22 +112,20 @@ public class FollowLine extends Command {
       if (Robot.lineFollowing.isCloseToTarget()) {
         SmartDashboard.putString("Are you done?", "Yes!");
         return true;
-      }
-      else{
+    } else {
         return false;
       }
-    }
+    } 
     else{
       return false;
     }
   }
+
   // Called once after isFinished returns true
   @Override
   protected void end() {
-
     Robot.driveTrain.setVolts(0,0);
     Robot.driveTrain.setCoast();
-
 
   }
   // Called when another command which requires one or more of the same

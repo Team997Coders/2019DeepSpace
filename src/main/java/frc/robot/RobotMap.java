@@ -25,8 +25,8 @@ public class RobotMap {
       buttonY = 4,            // TODO: Need to check this
       buttonLeftShoulder = 5,       // TODO: Need to check this
       buttonRightShoulder = 6,      // TODO: Need to check this
-      buttonLeftThumbstick = 9,     // TODO: Need to check this
-      buttonRightThumbstick = 10,    // TODO: Need to check this
+      buttonLeftThumbstick = 7,     // TODO: Need to check this
+      buttonRightThumbstick = 8,    // TODO: Need to check this
       buttonLeftTrigger = 9,        // TODO: Need to check this
       buttonRightTrigger = 10,      // TODO: Need to checl this
       buttonBack = 7,
@@ -44,9 +44,9 @@ public class RobotMap {
       rightVictor2 = 3,
 
       leftTalon = 4,
-
-      ballMotor = 9,
       rightTalon = 1,
+
+      ballMotor = 5, //TODO: Need to check this
 
       linesensorleft = 1,  
       linesensorcenter = 3,
@@ -55,20 +55,17 @@ public class RobotMap {
 
       ultrasonicsensor = 2,
 
-      panservo = 9,                 // TODO: Need to check this
-      tiltservo = 8;                // TODO: Need to check this
+      panservo = 0,                 // TODO: Need to check this
+      tiltservo = 1;                // TODO: Need to check this
 
   }
-
   public static class Values{
     
     public static double 
     inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
-    tcksPerFoot = ((49152/(3.97*Math.PI)))*.9, //3940, //encoder ticks per foot
+    tcksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
     P = 0.0002,
     I = 0.0,
-    D = 0.0;
-
+    D = 0.0; 
   }
-
 }

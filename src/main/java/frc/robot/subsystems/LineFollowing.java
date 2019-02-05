@@ -12,14 +12,13 @@ import frc.robot.RobotMap;
  * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
+
   private final int HATCHDISTANCELIMIT = 91; 
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
   private DigitalInput m_sensorCenterInput;
   public AnalogInput m_ultrasonicSensorInput;
 
-
-  
   
   public LineFollowing() {
     m_sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
@@ -102,17 +101,11 @@ public class LineFollowing extends Subsystem {
    * @deprecated
    */
   public boolean isCloseToTarget() {
-    return m_ultrasonicSensorInput.getValue() < HATCHDISTANCELIMIT;
-  }
-
-  @Override
-  public void initDefaultCommand(){ }
-
-  /**
-   * Sets all relevant data within LineFollowing to SmartDashboard
-   */
-  public void updateSmarts() {
-    SmartDashboard.putNumber("Ultrasonic", m_ultrasonicSensorInput.getValue());
+    SmartDashboard.putNumber("Ultrasonic sensor", m_ultrasonicSensorInput.getValue());
     SmartDashboard.putBoolean("Line Lock", centerLineSeen() && !leftLineSeen() && !rightLineSeen());
+    return (m_ultrasonicSensorInput.getValue() < HATCHDISTANCELIMIT);
   }
+  @Override
+  public void initDefaultCommand() { }
+
 }
