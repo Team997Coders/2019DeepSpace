@@ -17,12 +17,15 @@ public class RobotMap {
 
   public static class Values{
    public static double
-    elevatorPidP = 655520,
+    elevatorPidP = 655520, // all placeholders
     elevatorPidI = 123456,
     elevatorPidD = 123456789,
+    elevatorPidF = 1234567,
     elevatorTopHeight= 543333,
     elevatorMiddleHeight = 544333,
     elevatorBottomHeight = 555434,
+
+    armSwitchHeight= 9002, //placeholer for height in order for arm to switch
 
     armPidP = 0.1,
     armPidI = 0,

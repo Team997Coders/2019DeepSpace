@@ -57,9 +57,10 @@ public class Elevator extends Subsystem {
     follower.setInverted(false);
 
     pidController = master.getPIDController();
-    pidController.setP(RobotMap.Values.pidP);
-    pidController.setI(RobotMap.Values.pidI);
-    pidController.setD(RobotMap.Values.pidD);
+    pidController.setP(RobotMap.Values.elevatorPidP);
+    pidController.setI(RobotMap.Values.elevatorPidI);
+    pidController.setD(RobotMap.Values.elevatorPidD);
+    pidController.setFF(RobotMap.Values.elevatorPidF);
     
     pidController.setReference(0.0/*total - current*/, ControlType.kPosition); 
    }

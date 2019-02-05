@@ -42,6 +42,11 @@ public class Arm extends Subsystem {
   private double prevRead = -1;
   private int revs = 0;
   private int flipModifier = 1;
+  
+  // This is for if we want the arm forward or backward
+  // Forward = true Backwards = false
+  public boolean armState;
+
 
   public Arm() {
 
@@ -61,6 +66,31 @@ public class Arm extends Subsystem {
   public void setSpeed(double speed) {
     sparkMax.set(speed);
   }
+
+  public int getLimit(){
+    backLimitSwitch.get();
+    frontLimitSwitch.get();
+    
+    if(backLimitSwitch.get()){
+      return 1;
+    }
+    else if(frontLimitSwitch.get()){
+      return 2;
+    }
+    else{
+      return 0;
+    } 
+
+  }
+
+  public void zeroArm(){
+    while(getLimit() == 0){
+      setSpeed(.5);
+    }//umm maybe want to reset encoder but I don't understand hunters code
+      //-Craig
+
+  }
+  
 
   public double readEncoder() {
     double newVal = getRawEncoder();
@@ -109,4 +139,12 @@ public class Arm extends Subsystem {
     SmartDashboard.putNumber("Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Absolute Parsed", readEncoder());
   }
+
+
+//Started copying over Hunter's PID code from SetArmPosition cuz PID ain't
+//supposed to go in commands.
+  public boolean pidError(double setpoint, double tolerance) {
+    return (readEncoder() > setpoint - tolerance) && (readEncoder() < setpoint + tolerance);
+  }
+
 }
