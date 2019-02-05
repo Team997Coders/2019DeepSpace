@@ -7,41 +7,35 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.DriveTrain;
 
-public class TankDrive extends Command {
-
-  public TankDrive() {
-    requires(Robot.driveTrain);
+public class DeployLandingGear extends Command {
+  public DeployLandingGear() {
+    requires(Robot.liftGear);
   }
-
+  
   @Override
   protected void initialize() { }
-
+  
   @Override
   protected void execute() {
-    double left = Robot.oi.getLeftYAxis();
-    double right = Robot.oi.getRightYAxis();
-
-    Robot.driveTrain.setVolts(left, right);
+    if (!Robot.liftGear.getPistonState()) {
+      Robot.liftGear.extend();
+    }
   }
-
+  
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.liftGear.getIRSensorVoltage() < 0.4;
   }
 
   @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
+    Scheduler.getInstance().add(new AutoRetractLandingGear());
   }
-
+  
   @Override
-  protected void interrupted() {
-    end();
-  }
+  protected void interrupted() { }
 }

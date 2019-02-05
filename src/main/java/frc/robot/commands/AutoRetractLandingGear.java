@@ -7,41 +7,34 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.DriveTrain;
 
-public class TankDrive extends Command {
+public class AutoRetractLandingGear extends Command {
 
-  public TankDrive() {
-    requires(Robot.driveTrain);
+  public AutoRetractLandingGear() {
+    requires(Robot.liftGear);
   }
-
+  
   @Override
   protected void initialize() { }
-
+  
   @Override
   protected void execute() {
-    double left = Robot.oi.getLeftYAxis();
-    double right = Robot.oi.getRightYAxis();
 
-    Robot.driveTrain.setVolts(left, right);
+    // If the IR sensor detects the platform
+    if (Robot.liftGear.getIRSensorVoltage() > 0.95) {
+      Robot.liftGear.retract();
+    }
+
   }
-
+  
   @Override
-  protected boolean isFinished() {
-    return false;
-  }
-
+  protected boolean isFinished() { return !Robot.liftGear.getPistonState(); }
+  
   @Override
-  protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
-  }
-
+  protected void end() { }
+  
   @Override
-  protected void interrupted() {
-    end();
-  }
+  protected void interrupted() { end(); }
 }

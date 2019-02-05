@@ -1,12 +1,4 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
-
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -20,6 +12,7 @@ import frc.robot.RobotMap;
  * and position of robot in relation to tape.
  */
 public class LineFollowing extends Subsystem {
+<<<<<<< HEAD
   private final int HATCHDISTANCELIMIT = 91; 
   private DigitalInput m_sensorLeftInput;
   private DigitalInput m_sensorRightInput;
@@ -28,8 +21,14 @@ public class LineFollowing extends Subsystem {
 
 
   
+=======
+  //private final int HATCHDISTANCELIMIT = 80; 
+  private DigitalInput m_sensorLeftInput;
+  private DigitalInput m_sensorRightInput;
+  private DigitalInput m_sensorCenterInput;
+  private AnalogInput m_ultrasonicSensorInput;
+>>>>>>> master
   
-
   public LineFollowing() {
     m_sensorLeftInput = new DigitalInput(RobotMap.Ports.linesensorleft);
     m_sensorRightInput = new DigitalInput(RobotMap.Ports.linesensorright);
@@ -37,50 +36,96 @@ public class LineFollowing extends Subsystem {
     m_ultrasonicSensorInput = new AnalogInput(RobotMap.Ports.ultrasonicsensor);
   }
 
-  @Override
-  public void initDefaultCommand(){}
-
-  public boolean leftLineSeen(){
+  /**
+   * Returns a boolean representing whether or not the left linesensor is seeing white
+   * 
+   * @return True if white is seen. False if not
+   */
+  public boolean leftLineSeen() {
     return(m_sensorLeftInput.get());
   }
 
-  public boolean rightLineSeen(){
+  /**
+   * Returns a boolean representing whether or not the right linesensor is seeing white
+   * 
+   * @return True if white is seen. False if not
+   */
+  public boolean rightLineSeen() {
     return(m_sensorRightInput.get());
   }
 
-  public boolean centerLineSeen(){
+  /**
+   * Returns a boolean representing whether or not the middle linesensor is seeing white
+   * 
+   * @return True if white is seen. False if not
+   */
+  public boolean centerLineSeen() {
     return(m_sensorCenterInput.get());
   }
 
-  public boolean anyLineSeen(){
+  /**
+   * Returns a boolean representing whether or not any of the linesensors see any white
+   * 
+   * @return True if white is seen. False if not
+   */
+  public boolean anyLineSeen() {
     return(m_sensorCenterInput.get() || m_sensorLeftInput.get() || m_sensorRightInput.get());
   }
 
+  /**
+   * Returns boolean representing no white is seen by any sensor.
+   * This function is !anyLineSeen();
+   * 
+   * @return True if not white is seen. False if there is
+   */
   public boolean noLineSeen() {
     return !anyLineSeen();
   }
 
+  /**
+   * Returns boolean dependent on the middle and left sensors see white
+   * 
+   * @return True if middle and left sensors see white. False if only one or neither see white
+   */
   public boolean leftCenterLineSeen(){
     return(m_sensorCenterInput.get() && m_sensorLeftInput.get());
   }
 
+  /**
+   * Returns boolean dependent on the middle and right sensors see white
+   * 
+   * @return True if middle and right sensors see white. False if only on or neither see white
+   */
   public boolean rightCenterLineSeen(){
     return(m_sensorCenterInput.get() && m_sensorRightInput.get());
   }
 
-  // IF we thought this proximity sensor might be used in other ways,
-  // we might break up this functionality into its own subsystem. Not sure
-  // that we will so it's ok for now that it lives here.
+  /**
+   * Returns boolean whether the value from the ultrasonicSensor is close to the target.
+   * WARNING: I'm pretty sure we will be using a Infared Sensor so I will depricate
+   *     this function for now.
+   * 
+   * @return True if the value is less than the target value. False if not
+   * 
+   * @deprecated
+   */
   public boolean isCloseToTarget() {
-    // TODO: Read datasheet and confirm this is correct!
-    // Assume voltage goes down as we get closer to target.
-    // What voltage is the right distance? Put in a private function
-    // that converts voltage to distance and then put in a constant
-    // for the threshold distance so that we can easily see what distance
-    // we want to stop at.
+    return m_ultrasonicSensorInput.getValue() < 75;
+  }
 
-
+<<<<<<< HEAD
     SmartDashboard.putNumber("Ultrasonic sensor", m_ultrasonicSensorInput.getValue());
     return (m_ultrasonicSensorInput.getValue() < HATCHDISTANCELIMIT);
+=======
+  @Override
+  public void initDefaultCommand(){ }
+
+  /**
+   * Sets all relevant data within LineFollowing to SmartDashboard
+   */
+  public void updateSmarts() {
+    SmartDashboard.putNumber("Ultrasonic", m_ultrasonicSensorInput.getValue());
+    SmartDashboard.putBoolean("Line Lock", centerLineSeen() && !leftLineSeen() && !rightLineSeen());
+>>>>>>> master
   }
 }

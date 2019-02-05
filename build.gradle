@@ -37,9 +37,12 @@ deploy {
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
-// Maven central needed for JUnit
 repositories {
+    // Maven central needed for JUnit
     mavenCentral()
+    // Repositories needed for jitpack to get spartanlib
+    jcenter()
+    maven { url "https://jitpack.io" }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
@@ -50,6 +53,7 @@ dependencies {
 
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
+    compile 'com.github.team997coders:SpartanLib:0.0.2-rc1'
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
@@ -62,9 +66,9 @@ dependencies {
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
-    manifest {
+    //manifest {
         //attributes('Class-Path' : 'home/lvuser/deploy/SpartanLib-1.0.0.jar')
         //attributes('Class-Path' : 'home/lvuser/deploy/*.jar')
-        attributes('Class-Path' : fileTree(include: ['*.jar'], dir: 'src/main/deploy'))
-    }
+        //attributes('Class-Path' : fileTree(include: ['*.jar'], dir: 'src/main/deploy'))
+    //}
 }

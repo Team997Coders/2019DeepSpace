@@ -7,16 +7,19 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AnalogInput;
+import java.io.IOException;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
+import frc.robot.vision.cameravisionclient.CameraVisionClient;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,28 +29,60 @@ import frc.robot.subsystems.LineFollowing;
  * project.
  */
 public class Robot extends TimedRobot {
-
   // Will the getInstance call get the ArcadeDrive? It should.
   //private final Command defaultDriveTrain;
   public static OI oi;
+  public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static LineFollowing lineFollowing;
+  public static CameraMount cameraMount;
+  // Note this could be null and because we continue to wire these up
+  // in this manner (statics), guards will have to be put around all accesses.
+  // Otherwise null pointer exceptions will drive you crazy, in the case
+  // we do not connect to the Pi for some reason.
+  public static CameraVisionClient cameraVisionClient;
+  public PanTiltCamera panTiltCamera;
 
   
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
+  public Robot(DriveTrain a, LineFollowing b) {
+    super();
+    driveTrain = a;
+    lineFollowing = b;
+  }
 
+  public Robot() { super(); }
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
+    liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
+    cameraMount = new CameraMount(0, 120, 10, 170);
+
+    // Connect to remote vision subsystem
+    try {
+      cameraVisionClient = new CameraVisionClient("10.9.97.6");
+    } catch (IOException e) {
+      // TODO: What is going to be the timing of roborio network availability, boot speed,
+      // and Pi boot speed? Need to test.
+      System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
+      System.out.println("Robot will proceed blind.");
+    }
 
     oi = new OI();
+
+    // Because there is no hardware subsystem directly hooked up
+    // to this command (it is a proxy for calling CameraVision on Pi)
+    // there is not default command to keep this active. So manually start
+    // here...
+    panTiltCamera = new PanTiltCamera();
+    panTiltCamera.start();
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -55,25 +90,14 @@ public class Robot extends TimedRobot {
 
   }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
   @Override
   public void robotPeriodic() {
+    updateSmartDashboard();
   }
 
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   * You can use it to reset any subsystem information you want to clear when
-   * the robot is disabled.
-   */
   @Override
   public void disabledInit() {
+    driveTrain.setCoast(); // So the drivers don't want to kill us ;)
   }
 
   @Override
@@ -81,37 +105,15 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString code to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons
-   * to the switch structure below with additional strings & commands.
-   */
   @Override
   public void autonomousInit() {
     autonomousCommand = chooser.getSelected();
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.start();
     }
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
@@ -123,7 +125,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
@@ -131,9 +132,6 @@ public class Robot extends TimedRobot {
     //defaultDriveTrain.start();
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
   @Override
   public void teleopPeriodic() {
     lineFollowing.isCloseToTarget();
@@ -169,10 +167,13 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-  /**
-   * This function is called periodically during test mode.
-   */
   @Override
   public void testPeriodic() {
+  }
+
+  public void updateSmartDashboard() {
+    liftGear.updateSmartDashboard();
+    driveTrain.updateSmartDashboard();
+    lineFollowing.updateSmarts();
   }
 }

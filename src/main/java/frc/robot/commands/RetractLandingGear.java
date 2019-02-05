@@ -7,41 +7,31 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.DriveTrain;
 
-public class TankDrive extends Command {
-
-  public TankDrive() {
-    requires(Robot.driveTrain);
+public class RetractLandingGear extends Command {
+  public RetractLandingGear() {
+    requires(Robot.liftGear);
   }
-
+  
   @Override
   protected void initialize() { }
-
+  
   @Override
-  protected void execute() {
-    double left = Robot.oi.getLeftYAxis();
-    double right = Robot.oi.getRightYAxis();
-
-    Robot.driveTrain.setVolts(left, right);
+  protected void execute() { 
+    Robot.liftGear.retract();
   }
-
+  
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
-
+  
   @Override
-  protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
-  }
-
+  protected void end() { }
+  
   @Override
-  protected void interrupted() {
-    end();
-  }
+  protected void interrupted() { end(); }
+  
 }
