@@ -7,16 +7,19 @@
 
 package frc.robot;
 
+import java.io.IOException;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
+import frc.robot.vision.cameravisionclient.CameraVisionClient;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,12 +35,20 @@ public class Robot extends TimedRobot {
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static LineFollowing lineFollowing;
+  public static CameraMount cameraMount;
+  // Note this could be null and because we continue to wire these up
+  // in this manner (statics), guards will have to be put around all accesses.
+  // Otherwise null pointer exceptions will drive you crazy, in the case
+  // we do not connect to the Pi for some reason.
+  public static CameraVisionClient cameraVisionClient;
+  public PanTiltCamera panTiltCamera;
 
   
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
   public Robot(DriveTrain a, LineFollowing b) {
+    super();
     driveTrain = a;
     lineFollowing = b;
   }
@@ -52,9 +63,27 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
+    cameraMount = new CameraMount(0, 120, 10, 170);
+
+    // Connect to remote vision subsystem
+    try {
+      cameraVisionClient = new CameraVisionClient("10.9.97.6");
+    } catch (IOException e) {
+      // TODO: What is going to be the timing of roborio network availability, boot speed,
+      // and Pi boot speed? Need to test.
+      System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
+      System.out.println("Robot will proceed blind.");
+    }
 
     oi = new OI();
-    
+
+    // Because there is no hardware subsystem directly hooked up
+    // to this command (it is a proxy for calling CameraVision on Pi)
+    // there is not default command to keep this active. So manually start
+    // here...
+    panTiltCamera = new PanTiltCamera();
+    panTiltCamera.start();
+
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);

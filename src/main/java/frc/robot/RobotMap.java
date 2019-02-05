@@ -18,7 +18,17 @@ public class RobotMap {
     public static int
     
       GamePad1 = 0,
+      GamePad2 = 1,           // TODO: Need to check this
+      buttonA = 1,            // TODO: Need to check this
       buttonB = 2,
+      buttonX = 3,            // TODO: Need to check this
+      buttonY = 4,            // TODO: Need to check this
+      buttonLeftShoulder = 5,       // TODO: Need to check this
+      buttonRightShoulder = 6,      // TODO: Need to check this
+      buttonLeftThumbstick = 7,     // TODO: Need to check this
+      buttonRightThumbstick = 8,    // TODO: Need to check this
+      buttonLeftTrigger = 9,        // TODO: Need to check this
+      buttonRightTrigger = 10,      // TODO: Need to checl this
       buttonBack = 7,
 
       landingForward = 0,
@@ -41,7 +51,10 @@ public class RobotMap {
       linesensorright = 2,
       followLinebutton = 1,
 
-      ultrasonicsensor = 2;
+      ultrasonicsensor = 2,
+
+      panservo = 0,                 // TODO: Need to check this
+      tiltservo = 1;                // TODO: Need to check this
 
   }
 
