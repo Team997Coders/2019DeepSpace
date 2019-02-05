@@ -58,25 +58,15 @@ public class RobotMap {
 
   }
 
-<<<<<<< HEAD
   public static class Values{
     
     public static double 
     inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
-    tcksPerFoot = ((49152/(3.97*Math.PI)))*.9; //3940, //encoder ticks per foot
+    tcksPerFoot = ((49152/(3.97*Math.PI)))*.9, //3940, //encoder ticks per foot
+    P = 0.0002,
+    I = 0.0,
+    D = 0.0; 
 
   }
-
-}
-=======
-  public class Values {
-
-    public static final double
-      P = 0.0002,
-      I = 0.0,
-      D = 0.0;
-
-  }
->>>>>>> master
 
 }

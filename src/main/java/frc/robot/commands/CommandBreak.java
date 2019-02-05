@@ -25,7 +25,7 @@ public class CommandBreak extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.stop();
+    Robot.driveTrain.stopVolts();
     Robot.driveTrain.setBrake();
     Robot.driveTrain.setCoast();
   }

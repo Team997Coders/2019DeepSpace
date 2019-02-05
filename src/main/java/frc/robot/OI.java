@@ -49,10 +49,9 @@ public class OI {
     retractLandingGear.whenPressed(new RetractLandingGear());
 
     followLine = new JoystickButton(gamepad1, 1);
-<<<<<<< HEAD
+
     followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
-=======
-    followLine.whenPressed(new FollowLine());
+
 
     visionButtonA = new JoystickButton(gamepad2, RobotMap.Ports.buttonA);
     visionButtonA.whenPressed(new VisionPressA());
@@ -83,7 +82,7 @@ public class OI {
 
     visionButtonRightTrigger = new JoystickButton(gamepad2, RobotMap.Ports.buttonRightTrigger);
     visionButtonRightTrigger.whenPressed(new VisionPressRightTrigger());
->>>>>>> master
+
   }
 
   public double getLeftYAxis() {

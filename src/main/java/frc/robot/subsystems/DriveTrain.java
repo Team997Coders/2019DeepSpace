@@ -14,7 +14,6 @@ import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-<<<<<<< HEAD
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -23,8 +22,6 @@ import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
 //import frc.robot.misc.GearBox;
 
-=======
->>>>>>> master
 /**
  * This is ourr drivetrain. This year I split up the configuration for the drivetrain
  * into another class so this one isn't comically long. We have a few different methods
@@ -44,13 +41,10 @@ public class DriveTrain extends Subsystem {
   private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
-<<<<<<< HEAD
   private SensorCollection leftTalonSensorCollection, rightTalonSensorCollection;
   private ArcadeDrive driveTrainStyle;
   
   int delayCount = 0;
-=======
->>>>>>> master
 
   public DriveTrain() {
     System.out.println("Starting Drivetrain...");
@@ -125,16 +119,6 @@ public class DriveTrain extends Subsystem {
   public void setPosition(double left, double right) {
     leftTalon.set(ControlMode.Position, left);
     rightTalon.set(ControlMode.Position, right);
-  }
-
-  public void setBrake() {
-    leftTalon.setNeutralMode(NeutralMode.Brake);
-		rightTalon.setNeutralMode(NeutralMode.Brake);
-  }
-
-  public void setCoast() {
-    leftTalon.setNeutralMode(NeutralMode.Coast);
-		rightTalon.setNeutralMode(NeutralMode.Coast);
   }
 
   /**
@@ -254,7 +238,6 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new ArcadeDrive());
     //setDefaultCommand(new TankDrive());
   }
-<<<<<<< HEAD
 
   public double getLeftEncoderTicks() {
 		/* CTRE Magnetic Encoder relative, same as Quadrature */
@@ -291,6 +274,3 @@ public class DriveTrain extends Subsystem {
 		}		
   }
 }
-=======
-}
->>>>>>> master
