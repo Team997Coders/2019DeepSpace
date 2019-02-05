@@ -44,38 +44,36 @@ public class RobotMap {
       rightVictor2 = 3,
 
       leftTalon = 4,
-<<<<<<< HEAD
-
       rightTalon = 5,
 
-      ballMotor = 9;
+      armSpark = 10,
+      armCanifier = 23,
 
-=======
->>>>>>> acf27bd2483b1fe90ae20bc860f83e1f19567dfb
-      rightTalon = 1,
+      discBrake = 1; /* Placeholder */
 
-      linesensorleft = 1,  
-      linesensorcenter = 3,
-      linesensorright = 2,
-      followLinebutton = 1,
 
-      ultrasonicsensor = 2,
+      ballMotor=9;
 
-      panservo = 0,                 // TODO: Need to check this
-      tiltservo = 1;                // TODO: Need to check this
+ 
+
+    linesensorleft=1,linesensorcenter=3,linesensorright=2,followLinebutton=1,
+
+    ultrasonicsensor=2,
+
+    panservo=0, // TODO: Need to check this
+    tiltservo=1; // TODO: Need to check this
 
   }
 
   public class Values {
 
     public static final double
-      P = 0.0002,
-      I = 0.0,
-      D = 0.0;
-<<<<<<< HEAD
+      armPidP = 0.1,
+      armPidI = 0,
+      armPidD = 0,
+      armPidK = 0;=======P=0.0002,I=0.0,D=0.0;<<<<<<<HEAD
 
-=======
->>>>>>> acf27bd2483b1fe90ae20bc860f83e1f19567dfb
+  
 
   }
 

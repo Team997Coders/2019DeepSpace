@@ -16,6 +16,7 @@ import frc.robot.commands.VisionPressRightTrigger;
 import frc.robot.commands.VisionPressX;
 import frc.robot.commands.VisionPressY;
 
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -23,6 +24,8 @@ import frc.robot.commands.VisionPressY;
 public class OI {
 
   private Joystick gamepad1, gamepad2;
+
+
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton followLine;
@@ -79,6 +82,7 @@ public class OI {
 
     visionButtonRightTrigger = new JoystickButton(gamepad2, RobotMap.Ports.buttonRightTrigger);
     visionButtonRightTrigger.whenPressed(new VisionPressRightTrigger());
+
   }
 
   public double getLeftYAxis() {
@@ -136,6 +140,8 @@ public class OI {
   public double bing(double dead, double val, double min, double max) {
     return clamp(min, max, deadBand(val, dead));
   }
+
+=======
 
   // KEEP THESE COMMENTS
   //// TRIGGERING COMMANDS WITH BUTTONS
