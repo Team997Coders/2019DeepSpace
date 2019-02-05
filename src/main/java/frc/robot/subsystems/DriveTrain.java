@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RoboMisc;
@@ -34,6 +36,8 @@ public class DriveTrain extends Subsystem {
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
 
+  private NetworkTable table;
+
   public DriveTrain() {
     System.out.println("Starting Drivetrain...");
 
@@ -53,6 +57,8 @@ public class DriveTrain extends Subsystem {
 
     resetEncoders();
     setCoast();
+
+    table = NetworkTableInstance.create().getTable("SmartDashboard");
   }
 
   /**
