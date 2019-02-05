@@ -25,8 +25,8 @@ public class RobotMap {
       buttonY = 4,            // TODO: Need to check this
       buttonLeftShoulder = 5,       // TODO: Need to check this
       buttonRightShoulder = 6,      // TODO: Need to check this
-      buttonLeftThumbstick = 7,     // TODO: Need to check this
-      buttonRightThumbstick = 8,    // TODO: Need to check this
+      buttonLeftThumbstick = 9,     // TODO: Need to check this
+      buttonRightThumbstick = 10,    // TODO: Need to check this
       buttonLeftTrigger = 9,        // TODO: Need to check this
       buttonRightTrigger = 10,      // TODO: Need to checl this
       buttonBack = 7,
@@ -53,8 +53,8 @@ public class RobotMap {
 
       ultrasonicsensor = 2,
 
-      panservo = 0,                 // TODO: Need to check this
-      tiltservo = 1;                // TODO: Need to check this
+      panservo = 9,                 // TODO: Need to check this
+      tiltservo = 8;                // TODO: Need to check this
 
   }
 
