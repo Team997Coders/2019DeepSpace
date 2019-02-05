@@ -45,7 +45,7 @@ public class RobotMap {
 
       leftTalon = 4,
 
-      ballMotor = 9;
+      ballMotor = 9,
       rightTalon = 1,
 
       linesensorleft = 1,  

@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
+import frc.robot.subsystems.BallManipulator;
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
 import frc.robot.vision.cameravisionclient.CameraVisionClient;
@@ -32,7 +34,6 @@ public class Robot extends TimedRobot {
   // Will the getInstance call get the ArcadeDrive? It should.
   //private final Command defaultDriveTrain;
   public static OI oi;
-<<<<<<< HEAD
 
   //(no drieTrain in merge)public static DriveTrain driveTrain;
   public static BallManipulator ballManipulator;
@@ -40,8 +41,6 @@ public class Robot extends TimedRobot {
   public static HatchManipulator hatchManipulator;
 
 
-=======
->>>>>>> acf27bd2483b1fe90ae20bc860f83e1f19567dfb
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static LineFollowing lineFollowing;
@@ -54,10 +53,6 @@ public class Robot extends TimedRobot {
   public PanTiltCamera panTiltCamera;
 
   
-<<<<<<< HEAD
-
-=======
->>>>>>> acf27bd2483b1fe90ae20bc860f83e1f19567dfb
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -74,7 +69,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-<<<<<<< HEAD
 
     // ADD SUBSYSTEMS HERE
     //(no drive train in merge)driveTrain = new DriveTrain();
@@ -82,8 +76,6 @@ public class Robot extends TimedRobot {
     
     //driveTrain = new DriveTrain();
 
-=======
->>>>>>> acf27bd2483b1fe90ae20bc860f83e1f19567dfb
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
@@ -98,10 +90,6 @@ public class Robot extends TimedRobot {
       System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
       System.out.println("Robot will proceed blind.");
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> acf27bd2483b1fe90ae20bc860f83e1f19567dfb
 
     oi = new OI();
 
