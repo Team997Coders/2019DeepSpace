@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 /**
- * Add your docs here.
+ * remove this if you aren't using it
  */
 public class GearBox {
 

@@ -4,6 +4,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+
+import frc.robot.subsystems.BallManipulator;
+
+public class BallOuttake extends Command {
+  public BallOuttake() {
+    requires(Robot.ballManipulator);
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 
@@ -23,10 +35,15 @@ public class ArcadeDrive extends Command {
     }
 
     Robot.driveTrain.resetEncoders();
+
   }
 
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
+    Robot.ballManipulator.ballOuttake();
+
     double left = Robot.oi.getLeftYAxis() + Robot.oi.getRightXAxis();
     double right = Robot.oi.getLeftYAxis() - Robot.oi.getRightXAxis();
 
@@ -35,18 +52,23 @@ public class ArcadeDrive extends Command {
     } else {
       Robot.driveTrain.setVolts(left, right);
     }
+
   }
 
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
   }
 
+  // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.stopVolts();
+    Robot.ballManipulator.stopMotor();
   }
 
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
     end();
