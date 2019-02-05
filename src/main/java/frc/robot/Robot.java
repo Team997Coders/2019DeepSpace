@@ -15,10 +15,15 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
+
 //import spartanlib.subsystem.drivetrain.TankDrive;
 import frc.robot.subsystems.Arm;
+
+import frc.robot.subsystems.BallManipulator;
+
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
 import frc.robot.vision.cameravisionclient.CameraVisionClient;
@@ -35,13 +40,17 @@ public class Robot extends TimedRobot {
   //private final Command defaultDriveTrain;
   public static OI oi;
 
+
   public static Arm arm;
+
+
 
 
   //(no drieTrain in merge)public static DriveTrain driveTrain;
   public static BallManipulator ballManipulator;
   //public static DriveTrain driveTrain;
   public static HatchManipulator hatchManipulator;
+
 
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
@@ -55,6 +64,7 @@ public class Robot extends TimedRobot {
   public PanTiltCamera panTiltCamera;
 
   
+
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -79,7 +89,6 @@ public class Robot extends TimedRobot {
     ballManipulator = new BallManipulator();
     
     //driveTrain = new DriveTrain();
-
 
 
     liftGear = new LiftGear();
@@ -170,6 +179,35 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     lineFollowing.isCloseToTarget();
+
+
+    SmartDashboard.putNumber("UltraSensor value", Robot.lineFollowing.m_ultrasonicSensorInput.getValue());
+
+
+    if(Robot.lineFollowing.centerLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "Yes! :) ");
+      SmartDashboard.putString("Do you see two lines?", "No");
+    }else if(Robot.lineFollowing.rightLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "No");
+    }else if(Robot.lineFollowing.leftLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "No"); 
+    }else if(Robot.lineFollowing.rightCenterLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "Yes");
+    }else if(Robot.lineFollowing.leftCenterLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "Yes"); 
+    }else{
+      SmartDashboard.putString("Do you see the line?", "No");
+      SmartDashboard.putString("Do you see two lines?", "No");
+    }     
 
 
     Scheduler.getInstance().run();
