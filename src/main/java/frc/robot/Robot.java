@@ -14,6 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoDoNothing;
 import frc.robot.subsystems.Elevator;
+//import frc.robot.subsystems.*;
+import frc.robot.commands.*;
+//import spartanlib.subsystem.drivetrain.TankDrive;
+import frc.robot.subsystems.Arm;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,9 +29,14 @@ import frc.robot.subsystems.Elevator;
 public class Robot extends TimedRobot {
     public static OI m_oi;
   public static Elevator elevator;
+  public static Arm arm;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  
+  
+  
+
   
 
   /**
@@ -36,11 +45,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_oi = new OI();
+    arm = new Arm();
     elevator = new Elevator();
+    m_oi = new OI();
     m_chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
-    // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    // ADD SUBSYSTEMS HERE
+  
+
+    // NOT AFTER 'oi = new OI();'
+   
   }
 
   /**
@@ -53,6 +67,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    arm.updateSmarts();
   }
 
   /**
@@ -111,16 +126,22 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    System.out.println("--------------------");
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
   }
+
+  double lastTime = 0;
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+
     Scheduler.getInstance().run();
   }
 

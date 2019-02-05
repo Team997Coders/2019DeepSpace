@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 public class OI {
 
   Joystick graysonGamepad = new Joystick(0);
@@ -22,6 +22,16 @@ public class OI {
 
 
   JoystickButton buttonA = new JoystickButton(graysonGamepad, RobotMap.Ports.buttonA);
+  
+  public double deadBand(double value, double min, double max) {
+    if (value > max) {
+      return max;
+    } else if (value < min) {
+      return min;
+    }
+    
+    return value;
+  }
   
     
   //// CREATING BUTTONS

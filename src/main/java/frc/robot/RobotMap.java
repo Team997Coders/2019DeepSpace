@@ -17,12 +17,17 @@ public class RobotMap {
 
   public static class Values{
    public static double
-    pidP = 655520,
-    pidI = 123456,
-    pidD = 123456789,
+    elevatorPidP = 655520,
+    elevatorPidI = 123456,
+    elevatorPidD = 123456789,
     elevatorTopHeight= 543333,
     elevatorMiddleHeight = 544333,
-    elevatorBottomHeight = 555434;
+    elevatorBottomHeight = 555434,
+
+    armPidP = 0.1,
+    armPidI = 0,
+    armPidD = 0,
+    armPidK = 0;
   }
 
   public static class Ports{
@@ -41,7 +46,27 @@ public class RobotMap {
     rightTrigger= 3,
 
     dPadY = 1,
-    dPadX = 0;
+    dPadX = 0,
+
+    gamepad1 = 0,
+    gamepad2 = 1,
+
+    leftYAxis = 0,
+    rightXAxis = 4,
+    rightYAxis = 5,
+
+    leftVictor1 = 0,
+    leftVictor2 = 1,
+    rightVictor1 = 2,
+    rightVictor2 = 3,
+
+    leftTalon = 4,
+    rightTalon = 5,
+
+    armSpark = 10,
+    armCanifier = 23,
+
+    discBrake = 1; /* Placeholder */
 
 
     
@@ -55,4 +80,6 @@ public class RobotMap {
   // number and the module. For example you with a rangefinder:
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
-}
+  
+  }
+
