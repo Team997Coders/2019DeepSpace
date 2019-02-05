@@ -101,7 +101,7 @@ public class OI {
 
   public int getVisionLeftXAxis() {
     // TODO: Are these ports the same across joysticks?
-    return (int)Math.round(bing(0.05, gamepad2.getRawAxis(RobotMap.Ports.rightXAxis), -1, 1) * 100);
+    return (int)Math.round(bing(0.05, gamepad2.getRawAxis(RobotMap.Ports.leftXAxis), -1, 1) * 100);
   }
 
   public double deadBand(double value, double dead) {

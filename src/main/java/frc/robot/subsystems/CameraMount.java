@@ -7,13 +7,11 @@
 
 package frc.robot.subsystems;
 
-import java.io.IOException;
-
 import org.team997coders.spartanlib.hardware.roborio.Servo;
 import org.team997coders.spartanlib.interfaces.IServo;
 
 import frc.robot.RobotMap;
-import frc.robot.commands.ProcessCameraMountCommands;
+import frc.robot.commands.DefaultPanTiltCommandGroup;
 
 /**
  * A subsystem to define an automated camera mount that uses servos for panning and tilting.
@@ -70,15 +68,11 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
   }
 
   /**
-   * Set the default command to process commands sent from remote CameraVision application
+   * Set the default command to process commands sent to/from remote CameraVision application
    */
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    try {
-      setDefaultCommand(new ProcessCameraMountCommands());
-    } catch (IOException e) {
-      System.out.println(String.format("Cannot process default command for CameraMount. Pan/tilt will not work. Error=%s", e));
-    }
+//    setDefaultCommand(new DefaultPanTiltCommandGroup());
   } 
 }

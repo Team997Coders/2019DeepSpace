@@ -3,6 +3,7 @@ package frc.robot.vision.cameravisionclient;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -20,6 +21,8 @@ public class CameraVisionClient implements Closeable {
   private boolean lastPanWasZero;
   private boolean lastTiltWasZero;
   private boolean connected;
+  private int retryConnectionEveryNSeconds = 2;
+  private long lastRetryMs;
 
   /**
    * Constructor that assumes the client is running on localhost and 
@@ -27,7 +30,7 @@ public class CameraVisionClient implements Closeable {
    * @throws UnknownHostException
    * @throws IOException
    */
-  public CameraVisionClient() throws UnknownHostException, IOException {
+  public CameraVisionClient() throws UnknownHostException  {
     this(null);
   }
 
@@ -38,8 +41,8 @@ public class CameraVisionClient implements Closeable {
    * @throws UnknownHostException IP address cannot be found.
    * @throws IOException          Thrown if...who knows.
    */
-  public CameraVisionClient(String host) throws UnknownHostException, IOException {
-    this(host, 2222);
+  public CameraVisionClient(String host) throws UnknownHostException  {
+    this(host, 2222, new Socket());
   }
 
   /**
@@ -48,25 +51,14 @@ public class CameraVisionClient implements Closeable {
    * @param host                  The name of the host running the application.
    * @param port                  The port that the application is listening for commands.
    * @throws UnknownHostException IP address cannot be found.
-   * @throws IOException          Thrown if...who knows.
+   * @throws IOException          Thrown if remote port not open and probably for many other reasons.
    */
-  public CameraVisionClient(String host, int port) throws UnknownHostException, IOException {
+  public CameraVisionClient(String host, int port, Socket socket) throws UnknownHostException {
     this.host = host;
     this.port = port;
-    connected = false;
     // Socket to talk to the CameraVision application
-    this.socket = new Socket(host, port);
-    // Disable NAGLE algo so that sent packets are not held up.
-    // This seems to be disabled on the Windows loopback, so I do
-    // not see performance problems there but do when deploying
-    // the CameraVision app across the network.
-    this.socket.setTcpNoDelay(true);
-    // PrintWriter through which we will write commands to
-    this.client = new PrintWriter(socket.getOutputStream(), true);
-    lastPanWasZero = true;
-    lastTiltWasZero = true;
-    System.out.println("CameraVisionClient connected.");
-    connected = true;
+    this.socket = socket;
+    connect();
   }
 
   /**
@@ -75,7 +67,34 @@ public class CameraVisionClient implements Closeable {
   public void close() throws IOException {
     socket.close();
     connected = false;
-    System.out.println("CameraVisionClient disconnected.");
+    System.out.println("CameraVisionClient disconnected from Pi.");
+  }
+
+  public void connect() throws UnknownHostException {
+    try{close();} catch(Exception e) {}
+    socket = new Socket();
+    if (System.currentTimeMillis() > (lastRetryMs + (retryConnectionEveryNSeconds * 1000))) {
+      lastRetryMs = System.currentTimeMillis();
+      try {
+        // Connect to the socket
+        socket.connect(new InetSocketAddress(host,port), 500);
+        // Disable NAGLE algo so that sent packets are not held up.
+        // This seems to be disabled on the Windows loopback, so I do
+        // not see performance problems there but do when deploying
+        // the CameraVision app across the network.
+        socket.setTcpNoDelay(true);
+        // PrintWriter through which we will write commands to
+        client = new PrintWriter(socket.getOutputStream(), true);
+        lastPanWasZero = true;
+        lastTiltWasZero = true;
+        System.out.println("CameraVisionClient connected to Pi.");
+        connected = true;
+      }
+      catch (IOException e) {
+        e.printStackTrace();
+        System.out.println(String.format("CameraVisionClient timeout connecting to Pi...retry again in %d seconds.", retryConnectionEveryNSeconds));
+      }
+    }
   }
 
   /**
@@ -85,31 +104,14 @@ public class CameraVisionClient implements Closeable {
    * @param args    Variable length argument list.
    */
   private void printf(String format, Object... args) {
-    // Try to print the command
-    client.printf(format, args);
-    // If it fails, then try to reconnect and print again.
-    if (client.checkError()) {
-      if (connected) {
-        System.out.println("CameraVisionClient disconnected.");
-        connected = false;
-      }
-      try {
-        lastPanWasZero = true;
-        lastTiltWasZero = true;
-        client.close();
-        socket.close();
-        // Socket to talk to the CameraVision application
-        socket = new Socket(host, port);
-        socket.setTcpNoDelay(true);
-        // PrintWriter through which we will write commands to
-        client = new PrintWriter(socket.getOutputStream(), true);
-        client.printf(format, args);
-        if (!client.checkError()) {
-          connected = true;
-          System.out.println("CameraVisionClient connected.");
-        }
-      } catch (Exception e) {
-        System.out.println("CameraVisionClient not connected.");
+    if (!connected) {
+      try{connect();} catch (Exception e) {};
+    }
+    if (connected) {
+      // Try to print the command
+      client.printf(format, args);
+      if (client.checkError()) {
+        try {close();} catch (Exception e) {}
       }
     }
   }

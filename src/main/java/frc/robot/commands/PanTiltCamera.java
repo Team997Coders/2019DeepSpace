@@ -47,6 +47,5 @@ public class PanTiltCamera extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

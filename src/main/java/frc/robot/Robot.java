@@ -7,7 +7,9 @@
 
 package frc.robot;
 
-import java.io.IOException;
+import java.net.UnknownHostException;
+
+import org.team997coders.spartanlib.commands.CenterCamera;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -41,7 +43,8 @@ public class Robot extends TimedRobot {
   // Otherwise null pointer exceptions will drive you crazy, in the case
   // we do not connect to the Pi for some reason.
   public static CameraVisionClient cameraVisionClient;
-  public PanTiltCamera panTiltCamera;
+  private PanTiltCamera panTiltCamera;
+  private ProcessCameraMountCommands processCameraMountCommands;
 
   
   Command autonomousCommand;
@@ -63,26 +66,23 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
-    cameraMount = new CameraMount(0, 120, 10, 170);
+    cameraMount = new CameraMount(45, 120, 20, 160);
 
     // Connect to remote vision subsystem
     try {
       cameraVisionClient = new CameraVisionClient("10.9.97.6");
-    } catch (IOException e) {
-      // TODO: What is going to be the timing of roborio network availability, boot speed,
-      // and Pi boot speed? Need to test.
-      System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
-      System.out.println("Robot will proceed blind.");
+      cameraVisionClient.connect();
+    } catch (UnknownHostException e) {
+      System.out.println("Can't connect to vision subsystem...incorrect Pi IP address.");
+      System.out.println("Robot will proceed without camera pan/tilt control.");
     }
+    panTiltCamera = new PanTiltCamera();
+    try {
+      processCameraMountCommands = new ProcessCameraMountCommands();
+    } catch (Exception e)
+    {}
 
     oi = new OI();
-
-    // Because there is no hardware subsystem directly hooked up
-    // to this command (it is a proxy for calling CameraVision on Pi)
-    // there is not default command to keep this active. So manually start
-    // here...
-    panTiltCamera = new PanTiltCamera();
-    panTiltCamera.start();
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -107,6 +107,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    CenterCamera centerCamera = new CenterCamera(cameraMount);
+    centerCamera.start();
+    panTiltCamera.start();
+    processCameraMountCommands.start();
     autonomousCommand = chooser.getSelected();
 
     if (autonomousCommand != null) {
@@ -121,6 +125,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    CenterCamera centerCamera = new CenterCamera(cameraMount);
+    centerCamera.start();
+    panTiltCamera.start();
+    processCameraMountCommands.start();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

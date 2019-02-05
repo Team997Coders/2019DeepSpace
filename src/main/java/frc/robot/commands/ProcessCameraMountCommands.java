@@ -8,9 +8,7 @@
 package frc.robot.commands;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 import org.team997coders.spartanlib.commands.CenterCamera;
 import org.team997coders.spartanlib.commands.SlewCamera;
@@ -18,7 +16,6 @@ import org.team997coders.spartanlib.commands.SlewCamera;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.CameraMount;
-import frc.robot.vision.cameramountserver.CameraMountServer;
 import frc.robot.vision.cameramountserver.CommandProcessor;
 import frc.robot.vision.cameramountserver.CommandProcessorValueBuilder;
 import frc.robot.vision.cameramountserver.JoystickValueProvider;
@@ -31,19 +28,13 @@ import frc.robot.vision.cameramountserver.JoystickValueProvider;
  */
 public class ProcessCameraMountCommands extends Command {
   // Dependencies
-  private final CameraMountServer cameraMountServer;
-  private final Thread cameraMountServerThread;
+  private final CommandProcessor commandProcessor;
+  private final Thread commandProcessorThread;
   private final SlewCamera slewCamera;
   private final CenterCamera centerCamera;
   private final JoystickValueProvider panValueProvider;
   private final JoystickValueProvider tiltValueProvider;
   private final CameraMount cameraMount;
-  // This socket will be listening for CameraMount commands
-  // from the CameraVision application.
-  private Socket socket;
-  // Flipped when socket disconnects occur
-  private boolean socketHasError;
-  private CommandProcessor commandProcessor;
 
   /**
    * This parameterless constructor will start a socket server
@@ -54,6 +45,7 @@ public class ProcessCameraMountCommands extends Command {
    public ProcessCameraMountCommands() throws IOException {
     // TODO: Put in guards
     this(2223);
+    System.out.println("Init ProcessCameraMountCommands");
   }
 
   /**
@@ -76,23 +68,23 @@ public class ProcessCameraMountCommands extends Command {
    */
   public ProcessCameraMountCommands(ServerSocket serverSocket) throws IOException {
     // TODO: Put in guards
-    this(new CameraMountServer(serverSocket), new JoystickValueProvider(), new JoystickValueProvider());
+    this(new CommandProcessor(serverSocket, new CommandProcessorValueBuilder()), new JoystickValueProvider(), new JoystickValueProvider());
   }
 
   /**
    * Wire up a new thread to process the given CameraMountServer.
    * 
-   * @param cameraMountServer The server providing sockets for connecting to clients.
+   * @param commandProcessor  The command processor that yields CameraMount commands to execute.
    * @param panValueProvider  A container to transport panning magnitude values from the operator interface.
    * @param tiltValueProvider A container to transport tilting magnitude values from the operator interface.
    * @throws IOException
    */
-  public ProcessCameraMountCommands(CameraMountServer cameraMountServer, 
+  public ProcessCameraMountCommands(CommandProcessor commandProcessor, 
       JoystickValueProvider panValueProvider, 
       JoystickValueProvider tiltValueProvider) throws IOException {
     // TODO: Put in guards
-    this(cameraMountServer, 
-      new Thread(cameraMountServer), 
+    this(commandProcessor, 
+      new Thread(commandProcessor), 
       new SlewCamera(Robot.cameraMount, panValueProvider, tiltValueProvider), 
       new CenterCamera(Robot.cameraMount),
       panValueProvider,
@@ -105,16 +97,16 @@ public class ProcessCameraMountCommands extends Command {
    * starting the given execution thread to process socket accept requests for the
    * given CameraMountServer.
    * 
-   * @param cameraMountServer         The server providing sockets for connecting to clients.
-   * @param cameraMountServerThread   The thread to execute the CameraMountServer.
+   * @param commandProcessor          The command processor that yields CameraMount commands to execute.
+   * @param commandProcessorThread    The thread to execute the CommandProcessor.
    * @param slewCamera                The command to slew the camera when panning or tilting commands are received.
    * @param centerCamera              The command to center the camera when the center command is received.
    * @param panValueProvider          A container to transport panning magnitude values from the operator interface.
    * @param tiltValueProvider         A container to transport tilting magnitude values from the operator interface.
    * @throws IOException
    */
-  public ProcessCameraMountCommands(CameraMountServer cameraMountServer, 
-      Thread cameraMountServerThread, 
+  public ProcessCameraMountCommands(CommandProcessor commandProcessor, 
+      Thread commandProcessorThread, 
       SlewCamera slewCamera, 
       CenterCamera centerCamera,
       JoystickValueProvider panValueProvider,
@@ -123,27 +115,24 @@ public class ProcessCameraMountCommands extends Command {
 
     // TODO: Put in guards
 
-    // The CameraMount subsystem will be used.
-    requires(cameraMount);
-    // Wire up dependencies.
-    this.cameraMountServer = cameraMountServer;
-    this.cameraMountServerThread = cameraMountServerThread;
+    // requires(cameraMount);
+
+    // Wire up dependencies
+    this.commandProcessor = commandProcessor;
+    this.commandProcessorThread = commandProcessorThread;
     this.slewCamera = slewCamera;
     this.centerCamera = centerCamera;
     this.panValueProvider = panValueProvider;
     this.tiltValueProvider = tiltValueProvider;
     this.cameraMount = cameraMount;
-    // Set default values
-    socket = null;
-    socketHasError = false;
-    commandProcessor = null;
-    // Start up the CameraMountServer thread for providing sockets
-    this.cameraMountServerThread.start();
   }
 
   @Override
   protected void initialize() {
-    cameraMountServer.acceptWhenAvailable();
+    // Start up the CameraMountServer thread for providing sockets
+    if (!commandProcessorThread.isAlive()) {
+      this.commandProcessorThread.start();
+    }
   }
 
   /**
@@ -154,54 +143,31 @@ public class ProcessCameraMountCommands extends Command {
    */
   @Override
   protected void execute() {
-    // Trap IO errors...socket disconnects and such
     try {
-
-      // If we have a command processor and not encountered a socket error
-      if (commandProcessor != null && socketHasError == false) {
-
-        // then proceed to process commands from remote client
-        // (typically CameraVision application running on Pi)
-        commandProcessor.process();
-
-      // If the socket server detects that a socket is available to read/write
-      // from (because a remote client is making a connection attempt...)
-      } else if (cameraMountServer.isSocketAvailable()) {
-
-        System.out.println("ProcessCameraMountCommands getting socket...");
-
-        // Get the socket because we need the streams
-        socket = cameraMountServer.getSocket();
-
-        // Reset the error flag so processing can take place
-        socketHasError = false;
-
-        // Now wire up the command processor
-        commandProcessor = new CommandProcessor(
-          socket.getInputStream(), 
-          new PrintStream(socket.getOutputStream()), 
-          new CommandProcessorValueBuilder(), 
-          panValueProvider, 
-          tiltValueProvider, 
-          centerCamera, 
-          slewCamera,
-          cameraMount);
+      if (commandProcessor.isCommandAvailable()) {
+        frc.robot.vision.cameramountserver.Command command = commandProcessor.getCommand();
+        switch (command.getCommand()) {
+          case 'p':
+            panValueProvider.setValue(command.getValue());
+            slewCamera.start();
+            break;
+          case 't':
+            tiltValueProvider.setValue(command.getValue());
+            slewCamera.start();
+            break;
+          case 'c':
+            centerCamera.start();
+            break;
+          case 'a':
+            commandProcessor.replytoAngle(cameraMount.getRoundedTiltAngleInDegrees(), cameraMount.getRoundedPanAngleInDegrees());
+            break;
+          default:
+            System.out.println("ProcessCameraMountCommands command" + command.getCommand() + " not recognized.");
+        }
       }
     } catch (IOException e) {
-      System.out.println(String.format("ProcessCameraMountCommands has socket error; reason=%s; continuing...", e.getMessage()));
-      // Socket has an error, probably because the client disconnected
-      // So set flag so we do not continue processing until another good
-      // socket is available.
-      socketHasError = true;
-      // Clean up but blow off errors. Just be a good citizen of resources.
-      try {
-        if (socket != null) {
-          socket.close();
-        }
-      } catch(IOException ioe){};
-      // Tell the socket server that we are ready for another socket when
-      // it has one.
-      cameraMountServer.acceptWhenAvailable();
+      System.out.println("ProcessCameraMountCommands encountered an error.");
+      e.printStackTrace();
     }
   }
 
@@ -218,15 +184,8 @@ public class ProcessCameraMountCommands extends Command {
    */
   @Override
   protected void end() {
-    if (socket != null) {
-      if (!socket.isClosed() && socket.isConnected()) {
-        try {
-          socket.close();
-        } catch (IOException e) {
-          System.out.println(e);
-        }
-      }
-    } 
+    System.out.println("ProcessCameraMountCommands ends.");
+    commandProcessor.stop();
   }
 
   /**
@@ -238,6 +197,5 @@ public class ProcessCameraMountCommands extends Command {
    */
   @Override
   protected void interrupted() {
-    throw new RuntimeException("Only the ProcessCameraMountCommand should be acting on this subsystem.");
   }
 }
