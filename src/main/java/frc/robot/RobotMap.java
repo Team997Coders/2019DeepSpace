@@ -44,6 +44,14 @@ public class RobotMap {
       rightVictor2 = 3,
 
       leftTalon = 4,
+<<<<<<< HEAD
+
+      rightTalon = 5,
+
+      ballMotor = 9;
+
+=======
+>>>>>>> acf27bd2483b1fe90ae20bc860f83e1f19567dfb
       rightTalon = 1,
 
       linesensorleft = 1,  
@@ -64,6 +72,10 @@ public class RobotMap {
       P = 0.0002,
       I = 0.0,
       D = 0.0;
+<<<<<<< HEAD
+
+=======
+>>>>>>> acf27bd2483b1fe90ae20bc860f83e1f19567dfb
 
   }
 
