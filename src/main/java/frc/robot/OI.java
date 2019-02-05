@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.BackingUpWhenLineFollowIsComplete;
 import frc.robot.commands.FollowLine;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.RetractLandingGear;
@@ -48,7 +49,9 @@ public class OI {
     retractLandingGear.whenPressed(new RetractLandingGear());
 
     followLine = new JoystickButton(gamepad1, 1);
-    followLine.whenPressed(new FollowLine());
+
+    followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
+
 
     visionButtonA = new JoystickButton(gamepad2, RobotMap.Ports.buttonA);
     visionButtonA.whenPressed(new VisionPressA());
@@ -79,6 +82,7 @@ public class OI {
 
     visionButtonRightTrigger = new JoystickButton(gamepad2, RobotMap.Ports.buttonRightTrigger);
     visionButtonRightTrigger.whenPressed(new VisionPressRightTrigger());
+
   }
 
   public double getLeftYAxis() {

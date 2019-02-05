@@ -164,6 +164,34 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     lineFollowing.isCloseToTarget();
 
+    SmartDashboard.putNumber("UltraSensor value", Robot.lineFollowing.m_ultrasonicSensorInput.getValue());
+
+
+    if(Robot.lineFollowing.centerLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "Yes! :) ");
+      SmartDashboard.putString("Do you see two lines?", "No");
+    }else if(Robot.lineFollowing.rightLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "No");
+    }else if(Robot.lineFollowing.leftLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "No"); 
+    }else if(Robot.lineFollowing.rightCenterLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "Yes");
+    }else if(Robot.lineFollowing.leftCenterLineSeen()){
+      SmartDashboard.putString("Do you see the line?", "Yes");
+      SmartDashboard.putString("Centered?", "No! :( ");
+      SmartDashboard.putString("Do you see two lines?", "Yes"); 
+    }else{
+      SmartDashboard.putString("Do you see the line?", "No");
+      SmartDashboard.putString("Do you see two lines?", "No");
+    }     
+
     Scheduler.getInstance().run();
   }
 
