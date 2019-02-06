@@ -27,7 +27,7 @@ import frc.robot.subsystems.Arm;
  * project.
  */
 public class Robot extends TimedRobot {
-    public static OI m_oi;
+  public static OI m_oi;
   public static Elevator elevator;
   public static Arm arm;
 

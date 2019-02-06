@@ -45,7 +45,7 @@ public class SwitchArmPostion extends Command {
       Robot.arm.setSpeed(-.5);
     }
     else{
-      Robot.arm.zeroArm();
+      
     }
     Robot.arm.releaseBrake(); // This is hear so that the arm has power before
                               // realeasing the break and does not flop.
