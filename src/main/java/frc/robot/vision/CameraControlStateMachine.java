@@ -17,6 +17,7 @@ public class CameraControlStateMachine {
   private final StateMachine<State, Trigger> stateMachine;
   private final NetworkTable visionNetworkTable;
   private final static String STATEKEY = "State";
+  private final static String TRIGGERKEY = "Trigger";
   private double tiltRate;
   private double panRate;
 
@@ -47,7 +48,6 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.IdentifyingTargets.toString());
-          targetSelector.clearSlewPoint();
         }
       })
       .permit(Trigger.Slew, State.Slewing)
@@ -56,49 +56,57 @@ public class CameraControlStateMachine {
       .permitIf(Trigger.AButton, State.SlewingToTarget, new FuncBoolean() {
         @Override
         public boolean call() {
-          return targetSelector.isSlewPointDefined(Trigger.AButton);
+          targetSelector.getValidTriggers();
+          return targetSelector.isTriggerValid(Trigger.AButton);
         }
       })
       .permitIf(Trigger.BButton, State.SlewingToTarget, new FuncBoolean() {
         @Override
         public boolean call() {
-          return targetSelector.isSlewPointDefined(Trigger.BButton);
+          targetSelector.getValidTriggers();
+          return targetSelector.isTriggerValid(Trigger.BButton);
         }
       })
       .permitIf(Trigger.XButton, State.SlewingToTarget, new FuncBoolean() {
         @Override
         public boolean call() {
-          return targetSelector.isSlewPointDefined(Trigger.XButton);
+          targetSelector.getValidTriggers();
+          return targetSelector.isTriggerValid(Trigger.XButton);
         }
       })
       .permitIf(Trigger.YButton, State.SlewingToTarget, new FuncBoolean() {
         @Override
         public boolean call() {
-          return targetSelector.isSlewPointDefined(Trigger.YButton);
+          targetSelector.getValidTriggers();
+          return targetSelector.isTriggerValid(Trigger.YButton);
         }
       })
       .ignoreIf(Trigger.AButton, new FuncBoolean() {
         @Override
         public boolean call() {
-          return !targetSelector.isSlewPointDefined(Trigger.AButton);
+          targetSelector.getValidTriggers();
+          return !targetSelector.isTriggerValid(Trigger.AButton);
         }
       })
       .ignoreIf(Trigger.BButton, new FuncBoolean() {
         @Override
         public boolean call() {
-          return !targetSelector.isSlewPointDefined(Trigger.BButton);
+          targetSelector.getValidTriggers();
+          return !targetSelector.isTriggerValid(Trigger.BButton);
         }
       })
       .ignoreIf(Trigger.XButton, new FuncBoolean() {
         @Override
         public boolean call() {
-          return !targetSelector.isSlewPointDefined(Trigger.XButton);
+          targetSelector.getValidTriggers();
+          return !targetSelector.isTriggerValid(Trigger.XButton);
         }
       })
       .ignoreIf(Trigger.YButton, new FuncBoolean() {
         @Override
         public boolean call() {
-          return !targetSelector.isSlewPointDefined(Trigger.YButton);
+          targetSelector.getValidTriggers();
+          return !targetSelector.isTriggerValid(Trigger.YButton);
         }
       });
     
@@ -136,7 +144,7 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.SlewingToTarget.toString());
-          targetSelector.setSlewPoint(transition.getTrigger());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString(transition.getTrigger().toString());
       }})
       .permit(Trigger.LockOn, State.TargetLocked)
       .permit(Trigger.FailedToLock, State.LockFailed)

@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import org.team997coders.spartanlib.hardware.roborio.Servo;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.ControlCamera;
 
@@ -66,5 +67,13 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
     double tiltAngle = getTiltAngleInDegrees() + (maxDegreesPerHeartbeat * tiltRate);
     panToAngle(panAngle);
     tiltToAngle(tiltAngle);
+  }
+
+  /**
+   * Updates the SmartDashboard with subsystem data
+   */
+  public void updateSmartDashboard() {
+    SmartDashboard.putNumber("Camera Pan Angle", getPanAngleInDegrees());
+    SmartDashboard.putNumber("Camera Tilt Angle", getTiltAngleInDegrees());
   }
 }

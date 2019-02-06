@@ -141,6 +141,7 @@ public class Robot extends TimedRobot {
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
+    cameraMount.updateSmartDashboard();
     lineFollowing.updateSmarts();
   }
 }
