@@ -6,6 +6,8 @@ import com.github.oxo42.stateless4j.delegates.Action1;
 import com.github.oxo42.stateless4j.delegates.FuncBoolean;
 import com.github.oxo42.stateless4j.transitions.Transition;
 
+import edu.wpi.first.networktables.NetworkTable;
+
 /**
  * Implements a state machine to enforce proper sequencing
  * and execution of camera control as the user interacts
@@ -13,15 +15,18 @@ import com.github.oxo42.stateless4j.transitions.Transition;
  */
 public class CameraControlStateMachine {
   private final StateMachine<State, Trigger> stateMachine;
+  private final NetworkTable visionNetworkTable;
+  private final static String STATEKEY = "State";
   private double tiltRate;
   private double panRate;
 
-  public CameraControlStateMachine(TargetSelector targetSelector) {
-    this(targetSelector, new StateMachine<>(State.IdentifyingTargets, GetConfig(targetSelector)));
+  public CameraControlStateMachine(TargetSelector targetSelector, NetworkTable visionNetworkTable) {
+    this(targetSelector, visionNetworkTable, new StateMachine<>(State.IdentifyingTargets, GetConfig(targetSelector, visionNetworkTable)));
   }
 
-  public CameraControlStateMachine(TargetSelector targetSelector, StateMachine<State, Trigger> stateMachine) {
+  public CameraControlStateMachine(TargetSelector targetSelector, NetworkTable visionNetworkTable, StateMachine<State, Trigger> stateMachine) {
     this.stateMachine = stateMachine;
+    this.visionNetworkTable = visionNetworkTable;
     this.tiltRate = 0;
     this.panRate = 0;
   }
@@ -33,7 +38,7 @@ public class CameraControlStateMachine {
    *                         can make correct targeting decisions to drive the heads up display.
    * @return                 The configuration.
    */
-  private static StateMachineConfig<State, Trigger> GetConfig(TargetSelector targetSelector) {
+  private static StateMachineConfig<State, Trigger> GetConfig(TargetSelector targetSelector, NetworkTable visionNetworkTable) {
     StateMachineConfig<State, Trigger> config = new StateMachineConfig<>();
 
     // It would be super nice to use the permitIfOtherwiseIgnore function,
@@ -41,6 +46,7 @@ public class CameraControlStateMachine {
     config.configure(State.IdentifyingTargets)
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.IdentifyingTargets.toString());
           targetSelector.clearSlewPoint();
         }
       })
@@ -97,6 +103,11 @@ public class CameraControlStateMachine {
       });
     
     config.configure(State.Slewing)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Slewing.toString());
+        }
+      })
       .permitReentry(Trigger.Slew)
       .permit(Trigger.LeftThumbstickButton, State.Centering)
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
@@ -107,6 +118,11 @@ public class CameraControlStateMachine {
       .ignore(Trigger.YButton);
 
     config.configure(State.Centering)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Centering.toString());
+        }
+      })
       .permitReentry(Trigger.LeftThumbstickButton)
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.LeftShoulderButton)
@@ -119,6 +135,7 @@ public class CameraControlStateMachine {
     config.configure(State.SlewingToTarget)
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.SlewingToTarget.toString());
           targetSelector.setSlewPoint(transition.getTrigger());
       }})
       .permit(Trigger.LockOn, State.TargetLocked)
@@ -132,6 +149,10 @@ public class CameraControlStateMachine {
       .ignore(Trigger.LeftShoulderButton);
 
     config.configure(State.TargetLocked)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.TargetLocked.toString());
+      }})
       .permit(Trigger.BButton, State.DrivingToTarget)
       .permit(Trigger.AButton, State.IdentifyingTargets)
       .permit(Trigger.LoseLock, State.LockLost)
@@ -142,6 +163,10 @@ public class CameraControlStateMachine {
       .ignore(Trigger.LeftShoulderButton);
 
     config.configure(State.LockFailed)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.LockFailed.toString());
+      }})
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
@@ -152,6 +177,10 @@ public class CameraControlStateMachine {
       .ignore(Trigger.LeftShoulderButton);
 
     config.configure(State.LockLost)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.LockLost.toString());
+      }})
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
@@ -162,6 +191,10 @@ public class CameraControlStateMachine {
       .ignore(Trigger.LeftShoulderButton);
 
     config.configure(State.DrivingToTarget)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.DrivingToTarget.toString());
+      }})
       .permit(Trigger.LoseLock, State.LockLost)
       .permit(Trigger.BButton, State.TargetLocked)
       .permit(Trigger.AButton, State.IdentifyingTargets)
@@ -172,6 +205,10 @@ public class CameraControlStateMachine {
       .ignore(Trigger.LeftShoulderButton);
 
     config.configure(State.Calibrating)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition) {
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Calibrating.toString());
+      }})
       .permit(Trigger.AButton, State.IdentifyingTargets)
       .ignore(Trigger.BButton)
       .ignore(Trigger.Slew)

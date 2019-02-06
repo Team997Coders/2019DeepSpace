@@ -10,6 +10,7 @@ package frc.robot;
 import org.team997coders.spartanlib.commands.CenterCamera;
 import org.team997coders.spartanlib.interfaces.IJoystickValueProvider;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -65,7 +66,8 @@ public class Robot extends TimedRobot {
     cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
 
     networkTableInstance = NetworkTableInstance.getDefault();
-    cameraControlStateMachine = new CameraControlStateMachine(new TargetSelector(networkTableInstance.getTable("Vision")));
+    NetworkTable visionNetworkTable = networkTableInstance.getTable("Vision");
+    cameraControlStateMachine = new CameraControlStateMachine(new TargetSelector(visionNetworkTable), visionNetworkTable);
 
 
     centerCamera = new CenterCamera(cameraMount);
