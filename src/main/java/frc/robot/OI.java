@@ -96,12 +96,12 @@ public class OI {
   public int getVisionLeftYAxis() {
     // TODO: Are these ports the same across joysticks?
     // I also do not think this should be negated for pan/tilt servos.
-    return (int)Math.round(bing(0.05, gamepad2.getRawAxis(RobotMap.Ports.leftYAxis), -1, 1) * 100);
+    return (int)Math.round(gamepad2.getRawAxis(RobotMap.Ports.leftYAxis) * 100);
   }
 
   public int getVisionLeftXAxis() {
     // TODO: Are these ports the same across joysticks?
-    return (int)Math.round(bing(0.05, gamepad2.getRawAxis(RobotMap.Ports.leftXAxis), -1, 1) * 100);
+    return (int)Math.round(gamepad2.getRawAxis(RobotMap.Ports.leftXAxis) * 100);
   }
 
   public double deadBand(double value, double dead) {

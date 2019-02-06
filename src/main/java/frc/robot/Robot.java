@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   public static CameraVisionClient cameraVisionClient;
   private PanTiltCamera panTiltCamera;
   private ProcessCameraMountCommands processCameraMountCommands;
-
+  private CenterCamera centerCamera;
   
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -69,6 +69,7 @@ public class Robot extends TimedRobot {
     cameraMount = new CameraMount(45, 120, 20, 160);
 
     // Connect to remote vision subsystem
+    centerCamera = new CenterCamera(cameraMount);
     try {
       cameraVisionClient = new CameraVisionClient("10.9.97.6");
       cameraVisionClient.connect();
@@ -107,7 +108,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    CenterCamera centerCamera = new CenterCamera(cameraMount);
     centerCamera.start();
     panTiltCamera.start();
     processCameraMountCommands.start();
@@ -125,7 +125,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    CenterCamera centerCamera = new CenterCamera(cameraMount);
     centerCamera.start();
     panTiltCamera.start();
     processCameraMountCommands.start();
