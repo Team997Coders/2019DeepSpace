@@ -8,10 +8,9 @@
 package frc.robot.subsystems;
 
 import org.team997coders.spartanlib.hardware.roborio.Servo;
-import org.team997coders.spartanlib.interfaces.IServo;
 
 import frc.robot.RobotMap;
-import frc.robot.commands.DefaultPanTiltCommandGroup;
+import frc.robot.commands.SlewCamera;
 
 /**
  * A subsystem to define an automated camera mount that uses servos for panning and tilting.
@@ -25,45 +24,11 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
       int tiltUpperLimitInDegrees, 
       int panLowerLimitInDegrees,
       int panUpperLimitInDegrees) {
-    this(new Servo(RobotMap.Ports.panservo), 
+    super(new Servo(RobotMap.Ports.panservo), 
       new Servo(RobotMap.Ports.tiltservo, 544, 2250),
       tiltLowerLimitInDegrees,
       tiltUpperLimitInDegrees,
       panLowerLimitInDegrees,
-      panUpperLimitInDegrees);
-  }
-
-  /**
-   * Constructor that sets travel limits of servos to 0..180
-   * 
-   * @param panServo    The pan servo
-   * @param tiltServo   The tilt servo
-   */
-  public CameraMount(IServo panServo, IServo tiltServo) {
-    this(panServo, tiltServo, 0, 180, 0, 180);
-  }
-
-  /**
-   * Constructor to set travel limits.
-   * 
-   * @param panServo
-   * @param tiltServo
-   * @param tiltLowerLimitInDegrees
-   * @param tiltUpperLimitInDegrees
-   * @param panLowerLimitInDegrees
-   * @param panUpperLimitInDegrees
-   */
-  public CameraMount(IServo panServo, 
-      IServo tiltServo, 
-      int tiltLowerLimitInDegrees, 
-      int tiltUpperLimitInDegrees, 
-      int panLowerLimitInDegrees,
-      int panUpperLimitInDegrees) {
-    super(panServo, 
-      tiltServo, 
-      tiltLowerLimitInDegrees, 
-      tiltUpperLimitInDegrees, 
-      panLowerLimitInDegrees, 
       panUpperLimitInDegrees);
   }
 
@@ -73,6 +38,6 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-//    setDefaultCommand(new DefaultPanTiltCommandGroup());
+    setDefaultCommand(new SlewCamera());
   } 
 }
