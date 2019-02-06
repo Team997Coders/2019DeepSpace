@@ -10,7 +10,7 @@ package frc.robot;
 import org.team997coders.spartanlib.commands.CenterCamera;
 import org.team997coders.spartanlib.interfaces.IJoystickValueProvider;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,6 +21,8 @@ import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
+import frc.robot.vision.CameraControlStateMachine;
+import frc.robot.vision.TargetSelector;
 import frc.robot.vision.cameramountserver.JoystickValueProvider;
 
 /**
@@ -41,6 +43,8 @@ public class Robot extends TimedRobot {
   public static IJoystickValueProvider panRateProvider;
   public static IJoystickValueProvider tiltRateProvider;
   private CenterCamera centerCamera;
+  private NetworkTableInstance networkTableInstance;
+  public static CameraControlStateMachine cameraControlStateMachine;
   
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -65,7 +69,10 @@ public class Robot extends TimedRobot {
     panRateProvider = new JoystickValueProvider();
     tiltRateProvider = new JoystickValueProvider();
 
-    // Connect to remote vision subsystem
+    networkTableInstance = NetworkTableInstance.getDefault();
+    cameraControlStateMachine = new CameraControlStateMachine(new TargetSelector(networkTableInstance.getTable("Vision")));
+
+
     centerCamera = new CenterCamera(cameraMount);
 
     oi = new OI();

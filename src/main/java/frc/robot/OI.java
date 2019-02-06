@@ -3,9 +3,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.FollowLine;
-import frc.robot.commands.CenterCamera;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.RetractLandingGear;
+import frc.robot.commands.vision.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -17,6 +17,12 @@ public class OI {
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton followLine;
+  private JoystickButton visionButtonA;
+  private JoystickButton visionButtonB;
+  private JoystickButton visionButtonX;
+  private JoystickButton visionButtonY;
+  private JoystickButton visionButtonLeftShoulder;
+  private JoystickButton visionButtonRightShoulder;
   private JoystickButton visionButtonLeftThumbstick;
 
   public OI() {
@@ -32,8 +38,26 @@ public class OI {
     followLine = new JoystickButton(gamepad1, 1);
     followLine.whenPressed(new FollowLine());
 
+    visionButtonA = new JoystickButton(gamepad2, RobotMap.Ports.buttonA);
+    visionButtonA.whenPressed(new PressA());
+
+    visionButtonB = new JoystickButton(gamepad2, RobotMap.Ports.buttonB);
+    visionButtonB.whenPressed(new PressB());
+
+    visionButtonX = new JoystickButton(gamepad2, RobotMap.Ports.buttonX);
+    visionButtonX.whenPressed(new PressX());
+
+    visionButtonY = new JoystickButton(gamepad2, RobotMap.Ports.buttonY);
+    visionButtonY.whenPressed(new PressY());
+
     visionButtonLeftThumbstick = new JoystickButton(gamepad2, RobotMap.Ports.buttonLeftThumbstick);
-    visionButtonLeftThumbstick.whenPressed(new CenterCamera());
+    visionButtonLeftThumbstick.whenPressed(new PressLeftThumbstick());
+
+    visionButtonLeftShoulder = new JoystickButton(gamepad2, RobotMap.Ports.buttonLeftShoulder);
+    visionButtonLeftShoulder.whenPressed(new PressLeftShoulder());
+
+    visionButtonRightShoulder = new JoystickButton(gamepad2, RobotMap.Ports.buttonRightShoulder);
+    visionButtonRightShoulder.whenPressed(new PressRightShoulder());
   }
 
   public double getLeftYAxis() {
