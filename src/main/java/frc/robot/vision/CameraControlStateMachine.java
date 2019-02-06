@@ -8,13 +8,13 @@ import com.github.oxo42.stateless4j.transitions.Transition;
 
 /**
  * Implements a state machine to enforce proper sequencing
- * and execution of the heads up display as the user interacts
- * with the system.
+ * and execution of camera control as the user interacts
+ * with vision gamepad and the heads up display.
  */
 public class CameraControlStateMachine {
   private final StateMachine<State, Trigger> stateMachine;
-  private int tiltPct;
-  private int panPct;
+  private double tiltRate;
+  private double panRate;
 
   public CameraControlStateMachine(TargetSelector targetSelector) {
     this(targetSelector, new StateMachine<>(State.IdentifyingTargets, GetConfig(targetSelector)));
@@ -22,8 +22,8 @@ public class CameraControlStateMachine {
 
   public CameraControlStateMachine(TargetSelector targetSelector, StateMachine<State, Trigger> stateMachine) {
     this.stateMachine = stateMachine;
-    this.tiltPct = 0;
-    this.panPct = 0;
+    this.tiltRate = 0;
+    this.panRate = 0;
   }
 
   /**
@@ -44,8 +44,7 @@ public class CameraControlStateMachine {
           targetSelector.clearSlewPoint();
         }
       })
-      .permit(Trigger.Pan, State.Panning)
-      .permit(Trigger.Tilt, State.Tilting)
+      .permit(Trigger.Slew, State.Slewing)
       .permit(Trigger.LeftThumbstickButton, State.Centering)
       .permit(Trigger.LeftShoulderButton, State.Calibrating)
       .permitIf(Trigger.AButton, State.SlewingToTarget, new FuncBoolean() {
@@ -97,20 +96,8 @@ public class CameraControlStateMachine {
         }
       });
     
-    config.configure(State.Panning)
-      .permit(Trigger.Tilt, State.Tilting)
-      .permitReentry(Trigger.Pan)
-      .permit(Trigger.LeftThumbstickButton, State.Centering)
-      .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
-      .ignore(Trigger.LeftShoulderButton)
-      .ignore(Trigger.AButton)
-      .ignore(Trigger.BButton)
-      .ignore(Trigger.XButton)
-      .ignore(Trigger.YButton);
-
-    config.configure(State.Tilting)
-      .permit(Trigger.Pan, State.Panning)
-      .permitReentry(Trigger.Tilt)
+    config.configure(State.Slewing)
+      .permitReentry(Trigger.Slew)
       .permit(Trigger.LeftThumbstickButton, State.Centering)
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.LeftShoulderButton)
@@ -120,12 +107,11 @@ public class CameraControlStateMachine {
       .ignore(Trigger.YButton);
 
     config.configure(State.Centering)
-      .permit(Trigger.Tilt, State.Tilting)
-      .permit(Trigger.Pan, State.Panning)
       .permitReentry(Trigger.LeftThumbstickButton)
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.LeftShoulderButton)
       .ignore(Trigger.AButton)
+      .ignore(Trigger.Slew)
       .ignore(Trigger.BButton)
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton);
@@ -138,8 +124,7 @@ public class CameraControlStateMachine {
       .permit(Trigger.LockOn, State.TargetLocked)
       .permit(Trigger.FailedToLock, State.LockFailed)
       .permit(Trigger.AButton, State.IdentifyingTargets)
-      .permit(Trigger.Pan, State.Panning)
-      .permit(Trigger.Tilt, State.Tilting)
+      .permit(Trigger.Slew, State.Slewing)
       .permit(Trigger.LeftThumbstickButton, State.Centering)
       .ignore(Trigger.BButton)
       .ignore(Trigger.XButton)
@@ -150,8 +135,7 @@ public class CameraControlStateMachine {
       .permit(Trigger.BButton, State.DrivingToTarget)
       .permit(Trigger.AButton, State.IdentifyingTargets)
       .permit(Trigger.LoseLock, State.LockLost)
-      .permit(Trigger.Pan, State.Panning)
-      .permit(Trigger.Tilt, State.Tilting)
+      .permit(Trigger.Slew, State.Slewing)
       .permit(Trigger.LeftThumbstickButton, State.Centering)
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton)
@@ -159,8 +143,7 @@ public class CameraControlStateMachine {
 
     config.configure(State.LockFailed)
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
-      .ignore(Trigger.Pan)
-      .ignore(Trigger.Tilt)
+      .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.AButton)
       .ignore(Trigger.BButton)
@@ -170,8 +153,7 @@ public class CameraControlStateMachine {
 
     config.configure(State.LockLost)
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
-      .ignore(Trigger.Pan)
-      .ignore(Trigger.Tilt)
+      .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.AButton)
       .ignore(Trigger.BButton)
@@ -183,8 +165,7 @@ public class CameraControlStateMachine {
       .permit(Trigger.LoseLock, State.LockLost)
       .permit(Trigger.BButton, State.TargetLocked)
       .permit(Trigger.AButton, State.IdentifyingTargets)
-      .ignore(Trigger.Pan)
-      .ignore(Trigger.Tilt)
+      .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton)
@@ -193,8 +174,7 @@ public class CameraControlStateMachine {
     config.configure(State.Calibrating)
       .permit(Trigger.AButton, State.IdentifyingTargets)
       .ignore(Trigger.BButton)
-      .ignore(Trigger.Pan)
-      .ignore(Trigger.Tilt)
+      .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.LeftShoulderButton)
       .ignore(Trigger.XButton)
@@ -219,22 +199,28 @@ public class CameraControlStateMachine {
     stateMachine.fire(Trigger.YButton);
   }
 
-  public void tilt(int tiltPct) {
-    this.tiltPct = tiltPct;
-    stateMachine.fire(Trigger.Tilt);
+  public void slew(double panRate, double tiltRate) {
+    // If we are slewing...
+    if (panRate != 0 || tiltRate != 0 ) {
+      this.panRate = panRate;
+      this.tiltRate = tiltRate;
+      stateMachine.fire(Trigger.Slew);  
+    } else if (panRate == 0 && tiltRate == 0 && stateMachine.getState() == State.IdentifyingTargets) {
+      // do nothing as there is nothing to slew given that we are already identifying targets
+    } else {
+      // Assume we went from slewing to now not
+      this.panRate = 0;
+      this.tiltRate = 0;
+      stateMachine.fire(Trigger.IdentifyTargets);  
+    }
   }
 
-  public int getTiltPct() {
-    return tiltPct;
+  public double getTiltRate() {
+    return tiltRate;
   }
 
-  public void pan(int panPct) {
-    this.panPct = panPct;
-    stateMachine.fire(Trigger.Pan);
-  }
-
-  public int getPanPct() {
-    return panPct;
+  public double getPanRate() {
+    return panRate;
   }
 
   public void leftThumbstickButtonPressed() {
@@ -274,13 +260,13 @@ public class CameraControlStateMachine {
    * The valid states of the state machine.
    */
   public enum State {
-    IdentifyingTargets, SlewingToTarget, TargetLocked, LockFailed, LockLost, DrivingToTarget, Panning, Tilting, Centering, Calibrating
+    IdentifyingTargets, SlewingToTarget, TargetLocked, LockFailed, LockLost, DrivingToTarget, Slewing, Centering, Calibrating
   }
 
   /**
    * Triggers that cause state transitions.
    */
   public enum Trigger {
-    AButton, BButton, XButton, YButton, LockOn, FailedToLock, LoseLock, IdentifyTargets, Pan, Tilt, LeftThumbstickButton, LeftShoulderButton
+    AButton, BButton, XButton, YButton, LockOn, FailedToLock, LoseLock, IdentifyTargets, Slew, LeftThumbstickButton, LeftShoulderButton
   }
 }

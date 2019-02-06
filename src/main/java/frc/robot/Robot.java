@@ -23,7 +23,6 @@ import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineFollowing;
 import frc.robot.vision.CameraControlStateMachine;
 import frc.robot.vision.TargetSelector;
-import frc.robot.vision.cameramountserver.JoystickValueProvider;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,8 +39,6 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static LineFollowing lineFollowing;
   public static CameraMount cameraMount;
-  public static IJoystickValueProvider panRateProvider;
-  public static IJoystickValueProvider tiltRateProvider;
   private CenterCamera centerCamera;
   private NetworkTableInstance networkTableInstance;
   public static CameraControlStateMachine cameraControlStateMachine;
@@ -65,9 +62,7 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     lineFollowing = new LineFollowing();
-    cameraMount = new CameraMount(0, 120, 10, 170);
-    panRateProvider = new JoystickValueProvider();
-    tiltRateProvider = new JoystickValueProvider();
+    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
 
     networkTableInstance = NetworkTableInstance.getDefault();
     cameraControlStateMachine = new CameraControlStateMachine(new TargetSelector(networkTableInstance.getTable("Vision")));
@@ -132,8 +127,7 @@ public class Robot extends TimedRobot {
     lineFollowing.isCloseToTarget();
 
     // Set current vision pan/tilt joystick values
-    ((JoystickValueProvider)panRateProvider).setValue(oi.getVisionLeftXAxis());
-    ((JoystickValueProvider)tiltRateProvider).setValue(oi.getVisionLeftYAxis());
+    cameraControlStateMachine.slew(oi.getVisionLeftXAxis(), oi.getVisionLeftYAxis());
 
     Scheduler.getInstance().run();
   }
