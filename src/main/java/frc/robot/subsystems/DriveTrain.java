@@ -2,31 +2,25 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RoboMisc;
 import frc.robot.RobotMap;
-import frc.robot.commands.*;
 import frc.robot.misc.GearBox;
+import frc.robot.misc.RoboMisc;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
-//import frc.robot.misc.GearBox;
 
 /**
- * This is ourr drivetrain. This year I split up the configuration for the drivetrain
- * into another class so this one isn't comically long. We have a few different methods
- * such as normal set volts and stop volts. Along with SetVoltsDecel and SetPosition.
- * NOTE: Grayson hates deceleration code but he reeeealllly needs it. Also not sure
- * if the decel code works so definetly check that first. Make sure the dampRate doesn't need adjusting.
+ * This is our drivetrain. This year I split up the configuration for the
+ * drivetrain into another class so this one isn't comically long. We have a few
+ * different methods such as normal set volts and stop volts. Along with
+ * SetVoltsDecel and SetPosition. NOTE: Grayson hates deceleration code but he
+ * reeeealllly needs it. Also not sure if the decel code works so definetly
+ * check that first. Make sure the dampRate doesn't need adjusting.
  */
 public class DriveTrain extends Subsystem {
 
@@ -41,20 +35,15 @@ public class DriveTrain extends Subsystem {
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
 
-  private SensorCollection leftTalonSensorCollection, rightTalonSensorCollection;
-  private ArcadeDrive driveTrainStyle;
-  
-  int delayCount = 0;
-
-
   public DriveTrain() {
     System.out.println("Starting Drivetrain...");
 
-    // This uses the RoboMisc function standTalonSRXSetup(int, int, int, boolean) to initialize a Talon and 2 slave victors
-    leftBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon,
-      RobotMap.Ports.leftVictor1, RobotMap.Ports.leftVictor2, false);
-    rightBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon,
-      RobotMap.Ports.rightVictor1, RobotMap.Ports.rightVictor2, true);
+    // This uses the RoboMisc function standTalonSRXSetup(int, int, int, boolean) to
+    // initialize a Talon and 2 slave victors
+    leftBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon, RobotMap.Ports.leftVictor1,
+        RobotMap.Ports.leftVictor2, false);
+    rightBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon, RobotMap.Ports.rightVictor1,
+        RobotMap.Ports.rightVictor2, true);
 
     // Grab the objects created by the RoboMisc function and store them in this class
     leftTalon = leftBox.talon;
@@ -71,7 +60,7 @@ public class DriveTrain extends Subsystem {
   /**
    * Set a percent input to the left and right talons
    * 
-   * @param left Percentage input for the left talon.
+   * @param left  Percentage input for the left talon.
    * @param right Percentage input for the right talon.
    */
   public void setVolts(double left, double right) {
@@ -84,16 +73,16 @@ public class DriveTrain extends Subsystem {
    */
   public void stopVolts() {
     // Set Motor Volts to 0
-    //System.out.println("Stop Volts Called");
+    // System.out.println("Stop Volts Called");
     leftTalon.set(ControlMode.PercentOutput, 0);
     rightTalon.set(ControlMode.PercentOutput, 0);
   }
 
   /**
-   * Sets the percentage input for the left and right talon
-   * but with a deceleration dampener.
+   * Sets the percentage input for the left and right talon but with a
+   * deceleration dampener.
    * 
-   * @param left Percentage input for the left talon
+   * @param left  Percentage input for the left talon
    * @param right Percentage input for the right talon
    */
   public void setVoltsDecel(double left, double right) {
@@ -114,7 +103,7 @@ public class DriveTrain extends Subsystem {
   /**
    * Sets the desired tick position for the left and right talon
    * 
-   * @param left Desired tick position for the left talon
+   * @param left  Desired tick position for the left talon
    * @param right Desired tick position for the right talon
    */
   public void setPosition(double left, double right) {
@@ -161,19 +150,20 @@ public class DriveTrain extends Subsystem {
     rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     return rightTalon.getSelectedSensorVelocity(0);
   }
-  
+
   /**
    * Resets the encoders for both talons to 0
    */
   public void resetEncoders() {
     leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
-		leftTalon.setSelectedSensorPosition(0, 0, 10);
-		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+    leftTalon.setSelectedSensorPosition(0, 0, 10);
+    rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
     rightTalon.setSelectedSensorPosition(0, 0, 10);
   }
 
   /**
-   * Gets PID constants from the SmartDashboard and then uses setPIDValues(double, double, double)
+   * Gets PID constants from the SmartDashboard and then uses setPIDValues(double,
+   * double, double)
    */
   public void setPIDValues() {
     double p = SmartDashboard.getNumber("P", 1);
@@ -181,7 +171,7 @@ public class DriveTrain extends Subsystem {
     double d = SmartDashboard.getNumber("D", 0);
     setPIDValues(p, i, d);
   }
-  
+
   /**
    * Sets the parameter PID constants to the talons
    * 
@@ -202,26 +192,26 @@ public class DriveTrain extends Subsystem {
    * Sets the talons and their follow victors into BrakeMode
    */
   public void setBrake() {
-		leftTalon.setNeutralMode(NeutralMode.Brake);
-		rightTalon.setNeutralMode(NeutralMode.Brake);
-		
-		leftVictor1.setNeutralMode(NeutralMode.Brake);
-		rightVictor1.setNeutralMode(NeutralMode.Brake);
-		leftVictor2.setNeutralMode(NeutralMode.Brake);
-		rightVictor2.setNeutralMode(NeutralMode.Brake);
-	}
-  
+    leftTalon.setNeutralMode(NeutralMode.Brake);
+    rightTalon.setNeutralMode(NeutralMode.Brake);
+
+    leftVictor1.setNeutralMode(NeutralMode.Brake);
+    rightVictor1.setNeutralMode(NeutralMode.Brake);
+    leftVictor2.setNeutralMode(NeutralMode.Brake);
+    rightVictor2.setNeutralMode(NeutralMode.Brake);
+  }
+
   /**
    * Sets the talons and their follow victors into CoastMode
    */
-	public void setCoast() {
-		leftTalon.setNeutralMode(NeutralMode.Coast);
-		rightTalon.setNeutralMode(NeutralMode.Coast);
-		
-		leftVictor1.setNeutralMode(NeutralMode.Coast);
-		rightVictor1.setNeutralMode(NeutralMode.Coast);
-		leftVictor2.setNeutralMode(NeutralMode.Coast);
-		rightVictor2.setNeutralMode(NeutralMode.Coast);
+  public void setCoast() {
+    leftTalon.setNeutralMode(NeutralMode.Coast);
+    rightTalon.setNeutralMode(NeutralMode.Coast);
+
+    leftVictor1.setNeutralMode(NeutralMode.Coast);
+    rightVictor1.setNeutralMode(NeutralMode.Coast);
+    leftVictor2.setNeutralMode(NeutralMode.Coast);
+    rightVictor2.setNeutralMode(NeutralMode.Coast);
   }
 
   /**
@@ -237,42 +227,6 @@ public class DriveTrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new ArcadeDrive());
-    //setDefaultCommand(new TankDrive());
-  }
-
-  public double getLeftEncoderTicks() {
-		/* CTRE Magnetic Encoder relative, same as Quadrature */
-		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
-		return leftTalon.getSelectedSensorPosition(0);
-	}
-
-	public double getRightEncoderTicks() {
-		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
-		return rightTalon.getSelectedSensorPosition(0);
-	}
-
-	public double getLeftEncoderRate() {
-		return leftTalon.getSelectedSensorVelocity(0);
-	}
-
-	public double getRightEncoderRate() {
-		return rightTalon.getSelectedSensorVelocity(0);
-	}
-  public void updateDashboard(){
-    if (delayCount ==10){
-      SmartDashboard.putNumber("DT - Left master voltage", leftTalon.getMotorOutputVoltage());
-			SmartDashboard.putNumber("DT - Right master voltage", rightTalon.getMotorOutputVoltage());
-			SmartDashboard.putNumber("DT - Left Encoder", getLeftEncoderTicks());
-			SmartDashboard.putNumber("DT - Right Encoder", getRightEncoderTicks());
-			SmartDashboard.putNumber("DT - Left Encoder distance in inches", getLeftEncoderTicks()*RobotMap.Values.inchesPerTick);
-			SmartDashboard.putNumber("DT - Right Encoder distance in inches", getRightEncoderTicks()*RobotMap.Values.inchesPerTick);
-			SmartDashboard.putNumber("DT - Left Encoder Velocity", leftTalon.getSelectedSensorVelocity(0));
-			SmartDashboard.putNumber("DT - Right EncoderVelocity", rightTalon.getSelectedSensorVelocity(0));
-
-			delayCount = 0;
-		} else {
-			delayCount++;
-		}		
+    // setDefaultCommand(new TankDrive());
   }
 }
-
