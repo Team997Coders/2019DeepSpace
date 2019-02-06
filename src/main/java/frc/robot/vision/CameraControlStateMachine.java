@@ -207,7 +207,7 @@ public class CameraControlStateMachine {
       stateMachine.fire(Trigger.Slew);  
     } else if (panRate == 0 && tiltRate == 0 && stateMachine.getState() == State.IdentifyingTargets) {
       // do nothing as there is nothing to slew given that we are already identifying targets
-    } else {
+    } else if (panRate == 0 && tiltRate == 0 && stateMachine.getState() == State.Slewing) {
       // Assume we went from slewing to now not
       this.panRate = 0;
       this.tiltRate = 0;

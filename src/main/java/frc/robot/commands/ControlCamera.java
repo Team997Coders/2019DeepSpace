@@ -35,12 +35,16 @@ public class ControlCamera extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
     if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.IdentifyingTargets || 
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.Slewing) {
       cameraMount.slew(cameraControlStateMachine.getPanRate(), cameraControlStateMachine.getTiltRate());
+    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.Centering) {
+      cameraMount.center();
+      cameraControlStateMachine.identifyTargets();
     } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.SlewingToTarget || 
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked ||
-        cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked) {
+        cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
       // slew based on PID values related to how close we are to slewpoint
     }
   }
