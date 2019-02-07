@@ -31,7 +31,7 @@ public class SelectedTarget {
     rangeInInches = selectedTargetTable.getEntry(RANGEININCHESKEY).getDouble(0);
     cameraAngleInDegrees = selectedTargetTable.getEntry(CAMERAANGLEINDEGREES).getDouble(0);
     angleToTargetInDegrees = selectedTargetTable.getEntry(ANGLETOTARGETINDEGREES).getDouble(0);
-    NetworkTable normalizedPointFromCenterTable = visionNetworkTable.getSubTable(NORMALIZEDPOINTFROMCENTER);
+    NetworkTable normalizedPointFromCenterTable = selectedTargetTable.getSubTable(NORMALIZEDPOINTFROMCENTER);
     double normalizedPointFromCenterX = normalizedPointFromCenterTable.getEntry(NORMALIZEDPOINTFROMCENTERX).getDouble(0);
     double normalizedPointFromCenterY = normalizedPointFromCenterTable.getEntry(NORMALIZEDPOINTFROMCENTERY).getDouble(0);
     normalizedPointFromCenter = new Point(normalizedPointFromCenterX, normalizedPointFromCenterY);
