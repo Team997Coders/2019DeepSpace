@@ -318,6 +318,7 @@ public class CameraControlStateMachine {
       hatchTarget.rangeInInches = selectedTargetTable.getEntry(RANGEININCHESKEY).getDouble(0);
       hatchTarget.cameraAngleInDegrees = selectedTargetTable.getEntry(CAMERAANGLEINDEGREES).getDouble(0);
       hatchTarget.angleToTargetInDegrees = selectedTargetTable.getEntry(ANGLETOTARGETINDEGREES).getDouble(0);
+      // TODO: Put in center x and y
       return hatchTarget;
     } else {
       throw new TargetNotLockedException();

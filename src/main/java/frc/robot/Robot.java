@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
   public static CameraMount cameraMount;
   private CenterCamera centerCamera;
   private NetworkTableInstance networkTableInstance;
+  public static NetworkTable visionNetworkTable;
   public static CameraControlStateMachine cameraControlStateMachine;
   
   Command autonomousCommand;
@@ -66,7 +67,7 @@ public class Robot extends TimedRobot {
     cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
 
     networkTableInstance = NetworkTableInstance.getDefault();
-    NetworkTable visionNetworkTable = networkTableInstance.getTable("Vision");
+    visionNetworkTable = networkTableInstance.getTable("Vision");
     cameraControlStateMachine = new CameraControlStateMachine(new TargetSelector(visionNetworkTable), visionNetworkTable);
 
 
