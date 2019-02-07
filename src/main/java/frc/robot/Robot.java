@@ -31,14 +31,13 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Arm arm;
 
+  public static int heightIndex; 
+  // used by the scoringHeight logic commands to grab the correct height from
+  // the height array in RobotMap.
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
-  
-  
-
-  
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -50,6 +49,7 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     m_chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     SmartDashboard.putData("Auto mode", m_chooser);
+    heightIndex = 0;
     // ADD SUBSYSTEMS HERE
   
 

@@ -6,25 +6,20 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.PIDController;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ScoreGamePiece extends Command {
-  private boolean gamePieceType; // True = hatch | false = cargo
-  private boolean scoringSide; // back = true | front = false
-  private int elevatorHeight; // height in ticks, scoringHeightLogic should take care of actually getting this.
-  
-  public ScoreGamePiece(boolean gamePieceType,boolean scoringSide, int elevatorHeight) {
-    requires(Robot.arm);
-    requires(Robot.elevator);
-    this.elevatorHeight = elevatorHeight;
-    this.gamePieceType = gamePieceType;
-    this.scoringSide= scoringSide;
+/**
+ * Used for moving the elevator high enough to swap the arm's side if so required.
+ */
+public class ElevatorToArmHeight extends Command {
+  private double tolerance;
 
+  public ElevatorToArmHeight(double tolerance) {
+    requires(Robot.elevator);
+    this.tolerance = tolerance;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -32,27 +27,18 @@ public class ScoreGamePiece extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (scoringSide == true) {
-      Robot.arm.SetPostion(RobotMap.Values.armBackLimit);
-    } else {
-      Robot.arm.SetPostion(RobotMap.Values.armFrontLimit);
-    }
-
-    if (scoringSide == Robot.arm.getArmSide() || elevatorHeight > Robot.elevator.GetPositon()) {
-      Robot.elevator.SetPosition(elevatorHeight);
-    }
+    Robot.elevator.SetPosition(RobotMap.Values.armSwitchHeight);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return (Math.abs(RobotMap.Values.armSwitchHeight - Robot.elevator.GetPositon()) < tolerance);
   }
 
   // Called once after isFinished returns true

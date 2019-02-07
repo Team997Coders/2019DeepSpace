@@ -15,24 +15,54 @@ package frc.robot;
  */
 public class RobotMap {
 
+  public static class ElevatorHeights {
+
+    public static int
+      elevatorBackTopHatchHeight = 1, //hey, placeholders.
+      elevatorBackMiddleHatchHeight = 1, 
+      elevatorBackBottomHatchHeight = 2,
+      elevatorBackShipHatchHeight = 3,
+
+      elevatorBackTopCargoHeight = 5,
+      elevatorBackMiddleCargoHeight = 8,
+      elevatorBackBottomCargoHeight = 13,
+      elevatorBackShipCargoHeight = 21,
+
+      elevatorFrontTopHatchHeight = 34,
+      elevatorFrontMiddleHatchHeight = 55,
+      elevatorFrontBottomHatchHeight = 89,
+      elevatorFrontShipHatchHeight = 135,
+
+      elevatorFrontTopCargoHeight = 224,
+      elevatorFrontMiddleCargoHeight = 359,
+      elevatorFrontBottomCargoHeight = 583,
+      elevatorFrontShipCargoHeight = 912;
+
+      public static int[]
+      elevatorFrontHeightArray = {
+        
+      };
+
+  }
+
   public static class Values{
-   public static double
-    elevatorPidP = 655520, // all placeholders
-    elevatorPidI = 123456,
-    elevatorPidD = 123456789,
-    elevatorPidF = 1234567,
-    elevatorTopHeight= 543333,
-    elevatorMiddleHeight = 544333,
-    elevatorBottomHeight = 555434,
+    
 
-    armSwitchHeight= 9002, //placeholer for height in order for arm to switch
-    armEncoderCenter= 9002,//another place holder
+    public static double
+      elevatorPidP = 655520, // all placeholders
+      elevatorPidI = 123456,
+      elevatorPidD = 123456789,
+      elevatorPidF = 1234567,
 
+      armSwitchHeight= 9002, //placeholer for height in order for arm to switch
+      armEncoderCenter= 9002,//another place holder
+      armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
+      armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
 
-    armPidP = 0.1,
-    armPidI = 0,
-    armPidD = 0,
-    armPidK = 0;
+      armPidP = 0.1,
+      armPidI = 0,
+      armPidD = 0,
+      armPidK = 0;
   }
 
   public static class Ports{

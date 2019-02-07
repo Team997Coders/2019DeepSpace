@@ -27,8 +27,8 @@ public class Elevator extends Subsystem {
   private CANDigitalInput limitSwitchTop;
   private CANDigitalInput limitSwitchBottom;
   private Encoder encoder;
-  public int index = 0;
-  public double[]  heightList;
+  //public int index = 0;
+  //public double[]  heightList;
   public boolean gamePieceType; 
   //This is to switch between balls and hatches for elevator heights.
   //// Balls = true Hatches = false
@@ -41,10 +41,6 @@ public class Elevator extends Subsystem {
     encoder = new Encoder(RobotMap.Ports.elevatorEncoderPort1, RobotMap.Ports.elevatorEncoderPort2);
     limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
-
-    heightList = new double[] {RobotMap.Values.elevatorBottomHeight, 
-                                RobotMap.Values.elevatorMiddleHeight,
-                                RobotMap.Values.elevatorTopHeight};
     
     limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kReverse , LimitSwitchPolarity.kNormallyOpen);
     limitSwitchBottom.enableLimitSwitch(true);
@@ -82,7 +78,7 @@ public class Elevator extends Subsystem {
     master.set(volts);
   }
 
-  public void incrementIndex() {
+  /*public void incrementIndex() {
     index++;
     if (index > heightList.length - 1) {
       index = heightList.length - 1;
@@ -97,7 +93,7 @@ public class Elevator extends Subsystem {
   }
   public double getHeightFromArray() {
     return heightList[index];
-  }
+  }*/
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
