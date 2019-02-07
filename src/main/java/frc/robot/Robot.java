@@ -113,7 +113,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // Init hatch target finding vision camera
     centerCamera.start();
+    cameraControlStateMachine.identifyTargets();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

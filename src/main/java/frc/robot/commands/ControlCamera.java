@@ -41,9 +41,6 @@ public class ControlCamera extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    fireRequestedState();
-
     if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.IdentifyingTargets || 
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.Slewing) {
       cameraMount.slew(cameraControlStateMachine.getPanRate(), cameraControlStateMachine.getTiltRate());
@@ -55,18 +52,6 @@ public class ControlCamera extends Command {
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
       // slew based on PID values related to how close we are to slewpoint
     }
-  }
-
-  private void fireRequestedState() {
-    NetworkTableEntry requestedStateEntry = visionNetworkTable.getEntry("RequestedState");
-    String requestedStateString = requestedStateEntry.getString("");
-    if (requestedStateString != "") {
-      CameraControlStateMachine.State requestedState = Enum.valueOf(CameraControlStateMachine.State.class, requestedStateString);
-      if (requestedState == CameraControlStateMachine.State.LockFailed) {
-        cameraControlStateMachine.failedToLock();
-      }
-    }
-    requestedStateEntry.setString("");
   }
 
   // Make this return true when this Command no longer needs to run execute()

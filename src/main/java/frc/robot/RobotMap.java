@@ -17,18 +17,18 @@ public class RobotMap {
   public static class Ports {
     public static int
     
-      GamePad1 = 0,
-      GamePad2 = 1,           // TODO: Need to check this
-      buttonA = 1,            // TODO: Need to check this
-      buttonB = 2,
-      buttonX = 3,            // TODO: Need to check this
-      buttonY = 4,            // TODO: Need to check this
-      buttonLeftShoulder = 5,       // TODO: Need to check this
-      buttonRightShoulder = 6,      // TODO: Need to check this
-      buttonLeftThumbstick = 9,     // TODO: Need to check this
-      buttonRightThumbstick = 10,    // TODO: Need to check this
-      buttonLeftTrigger = 9,        // TODO: Need to check this
-      buttonRightTrigger = 10,      // TODO: Need to checl this
+      GamePad1 = 1,               // TODO: Switch this back on real robot! Should be 0.
+      GamePad2 = 0,               // Should be 1.
+      buttonA = 2,                // Should be 1
+      buttonB = 3,                // Should be 2
+      buttonX = 1,                // Should be 3.
+      buttonY = 4,
+      buttonLeftShoulder = 5,
+      buttonRightShoulder = 6,
+      buttonLeftThumbstick = 11,  // Should be 9
+      buttonRightThumbstick = 10,
+      buttonLeftTrigger = 9,
+      buttonRightTrigger = 10,
       buttonBack = 7,
 
       landingForward = 0,
@@ -54,8 +54,8 @@ public class RobotMap {
 
       ultrasonicsensor = 2,
 
-      panservo = 9,                 // TODO: Need to check this
-      tiltservo = 8;                // TODO: Need to check this
+      panservo = 9,
+      tiltservo = 8;
 
   }
 

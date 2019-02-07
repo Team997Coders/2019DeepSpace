@@ -6,6 +6,7 @@ import com.github.oxo42.stateless4j.delegates.Action1;
 import com.github.oxo42.stateless4j.delegates.FuncBoolean;
 import com.github.oxo42.stateless4j.transitions.Transition;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 
 /**
@@ -18,10 +19,6 @@ public class CameraControlStateMachine {
   private final NetworkTable visionNetworkTable;
   private final static String STATEKEY = "State";
   private final static String TRIGGERKEY = "Trigger";
-  private final static String SELECTEDTARGETKEY = "SelectedTarget";
-  private final static String RANGEININCHESKEY = "RangeInInches";
-  private final static String CAMERAANGLEINDEGREES = "CameraAngleInDegrees";
-  private final static String ANGLETOTARGETINDEGREES = "AngleToTargetInDegrees";
   private double tiltRate;
   private double panRate;
 
@@ -34,6 +31,15 @@ public class CameraControlStateMachine {
     this.visionNetworkTable = visionNetworkTable;
     this.tiltRate = 0;
     this.panRate = 0;
+    // Set up a listener to fire state changes as sent by the heads up display running on the Pi
+    visionNetworkTable.addEntryListener("Fire", (table, key, entry, value, flags) -> {
+        CameraControlStateMachine.Trigger trigger = Enum.valueOf(CameraControlStateMachine.Trigger.class, value.getString());
+        if (trigger == CameraControlStateMachine.Trigger.FailedToLock) {
+          this.failedToLock();
+        }
+      }, 
+      EntryListenerFlags.kNew | EntryListenerFlags.kUpdate
+    );
   }
 
   /**
@@ -55,6 +61,7 @@ public class CameraControlStateMachine {
         }
       })
       .permit(Trigger.Slew, State.Slewing)
+      .permitReentry(Trigger.IdentifyTargets)
       .permit(Trigger.LeftThumbstickButton, State.Centering)
       .permit(Trigger.LeftShoulderButton, State.Calibrating)
       .permitIf(Trigger.AButton, State.SlewingToTarget, new FuncBoolean() {
@@ -152,9 +159,9 @@ public class CameraControlStateMachine {
       }})
       .permit(Trigger.LockOn, State.TargetLocked)
       .permit(Trigger.FailedToLock, State.LockFailed)
+      .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .permit(Trigger.AButton, State.IdentifyingTargets)
-      .permit(Trigger.Slew, State.Slewing)
-      .permit(Trigger.LeftThumbstickButton, State.Centering)
+      .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.BButton)
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton)
@@ -251,9 +258,11 @@ public class CameraControlStateMachine {
   public void slew(double panRate, double tiltRate) {
     // If we are slewing...
     if (panRate != 0 || tiltRate != 0 ) {
-      this.panRate = panRate;
-      this.tiltRate = tiltRate;
-      stateMachine.fire(Trigger.Slew);  
+      if (stateMachine.canFire(Trigger.Slew)) {
+        this.panRate = panRate;
+        this.tiltRate = tiltRate;
+        stateMachine.fire(Trigger.Slew);
+      }
     } else if (panRate == 0 && tiltRate == 0 && stateMachine.getState() == State.IdentifyingTargets) {
       // do nothing as there is nothing to slew given that we are already identifying targets
     } else if (panRate == 0 && tiltRate == 0 && stateMachine.getState() == State.Slewing) {
@@ -308,18 +317,13 @@ public class CameraControlStateMachine {
 /**
  * Get the selected, locked on target, so that we can approach it.
  * 
- * @return  A HatchTarget that gives you the data you need to autonomously approach.
+ * @return  A SelectedTarget that gives you the data you need to autonomously approach.
  * @throws TargetNotLockedException If there is no locked target.
  */
-  public HatchTarget getSelectedTarget() throws TargetNotLockedException {
+  public SelectedTarget getSelectedTarget() throws TargetNotLockedException {
     if (getState() == State.TargetLocked) {
-      HatchTarget hatchTarget = new HatchTarget();
-      NetworkTable selectedTargetTable = visionNetworkTable.getSubTable(SELECTEDTARGETKEY);
-      hatchTarget.rangeInInches = selectedTargetTable.getEntry(RANGEININCHESKEY).getDouble(0);
-      hatchTarget.cameraAngleInDegrees = selectedTargetTable.getEntry(CAMERAANGLEINDEGREES).getDouble(0);
-      hatchTarget.angleToTargetInDegrees = selectedTargetTable.getEntry(ANGLETOTARGETINDEGREES).getDouble(0);
-      // TODO: Put in center x and y
-      return hatchTarget;
+      SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
+      return selectedTarget;
     } else {
       throw new TargetNotLockedException();
     }
