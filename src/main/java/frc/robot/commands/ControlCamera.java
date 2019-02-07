@@ -96,6 +96,13 @@ public class ControlCamera extends Command {
       if (selectedTarget.active) {
         followTarget(selectedTarget);
       }
+    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
+      // Get the selected target to process
+      SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
+      // Follow it
+      if (selectedTarget.active) {
+        followTarget(selectedTarget);
+      }
     }
   }
 
