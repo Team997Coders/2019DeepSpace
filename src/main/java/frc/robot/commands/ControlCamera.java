@@ -28,8 +28,8 @@ public class ControlCamera extends Command {
     this(Robot.cameraMount, 
       Robot.cameraControlStateMachine, 
       Robot.visionNetworkTable, 
-      new MiniPID(0.22, 0, 0), 
-      new MiniPID(0.22, 0, 0),
+      new MiniPID(0.20, 0, 0), 
+      new MiniPID(0.20, 0, 0),
       0.05);
   }
 
@@ -68,6 +68,8 @@ public class ControlCamera extends Command {
   @Override
   protected void execute() {
     if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.IdentifyingTargets || 
+        cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockFailed ||
+        cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockLost ||
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.Slewing) {
       cameraMount.slew(cameraControlStateMachine.getPanRate(), cameraControlStateMachine.getTiltRate());
     } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.Centering) {
@@ -76,14 +78,23 @@ public class ControlCamera extends Command {
     } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.SlewingToTarget) {
       // Get the selected target to process
       SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
+      if (selectedTarget.active) {
+        // Follow it
+        followTarget(selectedTarget);
+        // Check to see if we are locked on
+        if (selectedTarget.normalizedPointFromCenter.x >= (-1.0 * lockThresholdFactor) &&
+            selectedTarget.normalizedPointFromCenter.x <= lockThresholdFactor &&
+            selectedTarget.normalizedPointFromCenter.y >= (-1.0 * lockThresholdFactor) &&
+            selectedTarget.normalizedPointFromCenter.y <= lockThresholdFactor) {
+          cameraControlStateMachine.lockOn();
+        }
+      }
+    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked) {
+      // Get the selected target to process
+      SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
       // Follow it
-      followTarget(selectedTarget);
-      // Check to see if we are locked on
-      if (selectedTarget.normalizedPointFromCenter.x >= (-1.0 * lockThresholdFactor) &&
-          selectedTarget.normalizedPointFromCenter.x <= lockThresholdFactor &&
-          selectedTarget.normalizedPointFromCenter.y >= (-1.0 * lockThresholdFactor) &&
-          selectedTarget.normalizedPointFromCenter.y <= lockThresholdFactor) {
-        cameraControlStateMachine.lockOn();
+      if (selectedTarget.active) {
+        followTarget(selectedTarget);
       }
     }
   }

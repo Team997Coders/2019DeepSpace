@@ -19,6 +19,8 @@ public class CameraControlStateMachine {
   private final NetworkTable visionNetworkTable;
   private final static String STATEKEY = "State";
   private final static String TRIGGERKEY = "Trigger";
+  private final static String SELECTEDTARGETKEY = "SelectedTarget";
+  private final static String RANGEININCHES = "RangeInInches";
   private double tiltRate;
   private double panRate;
 
@@ -36,6 +38,10 @@ public class CameraControlStateMachine {
         CameraControlStateMachine.Trigger trigger = Enum.valueOf(CameraControlStateMachine.Trigger.class, value.getString());
         if (trigger == CameraControlStateMachine.Trigger.FailedToLock) {
           this.failedToLock();
+        } else if (trigger == CameraControlStateMachine.Trigger.LoseLock) {
+          this.loseLock();
+        } else if (trigger == CameraControlStateMachine.Trigger.IdentifyTargets) {
+          this.identifyTargets();
         }
       }, 
       EntryListenerFlags.kNew | EntryListenerFlags.kUpdate
@@ -58,6 +64,7 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.IdentifyingTargets.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
         }
       })
       .permit(Trigger.Slew, State.Slewing)
@@ -125,6 +132,7 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Slewing.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
         }
       })
       .permitReentry(Trigger.Slew)
@@ -140,6 +148,7 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Centering.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
         }
       })
       .permitReentry(Trigger.LeftThumbstickButton)
@@ -171,12 +180,13 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.TargetLocked.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
       }})
       .permit(Trigger.BButton, State.DrivingToTarget)
       .permit(Trigger.AButton, State.IdentifyingTargets)
       .permit(Trigger.LoseLock, State.LockLost)
-      .permit(Trigger.Slew, State.Slewing)
-      .permit(Trigger.LeftThumbstickButton, State.Centering)
+      .ignore(Trigger.Slew)
+      .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton)
       .ignore(Trigger.LeftShoulderButton);
@@ -185,6 +195,7 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.LockFailed.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
       }})
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.Slew)
@@ -199,6 +210,7 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.LockLost.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
       }})
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.Slew)
@@ -213,6 +225,7 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.DrivingToTarget.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
       }})
       .permit(Trigger.LoseLock, State.LockLost)
       .permit(Trigger.BButton, State.TargetLocked)
@@ -227,6 +240,7 @@ public class CameraControlStateMachine {
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(STATEKEY).setString(State.Calibrating.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
       }})
       .permit(Trigger.AButton, State.IdentifyingTargets)
       .ignore(Trigger.BButton)
