@@ -18,6 +18,10 @@ public class CameraControlStateMachine {
   private final NetworkTable visionNetworkTable;
   private final static String STATEKEY = "State";
   private final static String TRIGGERKEY = "Trigger";
+  private final static String SELECTEDTARGETKEY = "SelectedTarget";
+  private final static String RANGEININCHESKEY = "RangeInInches";
+  private final static String CAMERAANGLEINDEGREES = "CameraAngleInDegrees";
+  private final static String ANGLETOTARGETINDEGREES = "AngleToTargetInDegrees";
   private double tiltRate;
   private double panRate;
 
@@ -215,7 +219,7 @@ public class CameraControlStateMachine {
     config.configure(State.Calibrating)
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
-          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Calibrating.toString());
+          visionNetworkTable.getEntry(STATEKEY).setString(State.Calibrating.toString());
       }})
       .permit(Trigger.AButton, State.IdentifyingTargets)
       .ignore(Trigger.BButton)
@@ -299,6 +303,25 @@ public class CameraControlStateMachine {
   public void rightShoulderButtonPressed() {
     // TODO
     throw new RuntimeException("Implement me please!");
+  }
+
+/**
+ * Get the selected, locked on target, so that we can approach it.
+ * 
+ * @return  A HatchTarget that gives you the data you need to autonomously approach.
+ * @throws TargetNotLockedException If there is no locked target.
+ */
+  public HatchTarget getSelectedTarget() throws TargetNotLockedException {
+    if (getState() == State.TargetLocked) {
+      HatchTarget hatchTarget = new HatchTarget();
+      NetworkTable selectedTargetTable = visionNetworkTable.getSubTable(SELECTEDTARGETKEY);
+      hatchTarget.rangeInInches = selectedTargetTable.getEntry(RANGEININCHESKEY).getDouble(0);
+      hatchTarget.cameraAngleInDegrees = selectedTargetTable.getEntry(CAMERAANGLEINDEGREES).getDouble(0);
+      hatchTarget.angleToTargetInDegrees = selectedTargetTable.getEntry(ANGLETOTARGETINDEGREES).getDouble(0);
+      return hatchTarget;
+    } else {
+      throw new TargetNotLockedException();
+    }
   }
 
   /**
