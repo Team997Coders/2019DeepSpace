@@ -8,7 +8,6 @@
 package frc.robot;
 
 import org.team997coders.spartanlib.commands.CenterCamera;
-import org.team997coders.spartanlib.interfaces.IJoystickValueProvider;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -133,7 +132,7 @@ public class Robot extends TimedRobot {
     lineFollowing.isCloseToTarget();
 
     // Set current vision pan/tilt joystick values
-    cameraControlStateMachine.slew(oi.getVisionLeftXAxis(), oi.getVisionLeftYAxis());
+    cameraControlStateMachine.slew(-oi.getVisionLeftXAxis(), oi.getVisionLeftYAxis());
 
     Scheduler.getInstance().run();
   }

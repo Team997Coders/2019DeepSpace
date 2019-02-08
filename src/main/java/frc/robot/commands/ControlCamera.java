@@ -28,8 +28,8 @@ public class ControlCamera extends Command {
     this(Robot.cameraMount, 
       Robot.cameraControlStateMachine, 
       Robot.visionNetworkTable, 
-      new MiniPID(0.20, 0, 0), 
-      new MiniPID(0.20, 0, 0),
+      new MiniPID(0.25, 0, 0), 
+      new MiniPID(0.25, 0, 0),
       0.05);
   }
 

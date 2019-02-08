@@ -16,16 +16,24 @@ package frc.robot;
 public class RobotMap {
   public static class Ports {
     public static int
-    
-      GamePad1 = 1,               // TODO: Switch this back on real robot! Should be 0.
-      GamePad2 = 0,               // Should be 1.
-      buttonA = 2,                // Should be 1
-      buttonB = 3,                // Should be 2
-      buttonX = 1,                // Should be 3.
+
+/*  Logitec wireless gamepad settings  
+      GamePad1 = 1,
+      GamePad2 = 0,
+      buttonA = 2,
+      buttonB = 3,
+      buttonX = 1,
+      buttonLeftThumbstick = 11,
+*/      
+      GamePad1 = 0,
+      GamePad2 = 1,
+      buttonA = 1,
+      buttonB = 2,
+      buttonX = 3,
       buttonY = 4,
       buttonLeftShoulder = 5,
       buttonRightShoulder = 6,
-      buttonLeftThumbstick = 11,  // Should be 9
+      buttonLeftThumbstick = 9,
       buttonRightThumbstick = 10,
       buttonLeftTrigger = 9,
       buttonRightTrigger = 10,
