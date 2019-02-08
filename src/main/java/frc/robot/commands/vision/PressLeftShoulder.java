@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class VisionPressA extends Command {
-  public VisionPressA() {
+public class PressLeftShoulder extends Command {
+  public PressLeftShoulder() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -19,8 +19,8 @@ public class VisionPressA extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Robot.cameraVisionClient != null) {
-      Robot.cameraVisionClient.pressA();
+    if (Robot.cameraControlStateMachine != null) {
+      Robot.cameraControlStateMachine.leftShoulderButtonPressed();
     }
   }
 

@@ -5,16 +5,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.FollowLine;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.RetractLandingGear;
-import frc.robot.commands.VisionPressA;
-import frc.robot.commands.VisionPressB;
-import frc.robot.commands.VisionPressLeftShoulder;
-import frc.robot.commands.VisionPressLeftThumbstick;
-import frc.robot.commands.VisionPressLeftTrigger;
-import frc.robot.commands.VisionPressRightShoulder;
-import frc.robot.commands.VisionPressRightThumbstick;
-import frc.robot.commands.VisionPressRightTrigger;
-import frc.robot.commands.VisionPressX;
-import frc.robot.commands.VisionPressY;
+import frc.robot.commands.vision.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,10 +23,7 @@ public class OI {
   private JoystickButton visionButtonY;
   private JoystickButton visionButtonLeftShoulder;
   private JoystickButton visionButtonRightShoulder;
-  private JoystickButton visionButtonLeftTrigger;
-  private JoystickButton visionButtonRightTrigger;
   private JoystickButton visionButtonLeftThumbstick;
-  private JoystickButton visionButtonRightThumbstick;
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Ports.GamePad1);
@@ -51,34 +39,25 @@ public class OI {
     followLine.whenPressed(new FollowLine());
 
     visionButtonA = new JoystickButton(gamepad2, RobotMap.Ports.buttonA);
-    visionButtonA.whenPressed(new VisionPressA());
+    visionButtonA.whenPressed(new PressA());
 
     visionButtonB = new JoystickButton(gamepad2, RobotMap.Ports.buttonB);
-    visionButtonB.whenPressed(new VisionPressB());
+    visionButtonB.whenPressed(new PressB());
 
     visionButtonX = new JoystickButton(gamepad2, RobotMap.Ports.buttonX);
-    visionButtonX.whenPressed(new VisionPressX());
+    visionButtonX.whenPressed(new PressX());
 
     visionButtonY = new JoystickButton(gamepad2, RobotMap.Ports.buttonY);
-    visionButtonY.whenPressed(new VisionPressY());
+    visionButtonY.whenPressed(new PressY());
 
     visionButtonLeftThumbstick = new JoystickButton(gamepad2, RobotMap.Ports.buttonLeftThumbstick);
-    visionButtonLeftThumbstick.whenPressed(new VisionPressLeftThumbstick());
-
-    visionButtonRightThumbstick = new JoystickButton(gamepad2, RobotMap.Ports.buttonRightThumbstick);
-    visionButtonRightThumbstick.whenPressed(new VisionPressRightThumbstick());
+    visionButtonLeftThumbstick.whenPressed(new PressLeftThumbstick());
 
     visionButtonLeftShoulder = new JoystickButton(gamepad2, RobotMap.Ports.buttonLeftShoulder);
-    visionButtonLeftShoulder.whenPressed(new VisionPressLeftShoulder());
+    visionButtonLeftShoulder.whenPressed(new PressLeftShoulder());
 
     visionButtonRightShoulder = new JoystickButton(gamepad2, RobotMap.Ports.buttonRightShoulder);
-    visionButtonRightShoulder.whenPressed(new VisionPressRightShoulder());
-
-    visionButtonLeftTrigger = new JoystickButton(gamepad2, RobotMap.Ports.buttonLeftTrigger);
-    visionButtonLeftTrigger.whenPressed(new VisionPressLeftTrigger());
-
-    visionButtonRightTrigger = new JoystickButton(gamepad2, RobotMap.Ports.buttonRightTrigger);
-    visionButtonRightTrigger.whenPressed(new VisionPressRightTrigger());
+    visionButtonRightShoulder.whenPressed(new PressRightShoulder());
   }
 
   public double getLeftYAxis() {
@@ -93,15 +72,13 @@ public class OI {
     return bing(0.05, -gamepad1.getRawAxis(RobotMap.Ports.rightYAxis), -1, 1);
   }
 
-  public int getVisionLeftYAxis() {
-    // TODO: Are these ports the same across joysticks?
-    // I also do not think this should be negated for pan/tilt servos.
-    return (int)Math.round(gamepad2.getRawAxis(RobotMap.Ports.leftYAxis) * 100);
+  public double getVisionLeftYAxis() {
+    // This should be negated for pan/tilt servos.
+    return bing(0.05, gamepad2.getRawAxis(RobotMap.Ports.leftYAxis), -1, 1);
   }
 
-  public int getVisionLeftXAxis() {
-    // TODO: Are these ports the same across joysticks?
-    return (int)Math.round(gamepad2.getRawAxis(RobotMap.Ports.leftXAxis) * 100);
+  public double getVisionLeftXAxis() {
+    return bing(0.05, gamepad2.getRawAxis(RobotMap.Ports.leftXAxis), -1, 1);
   }
 
   public double deadBand(double value, double dead) {
