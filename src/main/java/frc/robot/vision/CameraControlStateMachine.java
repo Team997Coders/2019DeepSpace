@@ -20,8 +20,6 @@ public class CameraControlStateMachine {
   private final static String STATEKEY = "State";
   private final static String TRIGGERKEY = "Trigger";
   private final static String FIREKEY = "Fire";
-  private final static String SELECTEDTARGETKEY = "SelectedTarget";
-  private final static String RANGEININCHES = "RangeInInches";
   private double tiltRate;
   private double panRate;
 
@@ -29,6 +27,13 @@ public class CameraControlStateMachine {
     this(targetSelector, visionNetworkTable, new StateMachine<>(State.IdentifyingTargets, GetConfig(targetSelector, visionNetworkTable)));
   }
 
+  /**
+   * Construct a state machine for camera control interaction.
+   * 
+   * @param targetSelector      A target selector which determines which buttons are pressable for selecting targets at any given time.
+   * @param visionNetworkTable  The network table for communicating state interapp.
+   * @param stateMachine        A state machine which can be obtained by calling the GetConfig static.
+   */
   public CameraControlStateMachine(TargetSelector targetSelector, NetworkTable visionNetworkTable, StateMachine<State, Trigger> stateMachine) {
     this.stateMachine = stateMachine;
     this.visionNetworkTable = visionNetworkTable;
@@ -50,11 +55,14 @@ public class CameraControlStateMachine {
   }
 
   /**
-   * Produces the configuration of the state machine so that it can be instantiated.
+   * Produces a configuration of the state machine so that it can be instantiated.
    * 
-   * @param targetSelector   A reference to the TargetSelector so that the state machine
-   *                         can make correct targeting decisions to drive the heads up display.
-   * @return                 The configuration.
+   * @param targetSelector      A reference to the TargetSelector so that the state machine
+   *                            can make correct target selectiion decisions when user selects targets.
+   * @param visionNetworkTable  The network table to write current state so remote HUD knows what state we
+   *                            are in.
+   * @return                    The configuration to feed the CameraControlStateMachine constructor.
+   * @see                       https://github.com/oxo42/stateless4j
    */
   private static StateMachineConfig<State, Trigger> GetConfig(TargetSelector targetSelector, NetworkTable visionNetworkTable) {
     StateMachineConfig<State, Trigger> config = new StateMachineConfig<>();
@@ -270,6 +278,14 @@ public class CameraControlStateMachine {
     stateMachine.fire(Trigger.YButton);
   }
 
+  /**
+   * By firing this slew trigger, the state machine will figure
+   * out whether slewing can be done under operator control and
+   * then make the rates available to a consumer.
+   * 
+   * @param panRate   A number between -1..1 which specifies rate of maximum pan.
+   * @param tiltRate  A number between -1..1 which specifies rate of maximum tilt.
+   */
   public void slew(double panRate, double tiltRate) {
     // If we are slewing...
     if (panRate != 0 || tiltRate != 0 ) {
@@ -329,12 +345,12 @@ public class CameraControlStateMachine {
     throw new RuntimeException("Implement me please!");
   }
 
-/**
- * Get the selected, locked on target, so that we can approach it.
- * 
- * @return  A SelectedTarget that gives you the data you need to autonomously approach.
- * @throws TargetNotLockedException If there is no locked target.
- */
+  /**
+   * Get the selected, locked on target, so that we can approach it.
+   * 
+   * @return  A SelectedTarget that gives you the data you need to autonomously approach.
+   * @throws TargetNotLockedException If there is no locked target.
+   */
   public SelectedTarget getSelectedTarget() throws TargetNotLockedException {
     if (getState() == State.TargetLocked) {
       SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);

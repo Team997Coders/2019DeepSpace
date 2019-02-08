@@ -46,10 +46,11 @@ public class ControlCamera extends Command {
    * 
    * @param cameraMount                 The camera mount pan/tilt system to act upon.
    * @param cameraControlStateMachine   A state machine that manages current state of the camera control system.
-   * @param visionNetworkTable          A network table containing state shared between 
-   * @param pidX
-   * @param pidY
-   * @param lockThresholdFactor
+   * @param visionNetworkTable          A network table containing state shared between robot and Pi CameraVision application.
+   * @param pidX                        A mini PID implementation to control CameraMount automated panning.
+   * @param pidY                        A mini PID implementation to control CameraMount automated tilting.
+   * @param lockThresholdFactor         A percentage of error (n < 1) that we will consider target locked. Smaller the percentage
+   *                                    the tighter the tolerance.
    */
   public ControlCamera(CameraMount cameraMount, 
       CameraControlStateMachine cameraControlStateMachine, 
@@ -85,14 +86,17 @@ public class ControlCamera extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    // Slew the camera under operator control
     if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.IdentifyingTargets || 
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockFailed ||
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockLost ||
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.Slewing) {
       cameraMount.slew(cameraControlStateMachine.getPanRate(), cameraControlStateMachine.getTiltRate());
+    // Center the camera under operator control
     } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.Centering) {
       cameraMount.center();
       cameraControlStateMachine.identifyTargets();
+    // Slew the camera under automated control. Determine when locked.
     } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.SlewingToTarget) {
       // Get the selected target to process
       SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
@@ -110,6 +114,7 @@ public class ControlCamera extends Command {
           cameraControlStateMachine.lockOn();
         }
       }
+    // Keep the camera in the center of FOV under automated control.
     } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked || 
         cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
       // Get the selected target to process
@@ -121,6 +126,11 @@ public class ControlCamera extends Command {
     } 
   }
 
+  /**
+   * Tickle PIDs to figure out how much to slew to keep target locked.
+   * 
+   * @param selectedTarget  The selected target which contains how far off from center we are.
+   */
   private void followTarget(SelectedTarget selectedTarget) {
     // slew based on PID values related to how close we are to slewpoint
     double panRate = pidX.getOutput(selectedTarget.normalizedPointFromCenter.x);
