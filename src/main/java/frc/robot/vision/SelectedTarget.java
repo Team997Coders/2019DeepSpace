@@ -20,7 +20,7 @@ public class SelectedTarget {
   private final static String CAMERAANGLEINDEGREES = "CameraAngleInDegrees";
   private final static String ANGLETOTARGETINDEGREES = "AngleToTargetInDegrees";
   private final static String NORMALIZEDPOINTFROMCENTER = "NormalizedPointFromCenter";
-  private final static String ACTIVE = "Active";
+  private final static String ACTIVE = "Enabled";
   private final static String NORMALIZEDPOINTFROMCENTERX = "X";
   private final static String NORMALIZEDPOINTFROMCENTERY = "Y";
 

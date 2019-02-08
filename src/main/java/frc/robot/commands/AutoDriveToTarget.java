@@ -12,6 +12,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.vision.CameraControlStateMachine;
 import frc.robot.vision.SelectedTarget;
+import frc.robot.vision.TargetNotLockedException;
 
 /**
  * The pièces de résistance<p>
@@ -26,16 +27,14 @@ import frc.robot.vision.SelectedTarget;
  */
 public class AutoDriveToTarget extends Command {
   private final DriveTrain driveTrain;
-  private final CameraControlStateMachine cameraControlStateMachine;
   private boolean weMadeIt;
 
   public AutoDriveToTarget() {
-    this(Robot.driveTrain, Robot.cameraControlStateMachine);
+    this(Robot.driveTrain);
   }
 
-  public AutoDriveToTarget(DriveTrain driveTrain, CameraControlStateMachine cameraControlStateMachine) {
+  public AutoDriveToTarget(DriveTrain driveTrain) {
     this.driveTrain = driveTrain;
-    this.cameraControlStateMachine = cameraControlStateMachine;
     requires(driveTrain);
   }
 
@@ -48,20 +47,34 @@ public class AutoDriveToTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SelectedTarget selectedTarget = cameraControlStateMachine.getSelectedTarget();
-    /*
-      selectedTarget contains: 
-      rangeInInches
-      cameraAngleInDegrees - camermount pan angle relative to robot, -90 to 90, with 0 being center
-      angleToTargetInDegrees - robot's angle to target, from target's POV, -90 to 90, with 0 being perpenticular to target
-    */
-    weMadeIt = true;
+    try {
+      SelectedTarget selectedTarget = Robot.cameraControlStateMachine.getSelectedTarget();
+      /*
+        selectedTarget contains: 
+        rangeInInches
+        cameraAngleInDegrees - camermount pan angle relative to robot, -90 to 90, with 0 being center
+        angleToTargetInDegrees - robot's angle to target, from target's POV, -90 to 90, with 0 being perpenticular to target
+      */
+    } catch (TargetNotLockedException e) {
+      weMadeIt = false;
+    }
+    // Set when finished...commented out to test driving cancelling from HUD
+    // weMadeIt = true;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return cameraControlStateMachine.getState() != CameraControlStateMachine.State.DrivingToTarget || weMadeIt;
+    if (weMadeIt) {
+      // Flip camera control back to identifying targets
+      Robot.cameraControlStateMachine.identifyTargets();
+      return true;
+    } else if (Robot.cameraControlStateMachine.getState() != CameraControlStateMachine.State.DrivingToTarget) {
+      // Something happended and we stopped auto driving (user probably cancelled)
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // Called once after isFinished returns true

@@ -387,7 +387,7 @@ public class CameraControlStateMachine {
    * @throws TargetNotLockedException If there is no locked target.
    */
   public SelectedTarget getSelectedTarget() throws TargetNotLockedException {
-    if (getState() == State.TargetLocked) {
+    if (getState() == State.TargetLocked || getState() == State.DrivingToTarget) {
       SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
       return selectedTarget;
     } else {

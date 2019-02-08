@@ -17,23 +17,25 @@ public class RobotMap {
   public static class Ports {
     public static int
 
-/*  Logitec wireless gamepad settings  
+/*  Logitec wireless gamepad settings  */
       GamePad1 = 1,
       GamePad2 = 0,
       buttonA = 2,
       buttonB = 3,
       buttonX = 1,
       buttonLeftThumbstick = 11,
-*/      
+      
+/*
       GamePad1 = 0,
       GamePad2 = 1,
       buttonA = 1,
       buttonB = 2,
       buttonX = 3,
+      buttonLeftThumbstick = 9,
+*/
       buttonY = 4,
       buttonLeftShoulder = 5,
       buttonRightShoulder = 6,
-      buttonLeftThumbstick = 9,
       buttonRightThumbstick = 10,
       buttonLeftTrigger = 9,
       buttonRightTrigger = 10,
