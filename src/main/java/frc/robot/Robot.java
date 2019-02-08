@@ -67,9 +67,7 @@ public class Robot extends TimedRobot {
 
     networkTableInstance = NetworkTableInstance.getDefault();
     visionNetworkTable = networkTableInstance.getTable("Vision");
-    cameraControlStateMachine = new CameraControlStateMachine(new TargetSelector(visionNetworkTable), visionNetworkTable);
-
-
+    cameraControlStateMachine = new CameraControlStateMachine();
     centerCamera = new CenterCamera(cameraMount);
 
     oi = new OI();

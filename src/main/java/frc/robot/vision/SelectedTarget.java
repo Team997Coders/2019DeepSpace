@@ -15,7 +15,6 @@ public class SelectedTarget {
    // to get target in center of FOV
   public Point normalizedPointFromCenter;
   public boolean active;
-  public boolean driveToTarget;
   private final static String SELECTEDTARGETKEY = "SelectedTarget";
   private final static String RANGEININCHESKEY = "RangeInInches";
   private final static String CAMERAANGLEINDEGREES = "CameraAngleInDegrees";
@@ -24,8 +23,6 @@ public class SelectedTarget {
   private final static String ACTIVE = "Active";
   private final static String NORMALIZEDPOINTFROMCENTERX = "X";
   private final static String NORMALIZEDPOINTFROMCENTERY = "Y";
-  private final static String DRIVETOTARGET = "DriveToTarget";
-
 
   /**
    * Pass in a network table to the constructor that this class will read from to
@@ -38,7 +35,6 @@ public class SelectedTarget {
     cameraAngleInDegrees = selectedTargetTable.getEntry(CAMERAANGLEINDEGREES).getDouble(0);
     angleToTargetInDegrees = selectedTargetTable.getEntry(ANGLETOTARGETINDEGREES).getDouble(0);
     active = selectedTargetTable.getEntry(ACTIVE).getBoolean(false);
-    driveToTarget = selectedTargetTable.getEntry(DRIVETOTARGET).getBoolean(false);
     NetworkTable normalizedPointFromCenterTable = selectedTargetTable.getSubTable(NORMALIZEDPOINTFROMCENTER);
     double normalizedPointFromCenterX = normalizedPointFromCenterTable.getEntry(NORMALIZEDPOINTFROMCENTERX).getDouble(0);
     double normalizedPointFromCenterY = normalizedPointFromCenterTable.getEntry(NORMALIZEDPOINTFROMCENTERY).getDouble(0);

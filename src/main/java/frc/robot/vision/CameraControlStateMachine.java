@@ -8,6 +8,9 @@ import com.github.oxo42.stateless4j.transitions.Transition;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.commands.AutoDriveToTarget;
 
 /**
  * Implements a state machine to enforce proper sequencing
@@ -23,18 +26,47 @@ public class CameraControlStateMachine {
   private double tiltRate;
   private double panRate;
 
-  public CameraControlStateMachine(TargetSelector targetSelector, NetworkTable visionNetworkTable) {
-    this(targetSelector, visionNetworkTable, new StateMachine<>(State.IdentifyingTargets, GetConfig(targetSelector, visionNetworkTable)));
+  /**
+   * Convenience constructor wired to Robot
+   */
+  public CameraControlStateMachine() {
+    this(new TargetSelector(Robot.visionNetworkTable), 
+      Robot.visionNetworkTable, 
+      new AutoDriveToTarget()
+    );
   }
 
   /**
-   * Construct a state machine for camera control interaction.
+   * Constructor that uses the default state machine configuration.
    * 
    * @param targetSelector      A target selector which determines which buttons are pressable for selecting targets at any given time.
    * @param visionNetworkTable  The network table for communicating state interapp.
+   * @param autoDriveToTarget   Command to start when driver indicates time to auto drive to target.
+   */
+  public CameraControlStateMachine(TargetSelector targetSelector, 
+      NetworkTable visionNetworkTable, 
+      Command autoDriveToTarget) {
+    this(targetSelector, 
+      visionNetworkTable, 
+      autoDriveToTarget, 
+      new StateMachine<>(State.IdentifyingTargets, 
+        GetConfig(targetSelector, visionNetworkTable, autoDriveToTarget)
+      )
+    );
+  }
+
+  /**
+   * Construct a CameraControlStateMachine passing in the configured state machine for camera control interaction.
+   * 
+   * @param targetSelector      A target selector which determines which buttons are pressable for selecting targets at any given time.
+   * @param visionNetworkTable  The network table for communicating state interapp.
+   * @param autoDriveToTarget   Command to start when driver indicates time to auto drive to target.
    * @param stateMachine        A state machine which can be obtained by calling the GetConfig static.
    */
-  public CameraControlStateMachine(TargetSelector targetSelector, NetworkTable visionNetworkTable, StateMachine<State, Trigger> stateMachine) {
+  public CameraControlStateMachine(TargetSelector targetSelector, 
+      NetworkTable visionNetworkTable, 
+      Command autoDriveToTarget, 
+      StateMachine<State, Trigger> stateMachine) {
     this.stateMachine = stateMachine;
     this.visionNetworkTable = visionNetworkTable;
     this.tiltRate = 0;
@@ -64,7 +96,9 @@ public class CameraControlStateMachine {
    * @return                    The configuration to feed the CameraControlStateMachine constructor.
    * @see                       https://github.com/oxo42/stateless4j
    */
-  private static StateMachineConfig<State, Trigger> GetConfig(TargetSelector targetSelector, NetworkTable visionNetworkTable) {
+  private static StateMachineConfig<State, Trigger> GetConfig(TargetSelector targetSelector, 
+      NetworkTable visionNetworkTable, 
+      Command autoDriveToTarget) {
     StateMachineConfig<State, Trigger> config = new StateMachineConfig<>();
 
     // It would be super nice to use the permitIfOtherwiseIgnore function,
@@ -235,6 +269,7 @@ public class CameraControlStateMachine {
         public void doIt(Transition<State, Trigger> transition) {
           visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.DrivingToTarget.toString());
           visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
+          autoDriveToTarget.start();
       }})
       .permit(Trigger.LoseLock, State.LockLost)
       .permit(Trigger.BButton, State.TargetLocked)
