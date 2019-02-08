@@ -17,6 +17,7 @@ public class RobotMap {
   public static class Ports {
     public static int
 
+/*  Please do not delete...comment out */
 /*  Logitec wireless gamepad settings  */
       GamePad1 = 1,
       GamePad2 = 0,
@@ -24,7 +25,8 @@ public class RobotMap {
       buttonB = 3,
       buttonX = 1,
       buttonLeftThumbstick = 11,
-      
+
+/*  TODO: Wired controllers - flip back when at school lab */
 /*
       GamePad1 = 0,
       GamePad2 = 1,
