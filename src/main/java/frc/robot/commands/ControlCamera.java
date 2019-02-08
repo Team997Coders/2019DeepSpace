@@ -16,6 +16,10 @@ import frc.robot.subsystems.CameraMount;
 import frc.robot.vision.CameraControlStateMachine;
 import frc.robot.vision.SelectedTarget;
 
+/**
+ * This command interacts with the CameraControlStateMachine to
+ * control CameraMount servo movements.
+ */
 public class ControlCamera extends Command {
   private final CameraMount cameraMount;
   private final CameraControlStateMachine cameraControlStateMachine;
@@ -24,6 +28,10 @@ public class ControlCamera extends Command {
   private final MiniPID pidY;
   private final double lockThresholdFactor;
 
+  /**
+   * Default constructor to be used as the default command
+   * for the CameraMount subsystem.
+   */
   public ControlCamera() {
     this(Robot.cameraMount, 
       Robot.cameraControlStateMachine, 
@@ -33,6 +41,16 @@ public class ControlCamera extends Command {
       0.05);
   }
 
+  /**
+   * Accept dependencies to make this easily testable.
+   * 
+   * @param cameraMount                 The camera mount pan/tilt system to act upon.
+   * @param cameraControlStateMachine   A state machine that manages current state of the camera control system.
+   * @param visionNetworkTable          A network table containing state shared between 
+   * @param pidX
+   * @param pidY
+   * @param lockThresholdFactor
+   */
   public ControlCamera(CameraMount cameraMount, 
       CameraControlStateMachine cameraControlStateMachine, 
       NetworkTable visionNetworkTable,
@@ -82,6 +100,9 @@ public class ControlCamera extends Command {
         // Follow it
         followTarget(selectedTarget);
         // Check to see if we are locked on
+        // We could do this in the vision project, since most other triggers are fired
+        // there, but leaving it here makes it more easily tweakable, unless we wanted
+        // to put the factor in networktables...
         if (selectedTarget.normalizedPointFromCenter.x >= (-1.0 * lockThresholdFactor) &&
             selectedTarget.normalizedPointFromCenter.x <= lockThresholdFactor &&
             selectedTarget.normalizedPointFromCenter.y >= (-1.0 * lockThresholdFactor) &&
@@ -89,21 +110,15 @@ public class ControlCamera extends Command {
           cameraControlStateMachine.lockOn();
         }
       }
-    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked) {
+    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked || 
+        cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
       // Get the selected target to process
       SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
       // Follow it
       if (selectedTarget.active) {
         followTarget(selectedTarget);
       }
-    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
-      // Get the selected target to process
-      SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
-      // Follow it
-      if (selectedTarget.active) {
-        followTarget(selectedTarget);
-      }
-    }
+    } 
   }
 
   private void followTarget(SelectedTarget selectedTarget) {

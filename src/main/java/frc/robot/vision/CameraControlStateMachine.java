@@ -19,6 +19,7 @@ public class CameraControlStateMachine {
   private final NetworkTable visionNetworkTable;
   private final static String STATEKEY = "State";
   private final static String TRIGGERKEY = "Trigger";
+  private final static String FIREKEY = "Fire";
   private final static String SELECTEDTARGETKEY = "SelectedTarget";
   private final static String RANGEININCHES = "RangeInInches";
   private double tiltRate;
@@ -34,7 +35,7 @@ public class CameraControlStateMachine {
     this.tiltRate = 0;
     this.panRate = 0;
     // Set up a listener to fire state changes as sent by the heads up display running on the Pi
-    visionNetworkTable.addEntryListener("Fire", (table, key, entry, value, flags) -> {
+    visionNetworkTable.addEntryListener(FIREKEY, (table, key, entry, value, flags) -> {
         CameraControlStateMachine.Trigger trigger = Enum.valueOf(CameraControlStateMachine.Trigger.class, value.getString());
         if (trigger == CameraControlStateMachine.Trigger.FailedToLock) {
           this.failedToLock();

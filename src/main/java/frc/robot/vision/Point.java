@@ -1,5 +1,9 @@
 package frc.robot.vision;
 
+/**
+ * A small representation of a point so that we don't have to drag
+ * in opencv to this project.
+ */
 public class Point {
   public double x;
   public double y;
