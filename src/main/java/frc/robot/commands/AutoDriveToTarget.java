@@ -17,7 +17,12 @@ import frc.robot.vision.SelectedTarget;
  * The pièces de résistance<p>
  * Hunter, work your magic...<p>
  * This command will start when the driver pushes the
- * start driving button on the vision HUD.
+ * start driving button on the vision HUD.<p>
+ * This maybe should be named AutoDriveToTargetUnderVisionControl...because
+ * we will probably have a command group called AutoDriveToTarget that combines
+ * this command with LineFollowing.<p>
+ * I'll keep going...probably another called ScoreNow which moves manipulators
+ * and auto drives.
  */
 public class AutoDriveToTarget extends Command {
   private final DriveTrain driveTrain;
