@@ -43,7 +43,7 @@ public class Arm extends Subsystem {
   private int revs = 0;
   private int flipModifier = 1;
   private double tolerance;
-
+  
   
   // This is for if we want the arm forward or backward
   // Forward = true Backwards = false
@@ -68,26 +68,7 @@ public class Arm extends Subsystem {
   public void setSpeed(double speed) {
     sparkMax.set(speed);
   }
-  /**
-   * 1 = backlimitswitch triggered
-   * 2= frontlimitswitch triggered
-   * 0= neither are TRIGGERED 
-   * 
-   */
-  public int getLimit(){
-    backLimitSwitch.get();
-    frontLimitSwitch.get();
-    
-    if(backLimitSwitch.get()){
-      return 1;
-    }
-    else if(frontLimitSwitch.get()){
-      return 2;
-    }
-    else{
-      return 0;
-    }
-  }
+  
 
   public boolean getArmSide(){
     if(readEncoder() < RobotMap.Values.armEncoderCenter){
@@ -97,6 +78,10 @@ public class Arm extends Subsystem {
       return false;
     }
 
+  }
+
+  public void UpdateF(){
+     pidController.setFF((Math.cos(readEncoder() * RobotMap.Values.ticksToRadiansArm)) * RobotMap.Values.armMaxPidF);
   }
 
   public void SetPostion(double setpoint){

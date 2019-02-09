@@ -19,7 +19,7 @@ public class ScoringHeightLogic extends CommandGroup {
   public ScoringHeightLogic(boolean armSide, boolean gamePieceType,int scoringHeight, boolean scoreDestination) {
     int elevatorHeight= 0;
     if(armSide != Robot.arm.getArmSide()) {
-      if(Robot.elevator.GetPositon() < RobotMap.Values.armSwitchHeight) {
+      if(Robot.elevator.GetPosition() < RobotMap.Values.armSwitchHeight) {
         addSequential(new ElevatorToArmHeight(10));
       }
     }

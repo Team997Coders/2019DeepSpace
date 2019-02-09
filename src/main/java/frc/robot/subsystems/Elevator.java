@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import frc.robot.Robot;
+import frc.robot.commands.LockElevator;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -66,9 +68,11 @@ public class Elevator extends Subsystem {
     pidController.setReference(height, ControlType.kPosition);
   }
 
-  public int GetPositon(){
+  public int GetPosition(){
     return encoder.get();
   }
+
+
 
   public void Stop(){
     master.set(0);
@@ -96,6 +100,7 @@ public class Elevator extends Subsystem {
   }*/
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new LockElevator());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }

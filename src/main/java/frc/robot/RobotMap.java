@@ -78,25 +78,6 @@ public class RobotMap {
 
   }
 
-  public static class Values{
-    
-
-    public static double
-      elevatorPidP = 655520, // all placeholders
-      elevatorPidI = 123456,
-      elevatorPidD = 123456789,
-      elevatorPidF = 1234567,
-
-      armSwitchHeight= 9002, //placeholer for height in order for arm to switch
-      armEncoderCenter= 9002,//another place holder
-      armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
-      armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
-
-      armPidP = 0.1,
-      armPidI = 0,
-      armPidD = 0,
-      armPidK = 0;
-  }
 
   public static class Ports{
     public static int
@@ -139,6 +120,28 @@ public class RobotMap {
 
     
   }
+  public static class Values{
+    
+
+    public static double
+      elevatorPidP = 655520, // all placeholders
+      elevatorPidI = 123456,
+      elevatorPidD = 123456789,
+      elevatorPidF = 1234567,
+
+      armSwitchHeight= 9002, //placeholer for height in order for arm to switch
+      armEncoderCenter= 9002,//another place holder
+      armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
+      armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
+
+      armPidP = 0.1,
+      armPidI = 0,
+      armPidD = 0,
+      armPidK = 0,
+      armMaxPidF = 0,
+      ticksToRadiansArm= 3.14159268/(Math.abs(armBackLimit-armFrontLimit));
+  }
+
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;

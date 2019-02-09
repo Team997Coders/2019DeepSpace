@@ -43,16 +43,17 @@ public class ScoreGamePiece extends Command {
     } else {
       Robot.arm.SetPostion(RobotMap.Values.armFrontLimit);
     }
-
-    if (scoringSide == Robot.arm.getArmSide() || elevatorHeight > Robot.elevator.GetPositon()) {
+    Robot.arm.releaseBrake();
+    if (scoringSide == Robot.arm.getArmSide() || elevatorHeight > Robot.elevator.GetPosition()) {
       Robot.elevator.SetPosition(elevatorHeight);
     }
+    Robot.arm.UpdateF();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Math.abs(Robot.elevator.GetPositon()-elevatorHeight) < tolerance && Robot.arm.getArmSide() == scoringSide){
+    if(Math.abs(Robot.elevator.GetPosition()-elevatorHeight) < tolerance && Robot.arm.getArmSide() == scoringSide){
       return true;
     }else{
       return false;
@@ -62,6 +63,7 @@ public class ScoreGamePiece extends Command {
   // Called once after isFinished returns true=
   @Override
   protected void end() {
+    Robot.arm.engageBrake();
   }
 
   // Called when another command which requires one or more of the same

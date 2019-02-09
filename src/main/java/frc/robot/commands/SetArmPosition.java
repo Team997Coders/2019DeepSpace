@@ -34,6 +34,7 @@ public class SetArmPosition extends Command {
   @Override
   protected void execute() {
     Robot.arm.SetPostion(setpoint);
+    Robot.arm.UpdateF();
   }
 
   // Make this return true when this Command no longer needs to run execute()
