@@ -17,7 +17,7 @@ public class ScoreGamePiece extends Command {
   private boolean gamePieceType; // True = hatch | false = cargo
   private boolean scoringSide; // back = true | front = false
   private int elevatorHeight; // height in ticks, scoringHeightLogic should take care of actually getting this.
-  
+  private int tolerance= 10;
   public ScoreGamePiece(boolean gamePieceType,boolean scoringSide, int elevatorHeight) {
     requires(Robot.arm);
     requires(Robot.elevator);
@@ -52,10 +52,14 @@ public class ScoreGamePiece extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(Math.abs(Robot.elevator.GetPositon()-elevatorHeight) < tolerance && Robot.arm.getArmSide() == scoringSide){
+      return true;
+    }else{
+      return false;
+    }
   }
 
-  // Called once after isFinished returns true
+  // Called once after isFinished returns true=
   @Override
   protected void end() {
   }

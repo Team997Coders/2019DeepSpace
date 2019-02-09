@@ -22,7 +22,7 @@ public class AutoDoNothing extends Command {
   protected boolean isFinished() { return true; }
   
   @Override
-  protected void end() { System.out.println("Did nothing! Aren't you proud of me Dad?"); }
+  protected void end() { System.out.println("Did nothing! Aren't you proud of me Daddy?"); }
 
   @Override
   protected void interrupted() { end(); }
