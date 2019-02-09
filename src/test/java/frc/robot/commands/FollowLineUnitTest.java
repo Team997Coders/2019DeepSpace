@@ -18,7 +18,7 @@ import  static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 /**
  * Add your docs here.
- *
+ */
 public class FollowLineUnitTest {
     /*
 
@@ -49,4 +49,4 @@ public class FollowLineUnitTest {
     //public void itStopsWhenCloseToTarget() {
     //
     //}
-}*/
+    */}
