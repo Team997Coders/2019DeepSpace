@@ -39,9 +39,42 @@ public class RobotMap {
       elevatorFrontShipCargoHeight = 912;
 
       public static int[]
-      elevatorFrontHeightArray = {
+      elevatorFrontHatchHeightArray = {
         
+        elevatorFrontTopHatchHeight, 
+        elevatorFrontMiddleHatchHeight, 
+        elevatorFrontBottomHatchHeight 
+        
+      },
+    
+      elevatorBackHatchHeightArray = {
+        elevatorBackTopHatchHeight, 
+        elevatorBackMiddleHatchHeight,
+        elevatorBackBottomHatchHeight
+
+      },
+
+      elevatorFrontCargoHeightArray = {
+        
+        elevatorFrontTopCargoHeight,
+        elevatorFrontMiddleCargoHeight,
+        elevatorFrontBottomCargoHeight
+      },
+
+      elevatorBackCargoHeightArray = {
+
+        
+      elevatorBackTopCargoHeight,
+      elevatorBackMiddleCargoHeight,
+      elevatorBackBottomCargoHeight
+    
+
       };
+
+  
+      
+
+
 
   }
 

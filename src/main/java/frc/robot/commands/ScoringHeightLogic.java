@@ -16,15 +16,45 @@ public class ScoringHeightLogic extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public ScoringHeightLogic(boolean armSide, boolean gamePieceType, int scoringHeight) {
-
+  public ScoringHeightLogic(boolean armSide, boolean gamePieceType,int scoringHeight, boolean scoreDestination) {
+    int elevatorHeight= 0;
     if(armSide != Robot.arm.getArmSide()) {
       if(Robot.elevator.GetPositon() < RobotMap.Values.armSwitchHeight) {
         addSequential(new ElevatorToArmHeight(10));
       }
     }
+    if(scoreDestination) {               //rocket = true cargoship = false
+      if(gamePieceType) {                 //hatch = true cargo = false
+        if(armSide) {
+          elevatorHeight = RobotMap.ElevatorHeights.elevatorBackHatchHeightArray[scoringHeight];
+        } else {
+          elevatorHeight = RobotMap.ElevatorHeights.elevatorFrontHatchHeightArray[scoringHeight];
+        } 
+      } else {
+        if(armSide) {
+          elevatorHeight = RobotMap.ElevatorHeights.elevatorBackCargoHeightArray[scoringHeight];
+        } else {
+          elevatorHeight = RobotMap.ElevatorHeights.elevatorFrontCargoHeightArray[scoringHeight];
+        }
+      }
+    }else{
+      if(gamePieceType) {
+        if(armSide) {
+          elevatorHeight = RobotMap.ElevatorHeights.elevatorBackShipHatchHeight;
+        } else {
+          elevatorHeight = RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight;
+        }
+      } else {
+        if(armSide) {
+          elevatorHeight = RobotMap.ElevatorHeights.elevatorBackShipCargoHeight;
+        } else {
+          elevatorHeight = RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight;
+        }
+      }
+    }
+    
 
-    addSequential(new ScoreGamePiece(gamePieceType, armSide, scoringHeight));
+    addSequential(new ScoreGamePiece(gamePieceType, armSide, elevatorHeight));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
