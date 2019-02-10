@@ -16,7 +16,7 @@ package frc.robot;
 public class RobotMap {
   public static class Ports {
     public static int
-    
+
       GamePad1 = 0,
       GamePad2 = 1,           // TODO: Need to check this
       buttonA = 1,            // TODO: Need to check this
@@ -28,42 +28,50 @@ public class RobotMap {
       buttonLeftThumbstick = 9,     // TODO: Need to check this
       buttonRightThumbstick = 10,    // TODO: Need to check this
       buttonLeftTrigger = 9,        // TODO: Need to check this
-      buttonRightTrigger = 10,      // TODO: Need to checl this
+      buttonRightTrigger = 10,      // TODO: Need to check this
       buttonBack = 7,
 
-      landingForward = 0,
-      landingReverse = 1,
-
+      //AXIS PORTS
       leftXAxis = 0,
       leftYAxis = 1,
       rightXAxis = 4,
       rightYAxis = 5,
 
+      //VICTOR PORTS
       leftVictor1 = 5,
       leftVictor2 = 6,
       rightVictor1 = 2,
       rightVictor2 = 3,
 
+      //TALON PORTS
       leftTalon = 4,
       rightTalon = 1,
 
+      //SENSOR PORTS
       linesensorleft = 1,  
       linesensorcenter = 3,
       linesensorright = 2,
       followLinebutton = 1,
-      ultrasonicsensor=2,
+      ultrasonicsensor = 2,
 
-      ballMotor=9,
+      //BALL PORTS
+      ballMotor = 9,
 
-
+      //HATCH PORTS
+      hatchSolenoid = 1,
+      discBrake = 2, 
+  
+      //ARM PORTS
       armSpark = 10,
       armCanifier = 23,
 
-      discBrake = 1, /* Placeholder */
+      //LANDING GEAR PORTS
+      landingForward = 0,
+      landingReverse = 1,
 
-
-      panservo=9,
-      tiltservo=8;
+      //CAMERA PORTS
+      panservo = 9,
+      tiltservo = 8;
 
   }
 
@@ -71,20 +79,15 @@ public class RobotMap {
 
     public static final double
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
-      tcksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
+      ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
     
       armPidP = 0.1,
       armPidI = 0,
       armPidD = 0,
       armPidK = 0,
 
-      P=0.0002,
-      I=0.0,
-      D=0.0,
-
-
-      panservo = 0,                 // TODO: Need to check this
-      tiltservo = 1;                // TODO: Need to check this
-
+      P = 0.0002,
+      I = 0.0,
+      D = 0.0;
   }
 }

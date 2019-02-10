@@ -7,10 +7,10 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
 
 
 /**
@@ -18,25 +18,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class HatchManipulator extends Subsystem {
 
-  private DoubleSolenoid hatchPiston;
+  private Solenoid hatchPiston;
   public boolean hatchPistonState;
 
   public HatchManipulator() {
-    // Instantiate hatchPiston
+    hatchPiston = new Solenoid(RobotMap.Ports.hatchSolenoid);
   }
   public void extend() {
-    hatchPiston.set(Value.kForward);
+    hatchPiston.set(true);
     hatchPistonState = true;
   }
   
   public void retract() {
-    hatchPiston.set(Value.kReverse);
+    hatchPiston.set(false);
     hatchPistonState = false;
   }
+
   @Override
   public void initDefaultCommand() {
   }
+  
   public void updateDashboard(){
-    SmartDashboard.putBoolean("HatPiston Extended", hatchPistonState);
+    SmartDashboard.putBoolean("Hatch Piston Extended", hatchPistonState);
   }
 }

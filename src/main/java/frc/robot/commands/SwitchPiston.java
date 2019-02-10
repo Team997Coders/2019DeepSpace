@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.subsystems.HatchManipulator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
