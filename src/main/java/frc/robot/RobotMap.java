@@ -57,17 +57,16 @@ public class RobotMap {
 
       armSpark = 10,
       armCanifier = 23,
+      panservo=9,
+      tiltservo=8,
 
-      
       // Pneumatics
       landingGearPiston = 0,
       hatchHolderPiston = 1,
       discBrake = 2,
 
-
-      panservo=9,
-      tiltservo=8;
-
+      // placeholder so we can always just end with commas :-)
+      end_of_ports = 999;
   }
 
   public class Values {
