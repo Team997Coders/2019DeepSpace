@@ -3,10 +3,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.BackingUpWhenLineFollowIsComplete;
-import frc.robot.commands.FollowLine;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.FlipSystemOrientation;
 import frc.robot.commands.RetractLandingGear;
+import frc.robot.commands.ToggleHatchHolder;
 import frc.robot.commands.VisionPressA;
 import frc.robot.commands.VisionPressB;
 import frc.robot.commands.VisionPressLeftShoulder;
@@ -32,6 +32,8 @@ public class OI {
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton followLine;
+  private JoystickButton toggleHatch;
+
   private JoystickButton visionButtonA;
   private JoystickButton visionButtonB;
   private JoystickButton visionButtonX;
@@ -61,10 +63,13 @@ public class OI {
     flipSystemOrientation.whenPressed(new FlipSystemOrientation());
 
     flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Ports.buttonY);
-    flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation());
+    flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
 
     followLine = new JoystickButton(gamepad1, 1);
     followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
+
+    toggleHatch = new JoystickButton(gamepad1, RobotMap.Ports.buttonX);
+    toggleHatch.whenPressed(new ToggleHatchHolder());
 
     visionButtonA = new JoystickButton(gamepad2, RobotMap.Ports.buttonA);
     visionButtonA.whenPressed(new VisionPressA());

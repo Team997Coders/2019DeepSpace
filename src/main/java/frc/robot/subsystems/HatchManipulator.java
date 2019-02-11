@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
-
 /**
  * Add your docs here.
  */
@@ -24,6 +23,7 @@ public class HatchManipulator extends Subsystem {
   public HatchManipulator() {
     hatchPiston = new Solenoid(RobotMap.Ports.hatchSolenoid);
   }
+
   public void extend() {
     hatchPiston.set(true);
     hatchPistonState = true;

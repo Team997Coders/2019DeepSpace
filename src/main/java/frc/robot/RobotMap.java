@@ -71,13 +71,14 @@ public class RobotMap {
       armCanifier = 23,
 
       //LANDING GEAR PORTS
-      landingForward = 0,
-      landingReverse = 1,
+      landingGearPiston = 0,
 
       //CAMERA PORTS
       panservo = 9,
-      tiltservo = 8;
+      tiltservo = 8,
 
+      // placeholder so we can always just end with commas :-)
+      end_of_ports = 999;
   }
 
   public class Values {

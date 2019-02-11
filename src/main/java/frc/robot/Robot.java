@@ -40,13 +40,11 @@ public class Robot extends TimedRobot {
   //private final Command defaultDriveTrain;
   public static boolean scoringSideReversed = false;
   private FlipSystemOrientation flipSystemOrientation;
-  public static OI oi;
   public static Arm arm;
   //(no drieTrain in merge)public static DriveTrain driveTrain;
   public static BallManipulator ballManipulator;
-  //public static DriveTrain driveTrain;
+  // public static DriveTrain driveTrain;
   public static HatchManipulator hatchManipulator;
-
 
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
@@ -57,6 +55,9 @@ public class Robot extends TimedRobot {
   // we do not connect to the Pi for some reason.
   public static CameraVisionClient cameraVisionClient;
   public PanTiltCamera panTiltCamera;
+  // Will the getInstance call get the ArcadeDrive? It should.
+  // private final Command defaultDriveTrain;
+  public static OI oi;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -67,17 +68,24 @@ public class Robot extends TimedRobot {
     //sensors = b;
   }
 
-  public Robot() { super(); }
+  public Robot() {
+    super();
+  }
+
   /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
   @Override
   public void robotInit() {
 
     arm = new Arm();
     ballManipulator = new BallManipulator();
-    //driveTrain = new DriveTrain();
+
+    hatchManipulator = new HatchManipulator();
+
+    // driveTrain = new DriveTrain();
+
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     cameraMount = new CameraMount(0, 120, 10, 170);
@@ -86,14 +94,13 @@ public class Robot extends TimedRobot {
     try {
       cameraVisionClient = new CameraVisionClient("10.9.97.6");
     } catch (IOException e) {
-      // TODO: What is going to be the timing of roborio network availability, boot speed,
+      // TODO: What is going to be the timing of roborio network availability, boot
+      // speed,
       // and Pi boot speed? Need to test.
       System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
       System.out.println("Robot will proceed blind.");
     }
 
-
-    oi = new OI();
 
     // Because there is no hardware subsystem directly hooked up
     // to this command (it is a proxy for calling CameraVision on Pi)
@@ -101,6 +108,8 @@ public class Robot extends TimedRobot {
     // here...
     panTiltCamera = new PanTiltCamera();
     panTiltCamera.start();
+    
+    oi = new OI();
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -152,16 +161,14 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
     // Start your engines
-    //defaultDriveTrain.start();
+    // defaultDriveTrain.start();
   }
-
 
   double lastTime = 0;
 
   /**
    * This function is called periodically during operator control.
    */
-  
 
   @Override
   public void teleopPeriodic() {
