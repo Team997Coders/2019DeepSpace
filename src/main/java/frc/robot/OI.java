@@ -3,9 +3,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.BackingUpWhenLineFollowIsComplete;
-import frc.robot.commands.FollowLine;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.RetractLandingGear;
+import frc.robot.commands.ToggleHatchHolder;
 import frc.robot.commands.VisionPressA;
 import frc.robot.commands.VisionPressB;
 import frc.robot.commands.VisionPressLeftShoulder;
@@ -30,6 +30,8 @@ public class OI {
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton followLine;
+  private JoystickButton toggleHatch;
+
   private JoystickButton visionButtonA;
   private JoystickButton visionButtonB;
   private JoystickButton visionButtonX;
@@ -51,9 +53,11 @@ public class OI {
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Ports.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
 
-    followLine = new JoystickButton(gamepad1, 1);
-
+    followLine = new JoystickButton(gamepad1, RobotMap.Ports.buttonA);
     followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
+
+    toggleHatch = new JoystickButton(gamepad1, RobotMap.Ports.buttonX);
+    toggleHatch.whenPressed(new ToggleHatchHolder());
 
     visionButtonA = new JoystickButton(gamepad2, RobotMap.Ports.buttonA);
     visionButtonA.whenPressed(new VisionPressA());

@@ -55,11 +55,14 @@ public class RobotMap {
 
       ballMotor=9,
 
-
       armSpark = 10,
       armCanifier = 23,
 
-      discBrake = 1, /* Placeholder */
+      
+      // Pneumatics
+      landingGearPiston = 0,
+      hatchHolderPiston = 1,
+      discBrake = 2,
 
 
       panservo=9,

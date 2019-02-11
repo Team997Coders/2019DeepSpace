@@ -7,30 +7,30 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 /**
  * Add your docs here.
  */
 public class HatchManipulator extends Subsystem {
 
-  private DoubleSolenoid hatchPiston;
+  private Solenoid hatchPiston;
   public boolean hatchPistonState;
 
   public HatchManipulator() {
     // Instantiate hatchPiston
+    hatchPiston = new Solenoid(1);
   }
+
   public void extend() {
-    hatchPiston.set(Value.kForward);
+    hatchPiston.set(true);
     hatchPistonState = true;
   }
   
   public void retract() {
-    hatchPiston.set(Value.kReverse);
+    hatchPiston.set(false);
     hatchPistonState = false;
   }
   @Override

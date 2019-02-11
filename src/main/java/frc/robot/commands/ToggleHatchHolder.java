@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.subsystems.HatchManipulator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -14,8 +13,8 @@ import frc.robot.Robot;
 /**
   * Name this something more specific
   */
-public class SwitchPiston extends Command {
-  public SwitchPiston() {
+public class ToggleHatchHolder extends Command {
+  public ToggleHatchHolder() {
     requires(Robot.hatchManipulator);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
