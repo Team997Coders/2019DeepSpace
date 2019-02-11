@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
 
 /**
  * This subsystem manipulates the LiftGear
@@ -21,10 +22,10 @@ public class LiftGear extends Subsystem {
   private AnalogInput distanceIR;
 
   public LiftGear() {
-    piston = new Solenoid(0);
+    piston = new Solenoid(RobotMap.Ports.landingGearPiston);
     piston.set(false);
 
-    distanceIR = new AnalogInput(1);
+    distanceIR = new AnalogInput(RobotMap.Ports.landingGearFloorSensor);
   }
   
   /**

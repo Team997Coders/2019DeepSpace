@@ -14,7 +14,7 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
-  public static class Ports {
+  public static class Buttons {
     public static int
 
       GamePad1 = 0,
@@ -37,15 +37,20 @@ public class RobotMap {
       rightXAxis = 4,
       rightYAxis = 5,
 
+      end_of_buttons;
+  }
+
+  public static class Ports {
+    public static int
+      //TALON PORTS
+      leftTalon = 4,
+      rightTalon = 1,
+
       //VICTOR PORTS
       leftVictor1 = 5,
       leftVictor2 = 6,
       rightVictor1 = 2,
       rightVictor2 = 3,
-
-      //TALON PORTS
-      leftTalon = 4,
-      rightTalon = 1,
 
       //SENSOR PORTS
       lineSensorFrontLeft = 4,  
@@ -61,17 +66,19 @@ public class RobotMap {
 
       //BALL PORTS
       ballMotor = 9,
+      // ball sensor on the arm canifier rev limit switch connection 
 
       //HATCH PORTS
       hatchSolenoid = 1,
-      discBrake = 2, 
   
       //ARM PORTS
+      discBrake = 2, 
       armSpark = 10,
       armCanifier = 23,
 
       //LANDING GEAR PORTS
       landingGearPiston = 0,
+      landingGearFloorSensor = 1,
 
       //CAMERA PORTS
       panservo = 9,
@@ -79,7 +86,7 @@ public class RobotMap {
 
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;
-  }
+    }
 
   public class Values {
 
