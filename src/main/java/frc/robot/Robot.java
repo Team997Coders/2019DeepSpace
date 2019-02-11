@@ -25,7 +25,7 @@ import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.LiftGear;
-import frc.robot.subsystems.LineFollowing;
+import frc.robot.subsystems.Sensors;
 import frc.robot.vision.cameravisionclient.CameraVisionClient;
 
 /**
@@ -38,14 +38,10 @@ import frc.robot.vision.cameravisionclient.CameraVisionClient;
 public class Robot extends TimedRobot {
   // Will the getInstance call get the ArcadeDrive? It should.
   //private final Command defaultDriveTrain;
+  public static boolean scoringSideReversed = false;
+  private FlipSystemOrientation flipSystemOrientation;
   public static OI oi;
-
-
   public static Arm arm;
-
-
-
-
   //(no drieTrain in merge)public static DriveTrain driveTrain;
   public static BallManipulator ballManipulator;
   //public static DriveTrain driveTrain;
@@ -54,7 +50,6 @@ public class Robot extends TimedRobot {
 
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
-  public static LineFollowing lineFollowing;
   public static CameraMount cameraMount;
   // Note this could be null and because we continue to wire these up
   // in this manner (statics), guards will have to be put around all accesses.
@@ -63,16 +58,13 @@ public class Robot extends TimedRobot {
   public static CameraVisionClient cameraVisionClient;
   public PanTiltCamera panTiltCamera;
 
-  
-
-
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
-  public Robot(DriveTrain a, LineFollowing b) {
+  public Robot(DriveTrain a, Sensors b) {
     super();
     driveTrain = a;
-    lineFollowing = b;
+    //sensors = b;
   }
 
   public Robot() { super(); }
@@ -84,16 +76,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     arm = new Arm();
-
-    //(no drive train in merge)driveTrain = new DriveTrain();
     ballManipulator = new BallManipulator();
-    
     //driveTrain = new DriveTrain();
-
-
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    lineFollowing = new LineFollowing();
     cameraMount = new CameraMount(0, 120, 10, 170);
 
     // Connect to remote vision subsystem
@@ -119,7 +105,8 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
-
+    flipSystemOrientation = new FlipSystemOrientation();
+    flipSystemOrientation.start();
   }
 
   @Override
@@ -178,38 +165,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    lineFollowing.isCloseToTarget();
-
-
-    SmartDashboard.putNumber("UltraSensor value", Robot.lineFollowing.m_ultrasonicSensorInput.getValue());
-
-
-    if(Robot.lineFollowing.centerLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "Yes! :) ");
-      SmartDashboard.putString("Do you see two lines?", "No");
-    }else if(Robot.lineFollowing.rightLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      SmartDashboard.putString("Do you see two lines?", "No");
-    }else if(Robot.lineFollowing.leftLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      SmartDashboard.putString("Do you see two lines?", "No"); 
-    }else if(Robot.lineFollowing.rightCenterLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      SmartDashboard.putString("Do you see two lines?", "Yes");
-    }else if(Robot.lineFollowing.leftCenterLineSeen()){
-      SmartDashboard.putString("Do you see the line?", "Yes");
-      SmartDashboard.putString("Centered?", "No! :( ");
-      SmartDashboard.putString("Do you see two lines?", "Yes"); 
-    }else{
-      SmartDashboard.putString("Do you see the line?", "No");
-      SmartDashboard.putString("Do you see two lines?", "No");
-    }     
-
-
     Scheduler.getInstance().run();
   }
 
@@ -218,6 +173,7 @@ public class Robot extends TimedRobot {
   }
 
   public void updateSmartDashboard() {
+    SmartDashboard.putBoolean("Scoring Side Reversed?", scoringSideReversed);
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
   }

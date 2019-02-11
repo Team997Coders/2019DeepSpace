@@ -48,11 +48,16 @@ public class RobotMap {
       rightTalon = 1,
 
       //SENSOR PORTS
-      linesensorleft = 1,  
-      linesensorcenter = 3,
-      linesensorright = 2,
-      followLinebutton = 1,
-      ultrasonicsensor = 2,
+      lineSensorFrontLeft = 4,  
+      lineSensorFrontCenter = 5,
+      lineSensorFrontRight = 6,
+      frontUltrasonicSensor = 2, //TODO: Need to check this
+      frontInfraredSensor = 5,  //TODO: Need to check this
+
+      lineSensorBackLeft = 3,    
+      lineSensorBackCenter = 2,  
+      lineSensorBackRight = 1,   
+      backInfraredSensor = 2,  //TODO: Need to check this 
 
       //BALL PORTS
       ballMotor = 9,
@@ -88,6 +93,21 @@ public class RobotMap {
 
       P = 0.0002,
       I = 0.0,
-      D = 0.0;
+      D = 0.0,
+      //INFRARED DISTANCES
+      frontUltrasonicSensorHatchCargoship = 5,     //TODO: Need to check this      
+      frontInfraredSensorHatchCargoship = 5,  //TODO: Need to check this      
+      frontUltrasonicSensorHatchRocket = 5,        //TODO: Need to check this   
+      frontInfraredSensorHatchRocket = 5,     //TODO: Need to check this 
+  
+      frontUltrasonicSensorBallCargoship = 5,     //TODO: Need to check this      
+      frontInfraredSensorBallCargoship = 5,  //TODO: Need to check this      
+      frontUltrasonicSensorBallRocket = 5,        //TODO: Need to check this   
+      frontInfraredSensorBallRocket = 5,     //TODO: Need to check this   
+  
+      backInfraredSensorHatchCargoship = 5,   //TODO: Need to check this  
+  
+      backInfraredSensorBallRocket = 5,      //TODO: Need to check this
+      backInfraredSensorBallCargoship = 5;   //TODO: Need to check this  
   }
 }

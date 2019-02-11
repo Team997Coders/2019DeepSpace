@@ -8,28 +8,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.Sensors;
 
 public class BackingUpWhenLineFollowIsComplete extends CommandGroup {
   /**
    * Add your docs here.
    */
   public BackingUpWhenLineFollowIsComplete() {
-    // Add Commands here:
-    addSequential(new FollowLine(1000));
+    if(Robot.scoringSideReversed){
+      addSequential(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
+      addSequential(new FollowLine(1000, 
+        new Sensors(RobotMap.Ports.lineSensorBackLeft, 
+          RobotMap.Ports.lineSensorBackCenter, 
+          RobotMap.Ports.lineSensorBackRight, 
+          RobotMap.Ports.backInfraredSensor)
+      )
+    );
+      addSequential(new FlipDriveTrainOrientation(!Robot.scoringSideReversed));
+    }else{
+      addSequential(new FollowLine(1000, 
+        new Sensors(RobotMap.Ports.lineSensorFrontLeft, 
+          RobotMap.Ports.lineSensorFrontCenter, 
+          RobotMap.Ports.lineSensorFrontRight, 
+          RobotMap.Ports.frontInfraredSensor)
+      )
+    );
+    }
     addSequential(new Waittill(.5));
     addSequential(new BackingUp());
-
-
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
-
-    // A command group will require all of the subsystems that each member
-    // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
-    // a CommandGroup containing them would require both the chassis and the
-    // arm.
   }
 }
