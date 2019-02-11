@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.ControlType;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -46,7 +44,7 @@ public class SetArmPosition extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.setSpeed(0);
+    Robot.arm.setPower(0);
     Robot.arm.engageBrake();
   }
 

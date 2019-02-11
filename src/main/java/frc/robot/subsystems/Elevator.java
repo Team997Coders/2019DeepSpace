@@ -8,18 +8,18 @@
 package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-import frc.robot.Robot;
 import frc.robot.commands.LockElevator;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.CANifier;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANSparkMax.IdleMode;
-import edu.wpi.first.wpilibj.Encoder;
 /**
  * Add your docs here.
  */
@@ -28,7 +28,7 @@ public class Elevator extends Subsystem {
   private CANPIDController pidController;
   private CANDigitalInput limitSwitchTop;
   private CANDigitalInput limitSwitchBottom;
-  private Encoder encoder;
+  private CANifier canifier;
   //public int index = 0;
   //public double[]  heightList;
   public boolean gamePieceType; 
@@ -40,7 +40,7 @@ public class Elevator extends Subsystem {
    public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.Ports.followerElevatorMotor, MotorType.kBrushless);
-    encoder = new Encoder(RobotMap.Ports.elevatorEncoderPort1, RobotMap.Ports.elevatorEncoderPort2);
+    canifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
     
@@ -50,9 +50,7 @@ public class Elevator extends Subsystem {
     master.setIdleMode(IdleMode.kBrake);
     follower.setIdleMode(IdleMode.kBrake);
 
-    follower.follow(master);
-    
-    follower.setInverted(false);
+    follower.follow(master, true); // reverse the follower in the follow command
 
     pidController = master.getPIDController();
     pidController.setP(RobotMap.Values.elevatorPidP);
@@ -60,7 +58,9 @@ public class Elevator extends Subsystem {
     pidController.setD(RobotMap.Values.elevatorPidD);
     pidController.setFF(RobotMap.Values.elevatorPidF);
     
-    pidController.setReference(0.0/*total - current*/, ControlType.kPosition); 
+    pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
+
+    resetElevEncoder();
    }
 
    public void SetPosition(double height){
@@ -68,17 +68,19 @@ public class Elevator extends Subsystem {
     pidController.setReference(height, ControlType.kPosition);
   }
 
-  public int GetPosition(){
-    return encoder.get();
+  public void resetElevEncoder() {
+    canifier.setQuadraturePosition(0, 10);
   }
 
-
+  public int GetPosition(){
+    return canifier.getQuadraturePosition();
+  }
 
   public void Stop(){
     master.set(0);
   }
 
-  public void SetVoltage(double volts){
+  public void SetPower(double volts){
     master.set(volts);
   }
 
@@ -106,6 +108,7 @@ public class Elevator extends Subsystem {
   }
 
   public void updateSmartDashboard() {
+    SmartDashboard.putNumber("Elevator Height: ", GetPosition());
     
   }
 }

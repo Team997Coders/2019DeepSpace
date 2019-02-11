@@ -77,10 +77,9 @@ public class RobotMap {
       armCanifier = 23,
 
       // ELEVATOR PORTS
+      elevatorCanifier = 31, // TODO: need to change this to the correct value!
       masterElevatorMotor= 7,
       followerElevatorMotor = 8,
-      elevatorEncoderPort1 = 3217589,
-      elevatorEncoderPort2 = 3452354,
 
       //LANDING GEAR PORTS
       landingGearPiston = 0,
@@ -113,6 +112,11 @@ public class RobotMap {
   
       backInfraredSensorBallRocket = 5,      //TODO: Need to check this
       backInfraredSensorBallCargoship = 5,   //TODO: Need to check this 
+
+      // Drive to Distance PID values
+      driveToDistance_kP = 0.0002,
+      driveToDistance_kI = 0.0,
+      driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
       elevatorPidP = 655520, // all placeholders

@@ -12,6 +12,7 @@ import com.ctre.phoenix.CANifier.PWMChannel;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -61,14 +62,14 @@ public class Arm extends Subsystem {
     initRead = getRawEncoder();
   }
 
-  public void setSpeed(double speed) {
+  public void setPower(double speed) {
     sparkMax.set(speed);
   }
   
 
   public boolean getArmSide(){
     if(readEncoder() < RobotMap.Values.armEncoderCenter){
-      return true;
+      return true; // arm on the front of the robot
     }
     else{
       return false;
@@ -83,7 +84,6 @@ public class Arm extends Subsystem {
   public void SetPostion(double setpoint){
     releaseBrake();
     pidController.setReference(setpoint -readEncoder(), ControlType.kPosition);
-
   }
 
   public double readEncoder() {
@@ -132,6 +132,7 @@ public class Arm extends Subsystem {
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Absolute Parsed", readEncoder());
+    SmartDashboard.putBoolean("Disc Brake state: ", discBrake.get());
   }
 
 

@@ -6,11 +6,9 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
+
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ScoreGamePiece extends Command {
@@ -18,6 +16,7 @@ public class ScoreGamePiece extends Command {
   private boolean scoringSide; // back = true | front = false
   private int elevatorHeight; // height in ticks, scoringHeightLogic should take care of actually getting this.
   private int tolerance= 10;
+  
   public ScoreGamePiece(boolean gamePieceType,boolean scoringSide, int elevatorHeight) {
     requires(Robot.arm);
     requires(Robot.elevator);
