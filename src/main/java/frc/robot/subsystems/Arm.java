@@ -38,6 +38,13 @@ public class Arm extends Subsystem {
   private double prevRead = -1;
   private int revs = 0;
   private int flipModifier = 1;
+  private double tolerance;
+  
+  
+  // This is for if we want the arm forward or backward
+  // Forward = true Backwards = false
+  public boolean armState;
+
 
   public Arm() {
 
@@ -56,6 +63,27 @@ public class Arm extends Subsystem {
 
   public void setSpeed(double speed) {
     sparkMax.set(speed);
+  }
+  
+
+  public boolean getArmSide(){
+    if(readEncoder() < RobotMap.Values.armEncoderCenter){
+      return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+  public void UpdateF(){
+     pidController.setFF((Math.cos(readEncoder() * RobotMap.Values.ticksToRadiansArm)) * RobotMap.Values.armMaxPidF);
+  }
+
+  public void SetPostion(double setpoint){
+    releaseBrake();
+    pidController.setReference(setpoint -readEncoder(), ControlType.kPosition);
+
   }
 
   public double readEncoder() {
@@ -101,8 +129,16 @@ public class Arm extends Subsystem {
   public void initDefaultCommand() {
   }
 
-  public void updateSmarts() {
+  public void updateSmartDashboard() {
     SmartDashboard.putNumber("Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Absolute Parsed", readEncoder());
   }
+
+
+//Started copying over Hunter's PID code from SetArmPosition cuz PID ain't
+//supposed to go in commands.
+  public boolean pidError(double setpoint, double tolerance) {
+    return (readEncoder() > setpoint - tolerance) && (readEncoder() < setpoint + tolerance);
+  }
+
 }

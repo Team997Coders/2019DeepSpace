@@ -1,7 +1,7 @@
 package frc.robot;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 import frc.robot.commands.BackingUpWhenLineFollowIsComplete;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.FlipSystemOrientation;
@@ -26,8 +26,8 @@ import frc.robot.commands.FlipDriveTrainOrientation;
  */
 public class OI {
 
-  private Joystick gamepad1, gamepad2;
-
+  Joystick gamepad1 = new Joystick(0);
+  Joystick gamepad2 = new Joystick(1);
 
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
@@ -68,7 +68,7 @@ public class OI {
     followLine = new JoystickButton(gamepad1, 1);
     followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
 
-    //toggleHatch = new JoystickButton(gamepad1, RobotMap.Ports.buttonX);
+    //toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     //toggleHatch.whenPressed(new ToggleHatchHolder());
 
     visionButtonA = new JoystickButton(gamepad2, RobotMap.Buttons.buttonA);
@@ -113,6 +113,7 @@ public class OI {
   public double getRightYAxis() {
     return bing(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.rightYAxis), -1, 1);
   }
+
 
   public int getVisionLeftYAxis() {
     // TODO: Are these ports the same across joysticks?

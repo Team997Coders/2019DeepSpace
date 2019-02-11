@@ -76,6 +76,12 @@ public class RobotMap {
       armSpark = 10,
       armCanifier = 23,
 
+      // ELEVATOR PORTS
+      masterElevatorMotor= 7,
+      followerElevatorMotor = 8,
+      elevatorEncoderPort1 = 3217589,
+      elevatorEncoderPort2 = 3452354,
+
       //LANDING GEAR PORTS
       landingGearPiston = 0,
       landingGearFloorSensor = 1,
@@ -87,21 +93,11 @@ public class RobotMap {
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;
     }
-
-  public class Values {
-
+  public static class Values {
     public static final double
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
       ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
-    
-      armPidP = 0.1,
-      armPidI = 0,
-      armPidD = 0,
-      armPidK = 0,
 
-      P = 0.0002,
-      I = 0.0,
-      D = 0.0,
       //INFRARED DISTANCES
       frontUltrasonicSensorHatchCargoship = 5,     //TODO: Need to check this      
       frontInfraredSensorHatchCargoship = 5,  //TODO: Need to check this      
@@ -116,6 +112,72 @@ public class RobotMap {
       backInfraredSensorHatchCargoship = 5,   //TODO: Need to check this  
   
       backInfraredSensorBallRocket = 5,      //TODO: Need to check this
-      backInfraredSensorBallCargoship = 5;   //TODO: Need to check this  
+      backInfraredSensorBallCargoship = 5,   //TODO: Need to check this 
+
+      // Arm and Elevator Values
+      elevatorPidP = 655520, // all placeholders
+      elevatorPidI = 123456,
+      elevatorPidD = 123456789,
+      elevatorPidF = 1234567,
+
+      armSwitchHeight= 9002, //placeholer for height in order for arm to switch
+      armEncoderCenter= 9002,//another place holder
+      armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
+      armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
+
+      armPidP = 0.1,
+      armPidI = 0,
+      armPidD = 0,
+      armPidK = 0,
+      armMaxPidF = 0,
+      ticksToRadiansArm= 3.14159268/(Math.abs(armBackLimit-armFrontLimit));
+  }
+
+  public static class ElevatorHeights {
+    public static int
+      elevatorBackTopHatchHeight = 1, //hey, placeholders.
+      elevatorBackMiddleHatchHeight = 1, 
+      elevatorBackBottomHatchHeight = 2,
+      elevatorBackShipHatchHeight = 3,
+
+      elevatorBackTopCargoHeight = 5,
+      elevatorBackMiddleCargoHeight = 8,
+      elevatorBackBottomCargoHeight = 13,
+      elevatorBackShipCargoHeight = 21,
+
+      elevatorFrontTopHatchHeight = 34,
+      elevatorFrontMiddleHatchHeight = 55,
+      elevatorFrontBottomHatchHeight = 89,
+      elevatorFrontShipHatchHeight = 135,
+
+      elevatorFrontTopCargoHeight = 224,
+      elevatorFrontMiddleCargoHeight = 359,
+      elevatorFrontBottomCargoHeight = 583,
+      elevatorFrontShipCargoHeight = 912;
+
+      public static int[]
+      elevatorFrontHatchHeightArray = {
+        elevatorFrontTopHatchHeight, 
+        elevatorFrontMiddleHatchHeight, 
+        elevatorFrontBottomHatchHeight 
+      },
+    
+      elevatorBackHatchHeightArray = {
+        elevatorBackTopHatchHeight, 
+        elevatorBackMiddleHatchHeight,
+        elevatorBackBottomHatchHeight
+      },
+
+      elevatorFrontCargoHeightArray = {
+        elevatorFrontTopCargoHeight,
+        elevatorFrontMiddleCargoHeight,
+        elevatorFrontBottomCargoHeight
+      },
+
+      elevatorBackCargoHeightArray = {
+        elevatorBackTopCargoHeight,
+        elevatorBackMiddleCargoHeight,
+        elevatorBackBottomCargoHeight
+      };
   }
 }

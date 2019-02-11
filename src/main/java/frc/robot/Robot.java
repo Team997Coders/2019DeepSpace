@@ -14,11 +14,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutoDoNothing;
+//import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
 //import spartanlib.subsystem.drivetrain.TankDrive;
 import frc.robot.subsystems.Arm;
-
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.BallManipulator;
 
 import frc.robot.subsystems.CameraMount;
@@ -41,6 +43,7 @@ public class Robot extends TimedRobot {
   public static boolean scoringSideReversed = false;
   private FlipSystemOrientation flipSystemOrientation;
   public static Arm arm;
+  public static Elevator elevator;
   //(no drieTrain in merge)public static DriveTrain driveTrain;
   public static BallManipulator ballManipulator;
   // public static DriveTrain driveTrain;
@@ -61,6 +64,10 @@ public class Robot extends TimedRobot {
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
+
+  public static int heightIndex; 
+  // used by the scoringHeight logic commands to grab the correct height from
+  // the height array in RobotMap.
 
   public Robot(DriveTrain a, Sensors b) {
     super();
@@ -83,6 +90,8 @@ public class Robot extends TimedRobot {
     ballManipulator = new BallManipulator();
 
     hatchManipulator = new HatchManipulator();
+
+    elevator = new Elevator();
 
     // driveTrain = new DriveTrain();
 
@@ -120,7 +129,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    arm.updateSmarts();
     updateSmartDashboard();
   }
 
@@ -183,5 +191,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Scoring Side Reversed?", scoringSideReversed);
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
+    arm.updateSmartDashboard();
+    elevator.updateSmartDashboard();
   }
 }
