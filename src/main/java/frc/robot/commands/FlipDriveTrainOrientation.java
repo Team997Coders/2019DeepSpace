@@ -12,7 +12,7 @@ import frc.robot.Robot;
 
 public class FlipDriveTrainOrientation extends Command {
   boolean scoringSideReversed;
-  
+
   public FlipDriveTrainOrientation(boolean scoringSideReversed) {
     this.scoringSideReversed = scoringSideReversed;
     requires(Robot.driveTrain);
@@ -27,6 +27,7 @@ public class FlipDriveTrainOrientation extends Command {
   @Override
   protected void execute() {
     Robot.driveTrain.flipOrientation(Robot.scoringSideReversed);
+    System.out.println("help");
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -68,8 +68,8 @@ public class OI {
     followLine = new JoystickButton(gamepad1, 1);
     followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
 
-    toggleHatch = new JoystickButton(gamepad1, RobotMap.Ports.buttonX);
-    toggleHatch.whenPressed(new ToggleHatchHolder());
+    //toggleHatch = new JoystickButton(gamepad1, RobotMap.Ports.buttonX);
+    //toggleHatch.whenPressed(new ToggleHatchHolder());
 
     visionButtonA = new JoystickButton(gamepad2, RobotMap.Ports.buttonA);
     visionButtonA.whenPressed(new VisionPressA());
