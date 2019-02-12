@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
   // Will the getInstance call get the ArcadeDrive? It should.
   // private final Command defaultDriveTrain;
   public static OI oi;
+  public static ButtonBox bb;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -117,14 +118,15 @@ public class Robot extends TimedRobot {
     // here...
     panTiltCamera = new PanTiltCamera();
     panTiltCamera.start();
-    
-    oi = new OI();
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
     flipSystemOrientation = new FlipSystemOrientation();
     flipSystemOrientation.start();
+
+    oi = new OI();
+    bb = new ButtonBox();
   }
 
   @Override

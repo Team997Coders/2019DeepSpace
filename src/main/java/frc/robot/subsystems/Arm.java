@@ -125,6 +125,12 @@ public class Arm extends Subsystem {
     discBrake.set(false);
   }
 
+  public void stop() {
+    // need to disable the PID and stop the motor
+    pidController.setReference(0.0, ControlType.kDutyCycle);
+    engageBrake();
+  }
+
   @Override
   public void initDefaultCommand() {
   }

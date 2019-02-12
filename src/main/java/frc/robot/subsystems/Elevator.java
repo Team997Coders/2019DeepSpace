@@ -60,7 +60,7 @@ public class Elevator extends Subsystem {
     
     pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
 
-    resetElevEncoder();
+    resetElevatorEncoder();
    }
 
    public void SetPosition(double height){
@@ -68,7 +68,7 @@ public class Elevator extends Subsystem {
     pidController.setReference(height, ControlType.kPosition);
   }
 
-  public void resetElevEncoder() {
+  public void resetElevatorEncoder() {
     canifier.setQuadraturePosition(0, 10);
   }
 

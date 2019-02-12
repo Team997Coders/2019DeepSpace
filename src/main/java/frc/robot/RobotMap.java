@@ -123,6 +123,7 @@ public class RobotMap {
       elevatorPidI = 123456,
       elevatorPidD = 123456789,
       elevatorPidF = 1234567,
+      elevatorTopHeight = 10000,
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
       armEncoderCenter= 9002,//another place holder
