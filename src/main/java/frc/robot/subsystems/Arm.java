@@ -127,8 +127,8 @@ public class Arm extends Subsystem {
 
   public void stop() {
     // need to disable the PID and stop the motor
-    pidController.setReference(0.0, ControlType.kDutyCycle);
     engageBrake();
+    pidController.setReference(0.0, ControlType.kDutyCycle);
   }
 
   @Override

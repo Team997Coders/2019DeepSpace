@@ -20,9 +20,8 @@ public class LockArm extends Command {
     }
     
     protected void execute() {
-      //Robot.arm.SetPostion(position);
-      Robot.arm.engageBrake();
-      //Robot.arm.setPower(0.0);
+      Robot.arm.SetPostion(position);
+      Robot.arm.stop();
     }
 
     protected boolean isFinished() {
