@@ -77,7 +77,7 @@ public class RobotMap {
       armCanifier = 23,
 
       // ELEVATOR PORTS
-      elevatorCanifier = 31, // TODO: need to change this to the correct value!
+      elevatorCanifier = 29, // TODO: need to change this to the correct value!
       masterElevatorMotor= 7,
       followerElevatorMotor = 8,
 
