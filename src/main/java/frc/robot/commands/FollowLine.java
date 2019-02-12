@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Sensors;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -22,13 +23,16 @@ public class FollowLine extends Command {
   private double normal = .1; //for double line seen
   private double straight = .35;
   private long extratimems = 1000;
+  private boolean timeout;
   private long starts;
   private boolean firstTime;
   private Sensors sensors;
+  private DriveTrain driveTrain;
 
-  public FollowLine(long extratimems, Sensors sensors) {
+  public FollowLine(Sensors sensors, DriveTrain driveTrain, long extratimems) {
     this.sensors = sensors;
-    requires(Robot.driveTrain);
+    this.driveTrain = driveTrain;
+    requires(driveTrain);
     requires(sensors);
 
     this.extratimems = extratimems;
@@ -38,7 +42,7 @@ public class FollowLine extends Command {
   @Override
   protected void initialize() {    
     firstTime = true;
-    Robot.driveTrain.setBrake();
+    driveTrain.setBrake();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -49,32 +53,33 @@ public class FollowLine extends Command {
       if(this.firstTime == true){
         this.starts = System.currentTimeMillis();
         firstTime = false;
-      }
-      else{
+        timeout = false;
+      } else{
+        long delta = System.currentTimeMillis() - (starts + extratimems);
         if((starts + extratimems) > System.currentTimeMillis()){
-          Robot.driveTrain.setVolts(straight, straight);
-        }
-        else if(sensors.anyLineSeen()){
-          Robot.driveTrain.setBrake();
-        }
-        else{
-          Robot.driveTrain.stopVolts();;
+          System.out.println("No line seen ... driving straight, timeout =" + delta);
+          driveTrain.setVolts(straight, straight);
+          timeout = false;
+        } else{
+          System.out.println("No line seen ... Timed Out.");
+          timeout = true;
+          driveTrain.stopVolts();
         }
       }
     }
   else{
       if(sensors.leftCenterLineSeen()){
-        Robot.driveTrain.setVolts(normal, powerMotor);
+        driveTrain.setVolts(normal, powerMotor);
       }else if(sensors.rightCenterLineSeen()){
-        Robot.driveTrain.setVolts(powerMotor , normal);
+        driveTrain.setVolts(powerMotor , normal);
       }else if(sensors.lineSensorLeft()){
-        Robot.driveTrain.setVolts(noPowerMotor, powerMotor);
+        driveTrain.setVolts(noPowerMotor, powerMotor);
       }else if(sensors.lineSensorRight()){
-        Robot.driveTrain.setVolts(powerMotor, noPowerMotor);; 
+        driveTrain.setVolts(powerMotor, noPowerMotor);
       }else if(sensors.lineSensorCenter()){
-        Robot.driveTrain.setVolts(straight, straight);
+        driveTrain.setVolts(straight, straight);
       }else{
-        Robot.driveTrain.stopVolts();
+        driveTrain.stopVolts();
       }
     }
   }      
@@ -85,20 +90,18 @@ public class FollowLine extends Command {
     if(sensors.lineSensorCenter()){
       if (sensors.isCloseToTarget()) {
         return true;
-    } else {
-        return false;
-      }
+      } 
+    } else if (timeout && sensors.noLineSeen()) {
+      return true;
     } 
-    else{
-      return false;
-    }
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0,0);
-    Robot.driveTrain.setCoast();
+    driveTrain.setVolts(0,0);
+    driveTrain.setCoast();
   }
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run

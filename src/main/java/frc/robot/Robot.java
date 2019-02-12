@@ -9,6 +9,7 @@ package frc.robot;
 
 import java.io.IOException;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -27,6 +28,7 @@ import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.LiftGear;
+import frc.robot.subsystems.Logger;
 import frc.robot.subsystems.Sensors;
 import frc.robot.vision.cameravisionclient.CameraVisionClient;
 
@@ -38,28 +40,26 @@ import frc.robot.vision.cameravisionclient.CameraVisionClient;
  * project.
  */
 public class Robot extends TimedRobot {
-  // Will the getInstance call get the ArcadeDrive? It should.
-  //private final Command defaultDriveTrain;
   public static boolean scoringSideReversed = false;
   private FlipSystemOrientation flipSystemOrientation;
   public static Arm arm;
   public static Elevator elevator;
-  //(no drieTrain in merge)public static DriveTrain driveTrain;
   public static BallManipulator ballManipulator;
-  // public static DriveTrain driveTrain;
   public static HatchManipulator hatchManipulator;
-
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static CameraMount cameraMount;
+  public static Logger logger;
+  public static PowerDistributionPanel pdp;
+  public static Sensors sensors;
+
   // Note this could be null and because we continue to wire these up
   // in this manner (statics), guards will have to be put around all accesses.
   // Otherwise null pointer exceptions will drive you crazy, in the case
   // we do not connect to the Pi for some reason.
   public static CameraVisionClient cameraVisionClient;
   public PanTiltCamera panTiltCamera;
-  // Will the getInstance call get the ArcadeDrive? It should.
-  // private final Command defaultDriveTrain;
+
   public static OI oi;
   public static ButtonBox bb;
 
@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
   public Robot(DriveTrain a, Sensors b) {
     super();
     driveTrain = a;
-    //sensors = b;
+    sensors = b;
   }
 
   public Robot() {
@@ -111,6 +111,15 @@ public class Robot extends TimedRobot {
       System.out.println("Robot will proceed blind.");
     }
 
+    // Create the logging instance so we can use it for tuning the PID subsystems
+    logger = Logger.getInstance();
+
+    // Instanciate the Power Distribution Panel so that we can get the currents
+    // however, we need to clear the faults so that the LEDs on the PDP go green.
+    // I can never (and I have tried) find the source of the warnings that cause
+    // the LED's to be Amber.
+    pdp = new PowerDistributionPanel();
+    pdp.clearStickyFaults();
 
     // Because there is no hardware subsystem directly hooked up
     // to this command (it is a proxy for calling CameraVision on Pi)
@@ -122,9 +131,12 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
+
+    // Need to flip the system orientation to the rear to begin the match
     flipSystemOrientation = new FlipSystemOrientation();
     flipSystemOrientation.start();
 
+    // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
     bb = new ButtonBox();
   }
