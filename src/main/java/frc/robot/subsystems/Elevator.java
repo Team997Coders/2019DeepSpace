@@ -60,10 +60,10 @@ public class Elevator extends Subsystem {
     
     pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
 
-    resetElevatorEncoder();
+    SetPosition(GetPosition());
    }
 
-   public void SetPosition(double height){
+   public void SetPosition(double height) {
      
     pidController.setReference(height, ControlType.kPosition);
   }
@@ -72,7 +72,7 @@ public class Elevator extends Subsystem {
     canifier.setQuadraturePosition(0, 10);
   }
 
-  public int GetPosition(){
+  public int GetPosition() {
     return canifier.getQuadraturePosition();
   }
 
@@ -82,6 +82,14 @@ public class Elevator extends Subsystem {
 
   public void SetPower(double volts){
     master.set(volts);
+  }
+
+  public void ZeroElevator(){
+
+    while (limitSwitchBottom.get() == false){
+      SetPower(-.45);
+    }
+    resetElevatorEncoder();
   }
 
   /*public void incrementIndex() {
@@ -109,6 +117,8 @@ public class Elevator extends Subsystem {
 
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Elevator Height: ", GetPosition());
+    SmartDashboard.putBoolean("Bottom Limit Switch", limitSwitchBottom.get());
+    SmartDashboard.putBoolean("Top Limit Switch", limitSwitchTop.get());
     
   }
 }

@@ -65,7 +65,7 @@ public class RobotMap {
       backInfraredSensor = 2,  //TODO: Need to check this 
 
       //BALL PORTS
-      ballMotor = 9,
+      ballMotor = 12,
       // ball sensor on the arm canifier rev limit switch connection 
 
       //HATCH PORTS

@@ -22,6 +22,7 @@ public class HatchManipulator extends Subsystem {
 
   public HatchManipulator() {
     hatchPiston = new Solenoid(RobotMap.Ports.hatchSolenoid);
+    hatchPistonState = hatchPiston.get();
   }
 
   public void extend() {

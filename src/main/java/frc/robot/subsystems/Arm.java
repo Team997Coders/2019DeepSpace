@@ -84,6 +84,7 @@ public class Arm extends Subsystem {
   public void SetPostion(double setpoint){
     releaseBrake();
     pidController.setReference(setpoint -readEncoder(), ControlType.kPosition);
+    UpdateF();
   }
 
   public double readEncoder() {
