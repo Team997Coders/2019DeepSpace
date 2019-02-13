@@ -98,7 +98,7 @@ public class RobotMap {
       ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
 
       //INFRARED DISTANCES
-      frontUltrasonicSensorHatchCargoship = 5,     //TODO: Need to check this      
+      frontUltrasonicSensorHatchCargoship = 91,     //TODO: Need to check this      
       frontInfraredSensorHatchCargoship = 5,  //TODO: Need to check this      
       frontUltrasonicSensorHatchRocket = 5,        //TODO: Need to check this   
       frontInfraredSensorHatchRocket = 5,     //TODO: Need to check this 

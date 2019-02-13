@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 /**
@@ -143,10 +144,11 @@ public class Sensors extends Subsystem {
             m_infraredSensorInput.getValue() < RobotMap.Values.frontInfraredSensorBallCargoship);
           }
       }*/
-      return (m_ultrasonicSensorInput.getValue() < RobotMap.Values.frontUltrasonicSensorHatchCargoship &&
-      m_infraredSensorInput.getValue() < RobotMap.Values.frontInfraredSensorHatchCargoship);
+      return (m_ultrasonicSensorInput.getValue() < RobotMap.Values.frontUltrasonicSensorHatchCargoship /*&&
+      m_infraredSensorInput.getValue() < RobotMap.Values.frontInfraredSensorHatchCargoship*/);
     }
   }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

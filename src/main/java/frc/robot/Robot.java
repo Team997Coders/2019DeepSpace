@@ -207,5 +207,6 @@ public class Robot extends TimedRobot {
     driveTrain.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
+    sensors.updateSmartDashboard();
   }
 }

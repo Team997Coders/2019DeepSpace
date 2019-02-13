@@ -48,8 +48,8 @@ public class ButtonBox {
     flipDriveTrainOrientation = new JoystickButton(buttonBox, RobotMap.Buttons.buttonY);
     flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
 
-    followLine = new JoystickButton(buttonBox, 1);
-    followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
+//    followLine = new JoystickButton(buttonBox, 1);
+//    followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
 
     //toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     //toggleHatch.whenPressed(new ToggleHatchHolder());
