@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Sensors;
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,11 +22,10 @@ public class FollowLine extends Command {
   private double normal = .1; //for double line seen
   private double straight = .35;
   private long extratimems = 1000;
-  private boolean timeout;
   private long starts;
-  private boolean firstTime;
   private Sensors sensors;
   private DriveTrain driveTrain;
+  private boolean gracePeriod;
 
   public FollowLine(Sensors sensors, DriveTrain driveTrain, long extratimems) {
     this.sensors = sensors;
@@ -41,33 +39,23 @@ public class FollowLine extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {    
-    firstTime = true;
+    gracePeriod = false;
     driveTrain.setBrake();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    if(sensors.noLineSeen()){
-      if(this.firstTime == true){
-        this.starts = System.currentTimeMillis();
-        firstTime = false;
-        timeout = false;
-      } else{
-        long delta = System.currentTimeMillis() - (starts + extratimems);
-        if((starts + extratimems) > System.currentTimeMillis()){
-          System.out.println("No line seen ... driving straight, timeout =" + delta);
-          driveTrain.setVolts(straight, straight);
-          timeout = false;
-        } else{
-          System.out.println("No line seen ... Timed Out.");
-          timeout = true;
-          driveTrain.stopVolts();
-        }
-      }
-    }
-  else{
+    if(sensors.noLineSeen() && !gracePeriod){
+      gracePeriod = true;
+      starts = System.currentTimeMillis();
+      driveTrain.setVolts(straight, straight);
+    } else if(sensors.noLineSeen() && gracePeriod) {
+      driveTrain.setVolts(straight, straight);
+    } else if (sensors.anyLineSeen() && gracePeriod) {
+      driveTrain.setBrake();
+      gracePeriod = false;
+    } else {
       if(sensors.leftCenterLineSeen()){
         driveTrain.setVolts(normal, powerMotor);
       }else if(sensors.rightCenterLineSeen()){
@@ -87,14 +75,17 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(sensors.lineSensorCenter()){
-      if (sensors.isCloseToTarget()) {
-        return true;
-      } 
-    } else if (timeout && sensors.noLineSeen()) {
+    if (sensors.isCloseToTarget()) {
       return true;
-    } 
-    return false;
+    } else if (gracePeriod && gracePeriodExpired()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private boolean gracePeriodExpired() {
+    return (System.currentTimeMillis() > (starts + extratimems));
   }
 
   // Called once after isFinished returns true

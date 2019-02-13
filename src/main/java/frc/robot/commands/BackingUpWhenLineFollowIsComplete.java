@@ -29,19 +29,6 @@ public class BackingUpWhenLineFollowIsComplete extends CommandGroup {
    * Add your docs here.
    */
   public BackingUpWhenLineFollowIsComplete() {
-    if(Robot.scoringSideReversed){
-      addSequential(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
-      addSequential(new FollowLine(
-        new Sensors(RobotMap.Ports.lineSensorBackLeft, 
-          RobotMap.Ports.lineSensorBackCenter, 
-          RobotMap.Ports.lineSensorBackRight, 
-          RobotMap.Ports.backInfraredSensor),
-        Robot.driveTrain,
-        1000
-        )
-      );
-      addSequential(new FlipDriveTrainOrientation(!Robot.scoringSideReversed));
-    }else{
       addSequential(new FollowLine(
         new Sensors(RobotMap.Ports.lineSensorFrontLeft, 
           RobotMap.Ports.lineSensorFrontCenter, 
@@ -51,8 +38,7 @@ public class BackingUpWhenLineFollowIsComplete extends CommandGroup {
         1000
         )
       );
-    }
-    addSequential(new Waittill(.5));
-    addSequential(new BackingUp());
+    /*addSequential(new Waittill(.5));
+    addSequential(new BackingUp());*/
   }
 }
