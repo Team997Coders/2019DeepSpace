@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Sensors;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,14 +27,13 @@ public class FollowLine extends Command {
   private Sensors sensors;
   private DriveTrain driveTrain;
   private boolean gracePeriod;
+  private boolean scoringSideReversed;
 
-  public FollowLine(Sensors sensors, DriveTrain driveTrain, long extratimems) {
-    this.sensors = sensors;
-    this.driveTrain = driveTrain;
+  public FollowLine(long extratimems, boolean scoringSideReversed) {
+    this.scoringSideReversed = scoringSideReversed;
+    this.extratimems = extratimems;
     requires(driveTrain);
     requires(sensors);
-
-    this.extratimems = extratimems;
   }
 
   // Called just before this Command runs the first time
@@ -41,6 +41,19 @@ public class FollowLine extends Command {
   protected void initialize() {    
     gracePeriod = false;
     driveTrain.setBrake();
+    if(scoringSideReversed){
+      new Sensors(RobotMap.Ports.lineSensorBackLeft, 
+      RobotMap.Ports.lineSensorBackCenter, 
+      RobotMap.Ports.lineSensorBackRight, 
+      RobotMap.Ports.frontInfraredSensor,
+      RobotMap.Ports.backUltrasonicSensor);
+    } else{
+      new Sensors(RobotMap.Ports.lineSensorFrontLeft, 
+      RobotMap.Ports.lineSensorFrontCenter, 
+      RobotMap.Ports.lineSensorFrontRight, 
+      RobotMap.Ports.frontInfraredSensor,
+      RobotMap.Ports.frontUltrasonicSensor);
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -72,6 +85,10 @@ public class FollowLine extends Command {
     }
   }      
 
+  private boolean gracePeriodExpired() {
+    return (System.currentTimeMillis() > (starts + extratimems));
+  }
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
@@ -82,10 +99,6 @@ public class FollowLine extends Command {
     } else {
       return false;
     }
-  }
-
-  private boolean gracePeriodExpired() {
-    return (System.currentTimeMillis() > (starts + extratimems));
   }
 
   // Called once after isFinished returns true

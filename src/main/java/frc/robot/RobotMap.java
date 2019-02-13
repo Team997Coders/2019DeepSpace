@@ -63,6 +63,8 @@ public class RobotMap {
       lineSensorBackCenter = 2,  
       lineSensorBackRight = 1,   
       backInfraredSensor = 2,  //TODO: Need to check this 
+      backUltrasonicSensor = 2, //TODO: Need to check this
+
 
       //BALL PORTS
       ballMotor = 9,

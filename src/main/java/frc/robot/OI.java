@@ -2,7 +2,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import frc.robot.commands.BackingUpWhenLineFollowIsComplete;
+import frc.robot.commands.LineFollowing;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.FlipSystemOrientation;
 import frc.robot.commands.RetractLandingGear;
@@ -66,7 +66,7 @@ public class OI {
     flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
 
     followLine = new JoystickButton(gamepad1, 1);
-    followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
+    followLine.whileHeld(new LineFollowing());
 
     //toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     //toggleHatch.whenPressed(new ToggleHatchHolder());

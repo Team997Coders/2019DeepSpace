@@ -25,12 +25,12 @@ public class Sensors extends Subsystem {
   public AnalogInput m_ultrasonicSensorInput;
   public AnalogInput m_infraredSensorInput;
 
-  public Sensors(int leftPort, int centerPort, int rightPort, int infraredPort){
+  public Sensors(int leftPort, int centerPort, int rightPort, int infraredPort, int ultrasonic){
     m_sensorLeftInput = new DigitalInput(leftPort);
     m_sensorRightInput = new DigitalInput(rightPort);
     m_sensorCenterInput = new DigitalInput(centerPort);
 
-    m_ultrasonicSensorInput = new AnalogInput(RobotMap.Ports.frontUltrasonicSensor);
+    m_ultrasonicSensorInput = new AnalogInput(ultrasonic);
     m_infraredSensorInput = new AnalogInput(infraredPort);
   }
 
@@ -149,6 +149,18 @@ public class Sensors extends Subsystem {
     }
   }
 
+  public int getUltrasonicSensorValue(){
+    return m_ultrasonicSensorInput.getValue();
+  }
+
+  public int getInfraredValue(){
+    return m_infraredSensorInput.getValue();
+  }
+
+  public void updateSmartDashboard(){
+    SmartDashboard.getNumber("Ultrasonic Sensor Value", getUltrasonicSensorValue());
+    SmartDashboard.getNumber("Infrared Sensor Value", getInfraredValue());
+  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

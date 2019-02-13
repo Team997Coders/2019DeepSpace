@@ -9,23 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.Sensors;
 
 public class LineFollowing extends CommandGroup {
   /**
    * Add your docs here.
    */
   public LineFollowing() {
-    addSequential(new FollowLine(
-      new Sensors(RobotMap.Ports.lineSensorFrontLeft, 
-        RobotMap.Ports.lineSensorFrontCenter, 
-        RobotMap.Ports.lineSensorFrontRight, 
-        RobotMap.Ports.frontInfraredSensor),
-      Robot.driveTrain,
-      1000
-      )
-    );
+    addSequential(new FollowLine(1000, Robot.scoringSideReversed));
   /*addSequential(new Waittill(.5));
   addSequential(new BackingUp());*/
 }
