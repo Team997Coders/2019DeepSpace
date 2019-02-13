@@ -26,7 +26,7 @@ public class ElevatorDownity extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.SetPower(-.49);
+    Robot.elevator.SetPower(-.29);
   }
 
   // Make this return true when this Command no longer needs to run execute()

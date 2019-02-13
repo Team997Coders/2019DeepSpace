@@ -34,7 +34,7 @@ public class Elevator extends Subsystem {
   public boolean gamePieceType; 
   //This is to switch between balls and hatches for elevator heights.
   //// Balls = true Hatches = false
-  public boolean yeet;
+  public boolean isZeroed;
 
 
    public Elevator() {
@@ -46,6 +46,8 @@ public class Elevator extends Subsystem {
     
     limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kReverse , LimitSwitchPolarity.kNormallyOpen);
     limitSwitchBottom.enableLimitSwitch(true);
+
+    //master.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 
     master.setIdleMode(IdleMode.kBrake);
     follower.setIdleMode(IdleMode.kBrake);
@@ -61,6 +63,7 @@ public class Elevator extends Subsystem {
     pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
 
     SetPosition(GetPosition());
+      isZeroed = limitSwitchBottom.get();
    }
 
    public void SetPosition(double height) {
@@ -76,20 +79,24 @@ public class Elevator extends Subsystem {
     return canifier.getQuadraturePosition();
   }
 
+public boolean GetBottomLimitSwitch(){
+  return limitSwitchBottom.get();
+}
+
   public void Stop(){
     master.set(0);
   }
 
   public void SetPower(double volts){
-    master.set(volts);
+    master.set(-volts);
   }
 
   public void ZeroElevator(){
 
-    while (limitSwitchBottom.get() == false){
-      SetPower(-.45);
-    }
-    resetElevatorEncoder();
+    if (limitSwitchBottom.get()){
+
+      resetElevatorEncoder();
+    } 
   }
 
   /*public void incrementIndex() {

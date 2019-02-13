@@ -56,13 +56,13 @@ public class RobotMap {
       lineSensorFrontLeft = 4,  
       lineSensorFrontCenter = 5,
       lineSensorFrontRight = 6,
-      frontUltrasonicSensor = 2, //TODO: Need to check this
-      frontInfraredSensor = 5,  //TODO: Need to check this
+      frontUltrasonicSensor = 0, 
+      frontInfraredSensor = 2,  
 
       lineSensorBackLeft = 3,    
       lineSensorBackCenter = 2,  
       lineSensorBackRight = 1,   
-      backInfraredSensor = 2,  //TODO: Need to check this 
+      backInfraredSensor = 3,  //TODO: Need to check this 
 
       //BALL PORTS
       ballMotor = 12,
@@ -74,12 +74,12 @@ public class RobotMap {
       //ARM PORTS
       discBrake = 2, 
       armSpark = 10,
-      armCanifier = 23,
+      armCanifier = 11,
 
       // ELEVATOR PORTS
-      elevatorCanifier = 31, // TODO: need to change this to the correct value!
-      masterElevatorMotor= 7,
-      followerElevatorMotor = 8,
+      elevatorCanifier = 29,
+      masterElevatorMotor= 42,
+      followerElevatorMotor = 43,
 
       //LANDING GEAR PORTS
       landingGearPiston = 0,
@@ -139,26 +139,29 @@ public class RobotMap {
   }
 
   public static class ElevatorHeights {
+    //in inches
     public static int
-      elevatorBackTopHatchHeight = 1, //hey, placeholders.
-      elevatorBackMiddleHatchHeight = 1, 
-      elevatorBackBottomHatchHeight = 2,
-      elevatorBackShipHatchHeight = 3,
+      elevatorBackTopHatchHeight = 0, //impossible
+      elevatorBackMiddleHatchHeight = 37, 
+      elevatorBackBottomHatchHeight = 9,
+      elevatorBackShipHatchHeight = 9,
 
-      elevatorBackTopCargoHeight = 5,
-      elevatorBackMiddleCargoHeight = 8,
-      elevatorBackBottomCargoHeight = 13,
-      elevatorBackShipCargoHeight = 21,
+      elevatorBackTopCargoHeight = 55,
+      elevatorBackMiddleCargoHeight = 33,
+      elevatorBackBottomCargoHeight = 5,
+      elevatorBackShipCargoHeight = 19,
 
-      elevatorFrontTopHatchHeight = 34,
-      elevatorFrontMiddleHatchHeight = 55,
-      elevatorFrontBottomHatchHeight = 89,
-      elevatorFrontShipHatchHeight = 135,
+      elevatorFrontTopHatchHeight = 54,
+      elevatorFrontMiddleHatchHeight = 28,
+      elevatorFrontBottomHatchHeight = 0,
+      elevatorFrontShipHatchHeight = 0,
 
-      elevatorFrontTopCargoHeight = 224,
-      elevatorFrontMiddleCargoHeight = 359,
-      elevatorFrontBottomCargoHeight = 583,
-      elevatorFrontShipCargoHeight = 912;
+      elevatorFrontTopCargoHeight = 0, //impossible
+      elevatorFrontMiddleCargoHeight = 48,
+      elevatorFrontBottomCargoHeight = 22,
+      elevatorFrontShipCargoHeight = 33,
+
+      elevatorCollectCargoHeight = 0;
 
       public static int[]
       elevatorFrontHatchHeightArray = {
