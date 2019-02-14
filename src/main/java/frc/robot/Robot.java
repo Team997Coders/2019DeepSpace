@@ -190,9 +190,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    // Set current vision pan/tilt joystick values
-    cameraControlStateMachine.slew(-oi.getVisionLeftXAxis(), oi.getVisionLeftYAxis());
-
     Scheduler.getInstance().run();
   }
 

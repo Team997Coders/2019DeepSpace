@@ -64,6 +64,7 @@ public class RobotMap {
   }
 
   public static class Ports {
+    public static final SerialPort.Port AHRS = SerialPort.Port.kUSB;
     public static int
       //TALON PORTS
       leftTalon = 4,
@@ -115,9 +116,6 @@ public class RobotMap {
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;
   }
-
-  public static final SerialPort.Port AHRS = SerialPort.Port.kUSB;
-
 
   public static class Values {
     // TODO: PID values should be reduced across classes unless different values are needed.
