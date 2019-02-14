@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -17,18 +19,6 @@ public class RobotMap {
   public static class Ports {
     public static int
 
-/*  Please do not delete...comment out */
-/*  Logitec wireless gamepad settings  */
-/*
-      GamePad1 = 1,
-      GamePad2 = 0,
-      buttonA = 2,
-      buttonB = 3,
-      buttonX = 1,
-      buttonLeftThumbstick = 11,
-*/
-
-/*  TODO: Wired controllers - flip back when at school lab */
       GamePad1 = 0,
       GamePad2 = 1,
       buttonA = 1,
@@ -69,6 +59,8 @@ public class RobotMap {
       panservo = 9,
       tiltservo = 8;
 
+      public static final SerialPort.Port AHRS = SerialPort.Port.kUSB;
+
   }
 
   public class Values {
@@ -76,7 +68,12 @@ public class RobotMap {
     public static final double
       P = 0.0002,
       I = 0.0,
-      D = 0.0;
+      D = 0.0,
+
+      driveDistanceP = .00025, //placeholders
+      driveDistanceI = 0.0,
+      driveDistanceD = 0.0,
+      protobotTickPerFoot= 2449;
 
   }
 
