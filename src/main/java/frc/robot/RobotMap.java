@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -40,8 +41,8 @@ public class RobotMap {
     public static int
 
       GamePad1 = 0,
-      GamePad2 = 1,           // TODO: Need to check this
-      buttonA = 1,            // TODO: Need to check this
+      GamePad2 = 1,
+      buttonA = 1,
       buttonB = 2,
       buttonX = 3,            // TODO: Need to check this
       buttonY = 4,            // TODO: Need to check this
@@ -63,6 +64,7 @@ public class RobotMap {
   }
 
   public static class Ports {
+    public static final SerialPort.Port AHRS = SerialPort.Port.kUSB;
     public static int
       //TALON PORTS
       leftTalon = 4,
@@ -113,9 +115,22 @@ public class RobotMap {
 
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;
-    }
+  }
+
   public static class Values {
+    // TODO: PID values should be reduced across classes unless different values are needed.
+    // In that case, these names should be changed to indicate who the consumer is.
     public static final double
+
+      P = 0.0002,
+      I = 0.0,
+      D = 0.0,
+
+      driveDistanceP = .00025, //placeholders
+      driveDistanceI = 0.0,
+      driveDistanceD = 0.0,
+      protobotTickPerFoot= 2449,
+
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
       ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
 

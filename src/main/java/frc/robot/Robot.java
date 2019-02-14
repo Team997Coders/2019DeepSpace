@@ -7,8 +7,10 @@
 
 package frc.robot;
 
-import java.io.IOException;
+import org.team997coders.spartanlib.commands.CenterCamera;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,9 +31,10 @@ import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.LiftGear;
+import frc.robot.vision.CameraControlStateMachine;
+import frc.robot.vision.TargetSelector;
 import frc.robot.subsystems.Logger;
 import frc.robot.subsystems.Sensors;
-import frc.robot.vision.cameravisionclient.CameraVisionClient;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -50,18 +53,14 @@ public class Robot extends TimedRobot {
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static CameraMount cameraMount;
+  private CenterCamera centerCamera;
+  private NetworkTableInstance networkTableInstance;
+  public static NetworkTable visionNetworkTable;
+  public static CameraControlStateMachine cameraControlStateMachine;
   public static Logger logger;
   public static PowerDistributionPanel pdp;
   public static Sensors sensors;
   public static ButtonBox buttonBox;
-
-  // Note this could be null and because we continue to wire these up
-  // in this manner (statics), guards will have to be put around all accesses.
-  // Otherwise null pointer exceptions will drive you crazy, in the case
-  // we do not connect to the Pi for some reason.
-  public static CameraVisionClient cameraVisionClient;
-  public PanTiltCamera panTiltCamera;
-
   public static OI oi;
   public static ButtonBoxOI bb;
 
@@ -100,19 +99,13 @@ public class Robot extends TimedRobot {
 
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    cameraMount = new CameraMount(0, 120, 10, 170);
-    buttonBox = new ButtonBox();
+    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
 
-    // Connect to remote vision subsystem
-    try {
-      cameraVisionClient = new CameraVisionClient("10.9.97.6");
-    } catch (IOException e) {
-      // TODO: What is going to be the timing of roborio network availability, boot
-      // speed,
-      // and Pi boot speed? Need to test.
-      System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
-      System.out.println("Robot will proceed blind.");
-    }
+    networkTableInstance = NetworkTableInstance.getDefault();
+    visionNetworkTable = networkTableInstance.getTable("Vision");
+    cameraControlStateMachine = new CameraControlStateMachine();
+    centerCamera = new CenterCamera(cameraMount);
+    buttonBox = new ButtonBox();
 
     // Create the logging instance so we can use it for tuning the PID subsystems
     logger = Logger.getInstance();
@@ -124,12 +117,7 @@ public class Robot extends TimedRobot {
     pdp = new PowerDistributionPanel();
     pdp.clearStickyFaults();
 
-    // Because there is no hardware subsystem directly hooked up
-    // to this command (it is a proxy for calling CameraVision on Pi)
-    // there is not default command to keep this active. So manually start
-    // here...
-    panTiltCamera = new PanTiltCamera();
-    panTiltCamera.start();
+    oi = new OI();
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -161,6 +149,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    centerCamera.start();
     autonomousCommand = chooser.getSelected();
 
     if (autonomousCommand != null) {
@@ -175,6 +164,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // Init hatch target finding vision camera
+    centerCamera.start();
+    cameraControlStateMachine.identifyTargets();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -208,6 +201,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Scoring Side Reversed?", scoringSideReversed);
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
+    cameraMount.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
   }
