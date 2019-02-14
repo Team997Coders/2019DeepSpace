@@ -15,6 +15,28 @@ package frc.robot;
  */
 public class RobotMap {
   public static class Buttons {
+    public static class ButtonBox {
+      public static int
+        ButtonBoxJoystickId = 2,          // TODO: Need to check this
+        hatchJoystickButtonId = 1,
+        ballJoystickButtonId = 2,
+        mediumHeightJoystickButtonId = 3,
+        activateJoystickButtonId = 4,
+        lowHeightJoystickButtonId = 5,
+        frontJoystickButtonId = 6,
+        backJoystickButtonId = 7,
+        rocketJoystickButtonId = 8,
+        cargoShipJoystickButtonId = 9,
+        highHeightJoystickButtonId = 10,
+        cancelJoystickButtonId = 11,
+        intakeJoystickButtonId = 12,
+        AJoystickButtonId = 13,
+        BJoystickButtonId = 14,
+        XJoystickButtonId = 15,
+        leftJoystickHatAngle = 315,
+        centerJoystickHatAngle = 0,
+        rightJoystickHatAngle = 45;      
+    }
     public static int
 
       GamePad1 = 0,
