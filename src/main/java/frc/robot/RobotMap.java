@@ -19,14 +19,12 @@ public class RobotMap {
   public static class Ports {
     public static int
 
-
       GamePad1 = 0,
       GamePad2 = 1,
       buttonA = 1,
       buttonB = 2,
       buttonX = 3,
       buttonLeftThumbstick = 9,
-
       buttonY = 4,
       buttonLeftShoulder = 5,
       buttonRightShoulder = 6,
