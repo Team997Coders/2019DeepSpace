@@ -7,23 +7,15 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-public class AutoDoNothing extends Command {
-  public AutoDoNothing() { }
-
-  @Override
-  protected void initialize() { }
-
-  @Override
-  protected void execute() { }
-
-  @Override
-  protected boolean isFinished() { return true; }
-  
-  @Override
-  protected void end() { System.out.println("Did nothing! Aren't you proud of me Daddy?"); }
-
-  @Override
-  protected void interrupted() { end(); }
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.FlipScoringSide;
+import frc.robot.Robot;
+import frc.robot.commands.ArcadeDrive;
+public class FlipSystemOrientation extends CommandGroup {
+  /**
+   * Add your docs here.
+   */
+  public FlipSystemOrientation() {
+    addSequential(new FlipScoringSide(Robot.scoringSideReversed));
+  }
 }

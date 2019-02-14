@@ -5,40 +5,48 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.buttonbox.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.buttonbox.ButtonBox;
 import frc.robot.Robot;
 
-public class TankDrive extends Command {
+public class VisionA extends Command {
+  private final ButtonBox buttonBox;
 
-  public TankDrive() {
-    requires(Robot.driveTrain);
+  public VisionA() {
+    this(Robot.buttonBox);
   }
 
-  @Override
-  protected void initialize() { }
+  public VisionA(ButtonBox buttonBox) {
+    this.buttonBox = buttonBox;
+  }
 
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+    buttonBox.clickVisionAButton();
+  }
+
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double left = Robot.oi.getLeftYAxis();
-    double right = Robot.oi.getRightYAxis();
-
-    Robot.driveTrain.setVolts(left, right);
   }
 
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
+  // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
   }
 
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

@@ -7,36 +7,44 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 
-public class TankDrive extends Command {
-
-  public TankDrive() {
-    requires(Robot.driveTrain);
+public class Waittill extends Command {
+  private Timer timer;
+  private double time;
+  public Waittill(double time) {
+    this.time = time;
   }
 
+  // Called just before this Command runs the first time
   @Override
-  protected void initialize() { }
+  protected void initialize() {
+    this.timer = new Timer();
+    this.timer.start();
+  }
 
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double left = Robot.oi.getLeftYAxis();
-    double right = Robot.oi.getRightYAxis();
-
-    Robot.driveTrain.setVolts(left, right);
   }
 
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(this.timer.get() > time){
+      return true;
+    }
     return false;
   }
 
+  // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
   }
 
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
     end();

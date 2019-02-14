@@ -8,37 +8,43 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-public class TankDrive extends Command {
+/**
+ *
+ */
+public class MoveArm extends Command {
+  public double value;
+  public double position;
 
-  public TankDrive() {
-    requires(Robot.driveTrain);
+  public MoveArm(double _value) {
+    requires(Robot.arm);
+    this.value = _value;
   }
 
-  @Override
-  protected void initialize() { }
+  protected void initialize() {
+    position = Robot.arm.readEncoder();
+  }
 
-  @Override
   protected void execute() {
-    double left = Robot.oi.getLeftYAxis();
-    double right = Robot.oi.getRightYAxis();
-
-    Robot.driveTrain.setVolts(left, right);
+    if (Robot.arm.readEncoder() >= RobotMap.Values.armBackLimit && value > 0) {
+      Scheduler.getInstance().add(new LockArm());
+    } else {
+      Robot.arm.releaseBrake();
+      Robot.elevator.SetPower(value);
+    }
   }
 
-  @Override
   protected boolean isFinished() {
     return false;
   }
 
-  @Override
   protected void end() {
-    Robot.driveTrain.setVolts(0, 0);
   }
 
-  @Override
   protected void interrupted() {
-    end();
+    // end();
   }
 }

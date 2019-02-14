@@ -57,9 +57,20 @@ dependencies {
     compile 'com.github.oxo42:stateless4j:2.5.0'
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+    testCompile 'junit:junit:4.11'
+    compile 'junit:junit:4.11'
+    //testCompile 'org.mockito:mockito-core:2.23.4'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.23.4'
 }
+
+/*sourceSets {
+    test {
+        java {
+            srcDirs = ["src/main/java/test"]  // Note @Peter's comment below
+        }
+    }
+}*/
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib
@@ -67,6 +78,11 @@ dependencies {
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+    /*manifest {
+        //attributes('Class-Path' : 'home/lvuser/deploy/SpartanLib-1.0.0.jar')
+        //attributes('Class-Path' : 'home/lvuser/deploy/*.jar')
+        attributes('Class-Path' : fileTree(include: ['*.jar'], dir: 'src/main/deploy'))
+    }*/
     //manifest {
         //attributes('Class-Path' : 'home/lvuser/deploy/SpartanLib-1.0.0.jar')
         //attributes('Class-Path' : 'home/lvuser/deploy/*.jar')

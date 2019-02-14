@@ -11,18 +11,30 @@ import org.team997coders.spartanlib.commands.CenterCamera;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutoDoNothing;
+import frc.robot.buttonbox.ButtonBox;
+//import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+
+//import spartanlib.subsystem.drivetrain.TankDrive;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.BallManipulator;
+
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.LiftGear;
-import frc.robot.subsystems.LineFollowing;
 import frc.robot.vision.CameraControlStateMachine;
 import frc.robot.vision.TargetSelector;
+import frc.robot.subsystems.Logger;
+import frc.robot.subsystems.Sensors;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,43 +44,78 @@ import frc.robot.vision.TargetSelector;
  * project.
  */
 public class Robot extends TimedRobot {
-  // Will the getInstance call get the ArcadeDrive? It should.
-  //private final Command defaultDriveTrain;
-  public static OI oi;
+  public static boolean scoringSideReversed = false;
+  private FlipSystemOrientation flipSystemOrientation;
+  public static Arm arm;
+  public static Elevator elevator;
+  public static BallManipulator ballManipulator;
+  public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
-  public static LineFollowing lineFollowing;
   public static CameraMount cameraMount;
   private CenterCamera centerCamera;
   private NetworkTableInstance networkTableInstance;
   public static NetworkTable visionNetworkTable;
   public static CameraControlStateMachine cameraControlStateMachine;
-  
+  public static Logger logger;
+  public static PowerDistributionPanel pdp;
+  public static Sensors sensors;
+  public static ButtonBox buttonBox;
+  public static OI oi;
+  public static ButtonBoxOI bb;
+
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
-  public Robot(DriveTrain a, LineFollowing b) {
+  public static int heightIndex; 
+  // used by the scoringHeight logic commands to grab the correct height from
+  // the height array in RobotMap.
+
+  public Robot(DriveTrain a, Sensors b) {
     super();
     driveTrain = a;
-    lineFollowing = b;
+    sensors = b;
   }
 
-  public Robot() { super(); }
+  public Robot() {
+    super();
+  }
+
   /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
   @Override
   public void robotInit() {
+
+    arm = new Arm();
+    ballManipulator = new BallManipulator();
+
+    hatchManipulator = new HatchManipulator();
+
+    elevator = new Elevator();
+
+    // driveTrain = new DriveTrain();
+
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    lineFollowing = new LineFollowing();
     cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
 
     networkTableInstance = NetworkTableInstance.getDefault();
     visionNetworkTable = networkTableInstance.getTable("Vision");
     cameraControlStateMachine = new CameraControlStateMachine();
     centerCamera = new CenterCamera(cameraMount);
+    buttonBox = new ButtonBox();
+
+    // Create the logging instance so we can use it for tuning the PID subsystems
+    logger = Logger.getInstance();
+
+    // Instanciate the Power Distribution Panel so that we can get the currents
+    // however, we need to clear the faults so that the LEDs on the PDP go green.
+    // I can never (and I have tried) find the source of the warnings that cause
+    // the LED's to be Amber.
+    pdp = new PowerDistributionPanel();
+    pdp.clearStickyFaults();
 
     oi = new OI();
 
@@ -76,6 +123,13 @@ public class Robot extends TimedRobot {
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
 
+    // Need to flip the system orientation to the rear to begin the match
+    flipSystemOrientation = new FlipSystemOrientation();
+    flipSystemOrientation.start();
+
+    // Make these last so to chase away the dreaded null subsystem errors!
+    oi = new OI();
+    bb = new ButtonBoxOI();
   }
 
   @Override
@@ -118,17 +172,24 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    System.out.println("--------------------");
+
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
     // Start your engines
-    //defaultDriveTrain.start();
+    // defaultDriveTrain.start();
   }
+
+  double lastTime = 0;
+
+  /**
+   * This function is called periodically during operator control.
+   */
 
   @Override
   public void teleopPeriodic() {
-    lineFollowing.isCloseToTarget();
-
     // Set current vision pan/tilt joystick values
     cameraControlStateMachine.slew(-oi.getVisionLeftXAxis(), oi.getVisionLeftYAxis());
 
@@ -140,9 +201,11 @@ public class Robot extends TimedRobot {
   }
 
   public void updateSmartDashboard() {
+    SmartDashboard.putBoolean("Scoring Side Reversed?", scoringSideReversed);
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
     cameraMount.updateSmartDashboard();
-    lineFollowing.updateSmarts();
+    arm.updateSmartDashboard();
+    elevator.updateSmartDashboard();
   }
 }
