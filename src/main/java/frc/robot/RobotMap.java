@@ -119,11 +119,11 @@ public class RobotMap {
       driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
-      elevatorPidP = 655520, // all placeholders
-      elevatorPidI = 123456,
-      elevatorPidD = 123456789,
-      elevatorPidF = 1234567,
-      elevatorTopHeight = 10000,
+      elevatorPidP = 1, // all placeholders
+      elevatorPidI = 0,
+      elevatorPidD = 0,
+      elevatorPidF = 1,
+      elevatorTopHeight = 100000000,
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
       armEncoderCenter= 9002,//another place holder
@@ -135,7 +135,7 @@ public class RobotMap {
       armPidD = 0,
       armPidK = 0,
       armMaxPidF = 0,
-      ticksToRadiansArm= 3.14159268/(Math.abs(armBackLimit-armFrontLimit));
+      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit));
   }
 
   public static class ElevatorHeights {

@@ -14,6 +14,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -40,6 +41,7 @@ public class Arm extends Subsystem {
   private int revs = 0;
   private int flipModifier = 1;
   private double tolerance;
+  private double fConstant = RobotMap.Values.armMaxPidF;
   
   
   // This is for if we want the arm forward or backward
@@ -78,7 +80,7 @@ public class Arm extends Subsystem {
   }
 
   public void UpdateF(){
-     pidController.setFF((Math.cos(readEncoder() * RobotMap.Values.ticksToRadiansArm)) * RobotMap.Values.armMaxPidF);
+     pidController.setFF((Math.cos(readEncoder() * RobotMap.Values.ticksToRadiansArm)) * fConstant);
   }
 
   public void SetPostion(double setpoint){
@@ -140,6 +142,14 @@ public class Arm extends Subsystem {
     SmartDashboard.putNumber("Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Absolute Parsed", readEncoder());
     SmartDashboard.putBoolean("Disc Brake state: ", discBrake.get());
+    pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
+    pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
+    pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));
+    fConstant = SmartDashboard.getNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
+    SmartDashboard.putNumber("Arm F", pidController.getFF());
+
+
+
   }
 
 

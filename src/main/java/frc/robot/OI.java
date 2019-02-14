@@ -65,9 +65,11 @@ public class OI {
 
       elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
       elevatorGoUp.whileHeld(new ElevatorUppity());
+      elevatorGoUp.whenInactive(new LockElevator());
 
       elevatorGoDown = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
       elevatorGoDown.whileHeld(new ElevatorDownity());
+      elevatorGoDown.whenInactive(new LockElevator());
 
       elevatorTestGotoPosition = new JoystickButton(gamepad2, RobotMap.Buttons.buttonA);
       elevatorTestGotoPosition.whenPressed(new ElevatorTestGotoPosition(8000));

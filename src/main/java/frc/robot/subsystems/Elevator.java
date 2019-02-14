@@ -63,11 +63,16 @@ public class Elevator extends Subsystem {
     pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
 
     SetPosition(GetPosition());
-      isZeroed = limitSwitchBottom.get();
+    isZeroed = limitSwitchBottom.get();
+
+    /*SmartDashboard.putNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
+    SmartDashboard.putNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
+    SmartDashboard.putNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
+    SmartDashboard.putNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);*/
    }
 
    public void SetPosition(double height) {
-     
+    System.out.println("Set elevator to go to height " + height); 
     pidController.setReference(height, ControlType.kPosition);
   }
 
@@ -96,6 +101,7 @@ public boolean GetBottomLimitSwitch(){
     if (limitSwitchBottom.get()){
 
       resetElevatorEncoder();
+      isZeroed = true;
     } 
   }
 
@@ -123,9 +129,14 @@ public boolean GetBottomLimitSwitch(){
   }
 
   public void updateSmartDashboard() {
+    SmartDashboard.putNumber("Elevator volts", master.get());
     SmartDashboard.putNumber("Elevator Height: ", GetPosition());
     SmartDashboard.putBoolean("Bottom Limit Switch", limitSwitchBottom.get());
     SmartDashboard.putBoolean("Top Limit Switch", limitSwitchTop.get());
     
+    pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
+    pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));
+    pidController.setD(SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD));
+    pidController.setFF(SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF));
   }
 }
