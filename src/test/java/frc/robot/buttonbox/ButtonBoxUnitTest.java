@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.buttonbox;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -9,119 +9,119 @@ import org.junit.Test;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DeepspaceOperator2ConsoleUnitTest {
+public class ButtonBoxUnitTest {
   @Test
   public void itSetsScoringArtifactStateToBallWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickScoringArtifactBallButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringArtifactStates.Ball, console.getScoringArtifactState());
+    assertEquals(ButtonBox.ScoringArtifactStates.Ball, console.getScoringArtifactState());
   }
 
   @Test
   public void itSetsScoringArtifactStateToHatchWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickScoringArtifactHatchButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringArtifactStates.Hatch, console.getScoringArtifactState());
+    assertEquals(ButtonBox.ScoringArtifactStates.Hatch, console.getScoringArtifactState());
   }
 
   @Test
   public void itSetsScoringDestinationStateToRocketWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickScoringDestinationRocketButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDestinationStates.Rocket, console.getScoringDestinationState());
+    assertEquals(ButtonBox.ScoringDestinationStates.Rocket, console.getScoringDestinationState());
   }
 
   @Test
   public void itSetsScoringDestinationStateToCargoShipWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickScoringDestinationCargoShipButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
+    assertEquals(ButtonBox.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
   }
 
   @Test
   public void itSetsScoringDirectionStateToBackWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickScoringDirectionBackButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDirectionStates.Back, console.getScoringDirectionState());
+    assertEquals(ButtonBox.ScoringDirectionStates.Back, console.getScoringDirectionState());
   }
 
   @Test
   public void itSetsScoringDirectionStateToFrontWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickScoringDirectionFrontButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDirectionStates.Front, console.getScoringDirectionState());
+    assertEquals(ButtonBox.ScoringDirectionStates.Front, console.getScoringDirectionState());
   }
 
   @Test
   public void itSetsPositionToHighWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickHighPositionButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.PositionStates.High, console.getPositionState());
+    assertEquals(ButtonBox.PositionStates.High, console.getPositionState());
   }
 
   @Test
   public void itSetsPositionToMeduimWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickMediumPositionButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.PositionStates.Medium, console.getPositionState());
+    assertEquals(ButtonBox.PositionStates.Medium, console.getPositionState());
   }
 
   @Test
   public void itSetsPositionToLowWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickLowPositionButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.PositionStates.Low, console.getPositionState());
+    assertEquals(ButtonBox.PositionStates.Low, console.getPositionState());
   }
 
   @Test
   public void itTogglesIntakeWhenClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Act
     console.clickIntakeButton();
@@ -133,46 +133,46 @@ public class DeepspaceOperator2ConsoleUnitTest {
   @Test
   public void itWillNotSetHighHeightWhenDestinationCargoShip() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     console.clickScoringDestinationCargoShipButton();
 
     // Act
     console.clickHighPositionButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.PositionStates.None, console.getPositionState());
+    assertEquals(ButtonBox.PositionStates.None, console.getPositionState());
   }
 
   @Test
   public void itWillNotSetMediumHeightWhenDestinationCargoShip() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     console.clickScoringDestinationCargoShipButton();
 
     // Act
     console.clickMediumPositionButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.PositionStates.None, console.getPositionState());
+    assertEquals(ButtonBox.PositionStates.None, console.getPositionState());
   }
 
   @Test
   public void itWillNotSetLowHeightWhenDestinationCargoShip() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     console.clickScoringDestinationCargoShipButton();
 
     // Act
     console.clickLowPositionButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.PositionStates.None, console.getPositionState());
+    assertEquals(ButtonBox.PositionStates.None, console.getPositionState());
   }
 
   @Test
   public void itStartsActivatedCommandWhenActivateButtonClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     Command activateCommand = mock(Command.class);
     console.whenActivateClicked(activateCommand);
 
@@ -186,20 +186,20 @@ public class DeepspaceOperator2ConsoleUnitTest {
   @Test
   public void itSetsStateCorrectlyWhenInitialized() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDirectionStates.Back, console.getScoringDirectionState());
-    assertEquals(DeepspaceOperator2Console.ScoringDestinationStates.None, console.getScoringDestinationState());
-    assertEquals(DeepspaceOperator2Console.ScoringArtifactStates.None, console.getScoringArtifactState());
-    assertEquals(DeepspaceOperator2Console.PositionStates.None, console.getPositionState());
+    assertEquals(ButtonBox.ScoringDirectionStates.Back, console.getScoringDirectionState());
+    assertEquals(ButtonBox.ScoringDestinationStates.None, console.getScoringDestinationState());
+    assertEquals(ButtonBox.ScoringArtifactStates.None, console.getScoringArtifactState());
+    assertEquals(ButtonBox.PositionStates.None, console.getPositionState());
     assertEquals(false, console.getIntakeState());
   }
   
   @Test
   public void itStartsBCommandWhenBButtonClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     Command visionBClickedCommand = mock(Command.class);
     console.whenVisionBClicked(visionBClickedCommand);
 
@@ -213,7 +213,7 @@ public class DeepspaceOperator2ConsoleUnitTest {
   @Test
   public void itStartsXCommandWhenXButtonClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     Command visionXClickedCommand = mock(Command.class);
     console.whenVisionXClicked(visionXClickedCommand);
 
@@ -227,7 +227,7 @@ public class DeepspaceOperator2ConsoleUnitTest {
   @Test
   public void itStartsLeftCommandWhenLeftButtonClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     Command visionLeftClickedCommand = mock(Command.class);
     console.whenVisionLeftClicked(visionLeftClickedCommand);
 
@@ -241,7 +241,7 @@ public class DeepspaceOperator2ConsoleUnitTest {
   @Test
   public void itStartsRightCommandWhenRightButtonClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     Command visionRightClickedCommand = mock(Command.class);
     console.whenVisionRightClicked(visionRightClickedCommand);
 
@@ -255,7 +255,7 @@ public class DeepspaceOperator2ConsoleUnitTest {
   @Test
   public void itStartsCenterCommandWhenCenterButtonClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     Command visionCenterClickedCommand = mock(Command.class);
     console.whenVisionCenterClicked(visionCenterClickedCommand);
 
@@ -269,20 +269,20 @@ public class DeepspaceOperator2ConsoleUnitTest {
   @Test
   public void itClearsHeightWhenCargoShipButtonClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     console.clickHighPositionButton();
 
     // Act
     console.clickScoringDestinationCargoShipButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.PositionStates.None, console.getPositionState());
+    assertEquals(ButtonBox.PositionStates.None, console.getPositionState());
   }
 
   @Test
   public void itDoesNotAllowBackHatchRocket() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     console.clickScoringDirectionBackButton();
     console.clickScoringArtifactHatchButton();
     console.clickScoringDestinationCargoShipButton();
@@ -291,13 +291,13 @@ public class DeepspaceOperator2ConsoleUnitTest {
     console.clickScoringDestinationRocketButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
+    assertEquals(ButtonBox.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
   }
 
   @Test
   public void itFlipsRocketToCargoShipWhenHatchSetAndBackSelected() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     console.clickScoringArtifactHatchButton();
     console.clickScoringDestinationRocketButton();
 
@@ -305,13 +305,13 @@ public class DeepspaceOperator2ConsoleUnitTest {
     console.clickScoringDirectionBackButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
+    assertEquals(ButtonBox.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
   }
 
   @Test
   public void itFlipsRocketToCargoShipWhenBackSetAndHatchSelected() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     console.clickScoringDirectionBackButton();
     console.clickScoringDestinationRocketButton();
 
@@ -319,13 +319,13 @@ public class DeepspaceOperator2ConsoleUnitTest {
     console.clickScoringArtifactHatchButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
+    assertEquals(ButtonBox.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
   }
 
   @Test
   public void itClearsStatesWhenCancelButtonClicked() {
     // Assemble
-    DeepspaceOperator2Console console = new DeepspaceOperator2Console();
+    ButtonBox console = new ButtonBox();
     console.clickScoringDirectionFrontButton();
     console.clickScoringArtifactHatchButton();
     console.clickScoringDestinationRocketButton();
@@ -336,10 +336,10 @@ public class DeepspaceOperator2ConsoleUnitTest {
     console.clickCancelButton();
 
     // Assert
-    assertEquals(DeepspaceOperator2Console.ScoringDestinationStates.None, console.getScoringDestinationState());
-    assertEquals(DeepspaceOperator2Console.ScoringDirectionStates.None, console.getScoringDirectionState());
-    assertEquals(DeepspaceOperator2Console.ScoringArtifactStates.None, console.getScoringArtifactState());
-    assertEquals(DeepspaceOperator2Console.PositionStates.None, console.getPositionState());
+    assertEquals(ButtonBox.ScoringDestinationStates.None, console.getScoringDestinationState());
+    assertEquals(ButtonBox.ScoringDirectionStates.None, console.getScoringDirectionState());
+    assertEquals(ButtonBox.ScoringArtifactStates.None, console.getScoringArtifactState());
+    assertEquals(ButtonBox.PositionStates.None, console.getPositionState());
     assertEquals(false, console.getIntakeState());
   }
 }

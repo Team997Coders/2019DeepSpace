@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoDoNothing;
+import frc.robot.buttonbox.ButtonBox;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -52,7 +53,7 @@ public class Robot extends TimedRobot {
   public static Logger logger;
   public static PowerDistributionPanel pdp;
   public static Sensors sensors;
-  public static DeepspaceOperator2Console buttonBox;
+  public static ButtonBox buttonBox;
 
   // Note this could be null and because we continue to wire these up
   // in this manner (statics), guards will have to be put around all accesses.
@@ -100,7 +101,7 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     cameraMount = new CameraMount(0, 120, 10, 170);
-    buttonBox = new DeepspaceOperator2Console();
+    buttonBox = new ButtonBox();
 
     // Connect to remote vision subsystem
     try {

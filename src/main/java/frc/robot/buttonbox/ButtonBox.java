@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.buttonbox;
 
 import edu.wpi.first.wpilibj.command.*;
 
@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.*;
  * mimics a joystick. The driver station will do what it always does
  * with joystick feedback and send it along to the robot.
  */
-public class DeepspaceOperator2Console {
+public class ButtonBox {
   private ScoringDirectionStates scoringDirectionState;
   private ScoringArtifactStates scoringArtifactState;
   private ScoringDestinationStates scoringDestinationState;
@@ -29,7 +29,7 @@ public class DeepspaceOperator2Console {
    * NOTE: You must wire up whenClicked event handlers independent of
    * this constructor.
    */
-  public DeepspaceOperator2Console() {
+  public ButtonBox() {
     setStartupState();
   }
 

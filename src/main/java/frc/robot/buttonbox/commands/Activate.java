@@ -8,17 +8,17 @@
 package frc.robot.buttonbox.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.DeepspaceOperator2Console;
+import frc.robot.buttonbox.ButtonBox;
 import frc.robot.Robot;
 
 public class Activate extends Command {
-  private final DeepspaceOperator2Console buttonBox;
+  private final ButtonBox buttonBox;
 
   public Activate() {
     this(Robot.buttonBox);
   }
 
-  public Activate(DeepspaceOperator2Console buttonBox) {
+  public Activate(ButtonBox buttonBox) {
     this.buttonBox = buttonBox;
   }
 
