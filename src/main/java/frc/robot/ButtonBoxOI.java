@@ -8,24 +8,7 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.buttonbox.commands.Activate;
-import frc.robot.buttonbox.commands.BackDirection;
-import frc.robot.buttonbox.commands.BallArtifact;
-import frc.robot.buttonbox.commands.Cancel;
-import frc.robot.buttonbox.commands.CargoShipDestination;
-import frc.robot.buttonbox.commands.FrontDirection;
-import frc.robot.buttonbox.commands.HatchArtifact;
-import frc.robot.buttonbox.commands.HighHeight;
-import frc.robot.buttonbox.commands.Intake;
-import frc.robot.buttonbox.commands.LowHeight;
-import frc.robot.buttonbox.commands.MediumHeight;
-import frc.robot.buttonbox.commands.RocketDestination;
-import frc.robot.buttonbox.commands.VisionA;
-import frc.robot.buttonbox.commands.VisionB;
-import frc.robot.buttonbox.commands.VisionCenter;
-import frc.robot.buttonbox.commands.VisionLeft;
-import frc.robot.buttonbox.commands.VisionRight;
-import frc.robot.buttonbox.commands.VisionX;
+import frc.robot.buttonbox.commands.*;
 import frc.robot.commands.AutoDoNothing;
 
 /**
@@ -35,7 +18,7 @@ import frc.robot.commands.AutoDoNothing;
 
 public class ButtonBoxOI {
 
-  Joystick buttonBoxJoystick = new Joystick(RobotMap.Buttons.ButtonBox.ButtonBoxJoystickId);
+  Joystick buttonBoxJoystick;
 
   private JoystickButton activate;
   private JoystickButton backDirection;
@@ -57,8 +40,37 @@ public class ButtonBoxOI {
   private JoystickButton visionCenter;
   private JoystickButton visionRight;
 
+  /**
+   * Default constructor which maps joystick id to RobotMap
+   */
   public ButtonBoxOI() {
+    this(RobotMap.Buttons.ButtonBox.ButtonBoxJoystickId);
+  }
+
+  /**
+   * Instantiate the operator interface for the operator #2 button box.
+   * The device that drives the interface is a custom HID USB device that
+   * acts like a joystick with a bunch of buttons. It uses a Teensy 3.5
+   * and Arduino-based custom firmware to map arcade buttons to joystick buttons.
+   * It also sets LED status lights to show state.
+
+   * @param joystickId  Id of the joystick...it will have the name Keyboard/Mouse/Joystick
+   * on the FRC driver station.
+   * 
+   * @see https://www.pjrc.com/teensy/td_joystick.html
+   * @see https://github.com/Team997Coders/2019DSOperator2Console
+   */
+  public ButtonBoxOI(int joystickId) {
+    // Instantiate joystick
+    buttonBoxJoystick = new Joystick(joystickId);
+
     Robot.buttonBox.whenActivateClicked(new AutoDoNothing());       // TODO: Change to command group that does all elevator/arm movements
+    Robot.buttonBox.whenVisionAClicked(new AutoDoNothing());        // TODO: Wire up to vision subsystem once merged
+    Robot.buttonBox.whenVisionBClicked(new AutoDoNothing());        // TODO: Wire up to vision subsystem once merged
+    Robot.buttonBox.whenVisionXClicked(new AutoDoNothing());        // TODO: Wire up to vision subsystem once merged
+    Robot.buttonBox.whenVisionCenterClicked(new AutoDoNothing());   // TODO: Wire up to vision subsystem once merged
+    Robot.buttonBox.whenVisionLeftClicked(new AutoDoNothing());     // TODO: Wire up to vision subsystem once merged
+    Robot.buttonBox.whenVisionRightClicked(new AutoDoNothing());    // TODO: Wire up to vision subsystem once merged
     
     activate = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.activateJoystickButtonId);
     activate.whenPressed(new Activate());
