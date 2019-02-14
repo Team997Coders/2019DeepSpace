@@ -10,7 +10,22 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.buttonbox.commands.Activate;
 import frc.robot.buttonbox.commands.BackDirection;
+import frc.robot.buttonbox.commands.BallArtifact;
+import frc.robot.buttonbox.commands.Cancel;
+import frc.robot.buttonbox.commands.CargoShipDestination;
 import frc.robot.buttonbox.commands.FrontDirection;
+import frc.robot.buttonbox.commands.HatchArtifact;
+import frc.robot.buttonbox.commands.HighHeight;
+import frc.robot.buttonbox.commands.Intake;
+import frc.robot.buttonbox.commands.LowHeight;
+import frc.robot.buttonbox.commands.MediumHeight;
+import frc.robot.buttonbox.commands.RocketDestination;
+import frc.robot.buttonbox.commands.VisionA;
+import frc.robot.buttonbox.commands.VisionB;
+import frc.robot.buttonbox.commands.VisionCenter;
+import frc.robot.buttonbox.commands.VisionLeft;
+import frc.robot.buttonbox.commands.VisionRight;
+import frc.robot.buttonbox.commands.VisionX;
 import frc.robot.commands.AutoDoNothing;
 
 /**
@@ -53,6 +68,51 @@ public class ButtonBoxOI {
 
     frontDirection = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.frontJoystickButtonId);
     frontDirection.whenPressed(new FrontDirection());
+
+    ballArtifact = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.ballJoystickButtonId);
+    ballArtifact.whenPressed(new BallArtifact());
+
+    hatchArtifact = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.hatchJoystickButtonId);
+    hatchArtifact.whenPressed(new HatchArtifact());
+
+    highHeight = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.highHeightJoystickButtonId);
+    highHeight.whenPressed(new HighHeight());
+
+    mediumHeight = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.mediumHeightJoystickButtonId);
+    mediumHeight.whenPressed(new MediumHeight());
+
+    lowHeight = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.lowHeightJoystickButtonId);
+    lowHeight.whenPressed(new LowHeight());
+
+    rocketDestination = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.rocketJoystickButtonId);
+    rocketDestination.whenPressed(new RocketDestination());
+
+    cargoShipDestination = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.cargoShipJoystickButtonId);
+    cargoShipDestination.whenPressed(new CargoShipDestination());
+
+    cancel = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.cancelJoystickButtonId);
+    cancel.whenPressed(new Cancel());
+
+    intake = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.intakeJoystickButtonId);
+    intake.whenPressed(new Intake());
+
+    visionA = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.AJoystickButtonId);
+    visionA.whenPressed(new VisionA());
+
+    visionB = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.BJoystickButtonId);
+    visionB.whenPressed(new VisionB());
+
+    visionX = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.XJoystickButtonId);
+    visionX.whenPressed(new VisionX());
+
+    visionLeft = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.leftJoystickHatAngle);
+    visionLeft.whenPressed(new VisionLeft());
+
+    visionCenter = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.centerJoystickHatAngle);
+    visionCenter.whenPressed(new VisionCenter());
+
+    visionRight = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.rightJoystickHatAngle);
+    visionRight.whenPressed(new VisionRight());
   }
 
   // KEEP THESE COMMENTS
