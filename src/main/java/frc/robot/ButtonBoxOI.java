@@ -6,10 +6,16 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import org.team997coders.spartanlib.commands.CenterCamera;
+import org.team997coders.spartanlib.commands.SlewCameraToAngle;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.buttonbox.commands.*;
 import frc.robot.commands.AutoDoNothing;
+import frc.robot.vision.commands.PressA;
+import frc.robot.vision.commands.PressB;
+import frc.robot.vision.commands.PressX;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -65,12 +71,12 @@ public class ButtonBoxOI {
     buttonBoxJoystick = new Joystick(joystickId);
 
     Robot.buttonBox.whenActivateClicked(new AutoDoNothing());       // TODO: Change to command group that does all elevator/arm movements
-    Robot.buttonBox.whenVisionAClicked(new AutoDoNothing());        // TODO: Wire up to vision subsystem once merged
-    Robot.buttonBox.whenVisionBClicked(new AutoDoNothing());        // TODO: Wire up to vision subsystem once merged
-    Robot.buttonBox.whenVisionXClicked(new AutoDoNothing());        // TODO: Wire up to vision subsystem once merged
-    Robot.buttonBox.whenVisionCenterClicked(new AutoDoNothing());   // TODO: Wire up to vision subsystem once merged
-    Robot.buttonBox.whenVisionLeftClicked(new AutoDoNothing());     // TODO: Wire up to vision subsystem once merged
-    Robot.buttonBox.whenVisionRightClicked(new AutoDoNothing());    // TODO: Wire up to vision subsystem once merged
+    Robot.buttonBox.whenVisionAClicked(new PressA());
+    Robot.buttonBox.whenVisionBClicked(new PressB());
+    Robot.buttonBox.whenVisionXClicked(new PressX());
+    Robot.buttonBox.whenVisionCenterClicked(new CenterCamera(Robot.cameraMount));
+    Robot.buttonBox.whenVisionLeftClicked(new SlewCameraToAngle(Robot.cameraMount, (int)RobotMap.Values.leftAngleInDegrees, 90));
+    Robot.buttonBox.whenVisionRightClicked(new SlewCameraToAngle(Robot.cameraMount, (int)RobotMap.Values.rightAngleInDegrees, 90));
     
     activate = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.activateJoystickButtonId);
     activate.whenPressed(new Activate());

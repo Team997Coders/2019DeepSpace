@@ -172,7 +172,11 @@ public class RobotMap {
       armPidD = 0,
       armPidK = 0,
       armMaxPidF = 0,
-      ticksToRadiansArm= 3.14159268/(Math.abs(armBackLimit-armFrontLimit));
+      ticksToRadiansArm= 3.14159268/(Math.abs(armBackLimit-armFrontLimit)),
+
+      // Camera values
+      leftAngleInDegrees = 75,
+      rightAngleInDegrees = 115;
   }
 
   public static class ElevatorHeights {
