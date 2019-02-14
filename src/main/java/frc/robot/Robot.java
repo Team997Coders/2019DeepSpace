@@ -52,6 +52,7 @@ public class Robot extends TimedRobot {
   public static Logger logger;
   public static PowerDistributionPanel pdp;
   public static Sensors sensors;
+  public static DeepspaceOperator2Console buttonBox;
 
   // Note this could be null and because we continue to wire these up
   // in this manner (statics), guards will have to be put around all accesses.
@@ -61,7 +62,7 @@ public class Robot extends TimedRobot {
   public PanTiltCamera panTiltCamera;
 
   public static OI oi;
-  public static ButtonBox bb;
+  public static ButtonBoxOI bb;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -99,6 +100,7 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     cameraMount = new CameraMount(0, 120, 10, 170);
+    buttonBox = new DeepspaceOperator2Console();
 
     // Connect to remote vision subsystem
     try {
@@ -138,7 +140,7 @@ public class Robot extends TimedRobot {
 
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
-    bb = new ButtonBox();
+    bb = new ButtonBoxOI();
   }
 
   @Override
