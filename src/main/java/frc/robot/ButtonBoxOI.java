@@ -25,6 +25,22 @@ public class ButtonBoxOI {
   private JoystickButton activate;
   private JoystickButton backDirection;
   private JoystickButton frontDirection;
+  private JoystickButton ballArtifact;
+  private JoystickButton hatchArtifact;
+  private JoystickButton highHeight;
+  private JoystickButton mediumHeight;
+  private JoystickButton lowHeight;
+  private JoystickButton rocketDestination;
+  private JoystickButton cargoShipDestination;
+  private JoystickButton cancel;
+  private JoystickButton intake;
+  // Do not worry about these for now...need to merge NT-Auto first
+  private JoystickButton visionA;
+  private JoystickButton visionB;
+  private JoystickButton visionX;
+  private JoystickButton visionLeft;
+  private JoystickButton visionCenter;
+  private JoystickButton visionRight;
 
   public ButtonBoxOI() {
     Robot.buttonBox.whenActivateClicked(new AutoDoNothing());       // TODO: Change to command group that does all elevator/arm movements
