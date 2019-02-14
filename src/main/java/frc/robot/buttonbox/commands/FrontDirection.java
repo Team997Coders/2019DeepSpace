@@ -25,12 +25,12 @@ public class FrontDirection extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    buttonBox.clickScoringDirectionFrontButton();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    buttonBox.clickScoringDirectionFrontButton();
   }
 
   // Make this return true when this Command no longer needs to run execute()

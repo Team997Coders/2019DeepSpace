@@ -8,16 +8,24 @@
 package frc.robot.buttonbox.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.DeepspaceOperator2Console;
+import frc.robot.Robot;
 
 public class BallArtifact extends Command {
+  private final DeepspaceOperator2Console buttonBox;
+
   public BallArtifact() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    this(Robot.buttonBox);
+  }
+
+  public BallArtifact(DeepspaceOperator2Console buttonBox) {
+    this.buttonBox = buttonBox;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    buttonBox.clickScoringArtifactBallButton();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -28,7 +36,7 @@ public class BallArtifact extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true

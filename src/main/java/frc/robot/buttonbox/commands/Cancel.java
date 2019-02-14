@@ -25,12 +25,12 @@ public class Cancel extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    buttonBox.clickCancelButton();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    buttonBox.clickCancelButton();
   }
 
   // Make this return true when this Command no longer needs to run execute()
