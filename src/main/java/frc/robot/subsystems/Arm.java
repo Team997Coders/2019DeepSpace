@@ -7,12 +7,16 @@
 
 package frc.robot.subsystems;
 
+import static org.junit.Assume.assumeNoException;
+
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifier.PWMChannel;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANDigitalInput.LimitSwitch;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
 
@@ -29,7 +33,7 @@ public class Arm extends Subsystem {
 
   private CANSparkMax sparkMax;
   private CANifier dataBus;
-  private CANDigitalInput frontLimitSwitch, backLimitSwitch;
+  private CANDigitalInput frontLimitSwitch;
 
   private Solenoid discBrake;
 
@@ -41,7 +45,7 @@ public class Arm extends Subsystem {
   private int revs = 0;
   private int flipModifier = 1;
   private double tolerance;
-  private double fConstant = RobotMap.Values.armMaxPidF;
+  private double fConstant = RobotMap.Values.armMaxPidF;  
   
   
   // This is for if we want the arm forward or backward
@@ -56,6 +60,9 @@ public class Arm extends Subsystem {
     pidController.setP(RobotMap.Values.armPidP);
     pidController.setI(RobotMap.Values.armPidI);
     pidController.setD(RobotMap.Values.armPidD);
+
+    frontLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
+    frontLimitSwitch.enableLimitSwitch(true);
 
     dataBus = new CANifier(RobotMap.Ports.armCanifier);
 
@@ -139,9 +146,10 @@ public class Arm extends Subsystem {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Absolute Raw", getRawEncoder());
+    SmartDashboard.putNumber("Arm Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Absolute Parsed", readEncoder());
     SmartDashboard.putBoolean("Disc Brake state: ", discBrake.get());
+    SmartDashboard.putBoolean("Arm forward limit switch", frontLimitSwitch.get());
     pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
     pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
     pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));

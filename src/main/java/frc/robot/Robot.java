@@ -100,6 +100,11 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain();
     cameraMount = new CameraMount(0, 120, 10, 170);
 
+    SmartDashboard.putNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
+    SmartDashboard.putNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
+    SmartDashboard.putNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
+    SmartDashboard.putNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);
+
     // Connect to remote vision subsystem
     try {
       cameraVisionClient = new CameraVisionClient("10.9.97.6");

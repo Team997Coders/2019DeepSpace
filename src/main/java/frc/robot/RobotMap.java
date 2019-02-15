@@ -74,7 +74,7 @@ public class RobotMap {
       //ARM PORTS
       discBrake = 2, 
       armSpark = 10,
-      armCanifier = 11,
+      armCanifier = 23,
 
       // ELEVATOR PORTS
       elevatorCanifier = 29,
@@ -119,11 +119,11 @@ public class RobotMap {
       driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
-      elevatorPidP = 1, // all placeholders
+      elevatorPidP = .02, 
       elevatorPidI = 0,
       elevatorPidD = 0,
-      elevatorPidF = 1,
-      elevatorTopHeight = 100000000,
+      elevatorPidF = .01,
+      elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
       armEncoderCenter= 9002,//another place holder

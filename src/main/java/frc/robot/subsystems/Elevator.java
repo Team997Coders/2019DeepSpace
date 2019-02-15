@@ -41,10 +41,10 @@ public class Elevator extends Subsystem {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.Ports.followerElevatorMotor, MotorType.kBrushless);
     canifier = new CANifier(RobotMap.Ports.elevatorCanifier);
-    limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
+    limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
     
-    limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kReverse , LimitSwitchPolarity.kNormallyOpen);
+    limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kForward , LimitSwitchPolarity.kNormallyOpen);
     limitSwitchBottom.enableLimitSwitch(true);
 
     //master.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
@@ -52,9 +52,13 @@ public class Elevator extends Subsystem {
     master.setIdleMode(IdleMode.kBrake);
     follower.setIdleMode(IdleMode.kBrake);
 
+    //master.setInverted(true);
+    //follower.setInverted(true);
+
     follower.follow(master, true); // reverse the follower in the follow command
 
     pidController = master.getPIDController();
+    pidController.setOutputRange(-0.3, 0.3);
     pidController.setP(RobotMap.Values.elevatorPidP);
     pidController.setI(RobotMap.Values.elevatorPidI);
     pidController.setD(RobotMap.Values.elevatorPidD);
@@ -73,7 +77,7 @@ public class Elevator extends Subsystem {
 
    public void SetPosition(double height) {
     System.out.println("Set elevator to go to height " + height); 
-    pidController.setReference(height, ControlType.kPosition);
+    pidController.setReference(height - GetPosition(), ControlType.kPosition);
   }
 
   public void resetElevatorEncoder() {

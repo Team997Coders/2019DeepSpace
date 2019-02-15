@@ -21,6 +21,7 @@ public class ElevatorUppity extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    System.out.println("initialized elevator up-ing");
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -38,6 +39,7 @@ public class ElevatorUppity extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    System.out.println("ended elevator up-ing");
     Robot.elevator.SetPosition(Robot.elevator.GetPosition());
   }
 
