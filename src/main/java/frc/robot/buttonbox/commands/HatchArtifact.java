@@ -5,23 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.buttonbox.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.buttonbox.ButtonBox;
 import frc.robot.Robot;
 
-public class VisionPressRightTrigger extends Command {
-  public VisionPressRightTrigger() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+public class HatchArtifact extends Command {
+  private final ButtonBox buttonBox;
+
+  public HatchArtifact() {
+    this(Robot.buttonBox);
+  }
+
+  public HatchArtifact(ButtonBox buttonBox) {
+    this.buttonBox = buttonBox;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Robot.cameraVisionClient != null) {
-      Robot.cameraVisionClient.pressRightTrigger();
-    }
+    buttonBox.clickScoringArtifactHatchButton();
   }
 
   // Called repeatedly when this Command is scheduled to run

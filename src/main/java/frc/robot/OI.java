@@ -6,6 +6,7 @@ import frc.robot.commands.LineFollowing;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.RetractLandingGear;
 import frc.robot.commands.ToggleHatchHolder;
+<<<<<<< HEAD
 import frc.robot.commands.VisionPressA;
 import frc.robot.commands.VisionPressB;
 import frc.robot.commands.VisionPressLeftShoulder;
@@ -17,6 +18,9 @@ import frc.robot.commands.VisionPressRightTrigger;
 import frc.robot.commands.VisionPressX;
 import frc.robot.commands.VisionPressY;
 import frc.robot.commands.FlipScoringSide;
+=======
+import frc.robot.commands.FlipDriveTrainOrientation;
+>>>>>>> add35c6d8da075ba03343fc63dc2ddf87e873249
 
 
 /**
@@ -33,24 +37,14 @@ public class OI {
   private JoystickButton followLine;
   private JoystickButton toggleHatch;
 
-  private JoystickButton visionButtonA;
-  private JoystickButton visionButtonB;
-  private JoystickButton visionButtonX;
-  private JoystickButton visionButtonY;
-  private JoystickButton visionButtonLeftShoulder;
-  private JoystickButton visionButtonRightShoulder;
-  private JoystickButton visionButtonLeftTrigger;
-  private JoystickButton visionButtonRightTrigger;
-  private JoystickButton visionButtonLeftThumbstick;
-  private JoystickButton visionButtonRightThumbstick;
-
   private JoystickButton flipSystemOrientation;
 
   private JoystickButton flipDriveTrainOrientation;
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
-    gamepad2 = new Joystick(RobotMap.Buttons.GamePad2);
+    // TODO: This has now been freed up given the button box. Still needed?
+    // gamepad2 = new Joystick(RobotMap.Buttons.GamePad2);
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
@@ -67,38 +61,6 @@ public class OI {
     followLine = new JoystickButton(gamepad1, 1);
     followLine.whileHeld(new LineFollowing());
 
-    //toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    //toggleHatch.whenPressed(new ToggleHatchHolder());
-
-    visionButtonA = new JoystickButton(gamepad2, RobotMap.Buttons.buttonA);
-    visionButtonA.whenPressed(new VisionPressA());
-
-    visionButtonB = new JoystickButton(gamepad2, RobotMap.Buttons.buttonB);
-    visionButtonB.whenPressed(new VisionPressB());
-
-    visionButtonX = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
-    visionButtonX.whenPressed(new VisionPressX());
-
-    visionButtonY = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
-    visionButtonY.whenPressed(new VisionPressY());
-
-    visionButtonLeftThumbstick = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftThumbstick);
-    visionButtonLeftThumbstick.whenPressed(new VisionPressLeftThumbstick());
-
-    visionButtonRightThumbstick = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightThumbstick);
-    visionButtonRightThumbstick.whenPressed(new VisionPressRightThumbstick());
-
-    visionButtonLeftShoulder = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
-    visionButtonLeftShoulder.whenPressed(new VisionPressLeftShoulder());
-
-    visionButtonRightShoulder = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
-    visionButtonRightShoulder.whenPressed(new VisionPressRightShoulder());
-
-    visionButtonLeftTrigger = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftTrigger);
-    visionButtonLeftTrigger.whenPressed(new VisionPressLeftTrigger());
-
-    visionButtonRightTrigger = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightTrigger);
-    visionButtonRightTrigger.whenPressed(new VisionPressRightTrigger());
   }
 
   public double getLeftYAxis() {
@@ -111,18 +73,6 @@ public class OI {
 
   public double getRightYAxis() {
     return bing(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.rightYAxis), -1, 1);
-  }
-
-
-  public int getVisionLeftYAxis() {
-    // TODO: Are these ports the same across joysticks?
-    // I also do not think this should be negated for pan/tilt servos.
-    return (int)Math.round(bing(0.05, gamepad2.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1) * 100);
-  }
-
-  public int getVisionLeftXAxis() {
-    // TODO: Are these ports the same across joysticks?
-    return (int)Math.round(bing(0.05, gamepad2.getRawAxis(RobotMap.Buttons.rightXAxis), -1, 1) * 100);
   }
 
   public double deadBand(double value, double dead) {

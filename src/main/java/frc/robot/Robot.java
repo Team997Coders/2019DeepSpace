@@ -7,14 +7,21 @@
 
 package frc.robot;
 
-import java.io.IOException;
+import org.team997coders.spartanlib.commands.CenterCamera;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+<<<<<<< HEAD
+=======
+import frc.robot.commands.AutoDoNothing;
+import frc.robot.buttonbox.ButtonBox;
+>>>>>>> add35c6d8da075ba03343fc63dc2ddf87e873249
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -27,9 +34,10 @@ import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.LiftGear;
+import frc.robot.vision.CameraControlStateMachine;
+import frc.robot.vision.TargetSelector;
 import frc.robot.subsystems.Logger;
 import frc.robot.subsystems.Sensors;
-import frc.robot.vision.cameravisionclient.CameraVisionClient;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,8 +55,13 @@ public class Robot extends TimedRobot {
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static CameraMount cameraMount;
+  private CenterCamera centerCamera;
+  private NetworkTableInstance networkTableInstance;
+  public static NetworkTable visionNetworkTable;
+  public static CameraControlStateMachine cameraControlStateMachine;
   public static Logger logger;
   public static PowerDistributionPanel pdp;
+<<<<<<< HEAD
   public static Sensors frontSensors;
   public static Sensors backSensors;
   public static FlipScoringSide flipScoringSide; 
@@ -60,8 +73,12 @@ public class Robot extends TimedRobot {
   public static CameraVisionClient cameraVisionClient;
   public PanTiltCamera panTiltCamera;
 
+=======
+  public static Sensors sensors;
+  public static ButtonBox buttonBox;
+>>>>>>> add35c6d8da075ba03343fc63dc2ddf87e873249
   public static OI oi;
-  public static ButtonBox bb;
+  public static ButtonBoxOI bb;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -88,6 +105,7 @@ public class Robot extends TimedRobot {
 
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
+<<<<<<< HEAD
     cameraMount = new CameraMount(0, 120, 10, 170);
     backSensors =  new Sensors(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
@@ -111,6 +129,15 @@ public class Robot extends TimedRobot {
       System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
       System.out.println("Robot will proceed blind.");
     }
+=======
+    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
+
+    networkTableInstance = NetworkTableInstance.getDefault();
+    visionNetworkTable = networkTableInstance.getTable("Vision");
+    cameraControlStateMachine = new CameraControlStateMachine();
+    centerCamera = new CenterCamera(cameraMount);
+    buttonBox = new ButtonBox();
+>>>>>>> add35c6d8da075ba03343fc63dc2ddf87e873249
 
     // Create the logging instance so we can use it for tuning the PID subsystems
     logger = Logger.getInstance();
@@ -122,12 +149,7 @@ public class Robot extends TimedRobot {
     pdp = new PowerDistributionPanel();
     pdp.clearStickyFaults();
 
-    // Because there is no hardware subsystem directly hooked up
-    // to this command (it is a proxy for calling CameraVision on Pi)
-    // there is not default command to keep this active. So manually start
-    // here...
-    panTiltCamera = new PanTiltCamera();
-    panTiltCamera.start();
+    oi = new OI();
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -139,7 +161,7 @@ public class Robot extends TimedRobot {
 
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
-    bb = new ButtonBox();
+    bb = new ButtonBoxOI();
   }
 
   @Override
@@ -159,6 +181,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    centerCamera.start();
     autonomousCommand = chooser.getSelected();
 
     if (autonomousCommand != null) {
@@ -173,6 +196,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // Init hatch target finding vision camera
+    centerCamera.start();
+    cameraControlStateMachine.identifyTargets();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -206,6 +233,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Scoring Side Reversed?", scoringSideReversed);
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
+    cameraMount.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
     frontSensors.updateSmartDashboard();
