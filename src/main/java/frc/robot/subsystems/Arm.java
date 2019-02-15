@@ -60,10 +60,10 @@ public class Arm extends Subsystem {
     pidController.setD(RobotMap.Values.armPidD);
     pidController.setOutputRange(-0.6, 0.6);
 
-    frontLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
-    frontLimitSwitch.enableLimitSwitch(false);
-    backLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
-    backLimitSwitch.enableLimitSwitch(false);
+    frontLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
+    frontLimitSwitch.enableLimitSwitch(true);
+    backLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
+    backLimitSwitch.enableLimitSwitch(true);
 
     dataBus = new CANifier(RobotMap.Ports.armCanifier);
 
@@ -152,7 +152,7 @@ public class Arm extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new LockArm());
+    //setDefaultCommand(new LockArm());
   }
 
   public void updateSmartDashboard() {

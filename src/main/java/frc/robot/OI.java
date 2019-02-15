@@ -1,7 +1,7 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.*;
 
 
@@ -61,6 +61,10 @@ public class OI {
 
     ARM = new JoystickButton(gamepad2, RobotMap.Buttons.buttonStart);
     ARM.whileHeld(new MoveArm());
+    ARM.whenInactive(new LockArm());
+
+    // Adds LockArm to the scheduler so I locks immediately.
+    Scheduler.getInstance().add(new LockArm());
 
     //followLine = new JoystickButton(gamepad1, 1);
     //followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
