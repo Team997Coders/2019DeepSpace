@@ -12,8 +12,7 @@ import org.team997coders.spartanlib.commands.SlewCameraToAngle;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.buttonbox.commands.*;
-import frc.robot.commands.AutoDoNothing;
-import frc.robot.commands.LineFollowing;
+import frc.robot.commands.SetButtonBoxElevatorHeight;
 import frc.robot.vision.commands.PressA;
 import frc.robot.vision.commands.PressB;
 import frc.robot.vision.commands.PressX;
@@ -71,7 +70,7 @@ public class ButtonBoxOI {
     // Instantiate joystick
     buttonBoxJoystick = new Joystick(joystickId);
 
-    Robot.buttonBox.whenActivateClicked(new LineFollowing());       // TODO: Change to command group that does all elevator/arm movements
+    Robot.buttonBox.whenActivateClicked(new SetButtonBoxElevatorHeight());
     Robot.buttonBox.whenVisionAClicked(new PressA());
     Robot.buttonBox.whenVisionBClicked(new PressB());
     Robot.buttonBox.whenVisionXClicked(new PressX());

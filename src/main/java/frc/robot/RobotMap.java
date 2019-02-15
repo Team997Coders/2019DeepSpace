@@ -140,7 +140,6 @@ public class RobotMap {
       frontInfraredSensorHatchCargoship = 5,  //TODO: Need to check this      
       frontUltrasonicSensorHatchRocket = 5,        //TODO: Need to check this   
       frontInfraredSensorHatchRocket = 5,     //TODO: Need to check this 
-  
       frontUltrasonicSensorBallCargoship = 5,     //TODO: Need to check this      
       frontInfraredSensorBallCargoship = 5,  //TODO: Need to check this      
       frontUltrasonicSensorBallRocket = 5,        //TODO: Need to check this   

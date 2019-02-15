@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Sensors;
+import frc.robot.subsystems.LineDetector;
 
 import org.junit.Before;
 import org.junit.Test;

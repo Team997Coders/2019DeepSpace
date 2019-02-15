@@ -30,10 +30,11 @@ import frc.robot.subsystems.BallManipulator;
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
+import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
+import frc.robot.subsystems.LineDetector;
 import frc.robot.vision.CameraControlStateMachine;
 import frc.robot.subsystems.Logger;
-import frc.robot.subsystems.Sensors;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -56,10 +57,11 @@ public class Robot extends TimedRobot {
   public static CameraControlStateMachine cameraControlStateMachine;
   public static Logger logger;
   public static PowerDistributionPanel pdp;
-  public static Sensors frontSensors;
-  public static Sensors backSensors;
+  public static LineDetector frontLineDetector;
+  public static LineDetector backLineDetector;
+  public static InfraredRangeFinder frontInfraredRangeFinder;
+  public static InfraredRangeFinder backInfraredRangeFinder;
 
-  public static Sensors sensors;
   public static ButtonBox buttonBox;
   public static OI oi;
   public static ButtonBoxOI bb;
@@ -80,28 +82,21 @@ public class Robot extends TimedRobot {
 
     arm = new Arm();
     ballManipulator = new BallManipulator();
-
     hatchManipulator = new HatchManipulator();
-
     elevator = new Elevator();
-
-    // driveTrain = new DriveTrain();
-
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
-
-    
-    backSensors =  new Sensors(RobotMap.Ports.lineSensorBackLeft, 
+    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);    
+    backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
-      RobotMap.Ports.lineSensorBackRight, 
-      RobotMap.Ports.backInfraredSensor);
-    frontSensors = new Sensors(RobotMap.Ports.lineSensorFrontLeft, 
+      RobotMap.Ports.lineSensorBackRight,
+      ButtonBox.ScoringDirectionStates.Back);
+    frontLineDetector = new LineDetector(RobotMap.Ports.lineSensorFrontLeft, 
       RobotMap.Ports.lineSensorFrontCenter, 
       RobotMap.Ports.lineSensorFrontRight, 
-      RobotMap.Ports.frontInfraredSensor,
-      RobotMap.Ports.frontUltrasonicSensor);
-
+      ButtonBox.ScoringDirectionStates.Front);
+    backInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.backInfraredSensor, ButtonBox.ScoringDirectionStates.Back);
+    frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor, ButtonBox.ScoringDirectionStates.Front);
 
     networkTableInstance = NetworkTableInstance.getDefault();
     visionNetworkTable = networkTableInstance.getTable("Vision");
@@ -118,8 +113,6 @@ public class Robot extends TimedRobot {
     // the LED's to be Amber.
     pdp = new PowerDistributionPanel();
     pdp.clearStickyFaults();
-
-    oi = new OI();
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -197,13 +190,18 @@ public class Robot extends TimedRobot {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putString("Scoring Direction?", Robot.buttonBox.getScoringDirectionState().toString());
+    SmartDashboard.putString("Scoring direction", Robot.buttonBox.getScoringDirectionState().toString());
+    SmartDashboard.putString("Scoring artifact", Robot.buttonBox.getScoringArtifactState().toString());
+    SmartDashboard.putString("Scoring destination", Robot.buttonBox.getScoringDestinationState().toString());
+    SmartDashboard.putString("Scoring position", Robot.buttonBox.getPositionState().toString());
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
     cameraMount.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
-    frontSensors.updateSmartDashboard();
-    backSensors.updateSmartDashboard();
+    frontLineDetector.updateSmartDashboard();
+    backLineDetector.updateSmartDashboard();
+    frontInfraredRangeFinder.updateSmartDashboard();
+    backInfraredRangeFinder.updateSmartDashboard();
   }
 }

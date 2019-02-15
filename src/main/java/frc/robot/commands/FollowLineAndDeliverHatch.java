@@ -8,16 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.Robot;
 
-public class LineFollowing extends CommandGroup {
+public class FollowLineAndDeliverHatch extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public LineFollowing() {
-    //addSequential(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
+  public FollowLineAndDeliverHatch() {
     addSequential(new FollowLine(1000));
-  /*addSequential(new Waittill(.5));
-  addSequential(new BackingUp());*/
+    addSequential(new Waittill(.5));
+    addSequential(new BackingUp());
 }
 }
