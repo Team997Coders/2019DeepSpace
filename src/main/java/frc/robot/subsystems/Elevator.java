@@ -52,8 +52,8 @@ public class Elevator extends Subsystem {
     master.setIdleMode(IdleMode.kBrake);
     follower.setIdleMode(IdleMode.kBrake);
 
-    //master.setInverted(true);
-    //follower.setInverted(true);
+    master.setInverted(true);
+    follower.setInverted(true);
 
     follower.follow(master, true); // reverse the follower in the follow command
 
@@ -76,7 +76,7 @@ public class Elevator extends Subsystem {
    }
 
    public void SetPosition(double height) {
-    System.out.println("Set elevator to go to height " + height); 
+    //System.out.println("Set elevator to go to height " + height); 
     pidController.setReference(height - GetPosition(), ControlType.kPosition);
   }
 
@@ -97,7 +97,7 @@ public boolean GetBottomLimitSwitch(){
   }
 
   public void SetPower(double volts){
-    master.set(-volts);
+    master.set(volts);
   }
 
   public void ZeroElevator(){

@@ -21,6 +21,8 @@ public class OI {
   public JoystickButton ballIntake;
   public JoystickButton ballOutake;
 
+  public JoystickButton ARM;
+
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   //private JoystickButton followLine;
@@ -51,11 +53,14 @@ public class OI {
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
 
-   flipSystemOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-   flipSystemOrientation.whenPressed(new FlipSystemOrientation());
+    flipSystemOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    flipSystemOrientation.whenPressed(new FlipSystemOrientation());
 
     flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
     flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
+
+    ARM = new JoystickButton(gamepad2, RobotMap.Buttons.buttonStart);
+    ARM.whileHeld(new MoveArm());
 
     //followLine = new JoystickButton(gamepad1, 1);
     //followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
@@ -113,6 +118,10 @@ public class OI {
 
   public double getLeftYAxis() {
     return bing(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
+  }
+
+  public double getLeftYAxis2() {
+    return bing(0.05, -gamepad2.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
   }
 
   public double getRightXAxis() {

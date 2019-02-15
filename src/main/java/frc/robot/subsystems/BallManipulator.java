@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
@@ -21,19 +22,21 @@ public class BallManipulator extends Subsystem {
    private VictorSPX ballMotor;
 
   public BallManipulator(){
-     ballMotor = new VictorSPX(RobotMap.Ports.ballMotor);
+    ballMotor = new VictorSPX(RobotMap.Ports.ballMotor);
+    ballMotor.setInverted(true);
   }
-   
-   // You need a constructor to actually instantiate your VictorSPX and configure it
-   // public BallManipulator() { }
 
-   public void ballIntake(){    
-     ballMotor.set(ControlMode.PercentOutput, 1);
-   }
+  public void ballIntake(){
+    if (!Robot.arm.getForwardLimitSwitch()) {
+      ballMotor.set(ControlMode.PercentOutput, 1);
+    } else {
+      ballMotor.set(ControlMode.PercentOutput, 0);
+    }
+  }
 
-   public void ballOuttake(){
-     ballMotor.set(ControlMode.PercentOutput, -1);
-   }
+  public void ballOuttake(){
+    ballMotor.set(ControlMode.PercentOutput, -1);
+  }
 
    public void stopMotor(){
      ballMotor.set(ControlMode.PercentOutput, 0);

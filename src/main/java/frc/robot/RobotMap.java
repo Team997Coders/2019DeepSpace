@@ -21,7 +21,7 @@ public class RobotMap {
       GamePad2 = 1,           // TODO: Need to check this
       buttonA = 1,            // TODO: Need to check this
       buttonB = 2,
-      buttonX = 3,            // TODO: Need to check this
+      buttonX = 3,            
       buttonY = 4,            // TODO: Need to check this
       buttonLeftShoulder = 5,       // TODO: Need to check this
       buttonRightShoulder = 6,      // TODO: Need to check this
@@ -30,6 +30,7 @@ public class RobotMap {
       buttonLeftTrigger = 9,        // TODO: Need to check this
       buttonRightTrigger = 10,      // TODO: Need to check this
       buttonBack = 7,
+      buttonStart = 8,
 
       //AXIS PORTS
       leftXAxis = 0,
@@ -73,7 +74,7 @@ public class RobotMap {
   
       //ARM PORTS
       discBrake = 2, 
-      armSpark = 10,
+      armSpark = 53,
       armCanifier = 23,
 
       // ELEVATOR PORTS
@@ -119,10 +120,10 @@ public class RobotMap {
       driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
-      elevatorPidP = .02, 
+      elevatorPidP = 0.0005, 
       elevatorPidI = 0,
       elevatorPidD = 0,
-      elevatorPidF = .01,
+      elevatorPidF = 0,
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
@@ -130,7 +131,7 @@ public class RobotMap {
       armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
       armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
 
-      armPidP = 0.1,
+      armPidP = 0.05,
       armPidI = 0,
       armPidD = 0,
       armPidK = 0,
