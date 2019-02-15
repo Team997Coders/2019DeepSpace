@@ -17,11 +17,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-<<<<<<< HEAD
-=======
 import frc.robot.commands.AutoDoNothing;
 import frc.robot.buttonbox.ButtonBox;
->>>>>>> add35c6d8da075ba03343fc63dc2ddf87e873249
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -35,7 +32,6 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.vision.CameraControlStateMachine;
-import frc.robot.vision.TargetSelector;
 import frc.robot.subsystems.Logger;
 import frc.robot.subsystems.Sensors;
 
@@ -61,22 +57,12 @@ public class Robot extends TimedRobot {
   public static CameraControlStateMachine cameraControlStateMachine;
   public static Logger logger;
   public static PowerDistributionPanel pdp;
-<<<<<<< HEAD
   public static Sensors frontSensors;
   public static Sensors backSensors;
   public static FlipScoringSide flipScoringSide; 
 
-  // Note this could be null and because we continue to wire these up
-  // in this manner (statics), guards will have to be put around all accesses.
-  // Otherwise null pointer exceptions will drive you crazy, in the case
-  // we do not connect to the Pi for some reason.
-  public static CameraVisionClient cameraVisionClient;
-  public PanTiltCamera panTiltCamera;
-
-=======
   public static Sensors sensors;
   public static ButtonBox buttonBox;
->>>>>>> add35c6d8da075ba03343fc63dc2ddf87e873249
   public static OI oi;
   public static ButtonBoxOI bb;
 
@@ -105,8 +91,7 @@ public class Robot extends TimedRobot {
 
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-<<<<<<< HEAD
-    cameraMount = new CameraMount(0, 120, 10, 170);
+    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
     backSensors =  new Sensors(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight, 
@@ -119,25 +104,11 @@ public class Robot extends TimedRobot {
       RobotMap.Ports.frontUltrasonicSensor);
 
 
-    // Connect to remote vision subsystem
-    try {
-      cameraVisionClient = new CameraVisionClient("10.9.97.6");
-    } catch (IOException e) {
-      // TODO: What is going to be the timing of roborio network availability, boot
-      // speed,
-      // and Pi boot speed? Need to test.
-      System.out.println("Can't connect to vision subsystem...do we need to put in a retry loop?");
-      System.out.println("Robot will proceed blind.");
-    }
-=======
-    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
-
     networkTableInstance = NetworkTableInstance.getDefault();
     visionNetworkTable = networkTableInstance.getTable("Vision");
     cameraControlStateMachine = new CameraControlStateMachine();
     centerCamera = new CenterCamera(cameraMount);
     buttonBox = new ButtonBox();
->>>>>>> add35c6d8da075ba03343fc63dc2ddf87e873249
 
     // Create the logging instance so we can use it for tuning the PID subsystems
     logger = Logger.getInstance();

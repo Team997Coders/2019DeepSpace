@@ -6,21 +6,8 @@ import frc.robot.commands.LineFollowing;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.RetractLandingGear;
 import frc.robot.commands.ToggleHatchHolder;
-<<<<<<< HEAD
-import frc.robot.commands.VisionPressA;
-import frc.robot.commands.VisionPressB;
-import frc.robot.commands.VisionPressLeftShoulder;
-import frc.robot.commands.VisionPressLeftThumbstick;
-import frc.robot.commands.VisionPressLeftTrigger;
-import frc.robot.commands.VisionPressRightShoulder;
-import frc.robot.commands.VisionPressRightThumbstick;
-import frc.robot.commands.VisionPressRightTrigger;
-import frc.robot.commands.VisionPressX;
-import frc.robot.commands.VisionPressY;
 import frc.robot.commands.FlipScoringSide;
-=======
 import frc.robot.commands.FlipDriveTrainOrientation;
->>>>>>> add35c6d8da075ba03343fc63dc2ddf87e873249
 
 
 /**
