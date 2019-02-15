@@ -158,8 +158,8 @@ public class Sensors extends Subsystem {
   }
 
   public void updateSmartDashboard(){
-    SmartDashboard.getNumber("Ultrasonic Sensor Value", getUltrasonicSensorValue());
-    SmartDashboard.getNumber("Infrared Sensor Value", getInfraredValue());
+    SmartDashboard.putNumber("Ultrasonic Sensor Value", getUltrasonicSensorValue());
+    SmartDashboard.putNumber("Infrared Sensor Value", getInfraredValue());
   }
   @Override
   public void initDefaultCommand() {

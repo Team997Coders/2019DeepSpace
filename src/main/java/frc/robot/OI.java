@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import frc.robot.commands.LineFollowing;
 import frc.robot.commands.DeployLandingGear;
-import frc.robot.commands.FlipSystemOrientation;
 import frc.robot.commands.RetractLandingGear;
 import frc.robot.commands.ToggleHatchHolder;
 import frc.robot.commands.VisionPressA;
@@ -17,7 +16,7 @@ import frc.robot.commands.VisionPressRightThumbstick;
 import frc.robot.commands.VisionPressRightTrigger;
 import frc.robot.commands.VisionPressX;
 import frc.robot.commands.VisionPressY;
-import frc.robot.commands.FlipDriveTrainOrientation;
+import frc.robot.commands.FlipScoringSide;
 
 
 /**
@@ -59,11 +58,11 @@ public class OI {
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
 
-    flipSystemOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    flipSystemOrientation.whenPressed(new FlipSystemOrientation());
+    flipSystemOrientation = new JoystickButton(gamepad1, 3);
+    flipSystemOrientation.whenPressed(new FlipScoringSide());
 
-    flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
-    flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
+    //flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
+    //flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
 
     followLine = new JoystickButton(gamepad1, 1);
     followLine.whileHeld(new LineFollowing());

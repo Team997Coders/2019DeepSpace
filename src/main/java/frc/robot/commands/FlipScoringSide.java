@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class FlipScoringSide extends Command {
-  private boolean scoringSideReversed;
-  public FlipScoringSide(boolean scoringSideReversed) {
-    this.scoringSideReversed = scoringSideReversed;
+  public FlipScoringSide() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -21,13 +19,14 @@ public class FlipScoringSide extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.scoringSideReversed = !Robot.scoringSideReversed;
+    System.out.println("I am opposite");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.scoringSideReversed = !Robot.scoringSideReversed;
-    System.out.println("Flipped scoring side!");
+ 
   }
 
   // Make this return true when this Command no longer needs to run execute()

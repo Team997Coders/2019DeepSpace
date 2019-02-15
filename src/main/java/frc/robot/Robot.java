@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.AutoDoNothing;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -41,7 +40,6 @@ import frc.robot.vision.cameravisionclient.CameraVisionClient;
  */
 public class Robot extends TimedRobot {
   public static boolean scoringSideReversed = false;
-  private FlipSystemOrientation flipSystemOrientation;
   public static Arm arm;
   public static Elevator elevator;
   public static BallManipulator ballManipulator;
@@ -51,7 +49,9 @@ public class Robot extends TimedRobot {
   public static CameraMount cameraMount;
   public static Logger logger;
   public static PowerDistributionPanel pdp;
-  public static Sensors sensors;
+  public static Sensors frontSensors;
+  public static Sensors backSensors;
+  public static FlipScoringSide flipScoringSide; 
 
   // Note this could be null and because we continue to wire these up
   // in this manner (statics), guards will have to be put around all accesses.
@@ -69,16 +69,6 @@ public class Robot extends TimedRobot {
   public static int heightIndex; 
   // used by the scoringHeight logic commands to grab the correct height from
   // the height array in RobotMap.
-
-  public Robot(DriveTrain a, Sensors b) {
-    super();
-    driveTrain = a;
-    sensors = b;
-  }
-
-  public Robot() {
-    super();
-  }
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -99,6 +89,17 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     cameraMount = new CameraMount(0, 120, 10, 170);
+    backSensors =  new Sensors(RobotMap.Ports.lineSensorBackLeft, 
+      RobotMap.Ports.lineSensorBackCenter, 
+      RobotMap.Ports.lineSensorBackRight, 
+      RobotMap.Ports.backInfraredSensor,
+      RobotMap.Ports.frontUltrasonicSensor);
+    frontSensors = new Sensors(RobotMap.Ports.lineSensorFrontLeft, 
+      RobotMap.Ports.lineSensorFrontCenter, 
+      RobotMap.Ports.lineSensorFrontRight, 
+      RobotMap.Ports.frontInfraredSensor,
+      RobotMap.Ports.frontUltrasonicSensor);
+
 
     // Connect to remote vision subsystem
     try {
@@ -133,8 +134,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", chooser);
 
     // Need to flip the system orientation to the rear to begin the match
-    flipSystemOrientation = new FlipSystemOrientation();
-    flipSystemOrientation.start();
+    flipScoringSide = new FlipScoringSide();
+    flipScoringSide.start();
 
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
@@ -207,6 +208,7 @@ public class Robot extends TimedRobot {
     driveTrain.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
-    sensors.updateSmartDashboard();
+    frontSensors.updateSmartDashboard();
+    backSensors.updateSmartDashboard();
   }
 }

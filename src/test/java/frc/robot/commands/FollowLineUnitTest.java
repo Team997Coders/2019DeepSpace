@@ -25,8 +25,8 @@ public class FollowLineUnitTest {
     private double normal = .1; //for double line seen
     private double straight = .35;
 
-    @Test
-    public void goStraightIfCenterSeen(){
+/*    @Test
+  public void goStraightIfCenterSeen(){
         Sensors m_sensors = mock(Sensors.class);
         DriveTrain m_driveTrain = mock(DriveTrain.class);
         FollowLine m_followLine = new FollowLine(m_sensors, m_driveTrain, (long) 1000);

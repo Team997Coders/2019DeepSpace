@@ -15,6 +15,7 @@ public class LineFollowing extends CommandGroup {
    * Add your docs here.
    */
   public LineFollowing() {
+    //addSequential(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
     addSequential(new FollowLine(1000, Robot.scoringSideReversed));
   /*addSequential(new Waittill(.5));
   addSequential(new BackingUp());*/

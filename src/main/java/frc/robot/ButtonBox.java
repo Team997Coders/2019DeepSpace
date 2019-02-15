@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import frc.robot.commands.LineFollowing;
 import frc.robot.commands.DeployLandingGear;
-import frc.robot.commands.FlipSystemOrientation;
 import frc.robot.commands.RetractLandingGear;
 
 import frc.robot.commands.FlipDriveTrainOrientation;
+import frc.robot.commands.FlipScoringSide;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -41,9 +41,6 @@ public class ButtonBox {
 
     retractLandingGear = new JoystickButton(buttonBox, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
-
-    flipSystemOrientation = new JoystickButton(buttonBox, RobotMap.Buttons.buttonX);
-    flipSystemOrientation.whenPressed(new FlipSystemOrientation());
 
     flipDriveTrainOrientation = new JoystickButton(buttonBox, RobotMap.Buttons.buttonY);
     flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));

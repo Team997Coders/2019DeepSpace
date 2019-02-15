@@ -56,14 +56,14 @@ public class RobotMap {
       lineSensorFrontLeft = 4,  
       lineSensorFrontCenter = 5,
       lineSensorFrontRight = 6,
-      frontUltrasonicSensor = 2, //TODO: Need to check this
-      frontInfraredSensor = 5,  //TODO: Need to check this
+      frontUltrasonicSensor = 0, 
+      frontInfraredSensor = 2,  
 
-      lineSensorBackLeft = 3,    
+      lineSensorBackLeft = 1,    
       lineSensorBackCenter = 2,  
-      lineSensorBackRight = 1,   
-      backInfraredSensor = 2,  //TODO: Need to check this 
-      backUltrasonicSensor = 2, //TODO: Need to check this
+      lineSensorBackRight = 3,   
+      backInfraredSensor = 3,  
+
 
 
       //BALL PORTS
