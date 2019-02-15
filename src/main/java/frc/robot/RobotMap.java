@@ -18,7 +18,7 @@ public class RobotMap {
   public static class Buttons {
     public static class ButtonBox {
       public static int
-        ButtonBoxJoystickId = 2,          // TODO: Need to check this
+        ButtonBoxJoystickId = 1,          
         hatchJoystickButtonId = 1,
         ballJoystickButtonId = 2,
         mediumHeightJoystickButtonId = 3,
@@ -41,7 +41,6 @@ public class RobotMap {
     public static int
 
       GamePad1 = 0,
-      GamePad2 = 1,
       buttonA = 1,
       buttonB = 2,
       buttonX = 3,            // TODO: Need to check this

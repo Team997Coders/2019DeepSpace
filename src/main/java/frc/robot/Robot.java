@@ -43,7 +43,6 @@ import frc.robot.subsystems.Sensors;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static boolean scoringSideReversed = false;
   public static Arm arm;
   public static Elevator elevator;
   public static BallManipulator ballManipulator;
@@ -59,7 +58,6 @@ public class Robot extends TimedRobot {
   public static PowerDistributionPanel pdp;
   public static Sensors frontSensors;
   public static Sensors backSensors;
-  public static FlipScoringSide flipScoringSide; 
 
   public static Sensors sensors;
   public static ButtonBox buttonBox;
@@ -92,11 +90,12 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);
+
+    
     backSensors =  new Sensors(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight, 
-      RobotMap.Ports.backInfraredSensor,
-      RobotMap.Ports.frontUltrasonicSensor);
+      RobotMap.Ports.backInfraredSensor);
     frontSensors = new Sensors(RobotMap.Ports.lineSensorFrontLeft, 
       RobotMap.Ports.lineSensorFrontCenter, 
       RobotMap.Ports.lineSensorFrontRight, 
@@ -126,9 +125,6 @@ public class Robot extends TimedRobot {
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
 
-    // Need to flip the system orientation to the rear to begin the match
-    flipScoringSide = new FlipScoringSide();
-    flipScoringSide.start();
 
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
@@ -201,7 +197,7 @@ public class Robot extends TimedRobot {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putBoolean("Scoring Side Reversed?", scoringSideReversed);
+    SmartDashboard.putString("Scoring Direction?", Robot.buttonBox.getScoringDirectionState().toString());
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
     cameraMount.updateSmartDashboard();

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import frc.robot.RobotMap;
+import frc.robot.buttonbox.ButtonBox;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Sensors;
 import edu.wpi.first.wpilibj.command.Command;
@@ -27,17 +28,16 @@ public class FollowLine extends Command {
   private long starts;
   private Sensors sensors;
   private boolean gracePeriod;
-  private boolean scoringSideReversed;
+  private ButtonBox.ScoringDirectionStates scoringDirection;
 
-  public FollowLine(long extratimems, boolean scoringSideReversed) {
-    this(Robot.frontSensors, Robot.backSensors, extratimems, scoringSideReversed);
+  public FollowLine(long extratimems) {
+    this(Robot.frontSensors, Robot.backSensors, extratimems, Robot.buttonBox.getScoringDirectionState());
   }
 
-  public FollowLine(Sensors frontSensors, Sensors backSensors, long extratimems, boolean scoringSideReversed) {
-    this.scoringSideReversed = scoringSideReversed;
+  public FollowLine(Sensors frontSensors, Sensors backSensors, long extratimems, ButtonBox.ScoringDirectionStates scoringDirection) {
     this.extratimems = extratimems;
-    System.out.println(scoringSideReversed);
-    if(scoringSideReversed){
+    this.scoringDirection = scoringDirection;
+    if(scoringDirection == ButtonBox.ScoringDirectionStates.Back){
       sensors = backSensors;
       System.out.println("Back");
     } else{
@@ -53,7 +53,7 @@ public class FollowLine extends Command {
   protected void initialize() {    
     gracePeriod = false;
     Robot.driveTrain.setBrake();
-    if(scoringSideReversed){
+    if(scoringDirection == ButtonBox.ScoringDirectionStates.Back){
       System.out.println("init new value");
       powerMotor = -powerMotor;
       noPowerMotor = -noPowerMotor;
@@ -98,13 +98,14 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if (sensors.isCloseToTarget()) {
+   /* if (sensors.isCloseToTarget()) {
       return true;
     } else if (gracePeriod && gracePeriodExpired()) {
       return true;
     } else {
       return false;
-    }
+    }*/
+    return false;
   }
 
   // Called once after isFinished returns true

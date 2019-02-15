@@ -6,8 +6,6 @@ import frc.robot.commands.LineFollowing;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.RetractLandingGear;
 import frc.robot.commands.ToggleHatchHolder;
-import frc.robot.commands.FlipScoringSide;
-import frc.robot.commands.FlipDriveTrainOrientation;
 
 
 /**
@@ -38,9 +36,6 @@ public class OI {
 
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
-
-    flipSystemOrientation = new JoystickButton(gamepad1, 3);
-    flipSystemOrientation.whenPressed(new FlipScoringSide());
 
     //flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
     //flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));

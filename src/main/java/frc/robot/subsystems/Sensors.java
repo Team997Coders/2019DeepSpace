@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.buttonbox.ButtonBox;
 /**
- * Add your docs here.
+ * Subsystem for LineFollowing System Warning!
+ * The m-ultrasonicSensorInput can be null; therefore, you need to grurd the variable
  */
 public class Sensors extends Subsystem {
   private DigitalInput m_sensorLeftInput;
@@ -31,6 +33,14 @@ public class Sensors extends Subsystem {
     m_sensorCenterInput = new DigitalInput(centerPort);
 
     m_ultrasonicSensorInput = new AnalogInput(ultrasonic);
+    m_infraredSensorInput = new AnalogInput(infraredPort);
+  }
+
+  public Sensors(int leftPort, int centerPort, int rightPort, int infraredPort){
+    m_sensorLeftInput = new DigitalInput(leftPort);
+    m_sensorRightInput = new DigitalInput(rightPort);
+    m_sensorCenterInput = new DigitalInput(centerPort);
+
     m_infraredSensorInput = new AnalogInput(infraredPort);
   }
 
@@ -110,7 +120,7 @@ public class Sensors extends Subsystem {
 
    //This is the logic order when the robot need to stop
   public boolean isCloseToTarget() {
-    if(Robot.scoringSideReversed){
+    if(/*Robot.buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back*/true){
       /*if(rocketTarget){
           if(hatchIsTargetType){
             return("Invalid condition to happen") //TODO: Need to make this work!
@@ -150,16 +160,37 @@ public class Sensors extends Subsystem {
   }
 
   public int getUltrasonicSensorValue(){
-    return m_ultrasonicSensorInput.getValue();
+    if(m_ultrasonicSensorInput != null){
+      return m_ultrasonicSensorInput.getValue();
+    } else{
+      return 0;
+    }
   }
 
   public int getInfraredValue(){
     return m_infraredSensorInput.getValue();
   }
 
+  public boolean getRightSensor(){
+    return m_sensorRightInput.get();
+  }
+
+  public boolean getLeftSensor(){
+    return m_sensorLeftInput.get();
+  }
+
+  public boolean getCenterSensor(){
+    return m_sensorCenterInput.get();
+  }
+
   public void updateSmartDashboard(){
-    SmartDashboard.putNumber("Ultrasonic Sensor Value", getUltrasonicSensorValue());
+    if (m_ultrasonicSensorInput != null) {
+      SmartDashboard.putNumber("Ultrasonic Sensor Value", getUltrasonicSensorValue());
+    }
     SmartDashboard.putNumber("Infrared Sensor Value", getInfraredValue());
+    SmartDashboard.putBoolean("Right Sensor", getRightSensor());
+    SmartDashboard.putBoolean("Left Sensor", getLeftSensor());
+    SmartDashboard.putBoolean("Center Sensor", getCenterSensor());
   }
   @Override
   public void initDefaultCommand() {
