@@ -64,11 +64,11 @@ public class OI {
     toggleHatch.whenPressed(new ToggleHatch());
 
     ArmReverse = new JoystickButton(gamepad2, RobotMap.Buttons.buttonBack);
-    ArmReverse.whileHeld(new MoveArm(-0.5));
+    ArmReverse.whileHeld(new MoveArm(-0.4));
     //ArmReverse.whenInactive(new LockArm());
 
     ArmForward = new JoystickButton(gamepad2, RobotMap.Buttons.buttonStart);
-    ArmForward.whileHeld(new MoveArm(0.5));
+    ArmForward.whileHeld(new MoveArm(0.4));
     //ArmForward.whenInactive(new LockArm());
 
     // Adds LockArm to the scheduler so I locks immediately.
