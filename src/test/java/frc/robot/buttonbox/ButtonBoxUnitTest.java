@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ButtonBoxUnitTest {
@@ -342,4 +343,54 @@ public class ButtonBoxUnitTest {
     assertEquals(ButtonBox.PositionStates.None, console.getPositionState());
     assertEquals(false, console.getIntakeState());
   }
+
+  @Test
+  public void itDoesNotAllowFrontBallRocketWhenHighPresssed(){
+
+    ButtonBox console = new ButtonBox();
+    console.clickScoringArtifactBallButton();
+    console.clickScoringDestinationRocketButton();
+    console.clickScoringDirectionFrontButton();
+
+    console.clickHighPositionButton();
+
+    assertEquals(ButtonBox.PositionStates.Medium, console.getPositionState());
+  }
+  @Test
+  public void itDoesNotAllowHighBallRocketWhenFrontPresssed(){
+    ButtonBox console = new ButtonBox();
+    
+    console.clickScoringArtifactBallButton();
+    console.clickScoringDestinationRocketButton();
+    console.clickHighPositionButton();
+
+    console.clickScoringDirectionFrontButton();
+
+    assertEquals(ButtonBox.PositionStates.Medium, console.getPositionState());
+  }
+  @Test
+  public void itDoesNotAllowFrontHighBallWhenRocketPresssed(){
+    ButtonBox console = new ButtonBox();
+    
+    console.clickScoringArtifactBallButton();
+    console.clickHighPositionButton();
+    console.clickScoringDirectionFrontButton();
+
+    console.clickScoringDestinationRocketButton();
+
+    assertEquals(ButtonBox.PositionStates.Medium, console.getPositionState());
+  }
+  @Test
+  public void itDoesNotAllowFrontHighRocketWhenBallPressed(){
+    ButtonBox console = new ButtonBox();
+    
+    console.clickHighPositionButton();
+    console.clickScoringDirectionFrontButton();
+    console.clickScoringDestinationRocketButton();
+
+    console.clickScoringArtifactBallButton();
+
+    assertEquals(ButtonBox.PositionStates.Medium, console.getPositionState());
+  }
+
 }
