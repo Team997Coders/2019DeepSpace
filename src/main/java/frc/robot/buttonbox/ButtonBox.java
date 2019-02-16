@@ -1,6 +1,7 @@
 package frc.robot.buttonbox;
 
 import edu.wpi.first.wpilibj.command.*;
+import frc.robot.buttonbox.commands.HighHeight;
 
 /**
  * This class implements the Deepspace operator 2 custom console
@@ -61,6 +62,11 @@ public class ButtonBox {
   public void clickHighPositionButton(){
     if (this.scoringDestinationState != ScoringDestinationStates.CargoShip) {
       this.positionState = PositionStates.High;
+    if(getScoringArtifactState() == ScoringArtifactStates.Ball &&
+        getScoringDestinationState() == ScoringDestinationStates.Rocket &&
+         getScoringDirectionState() == ScoringDirectionStates.Front){
+      positionState = PositionStates.Medium;
+      }
     }
   }
 
@@ -89,6 +95,11 @@ public class ButtonBox {
    */
   public void clickScoringArtifactBallButton() {
     this.scoringArtifactState = ScoringArtifactStates.Ball;
+    if(getPositionState() == PositionStates.High &&
+        getScoringDestinationState() == ScoringDestinationStates.Rocket &&
+         getScoringDirectionState() == ScoringDirectionStates.Front){
+      positionState = PositionStates.Medium;
+    }
   }
 
   /**
@@ -125,6 +136,11 @@ public class ButtonBox {
    */
   public void clickScoringDirectionFrontButton() {
     this.scoringDirectionState = ScoringDirectionStates.Front;
+    if(getScoringArtifactState() == ScoringArtifactStates.Ball &&
+        getScoringDestinationState() == ScoringDestinationStates.Rocket &&
+         getPositionState() == PositionStates.High){
+      positionState = PositionStates.Medium;
+    }
   }
 
   /**
@@ -138,6 +154,10 @@ public class ButtonBox {
       clickScoringDestinationCargoShipButton();
     } else {
       this.scoringDestinationState = ScoringDestinationStates.Rocket;
+    }if(getScoringArtifactState() == ScoringArtifactStates.Ball &&
+    getPositionState() == PositionStates.High &&
+     getScoringDirectionState() == ScoringDirectionStates.Front){
+  positionState = PositionStates.Medium;
     }
   }
 
