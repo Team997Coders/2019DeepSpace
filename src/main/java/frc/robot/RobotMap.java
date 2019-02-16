@@ -135,20 +135,24 @@ public class RobotMap {
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
       ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
 
-      //INFRARED DISTANCES
+      //INFRARED DISTANCES for Line Following
       frontUltrasonicSensorHatchCargoship = 91,     //TODO: Need to check this      
-      frontInfraredSensorHatchCargoship = 5,  //TODO: Need to check this      
-      frontUltrasonicSensorHatchRocket = 5,        //TODO: Need to check this   
-      frontInfraredSensorHatchRocket = 5,     //TODO: Need to check this 
-      frontUltrasonicSensorBallCargoship = 5,     //TODO: Need to check this      
-      frontInfraredSensorBallCargoship = 5,  //TODO: Need to check this      
-      frontUltrasonicSensorBallRocket = 5,        //TODO: Need to check this   
-      frontInfraredSensorBallRocket = 5,     //TODO: Need to check this   
-  
-      backInfraredSensorHatchCargoship = 5,   //TODO: Need to check this  
-  
-      backInfraredSensorBallRocket = 5,      //TODO: Need to check this
-      backInfraredSensorBallCargoship = 5,   //TODO: Need to check this 
+      frontInfraredSensorHatchCargoship = 5,        //TODO: Need to check this      
+      frontUltrasonicSensorHatchRocket = 5,         //TODO: Need to check this   
+      frontInfraredSensorHatchRocket = 5,           //TODO: Need to check this 
+      frontUltrasonicSensorBallCargoship = 5,       //TODO: Need to check this      
+      frontInfraredSensorBallCargoship = 5,         //TODO: Need to check this      
+      frontUltrasonicSensorBallRocket = 5,          //TODO: Need to check this   
+      frontInfraredSensorBallRocket = 5,            //TODO: Need to check this   
+      backInfraredSensorHatchCargoship = 5,         //TODO: Need to check this  
+      backInfraredSensorBallRocket = 5,             //TODO: Need to check this
+      backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
+
+      // Line following voltage values
+      powerMotor = 0.8,
+      noPowerMotor = -.5,
+      normal = .1,        //for double line seen
+      straight = .35,
 
       // Drive to Distance PID values
       driveToDistance_kP = 0.0002,

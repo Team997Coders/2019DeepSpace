@@ -20,13 +20,6 @@ import frc.robot.RobotMap;
  * to target.
  */
 public class FollowLine extends Command {
-  // TODO: Put these as tunable values in RobotMap
-  private double powerMotor = 0.8;
-  private double noPowerMotor = -.5;
-  private double normal = .1; //for double line seen
-  private double straight = .35;
-  // to here
-
   private final long gracePeriodTimeInMs;
   private long gracePeriodStartTimeInMs;
   private final LineDetector lineDetector;
@@ -36,8 +29,12 @@ public class FollowLine extends Command {
   private final ButtonBox.ScoringDestinationStates scoringDestination;
   private final ButtonBox.ScoringArtifactStates scoringArtifact;
   private final DriveTrain driveTrain;
+  private double powerMotor;
+  private double noPowerMotor;
+  private double normal;
+  private double straight;
 
-  public FollowLine(long gracePeriodTimeInMs) {
+  public FollowLine(long gracePeriodTimeInMs) {    
     this(Robot.frontLineDetector, 
       Robot.backLineDetector, 
       Robot.frontInfraredRangeFinder,
@@ -66,6 +63,10 @@ public class FollowLine extends Command {
     this.driveTrain = driveTrain;
     this.scoringDestination = scoringDestination;
     this.scoringArtifact = scoringArtifact;
+    this.noPowerMotor = RobotMap.Values.noPowerMotor;
+    this.normal = RobotMap.Values.normal;
+    this.straight = RobotMap.Values.straight;
+    this.powerMotor = RobotMap.Values.powerMotor;
     
     // Set up appropriate sensors based on our current scoring direction
     if(scoringDirection == ButtonBox.ScoringDirectionStates.Back){
