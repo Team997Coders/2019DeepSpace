@@ -21,7 +21,8 @@ public class OI {
   public JoystickButton ballIntake;
   public JoystickButton ballOutake;
 
-  public JoystickButton ARM;
+  public JoystickButton ArmForward;
+  public JoystickButton ArmReverse;
 
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
@@ -59,12 +60,19 @@ public class OI {
     flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
     flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
 
-    ARM = new JoystickButton(gamepad2, RobotMap.Buttons.buttonStart);
-    ARM.whileHeld(new MoveArm());
-    ARM.whenInactive(new LockArm());
+    toggleHatch = new JoystickButton(gamepad2, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ToggleHatch());
+
+    ArmReverse = new JoystickButton(gamepad2, RobotMap.Buttons.buttonBack);
+    ArmReverse.whileHeld(new MoveArm(-0.5));
+    //ArmReverse.whenInactive(new LockArm());
+
+    ArmForward = new JoystickButton(gamepad2, RobotMap.Buttons.buttonStart);
+    ArmForward.whileHeld(new MoveArm(0.5));
+    //ArmForward.whenInactive(new LockArm());
 
     // Adds LockArm to the scheduler so I locks immediately.
-    Scheduler.getInstance().add(new LockArm());
+    //Scheduler.getInstance().add(new LockArm());
 
     //followLine = new JoystickButton(gamepad1, 1);
     //followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());

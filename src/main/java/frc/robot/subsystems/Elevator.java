@@ -40,6 +40,10 @@ public class Elevator extends Subsystem {
    public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.Ports.followerElevatorMotor, MotorType.kBrushless);
+
+    master.restoreFactoryDefaults();
+    follower.restoreFactoryDefaults();
+
     canifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
@@ -137,6 +141,7 @@ public boolean GetBottomLimitSwitch(){
     SmartDashboard.putNumber("Elevator Height: ", GetPosition());
     SmartDashboard.putBoolean("Bottom Limit Switch", limitSwitchBottom.get());
     SmartDashboard.putBoolean("Top Limit Switch", limitSwitchTop.get());
+    SmartDashboard.putNumber("Elevator", master.getOutputCurrent());
     
     pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
     pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));

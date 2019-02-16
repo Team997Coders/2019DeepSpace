@@ -10,14 +10,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-/**
-  * Name this something more specific
-  */
-public class ToggleHatchHolder extends Command {
-  public ToggleHatchHolder() {
-    requires(Robot.hatchManipulator);
+public class ToggleHatch extends Command {
+  public ToggleHatch() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.hatchManipulator);
   }
 
   // Called just before this Command runs the first time
@@ -28,29 +25,23 @@ public class ToggleHatchHolder extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.hatchManipulator.hatchPistonState == true){
-      Robot.hatchManipulator.retract();
-    }
-    else {
-      Robot.hatchManipulator.extend();
-    }
+    Robot.hatchManipulator.toggle();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished(){
-    return true; // You want this true so it doesn't constantly open and close and have a flipping seizure
+  protected boolean isFinished() {
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    System.out.println("Hek the don hatch toggled thingy went");
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-   end();
-  }
+  protected void interrupted() { }
 }

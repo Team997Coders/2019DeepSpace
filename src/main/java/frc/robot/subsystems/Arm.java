@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
 import frc.robot.commands.LockArm;
@@ -53,6 +54,12 @@ public class Arm extends Subsystem {
   public Arm() {
 
     sparkMax = new CANSparkMax(RobotMap.Ports.armSpark, MotorType.kBrushless);
+    
+    sparkMax.restoreFactoryDefaults();
+
+    sparkMax.setInverted(true);
+
+    //sparkMax.setIdleMode(IdleMode.kBrake);
     
     pidController = sparkMax.getPIDController();
     pidController.setP(RobotMap.Values.armPidP);
@@ -133,11 +140,13 @@ public class Arm extends Subsystem {
   }
 
   public void engageBrake() {
-    discBrake.set(true);
+    discBrake.set(false);
+    SmartDashboard.putBoolean("Brake", true);
   }
 
   public void releaseBrake() {
-    discBrake.set(false);
+    discBrake.set(true);
+    SmartDashboard.putBoolean("Brake", false);
   }
 
   public void stop() {
@@ -156,10 +165,10 @@ public class Arm extends Subsystem {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Arm Absolute Raw", getRawEncoder());
-    SmartDashboard.putNumber("Absolute Parsed", readEncoder());
+    SmartDashboard.putNumber("Arm Absolute Raw/Arm", getRawEncoder());
+    SmartDashboard.putNumber("Absolute Parsed/Arm", readEncoder());
     SmartDashboard.putBoolean("Disc Brake state: ", discBrake.get());
-    SmartDashboard.putBoolean("Arm forward limit switch", getForwardLimitSwitch());
+    SmartDashboard.putBoolean("Arm forward limit switch/Arm", getForwardLimitSwitch());
     pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
     pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
     pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));

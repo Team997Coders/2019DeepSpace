@@ -74,7 +74,7 @@ public class RobotMap {
   
       //ARM PORTS
       discBrake = 2, 
-      armSpark = 53,
+      armSpark = 62,
       armCanifier = 23,
 
       // ELEVATOR PORTS

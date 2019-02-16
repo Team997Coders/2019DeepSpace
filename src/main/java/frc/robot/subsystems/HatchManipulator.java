@@ -35,6 +35,14 @@ public class HatchManipulator extends Subsystem {
     hatchPistonState = false;
   }
 
+  public void toggle() {
+    if (hatchPistonState) {
+      retract();
+    } else {
+      extend();
+    }
+  }
+
   @Override
   public void initDefaultCommand() {
   }

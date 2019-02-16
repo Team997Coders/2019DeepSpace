@@ -18,11 +18,14 @@ import frc.robot.RobotMap;
  *
  */
 public class MoveArm extends Command {
+
+  double speed;
   //public double value;
   //public double position;
 
-  public MoveArm() {
+  public MoveArm(double speed) {
     requires(Robot.arm);
+    this.speed = speed;
     //this.value = _value;
   }
 
@@ -39,8 +42,8 @@ public class MoveArm extends Command {
     //   Robot.elevator.SetPower(value);
     // }
 
-    System.out.println("Moving Arm");
-    Robot.arm.setPower(Robot.oi.getLeftYAxis2());
+    System.out.println("Moving Arm " + speed);
+    Robot.arm.setPower(speed);
   }
 
   protected boolean isFinished() {
@@ -49,7 +52,8 @@ public class MoveArm extends Command {
 
   protected void end() {
     Robot.arm.engageBrake();
-    Robot.arm.SetPostion(Robot.arm.readEncoder());
+    Robot.arm.setPower(0);
+    //Robot.arm.SetPostion(Robot.arm.readEncoder());
   }
 
   protected void interrupted() {
