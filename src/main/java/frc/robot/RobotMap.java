@@ -115,14 +115,14 @@ public class RobotMap {
       backInfraredSensorBallCargoship = 5,   //TODO: Need to check this 
 
       // Drive to Distance PID values
-      driveToDistance_kP = 0.0002,
+      driveToDistance_kP = 0.0001,
       driveToDistance_kI = 0.0,
       driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
-      elevatorPidP = 0.0005, 
-      elevatorPidI = 0,
-      elevatorPidD = 0,
+      elevatorPidP = 0.0002, // 0.0005
+      elevatorPidI = 0.000001,
+      elevatorPidD = 0.005,
       elevatorPidF = 0,
       elevatorTopHeight = 100000000, //placeholder
 
@@ -131,11 +131,11 @@ public class RobotMap {
       armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
       armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
 
-      armPidP = 0.05,
+      armPidP = 0,
       armPidI = 0,
       armPidD = 0,
       armPidK = 0,
-      armMaxPidF = 0,
+      armMaxPidF = 0.0055,
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit));
   }
 

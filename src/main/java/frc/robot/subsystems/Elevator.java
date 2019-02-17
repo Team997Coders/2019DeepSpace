@@ -61,6 +61,9 @@ public class Elevator extends Subsystem {
 
     follower.follow(master, true); // reverse the follower in the follow command
 
+    master.setOpenLoopRampRate(0.25);
+    follower.setOpenLoopRampRate(0.25); // Not sure if this is need for the follower motor but just in case
+
     pidController = master.getPIDController();
     pidController.setOutputRange(-0.3, 0.3);
     pidController.setP(RobotMap.Values.elevatorPidP);

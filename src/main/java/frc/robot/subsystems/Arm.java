@@ -59,6 +59,8 @@ public class Arm extends Subsystem {
 
     sparkMax.setInverted(true);
 
+    sparkMax.setOpenLoopRampRate(0.25);
+
     //sparkMax.setIdleMode(IdleMode.kBrake);
     
     pidController = sparkMax.getPIDController();

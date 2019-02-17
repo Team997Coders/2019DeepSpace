@@ -83,19 +83,28 @@ public class OI {
     //toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     //toggleHatch.whenPressed(new ToggleHatchHolder());
 
+      /* Adding Setpoint buttons for testing
       elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
       elevatorGoUp.whileHeld(new ElevatorUppity());
       elevatorGoUp.whenInactive(new LockElevator());
 
-      elevatorGoDown = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
+      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
       elevatorGoDown.whileHeld(new ElevatorDownity());
-      elevatorGoDown.whenInactive(new LockElevator());
+      elevatorGoDown.whenInactive(new LockElevator());*/
+
+      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
+      elevatorGoUp.whenPressed(new SetElevatorHeight(7300, 10));
+
+      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
+      elevatorGoUp.whenPressed(new SetElevatorHeight(23800, 10));
 
       ballIntake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
       ballIntake.whileHeld(new BallIntake());
 
       ballOutake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
       ballOutake.whileHeld(new BallOuttake());
+
+      // System.out.println("Wtf");
 
     //visionButtonA = new JoystickButton(gamepad2, RobotMap.Buttons.buttonA);
     //visionButtonA.whenPressed(new VisionPressA());
