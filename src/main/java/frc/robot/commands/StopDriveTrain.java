@@ -10,8 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class CommandBreak extends Command {
-  public CommandBreak() {
+public class StopDriveTrain extends Command {
+  public StopDriveTrain() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.driveTrain);
@@ -26,7 +26,6 @@ public class CommandBreak extends Command {
   @Override
   protected void execute() {
     Robot.driveTrain.stopVolts();
-    Robot.driveTrain.setBrake();
     Robot.driveTrain.setCoast();
   }
 

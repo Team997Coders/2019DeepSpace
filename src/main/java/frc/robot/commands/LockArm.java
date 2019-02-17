@@ -35,7 +35,7 @@ public class LockArm extends Command {
     }
 
     protected void interrupted() {
-      System.out.println("arm lock interuppted");
+      System.out.println("arm lock interrupted");
       end();
     }
 }

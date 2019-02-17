@@ -98,12 +98,12 @@ public class RobotMap {
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
       ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
 
-      //INFRARED DISTANCES
+      //INFRARED AND ULTRASONIC DISTANCES
       frontUltrasonicSensorHatchCargoship = 5,     //TODO: Need to check this      
       frontInfraredSensorHatchCargoship = 5,  //TODO: Need to check this      
       frontUltrasonicSensorHatchRocket = 5,        //TODO: Need to check this   
       frontInfraredSensorHatchRocket = 5,     //TODO: Need to check this 
-  
+
       frontUltrasonicSensorBallCargoship = 5,     //TODO: Need to check this      
       frontInfraredSensorBallCargoship = 5,  //TODO: Need to check this      
       frontUltrasonicSensorBallRocket = 5,        //TODO: Need to check this   

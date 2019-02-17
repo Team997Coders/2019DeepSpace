@@ -17,7 +17,7 @@ public class OI {
   //temporary elevator testing buttons.
   public JoystickButton elevatorGoUp;
   public JoystickButton elevatorGoDown;
-  public JoystickButton elevatorTestGotoPosition;
+  public JoystickButton followLine;
   public JoystickButton ballIntake;
   public JoystickButton ballOutake;
 
@@ -60,15 +60,18 @@ public class OI {
     flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
     flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
 
+    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+      followLine.whenPressed(new FollowLine(1000));
+
     toggleHatch = new JoystickButton(gamepad2, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ToggleHatch());
 
     ArmReverse = new JoystickButton(gamepad2, RobotMap.Buttons.buttonBack);
-    ArmReverse.whileHeld(new MoveArm(-0.4));
+    ArmReverse.whileHeld(new MoveArm(-0.35));
     //ArmReverse.whenInactive(new LockArm());
 
     ArmForward = new JoystickButton(gamepad2, RobotMap.Buttons.buttonStart);
-    ArmForward.whileHeld(new MoveArm(0.4));
+    ArmForward.whileHeld(new MoveArm(0.35));
     //ArmForward.whenInactive(new LockArm());
 
     // Adds LockArm to the scheduler so I locks immediately.
@@ -88,9 +91,6 @@ public class OI {
       elevatorGoDown.whileHeld(new ElevatorDownity());
       elevatorGoDown.whenInactive(new LockElevator());
 
-      elevatorTestGotoPosition = new JoystickButton(gamepad2, RobotMap.Buttons.buttonA);
-      elevatorTestGotoPosition.whenPressed(new ElevatorTestGotoPosition(8000));
-
       ballIntake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
       ballIntake.whileHeld(new BallIntake());
 
@@ -100,8 +100,8 @@ public class OI {
     //visionButtonA = new JoystickButton(gamepad2, RobotMap.Buttons.buttonA);
     //visionButtonA.whenPressed(new VisionPressA());
 
-    visionButtonB = new JoystickButton(gamepad2, RobotMap.Buttons.buttonB);
-    visionButtonB.whenPressed(new VisionPressB());
+    //visionButtonB = new JoystickButton(gamepad2, RobotMap.Buttons.buttonB);
+    //visionButtonB.whenPressed(new VisionPressB());
 
     //visionButtonX = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
     //visionButtonX.whenPressed(new VisionPressX());

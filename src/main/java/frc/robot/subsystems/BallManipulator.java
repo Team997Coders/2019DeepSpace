@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,14 +25,16 @@ public class BallManipulator extends Subsystem {
   public BallManipulator(){
     ballMotor = new VictorSPX(RobotMap.Ports.ballMotor);
     ballMotor.setInverted(true);
+
+    ballMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void ballIntake(){
-    if (!Robot.arm.getForwardLimitSwitch()) {
+    //if (!Robot.arm.getForwardLimitSwitch()) {
       ballMotor.set(ControlMode.PercentOutput, 1);
-    } else {
-      ballMotor.set(ControlMode.PercentOutput, 0);
-    }
+    //} else {
+      //ballMotor.set(ControlMode.PercentOutput, 0);
+    //}
   }
 
   public void ballOuttake(){

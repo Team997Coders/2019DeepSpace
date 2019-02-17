@@ -19,15 +19,7 @@ import frc.robot.commands.AutoDoNothing;
 import frc.robot.commands.*;
 
 //import spartanlib.subsystem.drivetrain.TankDrive;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.BallManipulator;
-
-import frc.robot.subsystems.CameraMount;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.HatchManipulator;
-import frc.robot.subsystems.LiftGear;
-import frc.robot.subsystems.Sensors;
+import frc.robot.subsystems.*;
 import frc.robot.vision.cameravisionclient.CameraVisionClient;
 
 /**
@@ -41,7 +33,6 @@ public class Robot extends TimedRobot {
   // Will the getInstance call get the ArcadeDrive? It should.
   //private final Command defaultDriveTrain;
   public static boolean scoringSideReversed = false;
-  private FlipSystemOrientation flipSystemOrientation;
   public static Arm arm;
   public static Elevator elevator;
   //(no drieTrain in merge)public static DriveTrain driveTrain;
@@ -52,6 +43,7 @@ public class Robot extends TimedRobot {
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
   public static CameraMount cameraMount;
+  public static LineFollowing lineFollowing;
   // Note this could be null and because we continue to wire these up
   // in this manner (statics), guards will have to be put around all accesses.
   // Otherwise null pointer exceptions will drive you crazy, in the case
@@ -61,7 +53,6 @@ public class Robot extends TimedRobot {
   // Will the getInstance call get the ArcadeDrive? It should.
   // private final Command defaultDriveTrain;
   public static OI oi;
-  public static ButtonBox bb;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -70,7 +61,7 @@ public class Robot extends TimedRobot {
   // used by the scoringHeight logic commands to grab the correct height from
   // the height array in RobotMap.
 
-  public Robot(DriveTrain a, Sensors b) {
+  public Robot(DriveTrain a) {
     super();
     driveTrain = a;
     //sensors = b;
@@ -99,6 +90,7 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     cameraMount = new CameraMount(0, 120, 10, 170);
+    lineFollowing = new LineFollowing();
 
     SmartDashboard.putNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
     SmartDashboard.putNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
@@ -127,27 +119,26 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
-    flipSystemOrientation = new FlipSystemOrientation();
-    flipSystemOrientation.start();
+    Scheduler.getInstance().add(new FlipScoringSide(Robot.scoringSideReversed));
 
     oi = new OI();
-    bb = new ButtonBox();
   }
 
   @Override
   public void robotPeriodic() {
     updateSmartDashboard();
-    elevator.ZeroElevator();
   }
 
   @Override
   public void disabledInit() {
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
+    arm.Unlock();
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+    elevator.ZeroElevator();
   }
 
   @Override
@@ -172,6 +163,8 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
 
     System.out.println("---------------------");
+
+    arm.Lock();
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();

@@ -1,4 +1,4 @@
-package test.frc.robot.subsystems;
+package frc.robot.commands;
 
 import static org.junit.Assert.assertTrue;
 

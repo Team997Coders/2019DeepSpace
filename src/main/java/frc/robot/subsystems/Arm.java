@@ -41,7 +41,7 @@ public class Arm extends Subsystem {
   private Solenoid discBrake;
 
   // Read Encoder Vars
-  private final double MAX = 1.022;
+  private final double MAX = 1022;
   private final double LIMIT = 0.5;
   private double initRead = 0;
   private double prevRead = -1;
@@ -104,6 +104,7 @@ public class Arm extends Subsystem {
 
   public void SetPostion(double setpoint){
     releaseBrake();
+    System.out.println("Set position to " + setpoint);
     pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
     UpdateF();
   }
@@ -129,14 +130,14 @@ public class Arm extends Subsystem {
       }
     }
     prevRead = newVal;
-    return ( ((revs * MAX) + (newVal - initRead)) * 100);
+    return (int)(((revs * MAX) + (newVal - initRead)));
   }
 
   private double getRawEncoder() {
     double[] a = new double[2];
     dataBus.getPWMInput(PWMChannel.PWMChannel0, a);
     SmartDashboard.putNumber("Duty Cycle", a[1]);
-    return a[0] / 1000;
+    return a[0];
   }
 
   public void engageBrake() {
@@ -147,6 +148,14 @@ public class Arm extends Subsystem {
   public void releaseBrake() {
     discBrake.set(true);
     SmartDashboard.putBoolean("Brake", false);
+  }
+
+  public void Lock() {
+    sparkMax.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void Unlock() {
+    sparkMax.setIdleMode(IdleMode.kCoast);
   }
 
   public void stop() {
@@ -165,10 +174,10 @@ public class Arm extends Subsystem {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Arm Absolute Raw/Arm", getRawEncoder());
-    SmartDashboard.putNumber("Absolute Parsed/Arm", readEncoder());
+    SmartDashboard.putNumber("Arm Absolute Raw", getRawEncoder());
+    SmartDashboard.putNumber("Absolute Parsed", readEncoder());
     SmartDashboard.putBoolean("Disc Brake state: ", discBrake.get());
-    SmartDashboard.putBoolean("Arm forward limit switch/Arm", getForwardLimitSwitch());
+    SmartDashboard.putBoolean("Arm forward limit switch", getForwardLimitSwitch());
     pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
     pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
     pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));

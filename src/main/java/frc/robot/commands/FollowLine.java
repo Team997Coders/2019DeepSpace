@@ -8,7 +8,7 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.Sensors;
+import frc.robot.subsystems.LineFollowing;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -24,12 +24,10 @@ public class FollowLine extends Command {
   private long extratimems = 1000;
   private long starts;
   private boolean firstTime;
-  private Sensors sensors;
 
-  public FollowLine(long extratimems, Sensors sensors) {
-    this.sensors = sensors;
+  public FollowLine(long extratimems) {
     requires(Robot.driveTrain);
-    requires(sensors);
+    requires(Robot.lineFollowing);
 
     this.extratimems = extratimems;
   }
@@ -45,7 +43,7 @@ public class FollowLine extends Command {
   @Override
   protected void execute() {
 
-    if(sensors.noLineSeen()){
+    if(Robot.lineFollowing.noLineSeen()){
       if(this.firstTime == true){
         this.starts = System.currentTimeMillis();
         firstTime = false;
@@ -54,7 +52,7 @@ public class FollowLine extends Command {
         if((starts + extratimems) > System.currentTimeMillis()){
           Robot.driveTrain.setVolts(straight, straight);
         }
-        else if(sensors.anyLineSeen()){
+        else if(Robot.lineFollowing.anyLineSeen()){
           Robot.driveTrain.setBrake();
         }
         else{
@@ -63,15 +61,15 @@ public class FollowLine extends Command {
       }
     }
   else{
-      if(sensors.leftCenterLineSeen()){
+      if(Robot.lineFollowing.leftCenterLineSeen()){
         Robot.driveTrain.setVolts(normal, powerMotor);
-      }else if(sensors.rightCenterLineSeen()){
+      }else if(Robot.lineFollowing.rightCenterLineSeen()){
         Robot.driveTrain.setVolts(powerMotor , normal);
-      }else if(sensors.lineSensorLeft()){
+      }else if(Robot.lineFollowing.leftLineSeen()){
         Robot.driveTrain.setVolts(noPowerMotor, powerMotor);
-      }else if(sensors.lineSensorRight()){
+      }else if(Robot.lineFollowing.rightLineSeen()){
         Robot.driveTrain.setVolts(powerMotor, noPowerMotor);; 
-      }else if(sensors.lineSensorCenter()){
+      }else if(Robot.lineFollowing.centerLineSeen()){
         Robot.driveTrain.setVolts(straight, straight);
       }else{
         Robot.driveTrain.stopVolts();
@@ -82,8 +80,8 @@ public class FollowLine extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(sensors.lineSensorCenter()){
-      if (sensors.isCloseToTarget()) {
+    if(Robot.lineFollowing.centerLineSeen()){
+      if (Robot.lineFollowing.isCloseToTarget()) {
         return true;
     } else {
         return false;
