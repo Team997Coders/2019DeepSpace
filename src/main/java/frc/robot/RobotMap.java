@@ -120,10 +120,10 @@ public class RobotMap {
       driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
-      elevatorPidP = 0.0002, // 0.0005
-      elevatorPidI = 0.000001,
-      elevatorPidD = 0.005,
-      elevatorPidF = 0,
+      elevatorPidP = 0.0006, // 0.0005
+      elevatorPidI = 0.0,
+      elevatorPidD = 0.0005,
+      elevatorPidF = 0.00005,
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
