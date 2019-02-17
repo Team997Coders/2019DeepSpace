@@ -59,7 +59,7 @@ public class Arm extends Subsystem {
 
     sparkMax.setInverted(true);
 
-    sparkMax.setOpenLoopRampRate(0.25);
+    sparkMax.setOpenLoopRampRate(0);
 
     //sparkMax.setIdleMode(IdleMode.kBrake);
     
@@ -82,7 +82,8 @@ public class Arm extends Subsystem {
   }
 
   public void setPower(double speed) {
-    sparkMax.set(speed);
+    //sparkMax.set(speed);
+    pidController.setReference(speed, ControlType.kDutyCycle);
   }
   
 
