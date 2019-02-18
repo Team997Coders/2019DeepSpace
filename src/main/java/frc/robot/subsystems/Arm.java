@@ -42,7 +42,7 @@ public class Arm extends Subsystem {
 
   // Read Encoder Vars
   private final double MAX = 1022;
-  private final double LIMIT = 0.5;
+  private final double LIMIT = 500;
   private double initRead = 0;
   private double prevRead = -1;
   private int revs = 0;
@@ -134,7 +134,7 @@ public class Arm extends Subsystem {
       }
     }
     prevRead = newVal;
-    return (int)(((revs * MAX) + (newVal - initRead)));
+    return (int)(((revs * MAX) + (newVal/* - initRead*/)));
   }
 
   private double getRawEncoder() {
@@ -172,6 +172,10 @@ public class Arm extends Subsystem {
     return !dataBus.getGeneralInput(GeneralPin.LIMR);
   }
 
+  public double getMotorTemp() {
+    return sparkMax.getMotorTemperature();
+  }
+
   @Override
   public void initDefaultCommand() {
     //setDefaultCommand(new LockArm());
@@ -203,6 +207,7 @@ public class Arm extends Subsystem {
     SmartDashboard.putBoolean("Arm Back Limit", backLimitSwitch.get());
     SmartDashboard.putNumber("Arm voltage", sparkMax.getAppliedOutput());
     SmartDashboard.putNumber("Arm Current", getCurrent());
+    SmartDashboard.putNumber("Arm Motor Temp", getMotorTemp());
   }
 
 

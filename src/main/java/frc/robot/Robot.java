@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
 
     arm = new Arm();
     ballManipulator = new BallManipulator();
-
+    pdp = new PowerDistributionPanel();
     hatchManipulator = new HatchManipulator();
     elevator = new Elevator();
 
@@ -98,6 +98,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
     SmartDashboard.putNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
     SmartDashboard.putNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);
+
+    SmartDashboard.putNumber("Arm Pid P", RobotMap.Values.armPidP);
+    SmartDashboard.putNumber("Arm Pid I", RobotMap.Values.armPidI);
+    SmartDashboard.putNumber("Arm Pid D", RobotMap.Values.armPidD);
+    SmartDashboard.putNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
 
     // Connect to remote vision subsystem
     try {

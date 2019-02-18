@@ -120,10 +120,10 @@ public class RobotMap {
       driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
-      elevatorPidP = 0.0006, // 0.0005
+      elevatorPidP = 0.00002, // 0.0005
       elevatorPidI = 0.0,
-      elevatorPidD = 0.0005,
-      elevatorPidF = 0.00005,
+      elevatorPidD = 0.000, // 0.0005
+      elevatorPidF = 0.0000,
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
@@ -143,26 +143,30 @@ public class RobotMap {
     //in inches
     public static int
       elevatorBackTopHatchHeight = 0, //impossible
-      elevatorBackMiddleHatchHeight = 37, 
-      elevatorBackBottomHatchHeight = 9,
-      elevatorBackShipHatchHeight = 9,
+      elevatorBackMiddleHatchHeight = 0, 
+      elevatorBackBottomHatchHeight = 0,
+      elevatorBackShipHatchHeight = 8900,
 
-      elevatorBackTopCargoHeight = 55,
-      elevatorBackMiddleCargoHeight = 33,
-      elevatorBackBottomCargoHeight = 5,
-      elevatorBackShipCargoHeight = 19,
+      elevatorBackTopCargoHeight = 52400, // probably higher
+      elevatorBackMiddleCargoHeight = 34400,
+      elevatorBackBottomCargoHeight = 9100,
+      elevatorBackShipCargoHeight = 24650,
 
-      elevatorFrontTopHatchHeight = 54,
-      elevatorFrontMiddleHatchHeight = 28,
-      elevatorFrontBottomHatchHeight = 0,
-      elevatorFrontShipHatchHeight = 0,
+      elevatorFrontTopHatchHeight = 52400, // probably higher
+      elevatorFrontMiddleHatchHeight = 30530,
+      elevatorFrontBottomHatchHeight = 1520,
+      elevatorFrontShipHatchHeight = 1520,
 
-      elevatorFrontTopCargoHeight = 0, //impossible
-      elevatorFrontMiddleCargoHeight = 48,
-      elevatorFrontBottomCargoHeight = 22,
-      elevatorFrontShipCargoHeight = 33,
+      elevatorFrontTopCargoHeight = 52400, //impossible
+      elevatorFrontMiddleCargoHeight = 45360,
+      elevatorFrontBottomCargoHeight = 22200,
+      elevatorFrontShipCargoHeight = 38125,
 
-      elevatorCollectCargoHeight = 0;
+      elevatorCollectCargoHeight = 0,
+      
+      armBackParallel = 660,
+      armFrontParallel = 150,
+      armVertical = 415;
 
       public static int[]
       elevatorFrontHatchHeightArray = {

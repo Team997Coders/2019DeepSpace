@@ -16,6 +16,7 @@ import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.CANifier;
 import com.revrobotics.CANDigitalInput;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANDigitalInput.LimitSwitch;
@@ -25,6 +26,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
  */
 public class Elevator extends Subsystem {
   private CANSparkMax master, follower;
+
+  private CANEncoder encoder;
+
   private CANPIDController pidController;
   private CANDigitalInput limitSwitchTop;
   private CANDigitalInput limitSwitchBottom;
@@ -36,13 +40,16 @@ public class Elevator extends Subsystem {
   //// Balls = true Hatches = false
   public boolean isZeroed;
 
-
-   public Elevator() {
+  public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.Ports.followerElevatorMotor, MotorType.kBrushless);
 
     master.restoreFactoryDefaults();
     follower.restoreFactoryDefaults();
+
+    encoder = master.getEncoder();
+    encoder.setPosition(0);
+    encoder.setPositionConversionFactor(42);
 
     canifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
@@ -80,9 +87,9 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
     SmartDashboard.putNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
     SmartDashboard.putNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);*/
-   }
+  }
 
-   public void SetPosition(double height) {
+  public void SetPosition(double height) {
     //System.out.println("Set elevator to go to height " + height); 
     pidController.setReference(height - GetPosition(), ControlType.kPosition);
   }
@@ -95,9 +102,21 @@ public class Elevator extends Subsystem {
     return canifier.getQuadraturePosition();
   }
 
-public boolean GetBottomLimitSwitch(){
-  return limitSwitchBottom.get();
-}
+  public double getInternalEncoderPos() {
+    return encoder.getPosition();
+  }
+
+  public boolean GetBottomLimitSwitch(){
+    return limitSwitchBottom.get();
+  }
+
+  public double getMasterTemp() {
+    return master.getMotorTemperature();
+  }
+
+  public double getFollowerTemp() {
+    return follower.getMotorTemperature();
+  }
 
   public void Stop(){
     master.set(0);
@@ -157,6 +176,9 @@ public boolean GetBottomLimitSwitch(){
     SmartDashboard.putBoolean("Bottom Limit Switch", limitSwitchBottom.get());
     SmartDashboard.putBoolean("Top Limit Switch", limitSwitchTop.get());
     SmartDashboard.putNumber("Elevator", master.getOutputCurrent());
+    SmartDashboard.putNumber("Elevator Internal Encoder", getInternalEncoderPos());
+    SmartDashboard.putNumber("Elevator Master Temp", getMasterTemp());
+    SmartDashboard.putNumber("Elevator Follower Temp", getFollowerTemp());
     
     pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
     pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));

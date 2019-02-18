@@ -70,11 +70,11 @@ public class OI {
 
     ArmReverse = new JoystickButton(gamepad2, RobotMap.Buttons.buttonBack);
     ArmReverse.whileHeld(new MoveArm(-0.5));
-    //ArmReverse.whenInactive(new LockArm());
+    ArmReverse.whenInactive(new LockArm());
 
     ArmForward = new JoystickButton(gamepad2, RobotMap.Buttons.buttonStart);
     ArmForward.whileHeld(new MoveArm(0.5));
-    //ArmForward.whenInactive(new LockArm());
+    ArmForward.whenInactive(new LockArm());
 
     // Adds LockArm to the scheduler so I locks immediately.
     //Scheduler.getInstance().add(new LockArm());
@@ -93,19 +93,19 @@ public class OI {
       elevatorGoDown = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
       elevatorGoDown.whileHeld(new ElevatorDownity());
       elevatorGoDown.whenInactive(new LockElevator());
+      
+      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
+      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
 
-      /* elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
-      elevatorGoUp.whenPressed(new SetElevatorHeight(7300, 10));
-
-      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
-      elevatorGoUp.whenPressed(new SetElevatorHeight(23800, 10));
-      */
-
-      ballIntake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
+      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
+      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
+      
+      
+      /*ballIntake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
       ballIntake.whileHeld(new BallIntake());
 
       ballOutake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
-      ballOutake.whileHeld(new BallOuttake());
+      ballOutake.whileHeld(new BallOuttake());*/
 
       // System.out.println("Wtf");
 
