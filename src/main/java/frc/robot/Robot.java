@@ -9,12 +9,14 @@ package frc.robot;
 
 import java.io.IOException;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoDoNothing;
+import frc.robot.subsystems.Logger;
 //import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -39,6 +41,7 @@ public class Robot extends TimedRobot {
   public static BallManipulator ballManipulator;
   // public static DriveTrain driveTrain;
   public static HatchManipulator hatchManipulator;
+  public static PowerDistributionPanel pdp;
 
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
@@ -82,7 +85,6 @@ public class Robot extends TimedRobot {
     ballManipulator = new BallManipulator();
 
     hatchManipulator = new HatchManipulator();
-
     elevator = new Elevator();
 
     // driveTrain = new DriveTrain();
@@ -133,6 +135,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
     arm.Unlock();
+    Logger.getInstance().close();
   }
 
   @Override
@@ -166,6 +169,8 @@ public class Robot extends TimedRobot {
 
     arm.Lock();
 
+    Logger.getInstance().openFile();
+
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
@@ -182,6 +187,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    Logger.getInstance().logAll();
   }
 
   @Override

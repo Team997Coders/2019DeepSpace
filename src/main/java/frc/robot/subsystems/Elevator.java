@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import frc.robot.commands.LockElevator;
-
+import frc.robot.interfaces.ElevatorData;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -137,6 +137,18 @@ public boolean GetBottomLimitSwitch(){
     setDefaultCommand(new LockElevator());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  public ElevatorData getElevatorData() {
+    ElevatorData e = new ElevatorData();
+    e.output = master.getAppliedOutput();
+    e.current = master.getOutputCurrent();
+    e.ticks = GetPosition();
+    e.velocity = canifier.getQuadratureVelocity();
+    e.bottom = GetBottomLimitSwitch();
+    e.top = limitSwitchTop.get();
+
+    return e;
   }
 
   public void updateSmartDashboard() {

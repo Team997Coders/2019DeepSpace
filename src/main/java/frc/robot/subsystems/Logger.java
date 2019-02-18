@@ -14,6 +14,9 @@ import java.io.IOException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
+import frc.robot.interfaces.ArmData;
+import frc.robot.interfaces.ElevatorData;
 
 public class Logger {
 
@@ -74,7 +77,9 @@ public class Logger {
       try {
         path = this.getPath();
         this.writer = new BufferedWriter(new FileWriter(path));
-        this.writer.write("time,voltage,current,ticks,target,error,pid_output");
+        this.writer.write("time,voltage,current,arm_applied_output,arm_current,arm_ticks,arm_velocity" +
+          ",arm_front,arm_back,elevator_applied_output,elevator_current,elevator_ticks,elevator_velocity" +
+          "elevator_botton,elevator_top");
         this.writer.newLine();
         this.startTime = System.currentTimeMillis();
       } catch (IOException e) {
@@ -101,12 +106,28 @@ public class Logger {
         this.timeSinceStart = (System.currentTimeMillis() - this.startTime) / 1000.0;
 
         this.writer.write(String.format("%.3f", this.timeSinceStart));
-        //this.writer.write(String.format(",%.3f", Robot.pdp.getVoltage()));
-        //this.writer.write(String.format(",%.3f", Robot.pdp.getTotalCurrent()));
+        this.writer.write(String.format(",%.3f", Robot.pdp.getVoltage()));
+        this.writer.write(String.format(",%.3f", Robot.pdp.getTotalCurrent()));
         //this.writer.write(String.format(",%.3f", (double) Robot.arm.encoder.get()));
         //this.writer.write(String.format(",%.3f", FollowProfile.inst.target));
         //this.writer.write(String.format(",%.3f", FollowProfile.inst.target - Robot.arm.encoder.get()));
         //this.writer.write(String.format(",%.3f", Robot.arm.sparkMax.getAppliedOutput()));
+
+        ArmData a = Robot.arm.getArmData();
+        ElevatorData e = Robot.elevator.getElevatorData();
+
+        this.writer.write(String.format(",%.3f", a.output));
+        this.writer.write(String.format(",%.3f", a.current));
+        this.writer.write(String.format(",%.3f", a.ticks));
+        this.writer.write(String.format(",%.3f", a.velocity));
+        this.writer.write(String.format(",%.3f", a.front));
+        this.writer.write(String.format(",%.3f", a.back));
+        this.writer.write(String.format(",%.3f", e.output));
+        this.writer.write(String.format(",%.3f", e.current));
+        this.writer.write(String.format(",%.3f", e.ticks));
+        this.writer.write(String.format(",%.3f", e.velocity));
+        this.writer.write(String.format(",%.3f", e.bottom));
+        this.writer.write(String.format(",%.3f", e.top));
 
         this.writer.newLine();
       } catch (IOException e) {

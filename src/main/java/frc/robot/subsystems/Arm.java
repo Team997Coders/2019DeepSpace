@@ -22,7 +22,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
 import frc.robot.commands.LockArm;
-
+import frc.robot.interfaces.ArmData;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -174,6 +174,18 @@ public class Arm extends Subsystem {
   @Override
   public void initDefaultCommand() {
     //setDefaultCommand(new LockArm());
+  }
+
+  public ArmData getArmData() {
+    ArmData a = new ArmData();
+    a.output = sparkMax.getAppliedOutput();
+    a.current = sparkMax.getOutputCurrent();
+    a.ticks = readEncoder();
+    a.velocity = 0;
+    a.front = frontLimitSwitch.get();
+    a.back = backLimitSwitch.get();
+
+    return a;
   }
 
   public void updateSmartDashboard() {
