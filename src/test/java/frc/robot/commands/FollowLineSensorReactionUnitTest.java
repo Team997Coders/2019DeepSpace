@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
  * Add your docs here.
  */
 public class FollowLineSensorReactionUnitTest {
+/*
 	LineDetector frontLineDetector;
 	LineDetector backLineDetector;
 	InfraredRangeFinder frontInfraredRangeFinder;
@@ -296,6 +297,7 @@ public class FollowLineSensorReactionUnitTest {
 		//Assert
 		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.powerMotor, -RobotMap.Values.normal);
 	}
+	*/
 }
     /* Can't get the timeout to work right in the test.  
      * I get a: 

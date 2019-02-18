@@ -190,10 +190,6 @@ public class Robot extends TimedRobot {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putString("Scoring direction", Robot.buttonBox.getScoringDirectionState().toString());
-    SmartDashboard.putString("Scoring artifact", Robot.buttonBox.getScoringArtifactState().toString());
-    SmartDashboard.putString("Scoring destination", Robot.buttonBox.getScoringDestinationState().toString());
-    SmartDashboard.putString("Scoring position", Robot.buttonBox.getPositionState().toString());
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
     cameraMount.updateSmartDashboard();
@@ -203,5 +199,6 @@ public class Robot extends TimedRobot {
     backLineDetector.updateSmartDashboard();
     frontInfraredRangeFinder.updateSmartDashboard();
     backInfraredRangeFinder.updateSmartDashboard();
+    buttonBox.updateSmartDashboard();
   }
 }

@@ -1,6 +1,7 @@
 package frc.robot.buttonbox;
 
 import edu.wpi.first.wpilibj.command.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.buttonbox.commands.HighHeight;
 
 /**
@@ -349,5 +350,12 @@ public class ButtonBox {
     High,
     Medium,
     Low
+  }
+
+  public void updateSmartDashboard() {
+    SmartDashboard.putString("Scoring Direction", getScoringDirectionState().toString());    
+    SmartDashboard.putString("Scoring Destination", getScoringDestinationState().toString());    
+    SmartDashboard.putString("Scoring Artifact", getScoringArtifactState().toString());    
+    SmartDashboard.putString("Height Position", getPositionState().toString());    
   }
 }

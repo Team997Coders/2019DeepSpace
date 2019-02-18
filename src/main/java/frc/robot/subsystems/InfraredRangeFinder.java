@@ -35,8 +35,8 @@ public class InfraredRangeFinder extends Subsystem {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("%s raw infrared sensor", getRawValue());
-    SmartDashboard.putNumber("%s infrared range (in)", getRangeInInches());
+    SmartDashboard.putNumber(String.format("%s raw infrared sensor", scoringDirection.toString()), getRawValue());
+    SmartDashboard.putNumber(String.format("%s infrared range (in)", scoringDirection.toString()), getRangeInInches());
   }
 
   @Override

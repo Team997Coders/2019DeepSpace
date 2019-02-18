@@ -22,12 +22,14 @@ import frc.robot.RobotMap;
 public class FollowLine extends Command {
   private final long gracePeriodTimeInMs;
   private long gracePeriodStartTimeInMs;
-  private final LineDetector lineDetector;
-  private final InfraredRangeFinder infraredRangeFinder;
+  private LineDetector lineDetector;
+  private final LineDetector backLineDetector;
+  private final LineDetector frontLineDetector;
+  private InfraredRangeFinder infraredRangeFinder;
+  private final InfraredRangeFinder backInfraredRangeFinder;
+  private final InfraredRangeFinder frontInfraredRangeFinder;
   private boolean inGracePeriod;
-  private final ButtonBox.ScoringDirectionStates scoringDirection;
-  private final ButtonBox.ScoringDestinationStates scoringDestination;
-  private final ButtonBox.ScoringArtifactStates scoringArtifact;
+  private ButtonBox buttonBox;
   private final DriveTrain driveTrain;
   private double powerMotor;
   private double noPowerMotor;
@@ -41,9 +43,7 @@ public class FollowLine extends Command {
       Robot.backInfraredRangeFinder,
       Robot.driveTrain, 
       gracePeriodTimeInMs, 
-      Robot.buttonBox.getScoringDirectionState(),
-      Robot.buttonBox.getScoringDestinationState(),
-      Robot.buttonBox.getScoringArtifactState());
+      Robot.buttonBox);
   }
 
   public FollowLine(
@@ -53,34 +53,23 @@ public class FollowLine extends Command {
       InfraredRangeFinder backInfraredRangeFinder,
       DriveTrain driveTrain, 
       long gracePeriodTimeInMs, 
-      ButtonBox.ScoringDirectionStates scoringDirection,
-      ButtonBox.ScoringDestinationStates scoringDestination,
-      ButtonBox.ScoringArtifactStates scoringArtifact) {
+      ButtonBox buttonBox) {
 
     // Set member variables
     this.gracePeriodTimeInMs = gracePeriodTimeInMs;
-    this.scoringDirection = scoringDirection;
+    this.buttonBox = buttonBox;
     this.driveTrain = driveTrain;
-    this.scoringDestination = scoringDestination;
-    this.scoringArtifact = scoringArtifact;
-    this.noPowerMotor = RobotMap.Values.noPowerMotor;
-    this.normal = RobotMap.Values.normal;
-    this.straight = RobotMap.Values.straight;
-    this.powerMotor = RobotMap.Values.powerMotor;
-    
-    // Set up appropriate sensors based on our current scoring direction
-    if(scoringDirection == ButtonBox.ScoringDirectionStates.Back){
-      lineDetector = backLineDetector;
-      infraredRangeFinder = backInfraredRangeFinder;
-    } else {
-      lineDetector = frontLineDetector;
-      infraredRangeFinder = frontInfraredRangeFinder;
-    }
+    this.frontInfraredRangeFinder = frontInfraredRangeFinder;
+    this.backInfraredRangeFinder = backInfraredRangeFinder;
+    this.frontLineDetector = frontLineDetector;
+    this.backLineDetector = backLineDetector;
 
     // Require subsystems
-    requires(lineDetector);
+    requires(frontInfraredRangeFinder);
+    requires(backInfraredRangeFinder);
+    requires(frontLineDetector);
+    requires(backLineDetector);
     requires(driveTrain);
-    requires(infraredRangeFinder);
   }
 
   // Called just before this Command runs the first time
@@ -89,12 +78,25 @@ public class FollowLine extends Command {
     inGracePeriod = false;
     driveTrain.setBrake();
     // If scoring from the back side, negate power values;
-    if(scoringDirection == ButtonBox.ScoringDirectionStates.Back) {
-      System.out.println("init new value");
-      powerMotor = -powerMotor;
-      noPowerMotor = -noPowerMotor;
-      normal = -normal;
-      straight = -straight;
+    if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
+      this.noPowerMotor = -RobotMap.Values.noPowerMotor;
+      this.normal = -RobotMap.Values.normal;
+      this.straight = -RobotMap.Values.straight;
+      this.powerMotor = -RobotMap.Values.powerMotor;
+    } else {
+      this.noPowerMotor = RobotMap.Values.noPowerMotor;
+      this.normal = RobotMap.Values.normal;
+      this.straight = RobotMap.Values.straight;
+      this.powerMotor = RobotMap.Values.powerMotor;
+    }
+    
+    // Set up appropriate sensors based on our current scoring direction
+    if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
+      lineDetector = backLineDetector;
+      infraredRangeFinder = backInfraredRangeFinder;
+    } else {
+      lineDetector = frontLineDetector;
+      infraredRangeFinder = frontInfraredRangeFinder;
     }
   }
 
@@ -111,13 +113,13 @@ public class FollowLine extends Command {
       driveTrain.setBrake();
       inGracePeriod = false;
     } else if (lineDetector.leftCenterLineSeen()){
-      driveTrain.setVolts(normal, powerMotor);
-    } else if(lineDetector.rightCenterLineSeen()){
       driveTrain.setVolts(powerMotor, normal);
+    } else if(lineDetector.rightCenterLineSeen()){
+      driveTrain.setVolts(normal, powerMotor);
     } else if(lineDetector.leftLineSeen()){
-      driveTrain.setVolts(noPowerMotor, powerMotor);
-    } else if(lineDetector.rightLineSeen()){
       driveTrain.setVolts(powerMotor, noPowerMotor);
+    } else if(lineDetector.rightLineSeen()){
+      driveTrain.setVolts(noPowerMotor, powerMotor);
     } else if(lineDetector.centerLineSeen()){
       driveTrain.setVolts(straight, straight);
     } else {
@@ -138,6 +140,7 @@ public class FollowLine extends Command {
    if (isCloseToTarget()) {
       return true;
     } else if (inGracePeriod && gracePeriodExpired()) {
+      driveTrain.setBrake();
       return true;
     } else {
       return false;
@@ -145,40 +148,40 @@ public class FollowLine extends Command {
   }
 
   protected boolean isCloseToTarget() {
-    if (scoringDirection == ButtonBox.ScoringDirectionStates.Back) {
-      if (scoringDestination == ButtonBox.ScoringDestinationStates.Rocket) {
-        if (scoringArtifact == ButtonBox.ScoringArtifactStates.Hatch) {
+    if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
+      if (buttonBox.getScoringDestinationState() == ButtonBox.ScoringDestinationStates.Rocket) {
+        if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Hatch) {
           throw new RuntimeException("Back/Hatch/Rocket is not valid!");
-        } else if (scoringArtifact == ButtonBox.ScoringArtifactStates.Ball) {
-          return (infraredRangeFinder.getRawValue() < RobotMap.Values.backInfraredSensorBallRocket);
+        } else if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Ball) {
+          return (infraredRangeFinder.getRawValue() > RobotMap.Values.backInfraredSensorBallRocket);
         } else {
           throw new RuntimeException("Scoring artifact is unknown or must be set.");
         }
-      } else if (scoringDestination == ButtonBox.ScoringDestinationStates.CargoShip) {
-        if (scoringArtifact == ButtonBox.ScoringArtifactStates.Hatch){
-          return (infraredRangeFinder.getRawValue() < RobotMap.Values.backInfraredSensorHatchCargoship);
-        } else if (scoringArtifact == ButtonBox.ScoringArtifactStates.Ball) {
-          return (infraredRangeFinder.getRawValue() < RobotMap.Values.backInfraredSensorBallCargoship);
+      } else if (buttonBox.getScoringDestinationState() == ButtonBox.ScoringDestinationStates.CargoShip) {
+        if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Hatch){
+          return (infraredRangeFinder.getRawValue() > RobotMap.Values.backInfraredSensorHatchCargoship);
+        } else if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Ball) {
+          return (infraredRangeFinder.getRawValue() > RobotMap.Values.backInfraredSensorBallCargoship);
         } else {
           throw new RuntimeException("Scoring artifact is unknown or must be set.");
         }
       } else {
         throw new RuntimeException("Scoring destination is unknown or must be set.");
       }
-    } else if (scoringDirection == ButtonBox.ScoringDirectionStates.Front) {
-      if (scoringDestination == ButtonBox.ScoringDestinationStates.Rocket) {
-        if (scoringArtifact == ButtonBox.ScoringArtifactStates.Hatch) {
-          return (infraredRangeFinder.getRawValue() < RobotMap.Values.frontInfraredSensorHatchRocket);
-        } else if (scoringArtifact == ButtonBox.ScoringArtifactStates.Ball) {
-          return(infraredRangeFinder.getRawValue() < RobotMap.Values.frontUltrasonicSensorBallCargoship);
+    } else if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front) {
+      if (buttonBox.getScoringDestinationState() == ButtonBox.ScoringDestinationStates.Rocket) {
+        if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Hatch) {
+          return (infraredRangeFinder.getRawValue() > RobotMap.Values.frontInfraredSensorHatchRocket);
+        } else if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Ball) {
+          return(infraredRangeFinder.getRawValue() > RobotMap.Values.frontUltrasonicSensorBallCargoship);
         } else {
           throw new RuntimeException("Scoring artifact is unknown or must be set.");
         }
-      } else if (scoringDestination == ButtonBox.ScoringDestinationStates.CargoShip) {
-        if (scoringArtifact == ButtonBox.ScoringArtifactStates.Hatch) {
-          return(infraredRangeFinder.getRawValue() < RobotMap.Values.frontInfraredSensorHatchCargoship);
-        } else if (scoringArtifact == ButtonBox.ScoringArtifactStates.Ball) {
-            return(infraredRangeFinder.getRawValue() < RobotMap.Values.frontUltrasonicSensorBallCargoship);
+      } else if (buttonBox.getScoringDestinationState() == ButtonBox.ScoringDestinationStates.CargoShip) {
+        if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Hatch) {
+          return(infraredRangeFinder.getRawValue() > RobotMap.Values.frontInfraredSensorHatchCargoship);
+        } else if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Ball) {
+            return(infraredRangeFinder.getRawValue() > RobotMap.Values.frontUltrasonicSensorBallCargoship);
         } else {
           throw new RuntimeException("Scoring artifact is unknown or must be set.");
         }

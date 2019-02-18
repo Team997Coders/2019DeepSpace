@@ -82,8 +82,8 @@ public class RobotMap {
       frontUltrasonicSensor = 0, 
       frontInfraredSensor = 2,  
 
-      lineSensorBackLeft = 1,    
-      lineSensorBackCenter = 2,  
+      lineSensorBackLeft = 2,    
+      lineSensorBackCenter = 1,  
       lineSensorBackRight = 3,   
       backInfraredSensor = 3,  
 
@@ -137,22 +137,22 @@ public class RobotMap {
 
       //INFRARED DISTANCES for Line Following
       frontUltrasonicSensorHatchCargoship = 91,     //TODO: Need to check this      
-      frontInfraredSensorHatchCargoship = 5,        //TODO: Need to check this      
+      frontInfraredSensorHatchCargoship = 550,      
       frontUltrasonicSensorHatchRocket = 5,         //TODO: Need to check this   
       frontInfraredSensorHatchRocket = 5,           //TODO: Need to check this 
       frontUltrasonicSensorBallCargoship = 5,       //TODO: Need to check this      
       frontInfraredSensorBallCargoship = 5,         //TODO: Need to check this      
       frontUltrasonicSensorBallRocket = 5,          //TODO: Need to check this   
       frontInfraredSensorBallRocket = 5,            //TODO: Need to check this   
-      backInfraredSensorHatchCargoship = 5,         //TODO: Need to check this  
+      backInfraredSensorHatchCargoship = 1200,  
       backInfraredSensorBallRocket = 5,             //TODO: Need to check this
       backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
 
       // Line following voltage values
-      powerMotor = 0.8,
-      noPowerMotor = -.5,
-      normal = .1,        //for double line seen
-      straight = .35,
+      powerMotor = 0.5,
+      noPowerMotor = -.25,
+      normal = .10,        //for double line seen
+      straight = .3,
 
       // Drive to Distance PID values
       driveToDistance_kP = 0.0002,

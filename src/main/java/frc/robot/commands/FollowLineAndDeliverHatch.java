@@ -15,7 +15,7 @@ public class FollowLineAndDeliverHatch extends CommandGroup {
    */
   public FollowLineAndDeliverHatch() {
     addSequential(new FollowLine(1000));
-    addSequential(new Waittill(.5));
-    addSequential(new BackingUp());
+    //addSequential(new Waittill(.5));
+    //addSequential(new BackingUp());
 }
 }

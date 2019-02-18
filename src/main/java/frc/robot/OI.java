@@ -40,8 +40,8 @@ public class OI {
     //flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
     //flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
 
-    followLine = new JoystickButton(gamepad1, 1);
-    followLine.whileHeld(new FollowLineAndDeliverHatch());
+    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    followLine.whenPressed(new FollowLineAndDeliverHatch());
 
   }
 

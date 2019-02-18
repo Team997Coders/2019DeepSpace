@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
  * Add your docs here.
  */
 public class FollowLineCloseToTargetUnitTest {
+/*
 	LineDetector frontLineDetector;
 	LineDetector backLineDetector;
 	InfraredRangeFinder frontInfraredRangeFinder;
@@ -80,5 +81,6 @@ public class FollowLineCloseToTargetUnitTest {
 
     //Assert
     assertEquals(false, followLine.isFinished());
-  }
+	}
+	*/
 }

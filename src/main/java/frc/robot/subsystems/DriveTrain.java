@@ -75,25 +75,6 @@ public class DriveTrain extends Subsystem {
     table = NetworkTableInstance.create().getTable("SmartDashboard");
   }
 
-  public void flipOrientation(boolean scoringSideReversed){
-    //TRUE forward has a reversed rightTalon and a normalized leftTalon.
-    if (scoringSideReversed) {
-      leftTalon.setInverted(InvertType.InvertMotorOutput);
-      leftVictor1.setInverted(InvertType.InvertMotorOutput);
-      leftVictor2.setInverted(InvertType.InvertMotorOutput);
-      rightTalon.setInverted(InvertType.None);
-      rightVictor1.setInverted(InvertType.None);
-      rightVictor2.setInverted(InvertType.None);
-    } else {
-      leftTalon.setInverted(InvertType.None);
-      leftVictor1.setInverted(InvertType.None);
-      leftVictor2.setInverted(InvertType.None);
-      rightTalon.setInverted(InvertType.InvertMotorOutput);
-      rightVictor1.setInverted(InvertType.InvertMotorOutput);
-      rightVictor2.setInverted(InvertType.InvertMotorOutput);
-    }
-  }
-
   /**
    * Set a percent input to the left and right talons
    * 
