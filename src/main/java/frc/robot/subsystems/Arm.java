@@ -22,7 +22,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
 import frc.robot.commands.LockArm;
-import frc.robot.interfaces.ArmData;
+import frc.robot.data.ArmData;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

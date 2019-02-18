@@ -5,14 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.interfaces;
+package frc.robot.data;
 
 /**
  * Add your docs here.
  */
-public class ArmData {
+public class ElevatorData {
 
   public double output, current, ticks, velocity;
-  public boolean front, back;
+  public boolean bottom, top;
 
 }

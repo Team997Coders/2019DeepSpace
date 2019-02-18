@@ -15,8 +15,8 @@ import java.io.IOException;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.interfaces.ArmData;
-import frc.robot.interfaces.ElevatorData;
+import frc.robot.data.ArmData;
+import frc.robot.data.ElevatorData;
 
 public class Logger {
 
@@ -120,19 +120,27 @@ public class Logger {
         this.writer.write(String.format(",%.3f", a.current));
         this.writer.write(String.format(",%.3f", a.ticks));
         this.writer.write(String.format(",%.3f", a.velocity));
-        this.writer.write(String.format(",%.3f", a.front));
-        this.writer.write(String.format(",%.3f", a.back));
+        this.writer.write(String.format(",%.3f", convertBool(a.front)));
+        this.writer.write(String.format(",%.3f", convertBool(a.back)));
         this.writer.write(String.format(",%.3f", e.output));
         this.writer.write(String.format(",%.3f", e.current));
         this.writer.write(String.format(",%.3f", e.ticks));
         this.writer.write(String.format(",%.3f", e.velocity));
-        this.writer.write(String.format(",%.3f", e.bottom));
-        this.writer.write(String.format(",%.3f", e.top));
+        this.writer.write(String.format(",%.3f", convertBool(e.bottom)));
+        this.writer.write(String.format(",%.3f", convertBool(e.top)));
 
         this.writer.newLine();
       } catch (IOException e) {
         e.printStackTrace();
       }
+    }
+  }
+
+  public double convertBool(boolean a) {
+    if (a) {
+      return 1;
+    } else {
+      return 0;
     }
   }
 

@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import frc.robot.commands.LockElevator;
-import frc.robot.interfaces.ElevatorData;
+import frc.robot.data.ElevatorData;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
