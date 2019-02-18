@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.CANifier.LEDChannel;
 
 import org.team997coders.spartanlib.commands.CenterCamera;
 
@@ -19,16 +20,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.commands.AutoDoNothing;
 import frc.robot.buttonbox.ButtonBox;
-//import frc.robot.subsystems.*;
-import frc.robot.commands.*;
-
-//import spartanlib.subsystem.drivetrain.TankDrive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.BallManipulator;
-import frc.robot.subsystems.CameraLights;
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
@@ -54,7 +51,6 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static CameraMount cameraMount;
   private CenterCamera centerCamera;
-  private TurnOnCameraLight turnOnCameraLight;
   private NetworkTableInstance networkTableInstance;
   public static NetworkTable visionNetworkTable;
   public static CameraControlStateMachine cameraControlStateMachine;
@@ -64,7 +60,8 @@ public class Robot extends TimedRobot {
   public static LineDetector backLineDetector;
   public static InfraredRangeFinder frontInfraredRangeFinder;
   public static InfraredRangeFinder backInfraredRangeFinder;
-  public static CameraLights cameraLights;
+  public static CANifier armCanifier;
+  public static CANifier elevatorCanifier;
 
   public static ButtonBox buttonBox;
   public static OI oi;
@@ -84,15 +81,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
+    armCanifier = new CANifier(RobotMap.Ports.armCanifier);
+    elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
     ballManipulator = new BallManipulator();
     hatchManipulator = new HatchManipulator();
     elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);    
-    cameraLights = new CameraLights();
-    turnOnCameraLight = new TurnOnCameraLight();
+    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20, LEDChannel.LEDChannelA);
     backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,
@@ -164,7 +161,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // Init hatch target finding vision camera
     centerCamera.start();
-    turnOnCameraLight.start();
     cameraControlStateMachine.identifyTargets();
 
     // This makes sure that the autonomous stops running when

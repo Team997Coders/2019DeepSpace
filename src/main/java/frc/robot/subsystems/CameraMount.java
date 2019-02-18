@@ -7,9 +7,13 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.CANifier.LEDChannel;
+
 import org.team997coders.spartanlib.hardware.roborio.Servo;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ControlCamera;
 
@@ -18,6 +22,8 @@ import frc.robot.commands.ControlCamera;
  */
 public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraMount {
   private final double maxDegreesPerHeartbeat;
+  private final CANifier canifier;
+  private final LEDChannel lightRingLEDChannel;
 
   /**
    * Convenience constructor to hard-wire CameraMount to Roborio servo implementation.
@@ -27,13 +33,16 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
       int panLowerLimitInDegrees,
       int panUpperLimitInDegrees,
       double slewRate180DegreesInSec,
-      double heartbeatRateInMs) {
+      double heartbeatRateInMs,
+      LEDChannel lightRingLEDChannel) {
     super(new Servo(RobotMap.Ports.panservo), 
       new Servo(RobotMap.Ports.tiltservo, 544, 2250),
       tiltLowerLimitInDegrees,
       tiltUpperLimitInDegrees,
       panLowerLimitInDegrees,
       panUpperLimitInDegrees);
+      canifier = Robot.elevatorCanifier;
+      this.lightRingLEDChannel = lightRingLEDChannel;
       this.maxDegreesPerHeartbeat = (180D / slewRate180DegreesInSec) / (1000D / heartbeatRateInMs);
     }
 
@@ -53,6 +62,21 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
     // TODO: Pull this function into SpartanLib
     panToAngle(90d);
     tiltToAngle(90d);
+  }
+
+  /**
+   * Set the output of the camera mount light ring.
+   * @param percentOutput   PWM dutycycle expressed as a percentage.
+   */
+  public void setLightRingOutput(double percentOutput) {
+    canifier.setLEDOutput(percentOutput, lightRingLEDChannel);
+  }
+
+  /**
+   * Turn off the light ring.
+   */
+  public void setLightRingOff() {
+    setLightRingOutput(0);
   }
 
   /**
