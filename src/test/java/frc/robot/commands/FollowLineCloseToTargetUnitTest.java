@@ -13,7 +13,7 @@ import frc.robot.subsystems.LineDetector;
 import org.junit.Before;
 import org.junit.Test;
 
-import frc.robot.buttonbox.*;
+import frc.robot.buttonbox.ButtonBox;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -21,12 +21,12 @@ import static org.mockito.Mockito.*;
  * Add your docs here.
  */
 public class FollowLineCloseToTargetUnitTest {
-/*
 	LineDetector frontLineDetector;
 	LineDetector backLineDetector;
 	InfraredRangeFinder frontInfraredRangeFinder;
 	InfraredRangeFinder backInfraredRangeFinder;
-	DriveTrain driveTrain;
+  DriveTrain driveTrain;
+  ButtonBox buttonBox;
 
 	@Before
 	public void initializeMocks() {
@@ -34,12 +34,16 @@ public class FollowLineCloseToTargetUnitTest {
 		backLineDetector = mock(LineDetector.class);
 		frontInfraredRangeFinder = mock(InfraredRangeFinder.class);
 		backInfraredRangeFinder = mock(InfraredRangeFinder.class);
-		driveTrain = mock(DriveTrain.class);
+    driveTrain = mock(DriveTrain.class);
+    buttonBox = mock(ButtonBox.class);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Ball);
 	}
 
 	@Test
 	public void itFinishesWhenCloseToTargetFrontBallRocket() {
-	// Assemble
+	  // Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
 			backLineDetector, 
@@ -47,12 +51,9 @@ public class FollowLineCloseToTargetUnitTest {
 			backInfraredRangeFinder, 
 			driveTrain, 
 			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Ball);
-		
-		//Assemble
-    when(frontInfraredRangeFinder.getRawValue()).thenReturn(0);
+			buttonBox);
+    when(frontInfraredRangeFinder.getRawValue()).thenReturn(10);
+    followLine.initialize();
 
 		//Act
 
@@ -70,17 +71,13 @@ public class FollowLineCloseToTargetUnitTest {
 			backInfraredRangeFinder, 
 			driveTrain, 
 			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Ball);
-		
-		//Assemble
-    when(frontInfraredRangeFinder.getRawValue()).thenReturn(10);
+			buttonBox);
+		when(frontInfraredRangeFinder.getRawValue()).thenReturn(0);
+    followLine.initialize();
 
 		//Act
 
     //Assert
     assertEquals(false, followLine.isFinished());
 	}
-	*/
 }

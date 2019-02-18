@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import frc.robot.RobotMap;
-import frc.robot.buttonbox.*;
+import frc.robot.buttonbox.ButtonBox;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -22,12 +22,12 @@ import static org.mockito.Mockito.*;
  * Add your docs here.
  */
 public class FollowLineGracePeriodUnitTest {
-/*
 	LineDetector frontLineDetector;
 	LineDetector backLineDetector;
 	InfraredRangeFinder frontInfraredRangeFinder;
 	InfraredRangeFinder backInfraredRangeFinder;
-	DriveTrain driveTrain;
+  DriveTrain driveTrain;
+  ButtonBox buttonBox;
 
 	@Before
 	public void initializeMocks() {
@@ -36,6 +36,10 @@ public class FollowLineGracePeriodUnitTest {
 		frontInfraredRangeFinder = mock(InfraredRangeFinder.class);
 		backInfraredRangeFinder = mock(InfraredRangeFinder.class);
 		driveTrain = mock(DriveTrain.class);
+    buttonBox = mock(ButtonBox.class);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 	}
 
 	@Test
@@ -47,10 +51,8 @@ public class FollowLineGracePeriodUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 		
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(false);
@@ -74,10 +76,8 @@ public class FollowLineGracePeriodUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 10, // make grace period short
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 10, // make grace period short
+      buttonBox);
 		
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(false);
@@ -103,15 +103,11 @@ public class FollowLineGracePeriodUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 10, // make grace period short
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 10, // make grace period short
+      buttonBox);
 		
-		//Assemble
-		when(frontLineDetector.leftLineSeen()).thenReturn(false);
-		when(frontLineDetector.centerLineSeen()).thenReturn(false);
-		when(frontLineDetector.rightLineSeen()).thenReturn(false);
+    //Assemble
+    when(frontLineDetector.noLineSeen()).thenReturn(true);
 
 		//Act
 		followLine.initialize();
@@ -131,10 +127,8 @@ public class FollowLineGracePeriodUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 10, // make grace period short
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 10, // make grace period short
+      buttonBox);
 		
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(false);
@@ -151,5 +145,4 @@ public class FollowLineGracePeriodUnitTest {
 		//Assert
 		verify(driveTrain, times(1)).setBrake();
   }
-  */
 }

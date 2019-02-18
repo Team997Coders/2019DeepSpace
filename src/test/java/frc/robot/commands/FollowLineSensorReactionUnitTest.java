@@ -21,12 +21,12 @@ import static org.mockito.Mockito.*;
  * Add your docs here.
  */
 public class FollowLineSensorReactionUnitTest {
-/*
 	LineDetector frontLineDetector;
 	LineDetector backLineDetector;
 	InfraredRangeFinder frontInfraredRangeFinder;
 	InfraredRangeFinder backInfraredRangeFinder;
-	DriveTrain driveTrain;
+  DriveTrain driveTrain;
+  ButtonBox buttonBox;
 
 	@Before
 	public void initializeMocks() {
@@ -34,7 +34,8 @@ public class FollowLineSensorReactionUnitTest {
 		backLineDetector = mock(LineDetector.class);
 		frontInfraredRangeFinder = mock(InfraredRangeFinder.class);
 		backInfraredRangeFinder = mock(InfraredRangeFinder.class);
-		driveTrain = mock(DriveTrain.class);
+    driveTrain = mock(DriveTrain.class);
+    buttonBox = mock(ButtonBox.class);
 	}
 
 	@Test
@@ -46,17 +47,19 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 		
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(false);
 		when(frontLineDetector.centerLineSeen()).thenReturn(true);
 		when(frontLineDetector.rightLineSeen()).thenReturn(false);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
-		//Act
+    //Act
+    followLine.initialize();
 		followLine.execute();
 
 		//Assert
@@ -72,15 +75,16 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Back, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 		
 		//Assemble
 		when(backLineDetector.leftLineSeen()).thenReturn(false);
 		when(backLineDetector.centerLineSeen()).thenReturn(true);
 		when(backLineDetector.rightLineSeen()).thenReturn(false);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Back);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
@@ -99,22 +103,23 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 			
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(false);
 		when(frontLineDetector.centerLineSeen()).thenReturn(false);
 		when(frontLineDetector.rightLineSeen()).thenReturn(true);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
 		followLine.execute();
 
 		//Assert
-		verify(driveTrain, times(1)).setVolts(RobotMap.Values.powerMotor, RobotMap.Values.noPowerMotor);
+		verify(driveTrain, times(1)).setVolts(RobotMap.Values.noPowerMotor, RobotMap.Values.powerMotor);
 	}
 
 	@Test
@@ -126,22 +131,23 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Back, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000,
+      buttonBox);
 			
 		//Assemble
 		when(backLineDetector.leftLineSeen()).thenReturn(false);
 		when(backLineDetector.centerLineSeen()).thenReturn(false);
 		when(backLineDetector.rightLineSeen()).thenReturn(true);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Back);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
 		followLine.execute();
 
 		//Assert
-		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.powerMotor, -RobotMap.Values.noPowerMotor);
+		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.noPowerMotor, -RobotMap.Values.powerMotor);
 	}
 
 	@Test
@@ -153,22 +159,23 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 			
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(true);
 		when(frontLineDetector.centerLineSeen()).thenReturn(false);
 		when(frontLineDetector.rightLineSeen()).thenReturn(false);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
 		followLine.execute();
 
 		//Assert
-		verify(driveTrain, times(1)).setVolts(RobotMap.Values.noPowerMotor, RobotMap.Values.powerMotor);
+		verify(driveTrain, times(1)).setVolts(RobotMap.Values.powerMotor, RobotMap.Values.noPowerMotor);
 	}
 
 	@Test
@@ -180,22 +187,23 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Back, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 			
 		//Assemble
 		when(backLineDetector.leftLineSeen()).thenReturn(true);
 		when(backLineDetector.centerLineSeen()).thenReturn(false);
 		when(backLineDetector.rightLineSeen()).thenReturn(false);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Back);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
 		followLine.execute();
 
 		//Assert
-		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.noPowerMotor, -RobotMap.Values.powerMotor);
+		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.powerMotor, -RobotMap.Values.noPowerMotor);
 	}
 
 	@Test
@@ -207,20 +215,21 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 			
 		//Assemble
 		when(frontLineDetector.leftCenterLineSeen()).thenReturn(true);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
 		followLine.execute();
 
 		//Assert
-		verify(driveTrain, times(1)).setVolts(RobotMap.Values.normal, RobotMap.Values.powerMotor);
+		verify(driveTrain, times(1)).setVolts(RobotMap.Values.powerMotor, RobotMap.Values.normal);
 	}
 
 	@Test
@@ -232,20 +241,21 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Front, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 			
 		//Assemble
 		when(frontLineDetector.rightCenterLineSeen()).thenReturn(true);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
 		followLine.execute();
 
 		//Assert
-		verify(driveTrain, times(1)).setVolts(RobotMap.Values.powerMotor, RobotMap.Values.normal);
+		verify(driveTrain, times(1)).setVolts(RobotMap.Values.normal, RobotMap.Values.powerMotor);
 	}
 
 	@Test
@@ -257,20 +267,21 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Back, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 			
 		//Assemble
 		when(backLineDetector.leftCenterLineSeen()).thenReturn(true);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Back);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
 		followLine.execute();
 
 		//Assert
-		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.normal, -RobotMap.Values.powerMotor);
+		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.powerMotor, -RobotMap.Values.normal);
 	}
 
 	@Test
@@ -282,51 +293,20 @@ public class FollowLineSensorReactionUnitTest {
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
-			(long) 1000, 
-			ButtonBox.ScoringDirectionStates.Back, 
-			ButtonBox.ScoringDestinationStates.Rocket, 
-			ButtonBox.ScoringArtifactStates.Hatch);
+      (long) 1000, 
+      buttonBox);
 			
 		//Assemble
 		when(backLineDetector.rightCenterLineSeen()).thenReturn(true);
+    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Back);
+    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
 
 		//Act
 		followLine.initialize();
 		followLine.execute();
 
 		//Assert
-		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.powerMotor, -RobotMap.Values.normal);
+		verify(driveTrain, times(1)).setVolts(-RobotMap.Values.normal, -RobotMap.Values.powerMotor);
 	}
-	*/
 }
-    /* Can't get the timeout to work right in the test.  
-     * I get a: 
-     * org.mockito.exceptions.verification.WantedButNotInvoked at FollowLineUnitTest.java:82 the verify step)
-     * failure.
-     */
-
-/*		 
-    @Test
-    public void continueIfNoLineSeen() {
-        Sensors m_sensors = mock(Sensors.class);
-        DriveTrain m_driveTrain = mock(DriveTrain.class);
-        FollowLine m_followLine = new FollowLine(m_sensors, m_driveTrain, (long) 10);
-        
-        //Assemble
-        when(m_sensors.noLineSeen()).thenReturn(true);
-
-        //Act
-        m_followLine.execute();
-
-        //Assert
-        verify(m_driveTrain, times(1)).setVolts(straight, straight);
-    }
-*/
-
-    
-    // TODO: Now implement this test!
-    //@Test
-    //public void itStopsWhenCloseToTarget() {
-    //
-    //}
-    
