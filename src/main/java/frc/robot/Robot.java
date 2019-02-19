@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.CANifier.LEDChannel;
+
 import org.team997coders.spartanlib.commands.CenterCamera;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -17,16 +20,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.commands.AutoDoNothing;
 import frc.robot.buttonbox.ButtonBox;
-//import frc.robot.subsystems.*;
-import frc.robot.commands.*;
-
-//import spartanlib.subsystem.drivetrain.TankDrive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.BallManipulator;
-
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
@@ -61,6 +60,8 @@ public class Robot extends TimedRobot {
   public static LineDetector backLineDetector;
   public static InfraredRangeFinder frontInfraredRangeFinder;
   public static InfraredRangeFinder backInfraredRangeFinder;
+  public static CANifier armCanifier;
+  public static CANifier elevatorCanifier;
 
   public static ButtonBox buttonBox;
   public static OI oi;
@@ -80,13 +81,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
+    armCanifier = new CANifier(RobotMap.Ports.armCanifier);
+    elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
     ballManipulator = new BallManipulator();
     hatchManipulator = new HatchManipulator();
     elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20);    
+    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20, LEDChannel.LEDChannelA);
     backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,

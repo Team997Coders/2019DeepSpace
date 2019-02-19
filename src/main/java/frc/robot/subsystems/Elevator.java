@@ -12,6 +12,7 @@ import frc.robot.commands.LockElevator;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.CANifier;
@@ -40,7 +41,7 @@ public class Elevator extends Subsystem {
    public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.Ports.followerElevatorMotor, MotorType.kBrushless);
-    canifier = new CANifier(RobotMap.Ports.elevatorCanifier);
+    canifier = Robot.elevatorCanifier;
     limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
     
