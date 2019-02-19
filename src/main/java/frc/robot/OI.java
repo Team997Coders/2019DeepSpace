@@ -1,7 +1,6 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.*;
 
 import frc.robot.commands.DeployLandingGear;
@@ -31,19 +30,11 @@ public class OI {
 
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
-  //private JoystickButton followLine;
   private JoystickButton toggleHatch;
-
-  private JoystickButton flipSystemOrientation;
-
-  private JoystickButton flipDriveTrainOrientation;
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
-
-    // TODO: This has now been freed up given the button box. Still needed?
-    // gamepad2 = new Joystick(RobotMap.Buttons.GamePad2);
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
@@ -65,38 +56,20 @@ public class OI {
     ArmForward.whileHeld(new MoveArm(0.5));
     ArmForward.whenInactive(new LockArm());
 
-    // Adds LockArm to the scheduler so I locks immediately.
-    //Scheduler.getInstance().add(new LockArm());
+    /* Adding Setpoint buttons for testing */
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whileHeld(new ElevatorUppity());
+    elevatorGoUp.whenInactive(new LockElevator());
 
-    //followLine = new JoystickButton(gamepad1, 1);
-    //followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whileHeld(new ElevatorDownity());
+    elevatorGoDown.whenInactive(new LockElevator());      
+    
+    ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    ballIntake.whileHeld(new BallIntake());
 
-    //toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    //toggleHatch.whenPressed(new ToggleHatchHolder());
-
-      /* Adding Setpoint buttons for testing */
-      elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-      elevatorGoUp.whileHeld(new ElevatorUppity());
-      elevatorGoUp.whenInactive(new LockElevator());
-
-      elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-      elevatorGoDown.whileHeld(new ElevatorDownity());
-      elevatorGoDown.whenInactive(new LockElevator());
-      /*
-      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
-      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
-
-      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
-      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));*/
-      
-      
-      ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
-      ballIntake.whileHeld(new BallIntake());
-
-      ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
-      ballOutake.whileHeld(new BallOuttake());
-
-      // System.out.println("Wtf");
+    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    ballOutake.whileHeld(new BallOuttake());
 
     elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     elevatorGoDown.whileHeld(new ElevatorDownity());

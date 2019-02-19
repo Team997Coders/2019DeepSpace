@@ -38,7 +38,6 @@ public class ButtonBoxOI {
   private JoystickButton cargoShipDestination;
   private JoystickButton cancel;
   private JoystickButton intake;
-  // Do not worry about these for now...need to merge NT-Auto first
   private JoystickButton visionA;
   private JoystickButton visionB;
   private JoystickButton visionX;

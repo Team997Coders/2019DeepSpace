@@ -121,13 +121,7 @@ public class RobotMap {
   }
 
   public static class Values {
-    // TODO: PID values should be reduced across classes unless different values are needed.
-    // In that case, these names should be changed to indicate who the consumer is.
     public static final double
-
-      P = 0.0002,
-      I = 0.0,
-      D = 0.0,
 
       driveDistanceP = .00025, //placeholders
       driveDistanceI = 0.0,
