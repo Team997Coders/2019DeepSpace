@@ -80,6 +80,7 @@ public class ControlCamera extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    cameraMount.setLightRingOutput(100);
     cameraMount.center();
   }
 
@@ -147,11 +148,13 @@ public class ControlCamera extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    cameraMount.setLightRingOutput(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

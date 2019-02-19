@@ -12,6 +12,7 @@ import frc.robot.commands.LockElevator;
 import frc.robot.data.ElevatorData;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.CANifier;
@@ -44,6 +45,9 @@ public class Elevator extends Subsystem {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.Ports.followerElevatorMotor, MotorType.kBrushless);
 
+// TODO: Hunter, please review this merge...
+// The next 6 lines did not exist in master but I left them from scrimmage.
+    
     master.restoreFactoryDefaults();
     follower.restoreFactoryDefaults();
 
@@ -51,8 +55,12 @@ public class Elevator extends Subsystem {
     encoder.setPosition(0);
     encoder.setPositionConversionFactor(42);
 
-    canifier = new CANifier(RobotMap.Ports.elevatorCanifier);
+    // This line must be this way now that the canifiers are shared recources
+    canifier = Robot.elevatorCanifier;
     limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
+// In particular, this line came over from master, but looked like you meant param 2 to be kReverse,
+// so I left it as it was in scrimmage.
+//    limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
     
     limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kForward , LimitSwitchPolarity.kNormallyOpen);

@@ -26,6 +26,7 @@ import frc.robot.data.ArmData;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 /**
  * Add your docs here.
@@ -74,7 +75,7 @@ public class Arm extends Subsystem {
     backLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
     backLimitSwitch.enableLimitSwitch(true);
 
-    dataBus = new CANifier(RobotMap.Ports.armCanifier);
+    dataBus = Robot.armCanifier;
 
     discBrake = new Solenoid(RobotMap.Ports.discBrake);
 
