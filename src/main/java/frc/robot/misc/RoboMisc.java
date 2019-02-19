@@ -39,8 +39,8 @@ public class RoboMisc {
     a.configNominalOutputReverse(0, 10);
     // a.configPeakOutputForward(1, 10); //Use for PB
     // a.configPeakOutputReverse(-1, 10); //Use for PB
-    a.configPeakOutputForward(0.7, 10); // Use for extrasensitive CB
-    a.configPeakOutputReverse(-0.7, 10); // Use for extrasensitive CB
+    a.configPeakOutputForward(1, 10); // Use for extrasensitive CB
+    a.configPeakOutputReverse(-1, 10); // Use for extrasensitive CB
 
     a.configPeakCurrentLimit(40, 10);
     a.configPeakCurrentDuration(100, 10);

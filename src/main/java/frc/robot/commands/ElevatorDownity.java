@@ -6,47 +6,39 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+import frc.robot.Robot;
+import frc.robot.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 
-public class SetArmPosition extends Command {
-
-  private double setpoint;
-  private double tolerance;
-
-  public SetArmPosition(double setpoint, double tolerance) {
-
-    this.setpoint = setpoint;
-    this.tolerance = tolerance;
-
-    requires(Robot.arm);
+public class ElevatorDownity extends Command {
+  public ElevatorDownity() {
+    requires(Robot.elevator);
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.SetPostion(setpoint);
-    Robot.arm.UpdateF();
+    Robot.elevator.SetPower(-.3);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.arm.readEncoder() > setpoint - tolerance) && (Robot.arm.readEncoder() < setpoint + tolerance);
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.engageBrake();
-    Robot.arm.setPower(0);
+  Robot.elevator.SetPosition(Robot.elevator.GetPosition());
   }
 
   // Called when another command which requires one or more of the same

@@ -1,11 +1,12 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.commands.*;
 
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.FollowLineAndDeliverHatch;
 import frc.robot.commands.RetractLandingGear;
-import frc.robot.commands.ToggleHatchHolder;
 
 
 /**
@@ -14,12 +15,23 @@ import frc.robot.commands.ToggleHatchHolder;
  */
 public class OI {
 
-  Joystick gamepad1 = new Joystick(0);
-  Joystick gamepad2 = new Joystick(1);
+  Joystick gamepad1;
+  Joystick gamepad3;
+
+
+  //temporary elevator testing buttons.
+  public JoystickButton elevatorGoUp;
+  public JoystickButton elevatorGoDown;
+  public JoystickButton followLine;
+  public JoystickButton ballIntake;
+  public JoystickButton ballOutake;
+
+  public JoystickButton ArmForward;
+  public JoystickButton ArmReverse;
 
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
-  private JoystickButton followLine;
+  //private JoystickButton followLine;
   private JoystickButton toggleHatch;
 
   private JoystickButton flipSystemOrientation;
@@ -28,6 +40,8 @@ public class OI {
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
+    gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
+
     // TODO: This has now been freed up given the button box. Still needed?
     // gamepad2 = new Joystick(RobotMap.Buttons.GamePad2);
 
@@ -37,16 +51,70 @@ public class OI {
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
 
-    //flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
-    //flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
-
     followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
     followLine.whenPressed(new FollowLineAndDeliverHatch());
 
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ToggleHatch());
+
+    ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
+    ArmReverse.whileHeld(new MoveArm(-0.5));
+    ArmReverse.whenInactive(new LockArm());
+
+    ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
+    ArmForward.whileHeld(new MoveArm(0.5));
+    ArmForward.whenInactive(new LockArm());
+
+    // Adds LockArm to the scheduler so I locks immediately.
+    //Scheduler.getInstance().add(new LockArm());
+
+    //followLine = new JoystickButton(gamepad1, 1);
+    //followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
+
+    //toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    //toggleHatch.whenPressed(new ToggleHatchHolder());
+
+      /* Adding Setpoint buttons for testing */
+      elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+      elevatorGoUp.whileHeld(new ElevatorUppity());
+      elevatorGoUp.whenInactive(new LockElevator());
+
+      elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+      elevatorGoDown.whileHeld(new ElevatorDownity());
+      elevatorGoDown.whenInactive(new LockElevator());
+      /*
+      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
+      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
+
+      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
+      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));*/
+      
+      
+      ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+      ballIntake.whileHeld(new BallIntake());
+
+      ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+      ballOutake.whileHeld(new BallOuttake());
+
+      // System.out.println("Wtf");
+
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whileHeld(new ElevatorDownity());
+    elevatorGoDown.whenInactive(new LockElevator());
+    
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
+
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
   }
 
   public double getLeftYAxis() {
     return bing(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
+  }
+
+  public double getLeftYAxis2() {
+    return bing(0.05, -gamepad3.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
   }
 
   public double getRightXAxis() {

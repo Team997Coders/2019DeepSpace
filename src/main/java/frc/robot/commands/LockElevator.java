@@ -1,40 +1,50 @@
-package frc.robot.commands;
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
-import frc.robot.Robot;
+package frc.robot.commands;
 import frc.robot.subsystems.Elevator;
+import frc.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class LockElevator extends Command {
+  private double position;
+  public LockElevator() {
+    requires(Robot.elevator);
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+  }
 
-	public double position;
-	
-    public LockElevator() {
-    	requires(Robot.elevator);
-    }
-    
-    protected void initialize() {
-    	position = Robot.elevator.GetPosition();
-    }
-    
-    protected void execute() {
-    	Robot.elevator.SetPosition(position);
-    }
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+   position = Robot.elevator.GetPosition();
+  }
 
-    protected boolean isFinished() {
-	// CCB: So why would you want to finish this command if the PID closed loop error approaches zero?
-	// Shouldn't you just keep executing until button is released or possibly if the elevator
-	// is at the zero position?
-    	//double closedLoopError = Robot.elevator.getError();
-    	//return /*!Robot.elevator.isZeroed ||*/ (Math.abs(closedLoopError) < 60);
-    	return false;
-    }
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    Robot.elevator.SetPosition(position);
+  }
 
-    protected void end() {
-    }
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return (Robot.elevator.GetBottomLimitSwitch());
+  }
 
-    protected void interrupted() {
-    }
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+  }
 }

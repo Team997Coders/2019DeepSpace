@@ -16,26 +16,26 @@ public class LockArm extends Command {
     }
     
     protected void initialize() {
+      //Robot.arm.engageBrake();
     	position = Robot.arm.readEncoder();
     }
     
     protected void execute() {
       Robot.arm.SetPostion(position);
-      Robot.arm.stop();
+      System.out.println("Locking Arm at position " + position);
     }
 
     protected boolean isFinished() {
-	    // CCB: So why would you want to finish this command if the PID closed loop error approaches zero?
-	    // Shouldn't you just keep executing until button is released or possibly if the elevator
-	    // is at the zero position?
-    	//double closedLoopError = Robot.elevator.getError();
-    	//return /*!Robot.elevator.isZeroed ||*/ (Math.abs(closedLoopError) < 60);
     	return false;
     }
 
     protected void end() {
+      //Robot.arm.SetPostion(Robot.arm.readEncoder());
+      Robot.arm.releaseBrake();
     }
 
     protected void interrupted() {
+      System.out.println("arm lock interrupted");
+      end();
     }
 }

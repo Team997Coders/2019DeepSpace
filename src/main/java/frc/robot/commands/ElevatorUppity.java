@@ -6,28 +6,28 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-
-import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.subsystems.Elevator;
 import frc.robot.Robot;
 
-public class CommandBreak extends Command {
-  public CommandBreak() {
+import edu.wpi.first.wpilibj.command.Command;
+
+public class ElevatorUppity extends Command {
+  public ElevatorUppity() {
+    requires(Robot.elevator);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.driveTrain);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    System.out.println("initialized elevator up-ing");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.stopVolts();
-    Robot.driveTrain.setBrake();
-    Robot.driveTrain.setCoast();
+    Robot.elevator.SetPower(.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -39,11 +39,14 @@ public class CommandBreak extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    System.out.println("ended elevator up-ing");
+    Robot.elevator.SetPosition(Robot.elevator.GetPosition());
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

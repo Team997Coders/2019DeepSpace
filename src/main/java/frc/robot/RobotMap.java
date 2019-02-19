@@ -41,9 +41,10 @@ public class RobotMap {
     public static int
 
       GamePad1 = 0,
+      GamePad3 = 2, 
       buttonA = 1,
       buttonB = 2,
-      buttonX = 3,            // TODO: Need to check this
+      buttonX = 3,            
       buttonY = 4,            // TODO: Need to check this
       buttonLeftShoulder = 5,       // TODO: Need to check this
       buttonRightShoulder = 6,      // TODO: Need to check this
@@ -52,6 +53,7 @@ public class RobotMap {
       buttonLeftTrigger = 9,        // TODO: Need to check this
       buttonRightTrigger = 10,      // TODO: Need to check this
       buttonBack = 7,
+      buttonStart = 8,
 
       //AXIS PORTS
       leftXAxis = 0,
@@ -90,7 +92,7 @@ public class RobotMap {
 
 
       //BALL PORTS
-      ballMotor = 9,
+      ballMotor = 12,
       // ball sensor on the arm canifier rev limit switch connection 
 
       //HATCH PORTS
@@ -98,13 +100,13 @@ public class RobotMap {
   
       //ARM PORTS
       discBrake = 2, 
-      armSpark = 10,
+      armSpark = 62,
       armCanifier = 23,
 
       // ELEVATOR PORTS
-      elevatorCanifier = 29, // TODO: need to change this to the correct value!
-      masterElevatorMotor= 7,
-      followerElevatorMotor = 8,
+      elevatorCanifier = 29,
+      masterElevatorMotor= 42,
+      followerElevatorMotor = 43,
 
       //LANDING GEAR PORTS
       landingGearPiston = 0,
@@ -155,28 +157,28 @@ public class RobotMap {
       straight = .3,
 
       // Drive to Distance PID values
-      driveToDistance_kP = 0.0002,
+      driveToDistance_kP = 0.0001,
       driveToDistance_kI = 0.0,
       driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
-      elevatorPidP = 655520, // all placeholders
-      elevatorPidI = 123456,
-      elevatorPidD = 123456789,
-      elevatorPidF = 1234567,
-      elevatorTopHeight = 10000,
+      elevatorPidP = 0.00002, // 0.0005
+      elevatorPidI = 0.0,
+      elevatorPidD = 0.000, // 0.0005
+      elevatorPidF = 0.0000,
+      elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
       armEncoderCenter= 9002,//another place holder
       armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
       armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
 
-      armPidP = 0.1,
+      armPidP = 0,
       armPidI = 0,
       armPidD = 0,
       armPidK = 0,
-      armMaxPidF = 0,
-      ticksToRadiansArm= 3.14159268/(Math.abs(armBackLimit-armFrontLimit)),
+      armMaxPidF = 0.0055,
+      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit)),
 
       // Camera values
       leftAngleInDegrees = 75,
@@ -184,26 +186,33 @@ public class RobotMap {
   }
 
   public static class ElevatorHeights {
+    //in inches
     public static int
-      elevatorBackTopHatchHeight = 1, //hey, placeholders.
-      elevatorBackMiddleHatchHeight = 1, 
-      elevatorBackBottomHatchHeight = 2,
-      elevatorBackShipHatchHeight = 3,
+      elevatorBackTopHatchHeight = 0, //impossible
+      elevatorBackMiddleHatchHeight = 0, 
+      elevatorBackBottomHatchHeight = 0,
+      elevatorBackShipHatchHeight = 8900,
 
-      elevatorBackTopCargoHeight = 5,
-      elevatorBackMiddleCargoHeight = 8,
-      elevatorBackBottomCargoHeight = 13,
-      elevatorBackShipCargoHeight = 21,
+      elevatorBackTopCargoHeight = 52400, // probably higher
+      elevatorBackMiddleCargoHeight = 34400,
+      elevatorBackBottomCargoHeight = 9100,
+      elevatorBackShipCargoHeight = 24650,
 
-      elevatorFrontTopHatchHeight = 34,
-      elevatorFrontMiddleHatchHeight = 55,
-      elevatorFrontBottomHatchHeight = 89,
-      elevatorFrontShipHatchHeight = 135,
+      elevatorFrontTopHatchHeight = 52400, // probably higher
+      elevatorFrontMiddleHatchHeight = 30530,
+      elevatorFrontBottomHatchHeight = 1520,
+      elevatorFrontShipHatchHeight = 1520,
 
-      elevatorFrontTopCargoHeight = 224,
-      elevatorFrontMiddleCargoHeight = 359,
-      elevatorFrontBottomCargoHeight = 583,
-      elevatorFrontShipCargoHeight = 912;
+      elevatorFrontTopCargoHeight = 52400, //impossible
+      elevatorFrontMiddleCargoHeight = 45360,
+      elevatorFrontBottomCargoHeight = 22200,
+      elevatorFrontShipCargoHeight = 38125,
+
+      elevatorCollectCargoHeight = 0,
+      
+      armBackParallel = 660,
+      armFrontParallel = 150,
+      armVertical = 415;
 
       public static int[]
       elevatorFrontHatchHeightArray = {

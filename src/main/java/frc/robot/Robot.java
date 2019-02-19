@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.AutoDoNothing;
+import frc.robot.subsystems.Logger;
 import frc.robot.buttonbox.ButtonBox;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -85,6 +86,7 @@ public class Robot extends TimedRobot {
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
     ballManipulator = new BallManipulator();
+    pdp = new PowerDistributionPanel();
     hatchManipulator = new HatchManipulator();
     elevator = new Elevator();
     liftGear = new LiftGear();
@@ -135,11 +137,14 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
+    arm.Unlock();
+    Logger.getInstance().close();
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+    elevator.ZeroElevator();
   }
 
   @Override
@@ -168,7 +173,11 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    System.out.println("--------------------");
+    System.out.println("---------------------");
+
+    arm.Lock();
+
+    Logger.getInstance().openFile();
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -186,6 +195,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    Logger.getInstance().logAll();
   }
 
   @Override
