@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
     buttonBox = new ButtonBox();
 
     // Create the logging instance so we can use it for tuning the PID subsystems
-    logger = Logger.getInstance();
+    //logger = Logger.getInstance();
 
     // Instanciate the Power Distribution Panel so that we can get the currents
     // however, we need to clear the faults so that the LEDs on the PDP go green.
@@ -144,7 +144,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
     arm.Unlock();
-    Logger.getInstance().close();
+    //Logger.getInstance().close();
   }
 
   @Override
@@ -166,6 +166,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+
+    oi.reconfigureButtons();
   }
 
   @Override
@@ -183,7 +185,7 @@ public class Robot extends TimedRobot {
 
     arm.Lock();
 
-    Logger.getInstance().openFile();
+    //Logger.getInstance().openFile();
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -200,7 +202,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    Logger.getInstance().logAll();
+    //Logger.getInstance().logAll();
+
+    oi.reconfigureButtons();
   }
 
   @Override

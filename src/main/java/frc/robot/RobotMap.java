@@ -189,9 +189,9 @@ public class RobotMap {
     //in inches
     public static int
       elevatorBackTopHatchHeight = 0, //impossible
-      elevatorBackMiddleHatchHeight = 0, 
-      elevatorBackBottomHatchHeight = 0,
-      elevatorBackShipHatchHeight = 8900,
+      elevatorBackMiddleHatchHeight = 0, //impossible
+      elevatorBackBottomHatchHeight = 0, //impossible
+      elevatorBackShipHatchHeight = 8900, //impossible
 
       elevatorBackTopCargoHeight = 52400, // probably higher
       elevatorBackMiddleCargoHeight = 34400,
@@ -203,7 +203,7 @@ public class RobotMap {
       elevatorFrontBottomHatchHeight = 1520,
       elevatorFrontShipHatchHeight = 1520,
 
-      elevatorFrontTopCargoHeight = 52400, //impossible
+      elevatorFrontTopCargoHeight = 52400,
       elevatorFrontMiddleCargoHeight = 45360,
       elevatorFrontBottomCargoHeight = 22200,
       elevatorFrontShipCargoHeight = 38125,

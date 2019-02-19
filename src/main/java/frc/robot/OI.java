@@ -1,11 +1,8 @@
 package frc.robot;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.*;
-
-import frc.robot.commands.DeployLandingGear;
-import frc.robot.commands.FollowLineAndDeliverHatch;
-import frc.robot.commands.RetractLandingGear;
 
 
 /**
@@ -17,6 +14,7 @@ public class OI {
   Joystick gamepad1;
   Joystick gamepad3;
 
+  private CurrentConfig currentConfig = CurrentConfig.Manual;
 
   //temporary elevator testing buttons.
   public JoystickButton elevatorGoUp;
@@ -31,6 +29,7 @@ public class OI {
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton toggleHatch;
+  private JoystickButton probCargo;
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
@@ -45,8 +44,7 @@ public class OI {
     followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
     followLine.whenPressed(new FollowLineAndDeliverHatch());
 
-    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-    toggleHatch.whenPressed(new ToggleHatch());
+    manualConfig();
 
     ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
     ArmReverse.whileHeld(new MoveArm(-0.5));
@@ -57,29 +55,17 @@ public class OI {
     ArmForward.whenInactive(new LockArm());
 
     /* Adding Setpoint buttons for testing */
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-    elevatorGoUp.whileHeld(new ElevatorUppity());
-    elevatorGoUp.whenInactive(new LockElevator());
-
-    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-    elevatorGoDown.whileHeld(new ElevatorDownity());
-    elevatorGoDown.whenInactive(new LockElevator());      
-    
     ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
     ballIntake.whileHeld(new BallIntake());
 
     ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballOutake.whileHeld(new BallOuttake());
-
-    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-    elevatorGoDown.whileHeld(new ElevatorDownity());
-    elevatorGoDown.whenInactive(new LockElevator());
     
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
-    elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
+    // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    // elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
 
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
-    elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
+    // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    // elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
   }
 
   public double getLeftYAxis() {
@@ -129,6 +115,136 @@ public class OI {
    */
   public double bing(double dead, double val, double min, double max) {
     return clamp(min, max, deadBand(val, dead));
+  }
+
+  public void purgeConfig() {
+    probCargo.close();
+    toggleHatch.close();
+    elevatorGoDown.close();
+    elevatorGoUp.close();
+  }
+
+  public void manualConfig() {
+    probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ToggleHatch());
+
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whileHeld(new ElevatorUppity());
+    elevatorGoUp.whenInactive(new LockElevator());
+
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whileHeld(new ElevatorDownity());
+    elevatorGoDown.whenInactive(new LockElevator());
+
+    currentConfig = CurrentConfig.Manual;
+  }
+
+  public void cargoFrontConfig() {
+    probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    probCargo.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, RobotMap.ElevatorHeights.armFrontParallel));
+
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, RobotMap.ElevatorHeights.armFrontParallel));
+
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, RobotMap.ElevatorHeights.armFrontParallel));
+
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, RobotMap.ElevatorHeights.armFrontParallel));
+
+    currentConfig = CurrentConfig.CargoFront;
+  }
+
+  public void cargoBackConfig() {
+    probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    probCargo.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, RobotMap.ElevatorHeights.armBackParallel));
+
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, RobotMap.ElevatorHeights.armBackParallel));
+
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, RobotMap.ElevatorHeights.armBackParallel));
+
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight, RobotMap.ElevatorHeights.armBackParallel));
+
+    currentConfig = CurrentConfig.CargoBack;
+  }
+
+  public void hatchFrontConfig() {
+    probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    probCargo.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, RobotMap.ElevatorHeights.armFrontParallel));
+
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight, RobotMap.ElevatorHeights.armFrontParallel));
+
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, RobotMap.ElevatorHeights.armFrontParallel));
+
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight, RobotMap.ElevatorHeights.armFrontParallel));
+
+    currentConfig = CurrentConfig.HatchFront;
+  }
+
+  public void hatchBackConfig() {
+    probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    probCargo.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, RobotMap.ElevatorHeights.armBackParallel));
+
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    //toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopHatchHeight, RobotMap.ElevatorHeights.armBackParallel));
+
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    //elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight, RobotMap.ElevatorHeights.armBackParallel));
+
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    //elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleHatchHeight, RobotMap.ElevatorHeights.armBackParallel));
+
+    currentConfig = CurrentConfig.HatchBack;
+  }
+
+  public void reconfigureButtons() {
+    int pov = gamepad3.getPOV(0);
+
+    if (currentConfig.isSame(pov)) {
+      return;
+    }
+
+    purgeConfig();
+
+    switch (pov) {
+      case -1:
+        manualConfig();
+        return;
+      case 45: // Cargo Front
+        cargoFrontConfig();
+        return;
+      case 135: // Hatch Front
+        hatchFrontConfig();
+        return;
+      case 225: // Hatch Back
+        hatchBackConfig();
+        return;
+      case 315: // Cargo Back
+        cargoBackConfig();
+        return;
+    }
+  }
+
+  private enum CurrentConfig {
+    Manual(-1), CargoFront(45), CargoBack(315),
+    HatchFront(135), HatchBack(225);
+
+    public int value;
+    private CurrentConfig(int value) {
+      this.value = value;
+    }
+
+    public boolean isSame(int val) {
+      return val == value;
+    }
   }
 
   // KEEP THESE COMMENTS
