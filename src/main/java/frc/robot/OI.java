@@ -4,6 +4,11 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.*;
 
+import frc.robot.commands.DeployLandingGear;
+import frc.robot.commands.FollowLineAndDeliverHatch;
+import frc.robot.commands.RetractLandingGear;
+import frc.robot.commands.ToggleHatchHolder;
+
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -29,24 +34,14 @@ public class OI {
   //private JoystickButton followLine;
   private JoystickButton toggleHatch;
 
-  private JoystickButton visionButtonA;
-  private JoystickButton visionButtonB;
-  private JoystickButton visionButtonX;
-  private JoystickButton visionButtonY;
-  private JoystickButton visionButtonLeftShoulder;
-  private JoystickButton visionButtonRightShoulder;
-  private JoystickButton visionButtonLeftTrigger;
-  private JoystickButton visionButtonRightTrigger;
-  private JoystickButton visionButtonLeftThumbstick;
-  private JoystickButton visionButtonRightThumbstick;
-
   private JoystickButton flipSystemOrientation;
 
   private JoystickButton flipDriveTrainOrientation;
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
-    gamepad2 = new Joystick(RobotMap.Buttons.GamePad2);
+    // TODO: This has now been freed up given the button box. Still needed?
+    // gamepad2 = new Joystick(RobotMap.Buttons.GamePad2);
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
@@ -54,78 +49,39 @@ public class OI {
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
 
-    /*
-    flipSystemOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    flipSystemOrientation.whenPressed(new FlipSystemOrientation());
-
-    flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
-    flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
-    */
-
-    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
-      followLine.whenPressed(new FollowLine(1000));
-
-    toggleHatch = new JoystickButton(gamepad2, RobotMap.Buttons.buttonB);
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ToggleHatch());
 
-    ArmReverse = new JoystickButton(gamepad2, RobotMap.Buttons.buttonBack);
+    ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
     ArmReverse.whileHeld(new MoveArm(-0.5));
     ArmReverse.whenInactive(new LockArm());
 
-    ArmForward = new JoystickButton(gamepad2, RobotMap.Buttons.buttonStart);
+    ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
     ArmForward.whileHeld(new MoveArm(0.5));
     ArmForward.whenInactive(new LockArm());
 
-    // Adds LockArm to the scheduler so I locks immediately.
-    //Scheduler.getInstance().add(new LockArm());
+    /* Adding Setpoint buttons for testing */
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whileHeld(new ElevatorUppity());
+    elevatorGoUp.whenInactive(new LockElevator());
 
-    //followLine = new JoystickButton(gamepad1, 1);
-    //followLine.whileHeld(new BackingUpWhenLineFollowIsComplete());
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whileHeld(new ElevatorDownity());
+    elevatorGoDown.whenInactive(new LockElevator());
+    
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
 
-    //toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    //toggleHatch.whenPressed(new ToggleHatchHolder());
-
-      /* Adding Setpoint buttons for testing */
-      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
-      elevatorGoUp.whileHeld(new ElevatorUppity());
-      elevatorGoUp.whenInactive(new LockElevator());
-
-      elevatorGoDown = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
-      elevatorGoDown.whileHeld(new ElevatorDownity());
-      elevatorGoDown.whenInactive(new LockElevator());
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
       
-      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
-      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
-
-      elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
-      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
-      
-      
-      /*ballIntake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
-      ballIntake.whileHeld(new BallIntake());
-
-      ballOutake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
-      ballOutake.whileHeld(new BallOuttake());*/
-
-      // System.out.println("Wtf");
-
-    //visionButtonA = new JoystickButton(gamepad2, RobotMap.Buttons.buttonA);
-    //visionButtonA.whenPressed(new VisionPressA());
-
-    //visionButtonB = new JoystickButton(gamepad2, RobotMap.Buttons.buttonB);
-    //visionButtonB.whenPressed(new VisionPressB());
-
-    //visionButtonX = new JoystickButton(gamepad2, RobotMap.Buttons.buttonX);
-    //visionButtonX.whenPressed(new VisionPressX());
-
-    //visionButtonY = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
-    //visionButtonY.whenPressed(new VisionPressY());
-
     visionButtonLeftThumbstick = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftThumbstick);
     visionButtonLeftThumbstick.whenPressed(new VisionPressLeftThumbstick());
+    //flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
+    //flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
 
-    visionButtonRightThumbstick = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightThumbstick);
-    visionButtonRightThumbstick.whenPressed(new VisionPressRightThumbstick());
+    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    followLine.whenPressed(new FollowLineAndDeliverHatch());
 
     //visionButtonLeftShoulder = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
     //visionButtonLeftShoulder.whenPressed(new VisionPressLeftShoulder());
@@ -154,18 +110,6 @@ public class OI {
 
   public double getRightYAxis() {
     return bing(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.rightYAxis), -1, 1);
-  }
-
-
-  public int getVisionLeftYAxis() {
-    // TODO: Are these ports the same across joysticks?
-    // I also do not think this should be negated for pan/tilt servos.
-    return (int)Math.round(bing(0.05, gamepad2.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1) * 100);
-  }
-
-  public int getVisionLeftXAxis() {
-    // TODO: Are these ports the same across joysticks?
-    return (int)Math.round(bing(0.05, gamepad2.getRawAxis(RobotMap.Buttons.rightXAxis), -1, 1) * 100);
   }
 
   public double deadBand(double value, double dead) {

@@ -7,17 +7,17 @@
 
 package frc.robot.subsystems;
 
-import java.io.IOException;
-
 import org.team997coders.spartanlib.hardware.roborio.Servo;
-import org.team997coders.spartanlib.interfaces.IServo;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.ControlCamera;
 
 /**
  * A subsystem to define an automated camera mount that uses servos for panning and tilting.
  */
 public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraMount {
+  private final double maxDegreesPerHeartbeat;
 
   /**
    * Convenience constructor to hard-wire CameraMount to Roborio servo implementation.
@@ -25,54 +25,55 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
   public CameraMount(int tiltLowerLimitInDegrees, 
       int tiltUpperLimitInDegrees, 
       int panLowerLimitInDegrees,
-      int panUpperLimitInDegrees) {
-    this(new Servo(RobotMap.Ports.panservo), 
+      int panUpperLimitInDegrees,
+      double slewRate180DegreesInSec,
+      double heartbeatRateInMs) {
+    super(new Servo(RobotMap.Ports.panservo), 
       new Servo(RobotMap.Ports.tiltservo, 544, 2250),
       tiltLowerLimitInDegrees,
       tiltUpperLimitInDegrees,
       panLowerLimitInDegrees,
       panUpperLimitInDegrees);
-  }
+      this.maxDegreesPerHeartbeat = (180D / slewRate180DegreesInSec) / (1000D / heartbeatRateInMs);
+    }
 
   /**
-   * Constructor that sets travel limits of servos to 0..180
-   * 
-   * @param panServo    The pan servo
-   * @param tiltServo   The tilt servo
-   */
-  public CameraMount(IServo panServo, IServo tiltServo) {
-    this(panServo, tiltServo, 0, 180, 0, 180);
-  }
-
-  /**
-   * Constructor to set travel limits.
-   * 
-   * @param panServo
-   * @param tiltServo
-   * @param tiltLowerLimitInDegrees
-   * @param tiltUpperLimitInDegrees
-   * @param panLowerLimitInDegrees
-   * @param panUpperLimitInDegrees
-   */
-  public CameraMount(IServo panServo, 
-      IServo tiltServo, 
-      int tiltLowerLimitInDegrees, 
-      int tiltUpperLimitInDegrees, 
-      int panLowerLimitInDegrees,
-      int panUpperLimitInDegrees) {
-    super(panServo, 
-      tiltServo, 
-      tiltLowerLimitInDegrees, 
-      tiltUpperLimitInDegrees, 
-      panLowerLimitInDegrees, 
-      panUpperLimitInDegrees);
-  }
-
-  /**
-   * Set the default command to process commands sent from remote CameraVision application
+   * Set the default command to ControlCamera
    */
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
+    setDefaultCommand(new ControlCamera());
   } 
+
+  /**
+   * Center the camera 90 degrees on both axes.
+   */
+  public void center() {
+    // TODO: Pull this function into SpartanLib
+    panToAngle(90d);
+    tiltToAngle(90d);
+  }
+
+  /**
+   * Slew the camera.
+   * 
+   * @param panRate   A value between -1 and 1 the represents the percentage of maximum pan slewage.
+   * @param tiltRate  A value between -1 and 1 the represents the percentage of maximum tilt slewage.
+   */
+  public void slew(double panRate, double tiltRate) {
+    // TODO: Pulls this function into SpartanLib; remove SlewCamera command?
+    double panAngle = getPanAngleInDegrees() + (maxDegreesPerHeartbeat * panRate);
+    double tiltAngle = getTiltAngleInDegrees() + (maxDegreesPerHeartbeat * tiltRate);
+    panToAngle(panAngle);
+    tiltToAngle(tiltAngle);
+  }
+
+  /**
+   * Updates the SmartDashboard with subsystem data
+   */
+  public void updateSmartDashboard() {
+    SmartDashboard.putNumber("Camera Pan Angle", getPanAngleInDegrees());
+    SmartDashboard.putNumber("Camera Tilt Angle", getTiltAngleInDegrees());
+  }
 }
