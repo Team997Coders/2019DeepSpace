@@ -99,7 +99,7 @@ public class Arm extends Subsystem {
 
   // This function only works if the inital read of the arm is horizontal
   public void UpdateF(){
-     pidController.setFF((Math.abs(Math.cos(readEncoder()) * RobotMap.Values.ticksToRadiansArm)) * fConstant);
+     pidController.setFF((Math.abs(Math.cos(readEncoder() - RobotMap.ElevatorHeights.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant);
   }
 
   public double getCurrent() {

@@ -93,19 +93,19 @@ public class OI {
       elevatorGoDown = new JoystickButton(gamepad2, RobotMap.Buttons.buttonY);
       elevatorGoDown.whileHeld(new ElevatorDownity());
       elevatorGoDown.whenInactive(new LockElevator());
-      
+      /*
       elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
       elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
 
       elevatorGoUp = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
-      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
+      elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));*/
       
       
-      /*ballIntake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
+      ballIntake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
       ballIntake.whileHeld(new BallIntake());
 
       ballOutake = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
-      ballOutake.whileHeld(new BallOuttake());*/
+      ballOutake.whileHeld(new BallOuttake());
 
       // System.out.println("Wtf");
 
