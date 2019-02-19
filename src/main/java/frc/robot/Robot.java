@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
   public static ButtonBox buttonBox;
   public static OI oi;
   public static ButtonBoxOI bb;
+  public static LogitechVisionOI logitechVisionOI;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -127,6 +128,7 @@ public class Robot extends TimedRobot {
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
     bb = new ButtonBoxOI();
+    logitechVisionOI = new LogitechVisionOI();
   }
 
   @Override

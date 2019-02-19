@@ -38,6 +38,21 @@ public class RobotMap {
         centerJoystickHatAngle = 0,
         rightJoystickHatAngle = 45;      
     }
+
+    public static class Logitech {
+      public static int 
+        Gamepad4 = 3,
+        buttonA = 2,
+        buttonB = 3,
+        buttonX = 1,
+        buttonY = 4,
+        buttonLeftThumbstick = 11,
+        buttonRightThumbstick = 12,
+        leftJoystickHatAngle = 270,
+        centerJoystickHatAngle = 0,
+        rightJoystickHatAngle = 90;      
+    }
+
     public static int
 
       GamePad1 = 0,
