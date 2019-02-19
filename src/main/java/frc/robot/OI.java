@@ -7,7 +7,6 @@ import frc.robot.commands.*;
 import frc.robot.commands.DeployLandingGear;
 import frc.robot.commands.FollowLineAndDeliverHatch;
 import frc.robot.commands.RetractLandingGear;
-import frc.robot.commands.ToggleHatchHolder;
 
 
 /**
@@ -16,8 +15,9 @@ import frc.robot.commands.ToggleHatchHolder;
  */
 public class OI {
 
-  Joystick gamepad1 = new Joystick(0);
-  Joystick gamepad2 = new Joystick(1);
+  Joystick gamepad1;
+  Joystick gamepad3;
+
 
   //temporary elevator testing buttons.
   public JoystickButton elevatorGoUp;
@@ -40,6 +40,8 @@ public class OI {
 
   public OI() {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
+    gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
+
     // TODO: This has now been freed up given the button box. Still needed?
     // gamepad2 = new Joystick(RobotMap.Buttons.GamePad2);
 
@@ -48,6 +50,9 @@ public class OI {
 
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
+
+    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    followLine.whenPressed(new FollowLineAndDeliverHatch());
 
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ToggleHatch());
@@ -74,26 +79,6 @@ public class OI {
 
     elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
-      
-    visionButtonLeftThumbstick = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftThumbstick);
-    visionButtonLeftThumbstick.whenPressed(new VisionPressLeftThumbstick());
-    //flipDriveTrainOrientation = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
-    //flipDriveTrainOrientation.whenPressed(new FlipDriveTrainOrientation(Robot.scoringSideReversed));
-
-    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
-    followLine.whenPressed(new FollowLineAndDeliverHatch());
-
-    //visionButtonLeftShoulder = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftShoulder);
-    //visionButtonLeftShoulder.whenPressed(new VisionPressLeftShoulder());
-
-    //visionButtonRightShoulder = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightShoulder);
-    //visionButtonRightShoulder.whenPressed(new VisionPressRightShoulder());
-
-    visionButtonLeftTrigger = new JoystickButton(gamepad2, RobotMap.Buttons.buttonLeftTrigger);
-    visionButtonLeftTrigger.whenPressed(new VisionPressLeftTrigger());
-
-    visionButtonRightTrigger = new JoystickButton(gamepad2, RobotMap.Buttons.buttonRightTrigger);
-    visionButtonRightTrigger.whenPressed(new VisionPressRightTrigger());
   }
 
   public double getLeftYAxis() {
@@ -101,7 +86,7 @@ public class OI {
   }
 
   public double getLeftYAxis2() {
-    return bing(0.05, -gamepad2.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
+    return bing(0.05, -gamepad3.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
   }
 
   public double getRightXAxis() {

@@ -41,6 +41,7 @@ public class RobotMap {
     public static int
 
       GamePad1 = 0,
+      GamePad3 = 2, 
       buttonA = 1,
       buttonB = 2,
       buttonX = 3,            
@@ -177,7 +178,7 @@ public class RobotMap {
       armPidD = 0,
       armPidK = 0,
       armMaxPidF = 0.0055,
-      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit));
+      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit)),
 
       // Camera values
       leftAngleInDegrees = 75,
