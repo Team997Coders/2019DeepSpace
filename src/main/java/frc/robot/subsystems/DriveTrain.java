@@ -1,8 +1,12 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.RobotMap;
+import frc.robot.commands.ArcadeDrive;
 import frc.robot.misc.GearBox;
 import frc.robot.misc.RoboMisc;
 
@@ -13,7 +17,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import frc.robot.commands.ArcadeDrive;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  * This is our drivetrain. This year I split up the configuration for the
@@ -35,6 +39,9 @@ public class DriveTrain extends Subsystem {
   private GearBox leftBox, rightBox;
   private TalonSRX leftTalon, rightTalon;
   private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
+  private AHRS gyro;
+
+  private NetworkTable table;
 
   public DriveTrain() {
     System.out.println("Starting Drivetrain...");
@@ -53,28 +60,19 @@ public class DriveTrain extends Subsystem {
     leftVictor2 = leftBox.victor2;
     rightVictor1 = rightBox.victor1;
     rightVictor2 = rightBox.victor2;
+    
+    try {
+			gyro = new AHRS(RobotMap.Ports.AHRS);
+			System.out.println("ahrs is coolio!");
+      gyro.reset();
+		} catch (RuntimeException e) {
+			System.out.println("DT- Im been a bad Gyro daddy uwu");
+		}
 
     resetEncoders();
     setCoast();
-  }
 
-  public void flipOrientation(boolean scoringSideReversed){
-    //TRUE forward has a reversed rightTalon and a normalized leftTalon.
-    if (scoringSideReversed) {
-      leftTalon.setInverted(InvertType.InvertMotorOutput);
-      leftVictor1.setInverted(InvertType.InvertMotorOutput);
-      leftVictor2.setInverted(InvertType.InvertMotorOutput);
-      rightTalon.setInverted(InvertType.None);
-      rightVictor1.setInverted(InvertType.None);
-      rightVictor2.setInverted(InvertType.None);
-    } else {
-      leftTalon.setInverted(InvertType.None);
-      leftVictor1.setInverted(InvertType.None);
-      leftVictor2.setInverted(InvertType.None);
-      rightTalon.setInverted(InvertType.InvertMotorOutput);
-      rightVictor1.setInverted(InvertType.InvertMotorOutput);
-      rightVictor2.setInverted(InvertType.InvertMotorOutput);
-    }
+    table = NetworkTableInstance.create().getTable("SmartDashboard");
   }
 
   /**
@@ -88,6 +86,14 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
+
+  public double getGyroAngle(){
+    if (gyro != null){
+    return gyro.getAngle();
+  } else{
+    return 0;
+  }
+}
   /**
    * Sets the percentage input for the left and right talon to zero
    */
@@ -242,6 +248,7 @@ public class DriveTrain extends Subsystem {
     SmartDashboard.putNumber("Right Ticks DriveTrain", rightEncoderTicks());
     SmartDashboard.putNumber("Left Velocity Drivetrain", leftEncoderVelocity());
     SmartDashboard.putNumber("Right Velocity Drivetrain", rightEncoderVelocity());
+    SmartDashboard.putNumber("Gyro angle", getGyroAngle());
   }
 
   @Override

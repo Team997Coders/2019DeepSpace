@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -15,11 +16,33 @@ package frc.robot;
  */
 public class RobotMap {
   public static class Buttons {
+    public static class ButtonBox {
+      public static int
+        ButtonBoxJoystickId = 1,          
+        hatchJoystickButtonId = 1,
+        ballJoystickButtonId = 2,
+        mediumHeightJoystickButtonId = 3,
+        activateJoystickButtonId = 4,
+        lowHeightJoystickButtonId = 5,
+        frontJoystickButtonId = 6,
+        backJoystickButtonId = 7,
+        rocketJoystickButtonId = 8,
+        cargoShipJoystickButtonId = 9,
+        highHeightJoystickButtonId = 10,
+        cancelJoystickButtonId = 11,
+        intakeJoystickButtonId = 12,
+        AJoystickButtonId = 13,
+        BJoystickButtonId = 14,
+        XJoystickButtonId = 15,
+        leftJoystickHatAngle = 315,
+        centerJoystickHatAngle = 0,
+        rightJoystickHatAngle = 45;      
+    }
     public static int
 
       GamePad1 = 0,
-      GamePad2 = 1,           // TODO: Need to check this
-      buttonA = 1,            // TODO: Need to check this
+      GamePad3 = 2, 
+      buttonA = 1,
       buttonB = 2,
       buttonX = 3,            
       buttonY = 4,            // TODO: Need to check this
@@ -42,6 +65,7 @@ public class RobotMap {
   }
 
   public static class Ports {
+    public static final SerialPort.Port AHRS = SerialPort.Port.kUSB;
     public static int
       //TALON PORTS
       leftTalon = 4,
@@ -60,10 +84,12 @@ public class RobotMap {
       frontUltrasonicSensor = 0, 
       frontInfraredSensor = 2,  
 
-      lineSensorBackLeft = 3,    
-      lineSensorBackCenter = 2,  
-      lineSensorBackRight = 1,   
-      backInfraredSensor = 3,  //TODO: Need to check this 
+      lineSensorBackLeft = 2,    
+      lineSensorBackCenter = 1,  
+      lineSensorBackRight = 3,   
+      backInfraredSensor = 3,  
+
+
 
       //BALL PORTS
       ballMotor = 12,
@@ -92,27 +118,43 @@ public class RobotMap {
 
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;
-    }
+  }
+
   public static class Values {
+    // TODO: PID values should be reduced across classes unless different values are needed.
+    // In that case, these names should be changed to indicate who the consumer is.
     public static final double
+
+      P = 0.0002,
+      I = 0.0,
+      D = 0.0,
+
+      driveDistanceP = .00025, //placeholders
+      driveDistanceI = 0.0,
+      driveDistanceD = 0.0,
+      protobotTickPerFoot= 2449,
+
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
       ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
 
-      //INFRARED AND ULTRASONIC DISTANCES
-      frontUltrasonicSensorHatchCargoship = 5,     //TODO: Need to check this      
-      frontInfraredSensorHatchCargoship = 5,  //TODO: Need to check this      
-      frontUltrasonicSensorHatchRocket = 5,        //TODO: Need to check this   
-      frontInfraredSensorHatchRocket = 5,     //TODO: Need to check this 
+      //INFRARED DISTANCES for Line Following
+      frontUltrasonicSensorHatchCargoship = 91,     //TODO: Need to check this      
+      frontInfraredSensorHatchCargoship = 550,      
+      frontUltrasonicSensorHatchRocket = 5,         //TODO: Need to check this   
+      frontInfraredSensorHatchRocket = 5,           //TODO: Need to check this 
+      frontUltrasonicSensorBallCargoship = 5,       //TODO: Need to check this      
+      frontInfraredSensorBallCargoship = 5,         //TODO: Need to check this      
+      frontUltrasonicSensorBallRocket = 5,          //TODO: Need to check this   
+      frontInfraredSensorBallRocket = 5,            //TODO: Need to check this   
+      backInfraredSensorHatchCargoship = 1200,  
+      backInfraredSensorBallRocket = 5,             //TODO: Need to check this
+      backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
 
-      frontUltrasonicSensorBallCargoship = 5,     //TODO: Need to check this      
-      frontInfraredSensorBallCargoship = 5,  //TODO: Need to check this      
-      frontUltrasonicSensorBallRocket = 5,        //TODO: Need to check this   
-      frontInfraredSensorBallRocket = 5,     //TODO: Need to check this   
-  
-      backInfraredSensorHatchCargoship = 5,   //TODO: Need to check this  
-  
-      backInfraredSensorBallRocket = 5,      //TODO: Need to check this
-      backInfraredSensorBallCargoship = 5,   //TODO: Need to check this 
+      // Line following voltage values
+      powerMotor = 0.5,
+      noPowerMotor = -.25,
+      normal = .10,        //for double line seen
+      straight = .3,
 
       // Drive to Distance PID values
       driveToDistance_kP = 0.0001,
@@ -136,7 +178,11 @@ public class RobotMap {
       armPidD = 0,
       armPidK = 0,
       armMaxPidF = 0.0055,
-      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit));
+      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit)),
+
+      // Camera values
+      leftAngleInDegrees = 75,
+      rightAngleInDegrees = 115;
   }
 
   public static class ElevatorHeights {
