@@ -30,6 +30,8 @@ public class Elevator extends Subsystem {
 
   private CANEncoder encoder;
 
+  private double rampAccel = 1.66;
+
   private CANPIDController pidController;
   private CANDigitalInput limitSwitchTop;
   private CANDigitalInput limitSwitchBottom;
@@ -132,6 +134,49 @@ public class Elevator extends Subsystem {
 
   public void SetPower(double volts){
     master.set(volts);
+  }
+
+  /**
+   * This function processes the power given and limits it based on position and current
+   * speed to determine an appropriate speed to go at for a smooth, nice elevator.
+   * It probably doesn't work... PLEASE ADJUST THE ACCELERATION INSTEAD OF DELETING / NOT USING THIS
+   * 
+   * @param pow The desired power which you shall not receive
+   * 
+   * Timothy: Our cpu usage is hella high.
+   * Hunter: Let me run this large processing function to determine the speed we should go at.
+   * Timothy: but the RIO is gonna die...
+   * Hunter: ... i commented it....
+   * Timothy: Bad Hunter.
+   * Hunter: It's fine I'll just disable the logger.
+   * [Tests robot]
+   * Hunter and Timothy: ....
+   * Hunter: It's doing some weird stuff...
+   * Timothy: If only we had the logger... >:C
+   */
+  public void setDeccelPower(double pow) {
+    double last = master.get(); // The last set power to the motor
+    double hek = pow;
+    boolean didMod = false; // Did I need to alter the power
+
+    double deltaTime = Robot.getDeltaTime();
+
+    if (Math.abs(pow) > Math.abs(last) + (rampAccel * deltaTime)) { // Did is the motor going to over accelerate?
+      hek = last + ((last / Math.abs(last)) * (rampAccel * deltaTime)); // Limit how much it changes
+      didMod = true; // Record it
+    }
+
+    if (didMod) { // Did you mod it?
+      if (hek < 0) { // Is the new values moving up
+        if ((GetPosition() < RobotMap.Values.bottomElevatorAccelPosLimit) && (hek < RobotMap.Values.bottomElevatorLimitVelocity)) { // Is it approching the bottom of the elevator and is going rather fast?
+          hek = RobotMap.Values.bottomElevatorLimitVelocity; // Limit the velocity even more
+        }
+      } else if ((GetPosition() > RobotMap.Values.topElevatorAccelPosLimit) && (hek > RobotMap.Values.topElevatorLimitVelocity)) { // Is it approching the top of the elevator and is going rather fast?
+        hek = RobotMap.Values.topElevatorLimitVelocity; // Limit the velocity even more
+      }
+    }
+
+    SetPower(hek); // Apply new velocity
   }
 
   public void ZeroElevator(){

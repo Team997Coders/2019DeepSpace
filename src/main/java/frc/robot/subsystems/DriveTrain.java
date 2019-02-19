@@ -4,7 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.misc.GearBox;
@@ -32,7 +32,7 @@ public class DriveTrain extends Subsystem {
   public boolean decell = false;
 
   // Decell Data
-  private double dampRate = 0.01;
+  private double dampRate = 1.66; // Power / Seconds ^2
   private double prevL = 0, prevR = 0;
 
   // GearBox class stores information for the motor controllers for one gearbox
@@ -115,12 +115,14 @@ public class DriveTrain extends Subsystem {
     double L = left;
     double R = right;
 
-    if (Math.abs(left) > Math.abs(prevL) + dampRate) {
-      L = prevL + ((prevL / Math.abs(prevL)) * dampRate);
+    double deltaTime = Robot.getDeltaTime();
+
+    if (Math.abs(left) > Math.abs(prevL) + (dampRate * deltaTime)) {
+      L = prevL + ((prevL / Math.abs(prevL)) * (dampRate * deltaTime));
     }
 
-    if (Math.abs(right) > Math.abs(prevR) + dampRate) {
-      R = prevR + ((prevR / Math.abs(prevR)) * dampRate);
+    if (Math.abs(right) > Math.abs(prevR) + (dampRate * deltaTime)) {
+      R = prevR + ((prevR / Math.abs(prevR)) * (dampRate * deltaTime));
     }
 
     setVolts(L, R);

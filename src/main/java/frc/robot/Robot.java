@@ -68,6 +68,9 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static ButtonBoxOI bb;
 
+  private double lastTime = 0; // millis seconds
+  private static double deltaTime = 0; // seconds
+
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -132,6 +135,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     updateSmartDashboard();
+
+    deltaTime = (System.currentTimeMillis() - lastTime) / 1000;
+    lastTime = System.currentTimeMillis();
   }
 
   @Override
@@ -186,8 +192,6 @@ public class Robot extends TimedRobot {
     // defaultDriveTrain.start();
   }
 
-  double lastTime = 0;
-
   /**
    * This function is called periodically during operator control.
    */
@@ -202,6 +206,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
+  public static double getDeltaTime() { return deltaTime; }
 
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();

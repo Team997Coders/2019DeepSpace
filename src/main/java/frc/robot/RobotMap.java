@@ -176,7 +176,13 @@ public class RobotMap {
 
       // Camera values
       leftAngleInDegrees = 75,
-      rightAngleInDegrees = 115;
+      rightAngleInDegrees = 115,
+      
+      // Elevator Deccel/Accel Values
+      bottomElevatorAccelPosLimit = 5000,
+      bottomElevatorLimitVelocity = -0.28,
+      topElevatorAccelPosLimit = 49000,
+      topElevatorLimitVelocity = 0.4;
   }
 
   public static class ElevatorHeights {
@@ -203,6 +209,8 @@ public class RobotMap {
       elevatorFrontShipCargoHeight = 38125,
 
       elevatorCollectCargoHeight = 0,
+      
+      elevatorSafeFlipHeight = 23000,
       
       armBackParallel = 660,
       armFrontParallel = 150,
