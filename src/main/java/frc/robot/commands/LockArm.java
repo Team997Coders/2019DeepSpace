@@ -17,7 +17,8 @@ public class LockArm extends Command {
     
     protected void initialize() {
       //Robot.arm.engageBrake();
-    	position = Robot.arm.readEncoder();
+      position = Robot.arm.readEncoder();
+      Robot.arm.updatePID();
     }
     
     protected void execute() {

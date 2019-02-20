@@ -194,16 +194,26 @@ public class Arm extends Subsystem {
     return a;
   }
 
+  public void updatePID() {
+    pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
+    pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
+    pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));
+    fConstant = SmartDashboard.getNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
+  }
+
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Arm Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Absolute Parsed", readEncoder());
     SmartDashboard.putBoolean("Disc Brake state: ", discBrake.get());
     SmartDashboard.putBoolean("Arm forward limit switch", getForwardLimitSwitch());
-    pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
-    pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
-    pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));
-    fConstant = SmartDashboard.getNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
+
+    // To avoid gray-outs on shuffleboard
+    SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP);
+    SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI);
+    SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD);
+    SmartDashboard.getNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
     SmartDashboard.putNumber("Arm F", pidController.getFF());
+    
     SmartDashboard.putBoolean("Arm Front Limit", frontLimitSwitch.get());
     SmartDashboard.putBoolean("Arm Back Limit", backLimitSwitch.get());
     SmartDashboard.putNumber("Arm voltage", sparkMax.getAppliedOutput());
