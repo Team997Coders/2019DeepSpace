@@ -50,8 +50,8 @@ public class Robot extends TimedRobot {
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
-  public static CameraMount cameraMount;
-  private CenterCamera centerCamera;
+  public static CameraMount frontCameraMount;
+  public static CameraMount backCameraMount;
   private NetworkTableInstance networkTableInstance;
   public static NetworkTable visionNetworkTable;
   public static CameraControlStateMachine cameraControlStateMachine;
@@ -92,7 +92,8 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20, LEDChannel.LEDChannelA);
+    frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 20, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
+    backCameraMount = new CameraMount(0, 120, 10, 170, 2, 20, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
     backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,
@@ -107,7 +108,6 @@ public class Robot extends TimedRobot {
     networkTableInstance = NetworkTableInstance.getDefault();
     visionNetworkTable = networkTableInstance.getTable("Vision");
     cameraControlStateMachine = new CameraControlStateMachine();
-    centerCamera = new CenterCamera(cameraMount);
     buttonBox = new ButtonBox();
 
     // Create the logging instance so we can use it for tuning the PID subsystems
@@ -151,7 +151,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    centerCamera.start();
     autonomousCommand = chooser.getSelected();
 
     if (autonomousCommand != null) {
@@ -167,7 +166,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     // Init hatch target finding vision camera
-    centerCamera.start();
     cameraControlStateMachine.identifyTargets();
 
     // This makes sure that the autonomous stops running when
@@ -211,7 +209,8 @@ public class Robot extends TimedRobot {
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
-    cameraMount.updateSmartDashboard();
+    frontCameraMount.updateSmartDashboard();
+    backCameraMount.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
     frontLineDetector.updateSmartDashboard();

@@ -15,6 +15,7 @@ import frc.robot.buttonbox.commands.*;
 import frc.robot.commands.SetButtonBoxElevatorHeight;
 import frc.robot.vision.commands.PressA;
 import frc.robot.vision.commands.PressB;
+import frc.robot.vision.commands.PressLeftThumbStick;
 import frc.robot.vision.commands.PressX;
 
 /**
@@ -73,9 +74,10 @@ public class ButtonBoxOI {
     Robot.buttonBox.whenVisionAClicked(new PressA());
     Robot.buttonBox.whenVisionBClicked(new PressB());
     Robot.buttonBox.whenVisionXClicked(new PressX());
-    Robot.buttonBox.whenVisionCenterClicked(new CenterCamera(Robot.cameraMount));
-    Robot.buttonBox.whenVisionLeftClicked(new SlewCameraToAngle(Robot.cameraMount, (int)RobotMap.Values.leftAngleInDegrees, 90));
-    Robot.buttonBox.whenVisionRightClicked(new SlewCameraToAngle(Robot.cameraMount, (int)RobotMap.Values.rightAngleInDegrees, 90));
+    Robot.buttonBox.whenVisionCenterClicked(new PressLeftThumbStick());
+    // TODO: Fix this
+//    Robot.buttonBox.whenVisionLeftClicked(new SlewCameraToAngle(Robot.cameraMount, (int)RobotMap.Values.leftAngleInDegrees, 90));
+//    Robot.buttonBox.whenVisionRightClicked(new SlewCameraToAngle(Robot.cameraMount, (int)RobotMap.Values.rightAngleInDegrees, 90));
     
     activate = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.activateJoystickButtonId);
     activate.whenPressed(new Activate());

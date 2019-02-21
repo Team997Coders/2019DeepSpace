@@ -4,6 +4,11 @@ import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.buttonbox.commands.HighHeight;
 
+// TODO: The activate command should shift current state into
+// a holding area that then the getState methods should read from.
+// Simply changing the state from the box should not make it
+// so on the robot until "Activated".
+
 /**
  * This class implements the Deepspace operator 2 custom console
  * for running on the roborio. Hook wpilibj joystick whenPressed

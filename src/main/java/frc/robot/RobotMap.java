@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import com.ctre.phoenix.CANifier.LEDChannel;
+
 import edu.wpi.first.wpilibj.SerialPort;
 
 /**
@@ -130,11 +132,17 @@ public class RobotMap {
       landingGearFloorSensor = 1,
 
       //CAMERA PORTS
-      panservo = 9,
-      tiltservo = 8,
+      frontPanServo = 9,
+      frontTiltServo = 8,
+      backPanServo = 7,
+      backTiltServo = 6,
 
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;
+      
+    public static LEDChannel
+      frontLightRing = LEDChannel.LEDChannelA,
+      backLightRing = LEDChannel.LEDChannelC;
   }
 
   public static class Values {
