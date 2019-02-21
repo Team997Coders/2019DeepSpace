@@ -50,8 +50,10 @@ public class RobotMap {
         buttonRightThumbstick = 12,
         leftJoystickHatAngle = 270,
         centerJoystickHatAngle = 0,
-        rightJoystickHatAngle = 90;      
-    }
+        rightJoystickHatAngle = 90,
+        leftXAxis = 0,
+        leftYAxis = 1;
+      }
 
     public static int
 

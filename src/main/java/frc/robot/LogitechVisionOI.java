@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
+import frc.robot.buttonbox.commands.BackDirection;
+import frc.robot.buttonbox.commands.FrontDirection;
 import frc.robot.vision.commands.PressA;
 import frc.robot.vision.commands.PressB;
 import frc.robot.vision.commands.PressLeftThumbStick;
@@ -33,6 +35,8 @@ public class LogitechVisionOI {
   private JoystickButton leftThumbstickButton;
   private JoystickButton rightThumbstickButton;
   private POVButton visionLeft;
+  private POVButton frontScoringDirection;
+  private POVButton backScoringDirection;
   private JoystickButton visionCenter;
   private POVButton visionRight;
   private POVButton visionStopPanning;
@@ -76,16 +80,63 @@ public class LogitechVisionOI {
     visionX = new JoystickButton(joystick, RobotMap.Buttons.Logitech.buttonX);
     visionX.whenPressed(new PressX());
 
-    visionLeft = new POVButton(joystick, RobotMap.Buttons.Logitech.leftJoystickHatAngle);
-    visionLeft.whenPressed(new PressPanLeft());
+//    visionLeft = new POVButton(joystick, RobotMap.Buttons.Logitech.leftJoystickHatAngle);
+//    visionLeft.whenPressed(new PressPanLeft());
+
+    frontScoringDirection = new POVButton(joystick, 0);
+    frontScoringDirection.whenPressed(new FrontDirection());
+
+    backScoringDirection = new POVButton(joystick, 180);
+    backScoringDirection.whenPressed(new BackDirection());
 
     visionCenter = new JoystickButton(joystick, RobotMap.Buttons.Logitech.buttonLeftThumbstick);
     visionCenter.whenPressed(new PressLeftThumbStick());
 
-    visionRight = new POVButton(joystick, RobotMap.Buttons.Logitech.rightJoystickHatAngle);
-    visionRight.whenPressed(new PressPanRight());
+//    visionRight = new POVButton(joystick, RobotMap.Buttons.Logitech.rightJoystickHatAngle);
+//    visionRight.whenPressed(new PressPanRight());
 
-    visionStopPanning = new POVButton(joystick, 0);
-    visionStopPanning.whenPressed(new StopPanning());
+//    visionStopPanning = new POVButton(joystick, 0);
+//    visionStopPanning.whenPressed(new StopPanning());
+  }
+
+  public double getVisionLeftYAxis() {
+    // This should be negated for pan/tilt servos.
+    return clampWithDeadband(0.05, joystick.getRawAxis(RobotMap.Buttons.Logitech.leftYAxis), -1, 1);
+  }
+
+  public double getVisionLeftXAxis() {
+    return -clampWithDeadband(0.05, joystick.getRawAxis(RobotMap.Buttons.Logitech.leftXAxis), -1, 1);
+  }
+
+  public double deadBand(double value, double dead) {
+    if (Math.abs(value) < dead) {
+      return 0;
+    } else {
+      return value;
+    }
+  }
+
+  public double clamp(double min, double max, double val) {
+    if (min > val) {
+      return min;
+    } else if (max < val) {
+      return max;
+    } else {
+      return val;
+    }
+  }
+
+  /**
+   * Take an input value and clamp it within a range while adding
+   * a dead band if the values are really small.
+   * 
+   * @param dead  Deadband range to zero
+   * @param val   Input value to process
+   * @param min   Min clamp value
+   * @param max   Max clamp value
+   * @return      Processed value
+   */
+  public double clampWithDeadband(double dead, double val, double min, double max) {
+    return clamp(min, max, deadBand(val, dead));
   }
 }
