@@ -8,9 +8,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.CANifier;
-import com.ctre.phoenix.CANifier.LEDChannel;
-
-import org.team997coders.spartanlib.commands.CenterCamera;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -128,7 +125,7 @@ public class Robot extends TimedRobot {
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
     bb = new ButtonBoxOI();
-    logitechVisionOI = new LogitechVisionOI();
+    //logitechVisionOI = new LogitechVisionOI();
   }
 
   @Override
@@ -151,6 +148,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    // Init hatch target finding vision camera
+    cameraControlStateMachine.identifyTargets();
     autonomousCommand = chooser.getSelected();
 
     if (autonomousCommand != null) {
@@ -186,8 +185,6 @@ public class Robot extends TimedRobot {
     // defaultDriveTrain.start();
   }
 
-  double lastTime = 0;
-
   /**
    * This function is called periodically during operator control.
    */
@@ -196,8 +193,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    // Set current vision pan/tilt joystick values
-    cameraControlStateMachine.slew(logitechVisionOI.getVisionLeftXAxis(), logitechVisionOI.getVisionLeftYAxis());
+    // Set current vision pan/tilt joystick values if Chuck's logitech joystick is plugged in
+    if (logitechVisionOI != null) {
+      cameraControlStateMachine.slew(logitechVisionOI.getVisionLeftXAxis(), logitechVisionOI.getVisionLeftYAxis());
+    }
 
     Logger.getInstance().logAll();
   }
