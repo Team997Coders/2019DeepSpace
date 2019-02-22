@@ -8,9 +8,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.CANifier;
-import com.ctre.phoenix.CANifier.LEDChannel;
-
-import org.team997coders.spartanlib.commands.CenterCamera;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -50,8 +47,8 @@ public class Robot extends TimedRobot {
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
-  public static CameraMount cameraMount;
-  private CenterCamera centerCamera;
+  public static CameraMount frontCameraMount;
+  public static CameraMount backCameraMount;
   private NetworkTableInstance networkTableInstance;
   public static NetworkTable visionNetworkTable;
   public static CameraControlStateMachine cameraControlStateMachine;
@@ -67,6 +64,7 @@ public class Robot extends TimedRobot {
   public static ButtonBox buttonBox;
   public static OI oi;
   public static ButtonBoxOI bb;
+  public static LogitechVisionOI logitechVisionOI;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -91,7 +89,8 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20, LEDChannel.LEDChannelA);
+    frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 20, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
+    backCameraMount = new CameraMount(0, 120, 10, 170, 2, 20, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
     backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,
@@ -106,7 +105,6 @@ public class Robot extends TimedRobot {
     networkTableInstance = NetworkTableInstance.getDefault();
     visionNetworkTable = networkTableInstance.getTable("Vision");
     cameraControlStateMachine = new CameraControlStateMachine();
-    centerCamera = new CenterCamera(cameraMount);
     buttonBox = new ButtonBox();
 
     // Create the logging instance so we can use it for tuning the PID subsystems
@@ -127,6 +125,7 @@ public class Robot extends TimedRobot {
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
     bb = new ButtonBoxOI();
+    //logitechVisionOI = new LogitechVisionOI();
   }
 
   @Override
@@ -149,7 +148,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    centerCamera.start();
+    // Init hatch target finding vision camera
+    cameraControlStateMachine.identifyTargets();
     autonomousCommand = chooser.getSelected();
 
     if (autonomousCommand != null) {
@@ -165,7 +165,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     // Init hatch target finding vision camera
-    centerCamera.start();
     cameraControlStateMachine.identifyTargets();
 
     // This makes sure that the autonomous stops running when
@@ -186,8 +185,6 @@ public class Robot extends TimedRobot {
     // defaultDriveTrain.start();
   }
 
-  double lastTime = 0;
-
   /**
    * This function is called periodically during operator control.
    */
@@ -195,6 +192,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    // Set current vision pan/tilt joystick values if Chuck's logitech joystick is plugged in
+    if (logitechVisionOI != null) {
+      cameraControlStateMachine.slew(logitechVisionOI.getVisionLeftXAxis(), logitechVisionOI.getVisionLeftYAxis());
+    }
 
     Logger.getInstance().logAll();
   }
@@ -206,7 +208,8 @@ public class Robot extends TimedRobot {
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
-    cameraMount.updateSmartDashboard();
+    frontCameraMount.updateSmartDashboard();
+    backCameraMount.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
     frontLineDetector.updateSmartDashboard();

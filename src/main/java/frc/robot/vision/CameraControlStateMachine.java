@@ -227,6 +227,7 @@ public class CameraControlStateMachine {
       }})
       .permit(Trigger.BButton, State.DrivingToTarget)
       .permit(Trigger.AButton, State.IdentifyingTargets)
+      .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .permit(Trigger.LoseLock, State.LockLost)
       .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
@@ -274,6 +275,7 @@ public class CameraControlStateMachine {
       .permit(Trigger.LoseLock, State.LockLost)
       .permit(Trigger.BButton, State.TargetLocked)
       .permit(Trigger.AButton, State.IdentifyingTargets)
+      .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.XButton)
@@ -287,6 +289,7 @@ public class CameraControlStateMachine {
           visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
       }})
       .permit(Trigger.AButton, State.IdentifyingTargets)
+      .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .ignore(Trigger.BButton)
       .ignore(Trigger.Slew)
       .ignore(Trigger.LeftThumbstickButton)
