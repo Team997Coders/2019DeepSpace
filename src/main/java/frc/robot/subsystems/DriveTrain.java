@@ -126,6 +126,9 @@ public class DriveTrain extends Subsystem {
     }
 
     setVolts(L, R);
+
+    prevL = L;
+    prevR = R;
   }
 
   /**

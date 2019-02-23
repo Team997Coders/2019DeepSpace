@@ -30,7 +30,7 @@ public class Elevator extends Subsystem {
 
   private CANEncoder encoder;
 
-  private double rampAccel = 1.66;
+  private double rampAccel = 0.5; // Use this value to see if the elevator is actually being deccelerated
 
   private CANPIDController pidController;
   private CANDigitalInput limitSwitchTop;
@@ -65,7 +65,7 @@ public class Elevator extends Subsystem {
 //    limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
     
-    limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kForward , LimitSwitchPolarity.kNormallyOpen);
+    limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchBottom.enableLimitSwitch(true);
 
     //master.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
@@ -78,11 +78,11 @@ public class Elevator extends Subsystem {
 
     follower.follow(master, true); // reverse the follower in the follow command
 
-    master.setOpenLoopRampRate(0.25);
-    follower.setOpenLoopRampRate(0.25); // Not sure if this is need for the follower motor but just in case
+    //master.setOpenLoopRampRate(0.25);
+    //follower.setOpenLoopRampRate(0.25); // Not sure if this is need for the follower motor but just in case
 
     pidController = master.getPIDController();
-    pidController.setOutputRange(-0.3, 0.3);
+    pidController.setOutputRange(-0.4, 0.6);
     pidController.setP(RobotMap.Values.elevatorPidP);
     pidController.setI(RobotMap.Values.elevatorPidI);
     pidController.setD(RobotMap.Values.elevatorPidD);
