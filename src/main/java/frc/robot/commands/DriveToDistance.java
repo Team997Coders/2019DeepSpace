@@ -49,15 +49,15 @@ public class DriveToDistance extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.driveTrain.resetEncoders();
-    Robot.driveTrain.setPIDValues(RobotMap.Values.driveToDistance_kP, RobotMap.Values.driveToDistance_kI, RobotMap.Values.driveToDistance_kD);
+    driveTrain.resetEncoders();
+    driveTrain.setPIDValues(RobotMap.Values.driveToDistance_kP, RobotMap.Values.driveToDistance_kI, RobotMap.Values.driveToDistance_kD);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.setPosition(error(Robot.driveTrain.leftEncoderTicks(), leftTarget),
-      error(Robot.driveTrain.rightEncoderTicks(), rightTarget)); // May take in ticks and not error. Need to test
+    driveTrain.setPosition(error(driveTrain.leftEncoderTicks(), leftTarget),
+      error(driveTrain.rightEncoderTicks(), rightTarget)); // May take in ticks and not error. Need to test
   }
 
   public double error(double pos, double target) {
@@ -67,10 +67,10 @@ public class DriveToDistance extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    boolean onLeftTarget = ((error(Robot.driveTrain.leftEncoderTicks(), leftTarget) < leftTarget + errorMargin)
-          && (error(Robot.driveTrain.leftEncoderTicks(), leftTarget) > leftTarget - errorMargin));
-    boolean onRightTarget = ((error(Robot.driveTrain.rightEncoderTicks(), rightTarget) < rightTarget + errorMargin)
-          && (error(Robot.driveTrain.rightEncoderTicks(), rightTarget) > rightTarget - errorMargin));
+    boolean onLeftTarget = ((error(driveTrain.leftEncoderTicks(), leftTarget) < leftTarget + errorMargin)
+          && (error(driveTrain.leftEncoderTicks(), leftTarget) > leftTarget - errorMargin));
+    boolean onRightTarget = ((error(driveTrain.rightEncoderTicks(), rightTarget) < rightTarget + errorMargin)
+          && (error(driveTrain.rightEncoderTicks(), rightTarget) > rightTarget - errorMargin));
     return onLeftTarget && onRightTarget;
   }
 
@@ -78,8 +78,8 @@ public class DriveToDistance extends Command {
   @Override
   protected void end() {
     System.out.println("DriveTrain reached target");
-    Robot.driveTrain.setVolts(0, 0);
-    Robot.driveTrain.setBrake();
+    driveTrain.setVolts(0, 0);
+    driveTrain.setBrake();
   }
 
   // Called when another command which requires one or more of the same
