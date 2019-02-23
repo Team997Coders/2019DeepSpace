@@ -29,6 +29,7 @@ public class SetElevatorHeight extends Command {
   @Override
   protected void initialize() {
     SmartDashboard.putNumber("Elevator Setpoint", setpoint);
+    Robot.elevator.updatePID();
   }
 
   // Called repeatedly when this Command is scheduled to run

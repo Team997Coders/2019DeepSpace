@@ -65,9 +65,11 @@ public class OI {
     /* Adding Setpoint buttons for testing */
     ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
     ballIntake.whileHeld(new BallIntake());
+    //ballIntake.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorSafeFlipHeight, 100));
 
     ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballOutake.whileHeld(new BallOuttake());
+    //ballOutake.whenPressed(new SetElevatorHeight(0, 100));
     
     // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
     // elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
@@ -159,9 +161,11 @@ public class OI {
 
     //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, RobotMap.ElevatorHeights.armFrontParallel));
+    elevatorGoUp.whenInactive(new AutoDoNothing());
 
     //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, RobotMap.ElevatorHeights.armFrontParallel));
+    elevatorGoDown.whenInactive(new AutoDoNothing());
 
     currentConfig = CurrentConfig.CargoFront;
   }
@@ -175,9 +179,11 @@ public class OI {
 
     //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, RobotMap.ElevatorHeights.armBackParallel));
+    elevatorGoUp.whenInactive(new AutoDoNothing());
 
     //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight, RobotMap.ElevatorHeights.armBackParallel));
+    elevatorGoDown.whenInactive(new AutoDoNothing());
 
     currentConfig = CurrentConfig.CargoBack;
   }
@@ -191,9 +197,11 @@ public class OI {
 
     //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, RobotMap.ElevatorHeights.armFrontParallel));
-
+    elevatorGoUp.whenInactive(new AutoDoNothing());
+    
     //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight, RobotMap.ElevatorHeights.armFrontParallel));
+    elevatorGoDown.whenInactive(new AutoDoNothing());
 
     currentConfig = CurrentConfig.HatchFront;
   }
@@ -207,12 +215,16 @@ public class OI {
 
     //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoUp.whenPressed(new AutoDoNothing());
+    elevatorGoUp.whenInactive(new AutoDoNothing());
 
     //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     elevatorGoDown.whenPressed(new AutoDoNothing());
+    elevatorGoDown.whenInactive(new AutoDoNothing());
 
     currentConfig = CurrentConfig.HatchBack;
   }
+
+  public int getPOV() { return gamepad3.getPOV(); }
 
   public void reconfigureButtons() {
     int pov = gamepad3.getPOV(0);
@@ -227,24 +239,24 @@ public class OI {
       case -1:
         manualConfig();
         return;
-      case 45: // Cargo Front
+      case 0: // Cargo Front
         cargoFrontConfig();
         return;
-      case 135: // Hatch Front
+      case 90: // Hatch Front
         hatchFrontConfig();
         return;
-      case 225: // Hatch Back
+      case 180: // Hatch Back
         hatchBackConfig();
         return;
-      case 315: // Cargo Back
+      case 270: // Cargo Back
         cargoBackConfig();
         return;
     }
   }
 
   private enum CurrentConfig {
-    Manual(-1), CargoFront(45), CargoBack(315),
-    HatchFront(135), HatchBack(225);
+    Manual(-1), CargoFront(0), CargoBack(270),
+    HatchFront(90), HatchBack(180);
 
     public int value;
     private CurrentConfig(int value) {

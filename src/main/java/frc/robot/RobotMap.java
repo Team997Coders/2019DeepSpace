@@ -129,7 +129,7 @@ public class RobotMap {
       protobotTickPerFoot= 2449,
 
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
-      ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
+      ticksPerFoot = ((49152/(3.97*Math.PI)))*.9, //3940, //encoder ticks per foot
 
       //INFRARED DISTANCES for Line Following
       frontUltrasonicSensorHatchCargoship = 91,     //TODO: Need to check this      
@@ -145,10 +145,10 @@ public class RobotMap {
       backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
 
       // Line following voltage values
-      powerMotor = 0.5,
-      noPowerMotor = -.25,
+      powerMotor = 0.5,       //TODO: Need to check this 
+      noPowerMotor = -.25,    //TODO: Need to check this 
       normal = .10,        //for double line seen
-      straight = .3,
+      straight = .3,          //TODO: Need to check this 
 
       // Drive to Distance PID values
       driveToDistance_kP = 0.0001,

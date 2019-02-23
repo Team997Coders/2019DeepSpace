@@ -8,51 +8,50 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class SetArmPosition extends Command {
+public class SetElevatorSmartMotion extends Command {
 
-  private double setpoint;
-  private double tolerance;
+  private double setpoint = 0;
 
-  public SetArmPosition(double setpoint, double tolerance) {
+  public SetElevatorSmartMotion(double setpoint, double tolerance) {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.elevator);
 
     this.setpoint = setpoint;
-    this.tolerance = tolerance;
-
-    requires(Robot.arm);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.arm.updatePID();
+    Robot.elevator.updatePID();
+    SmartDashboard.putNumber("Elevator Setpoint", setpoint);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.SetPostion(setpoint);
-    Robot.arm.UpdateF();
+    //Robot.elevator(smartSetPoint(setpoint));
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.arm.readEncoder() > setpoint - tolerance) && (Robot.arm.readEncoder() < setpoint + tolerance);
+    SmartDashboard.putNumber("Elevator Error", setpoint - Robot.elevator.GetPosition());
+    //return ((Robot.elevator.GetPosition() < setpoint + tolerance) && Robot.elevator.GetPosition() > setpoint - tolerance);
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.engageBrake();
-    Robot.arm.setPower(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

@@ -179,6 +179,16 @@ public class Elevator extends Subsystem {
     SetPower(hek); // Apply new velocity
   }
 
+  public void smartSetPoint(double setpoint) {
+    double a = CtreToSparkEncoder(setpoint) - encoder.getPosition();
+
+    //pidController.setSmart
+  }
+
+  public double CtreToSparkEncoder(double ctre) {
+    return ((ctre / 1024) / 2.5) * 42;
+  }
+
   public void ZeroElevator(){
 
     if (limitSwitchBottom.get()){
@@ -223,6 +233,13 @@ public class Elevator extends Subsystem {
     return e;
   }
 
+  public void updatePID() {
+    pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
+    pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));
+    pidController.setD(SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD));
+    pidController.setFF(SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF));
+  }
+
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Elevator volts", master.get());
     SmartDashboard.putNumber("Elevator Height: ", GetPosition());
@@ -233,9 +250,9 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator Master Temp", getMasterTemp());
     SmartDashboard.putNumber("Elevator Follower Temp", getFollowerTemp());
     
-    pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
-    pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));
-    pidController.setD(SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD));
-    pidController.setFF(SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF));
+    SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
+    SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
+    SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
+    SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);
   }
 }
