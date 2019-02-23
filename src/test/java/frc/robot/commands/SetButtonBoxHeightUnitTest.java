@@ -23,7 +23,7 @@ import org.junit.Test;
  * Add your docs here.
  */
 public class SetButtonBoxHeightUnitTest {
-/*
+
     @Test
     public void itSetsFrontBallRocketHigh(){
         // Assemble
@@ -42,7 +42,6 @@ public class SetButtonBoxHeightUnitTest {
         // Assert
         verify(elevator, times(1)).SetPosition(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight);
     }
-*/
 
     @Test
     public void itSetsFrontBallRocketMedium(){
