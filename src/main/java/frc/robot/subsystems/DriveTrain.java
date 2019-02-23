@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
@@ -12,7 +11,6 @@ import frc.robot.misc.RoboMisc;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -36,22 +34,45 @@ public class DriveTrain extends Subsystem {
   private double prevL = 0, prevR = 0;
 
   // GearBox class stores information for the motor controllers for one gearbox
-  private GearBox leftBox, rightBox;
-  private TalonSRX leftTalon, rightTalon;
-  private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
+  private final TalonSRX leftTalon, rightTalon;
+  private final VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
   private AHRS gyro;
 
   private NetworkTable table;
 
+  /**
+   * A default constructor for the drivetrain to use from the robot program.
+   */
   public DriveTrain() {
-    System.out.println("Starting Drivetrain...");
-
     // This uses the RoboMisc function standTalonSRXSetup(int, int, int, boolean) to
     // initialize a Talon and 2 slave victors
-    leftBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon, RobotMap.Ports.leftVictor1,
-        RobotMap.Ports.leftVictor2, false);
-    rightBox = RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon, RobotMap.Ports.rightVictor1,
-        RobotMap.Ports.rightVictor2, true);
+    this(RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon, 
+        RobotMap.Ports.leftVictor1,
+        RobotMap.Ports.leftVictor2, 
+        false),
+      RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon, 
+        RobotMap.Ports.rightVictor1,
+        RobotMap.Ports.rightVictor2, 
+        true),
+      null,
+      NetworkTableInstance.create().getTable("SmartDashboard")
+    );
+  }
+
+  /**
+   * Drivetrain constructor to use for testing purposes.
+   * 
+   * @param leftBox
+   * @param rightBox
+   * @param gyro
+   * @param smartDashboardNetworkTable
+   */
+  public DriveTrain(GearBox leftBox, 
+      GearBox rightBox, 
+      AHRS gyro,
+      NetworkTable smartDashboardNetworkTable) {
+
+    System.out.println("Starting Drivetrain...");
 
     // Grab the objects created by the RoboMisc function and store them in this class
     leftTalon = leftBox.talon;
@@ -60,19 +81,24 @@ public class DriveTrain extends Subsystem {
     leftVictor2 = leftBox.victor2;
     rightVictor1 = rightBox.victor1;
     rightVictor2 = rightBox.victor2;
-    
-    try {
-			gyro = new AHRS(RobotMap.Ports.AHRS);
-			System.out.println("ahrs is coolio!");
-      gyro.reset();
-		} catch (RuntimeException e) {
-			System.out.println("DT- Im been a bad Gyro daddy uwu");
-		}
+
+    if (gyro == null) {
+      try {
+        this.gyro = new AHRS(RobotMap.Ports.AHRS);
+        System.out.println("ahrs is coolio!");
+        this.gyro.reset();
+      } catch (RuntimeException e) {
+        System.out.println("DT- Im been a bad Gyro daddy uwu");
+      }
+    } else {
+      this.gyro = gyro;
+      this.gyro.reset();
+    }
 
     resetEncoders();
     setCoast();
 
-    table = NetworkTableInstance.create().getTable("SmartDashboard");
+    table = smartDashboardNetworkTable;
   }
 
   /**
@@ -192,9 +218,10 @@ public class DriveTrain extends Subsystem {
    * double, double)
    */
   public void setPIDValues() {
-    double p = SmartDashboard.getNumber("P", 1);
-    double i = SmartDashboard.getNumber("I", 0);
-    double d = SmartDashboard.getNumber("D", 0);
+    // Make these reference a passed in table so we can write tests.
+    double p = table.getEntry("P").getDouble(1);
+    double i = table.getEntry("I").getDouble(0);
+    double d = table.getEntry("D").getDouble(0);
     setPIDValues(p, i, d);
   }
 
@@ -206,12 +233,13 @@ public class DriveTrain extends Subsystem {
    * @param d derivative PID constant
    */
   public void setPIDValues(double p, double i, double d) {
+    // Calling the correct config_kx for each parameter might make this work better...;-)
     leftTalon.config_kP(0, p, 0);
     rightTalon.config_kP(0, p, 0);
-    leftTalon.config_kP(0, i, 0);
-    rightTalon.config_kP(0, i, 0);
-    leftTalon.config_kP(0, d, 0);
-    rightTalon.config_kP(0, d, 0);
+    leftTalon.config_kI(0, i, 0);
+    rightTalon.config_kI(0, i, 0);
+    leftTalon.config_kD(0, d, 0);
+    rightTalon.config_kD(0, d, 0);
   }
 
   /**
@@ -244,11 +272,13 @@ public class DriveTrain extends Subsystem {
    * Updates the SmartDashboard with subsystem data
    */
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Left Ticks DriveTrain", leftEncoderTicks());
-    SmartDashboard.putNumber("Right Ticks DriveTrain", rightEncoderTicks());
-    SmartDashboard.putNumber("Left Velocity Drivetrain", leftEncoderVelocity());
-    SmartDashboard.putNumber("Right Velocity Drivetrain", rightEncoderVelocity());
-    SmartDashboard.putNumber("Gyro angle", getGyroAngle());
+    // Factor out direct calls to SmartDashboard and use passed in table
+    // so that we can test.
+    table.getEntry("Left Ticks DriveTrain").setDouble(leftEncoderTicks());
+    table.getEntry("Right Ticks DriveTrain").setDouble(rightEncoderTicks());
+    table.getEntry("Left Velocity Drivetrain").setDouble(leftEncoderVelocity());
+    table.getEntry("Right Velocity Drivetrain").setDouble(rightEncoderVelocity());
+    table.getEntry("Gyro angle").setDouble(getGyroAngle());
   }
 
   @Override

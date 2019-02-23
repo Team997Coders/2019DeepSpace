@@ -10,5 +10,15 @@
     ".classpath": true,
     ".project": true
   },
-  "wpilib.online": true
+  "wpilib.online": true,
+  "java.test.config": [
+    {
+      "name": "includeNativesConfiguration",
+      "workingDirectory": "${workspaceFolder}",
+      "args": [],
+      "vmargs": [],
+      "env": { "PATH":"build/tmp/jniExtractDir"}
+    }
+  ],
+  "java.test.defaultConfig": "includeNativesConfiguration"
 }

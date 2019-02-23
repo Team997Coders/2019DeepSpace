@@ -10,19 +10,40 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.subsystems.DriveTrain;
+
+//TODO: Drive to distance should take inches, not ticks.
 
 public class DriveToDistance extends Command {
 
   private double errorMargin = 0;
   private double leftTarget = 0;
   private double rightTarget = 0;
+  private final DriveTrain driveTrain;
 
+  /**
+   * Default constructor to use from robot program. Passes
+   * drivetrain from static robot program variable.
+   */
   public DriveToDistance(double errorMargin,
-    double leftTarget, double rightTarget) {
-    requires(Robot.driveTrain);
+      double leftTarget, 
+      double rightTarget) {
+    this(Robot.driveTrain, errorMargin, leftTarget, rightTarget);
+  }
+
+  /**
+   * Constructor to use for testing. This takes a reference
+   * to our drivetrain hardware so we can mock it.
+   */
+  public DriveToDistance(DriveTrain driveTrain, 
+      double errorMargin,
+      double leftTarget, 
+      double rightTarget) {
+    this.driveTrain = driveTrain;
     this.errorMargin = errorMargin;
     this.leftTarget = leftTarget;
     this.rightTarget = rightTarget;
+    requires(driveTrain);
   }
 
   // Called just before this Command runs the first time
