@@ -15,10 +15,7 @@ import frc.robot.buttonbox.commands.FrontDirection;
 import frc.robot.vision.commands.PressA;
 import frc.robot.vision.commands.PressB;
 import frc.robot.vision.commands.PressLeftThumbStick;
-import frc.robot.vision.commands.PressPanLeft;
-import frc.robot.vision.commands.PressPanRight;
 import frc.robot.vision.commands.PressX;
-import frc.robot.vision.commands.StopPanning;
 
 /**
  * This class is the glue that binds the controls on the physical operator

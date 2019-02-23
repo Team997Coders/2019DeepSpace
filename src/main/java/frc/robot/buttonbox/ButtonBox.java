@@ -30,6 +30,8 @@ public class ButtonBox {
   private Command visionXClickedCommand;
   private Command visionLeftClickedCommand;
   private Command visionRightClickedCommand;
+  private Command visionLeftHeldCommand;
+  private Command visionRightHeldCommand;
   private Command visionCenterClickedCommand;
 
   /**
@@ -190,7 +192,35 @@ public class ButtonBox {
    * Click event handler for the vision pan right button.
    */
   public void clickVisionRightButton() {
-  visionRightClickedCommand.start();
+    visionRightClickedCommand.start();
+  }
+
+  /**
+   * Hold event handler for the vision pan left button.
+   */
+  public void holdVisionLeftButton() {
+    visionLeftHeldCommand.start();
+  }
+
+  /**
+   * Hold event handler for the vision pan right button.
+   */
+  public void holdVisionRightButton() {
+    visionRightHeldCommand.start();
+  }
+
+  /**
+   * Hold event handler for the vision pan left button.
+   */
+  public void releaseVisionLeftButton() {
+    visionLeftHeldCommand.cancel();
+  }
+
+  /**
+   * Hold event handler for the vision pan right button.
+   */
+  public void releaseVisionRightButton() {
+    visionRightHeldCommand.cancel();
   }
 
   /**
@@ -285,7 +315,7 @@ public class ButtonBox {
 
   /**
    * Set up the command that will be called when the vision pan left
-   * button is pressed.
+   * button is clicked.
    * 
    * @param visionLeftClickedCommand The command to start.
    */
@@ -295,12 +325,32 @@ public class ButtonBox {
 
   /**
    * Set up the command that will be called when the vision pan right
-   * button is pressed.
+   * button is clicked.
    * 
    * @param visionRightClickedCommand The command to start.
    */
   public void whenVisionRightClicked(Command visionRightClickedCommand) {
     this.visionRightClickedCommand = visionRightClickedCommand;
+  }
+
+    /**
+   * Set up the command that will be called when the vision pan left
+   * button is held.
+   * 
+   * @param visionLeftHeldCommand The command to start.
+   */
+  public void whenVisionLeftHeld(Command visionLeftHeldCommand) {
+    this.visionLeftHeldCommand = visionLeftHeldCommand;
+  }
+
+  /**
+   * Set up the command that will be called when the vision pan right
+   * button is held.
+   * 
+   * @param visionRightHeldCommand The command to start.
+   */
+  public void whenVisionRightHeld(Command visionRightHeldCommand) {
+    this.visionRightHeldCommand = visionRightHeldCommand;
   }
 
   /**

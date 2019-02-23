@@ -9,13 +9,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.POVButton;
 import frc.robot.buttonbox.commands.*;
 import frc.robot.commands.SetButtonBoxElevatorHeight;
 import frc.robot.vision.commands.PressA;
 import frc.robot.vision.commands.PressB;
 import frc.robot.vision.commands.PressLeftThumbStick;
-import frc.robot.vision.commands.PressPanLeft;
-import frc.robot.vision.commands.PressPanRight;
+import frc.robot.vision.commands.HoldPanLeft;
+import frc.robot.vision.commands.HoldPanRight;
 import frc.robot.vision.commands.PressX;
 
 /**
@@ -42,9 +43,9 @@ public class ButtonBoxOI {
   private JoystickButton visionA;
   private JoystickButton visionB;
   private JoystickButton visionX;
-  private JoystickButton visionLeft;
-  private JoystickButton visionCenter;
-  private JoystickButton visionRight;
+  private POVButton visionLeft;
+  private POVButton visionCenter;
+  private POVButton visionRight;
 
   /**
    * Default constructor which maps joystick id to RobotMap
@@ -75,8 +76,8 @@ public class ButtonBoxOI {
     Robot.buttonBox.whenVisionBClicked(new PressB());
     Robot.buttonBox.whenVisionXClicked(new PressX());
     Robot.buttonBox.whenVisionCenterClicked(new PressLeftThumbStick());
-    Robot.buttonBox.whenVisionLeftClicked(new PressPanLeft());
-    Robot.buttonBox.whenVisionRightClicked(new PressPanRight());
+    Robot.buttonBox.whenVisionLeftHeld(new HoldPanLeft());
+    Robot.buttonBox.whenVisionRightHeld(new HoldPanRight());
     
     activate = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.activateJoystickButtonId);
     activate.whenPressed(new Activate());
@@ -123,14 +124,14 @@ public class ButtonBoxOI {
     visionX = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.XJoystickButtonId);
     visionX.whenPressed(new VisionX());
 
-    visionLeft = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.leftJoystickHatAngle);
-    visionLeft.whenPressed(new VisionLeft());
+    visionLeft = new POVButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.leftJoystickHatAngle);
+    visionLeft.whileHeld(new VisionLeft());
 
-    visionCenter = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.centerJoystickHatAngle);
+    visionCenter = new POVButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.centerJoystickHatAngle);
     visionCenter.whenPressed(new VisionCenter());
 
-    visionRight = new JoystickButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.rightJoystickHatAngle);
-    visionRight.whenPressed(new VisionRight());
+    visionRight = new POVButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.rightJoystickHatAngle);
+    visionRight.whileHeld(new VisionRight());
   }
 
   // KEEP THESE COMMENTS
