@@ -10,25 +10,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.buttonbox.ButtonBox;
-import frc.robot.subsystems.Elevator;
 import frc.robot.RobotMap;
 
 public class SetButtonBoxElevatorHeight extends Command {
-  Elevator elevator;
   ButtonBox buttonBox;
 
   public SetButtonBoxElevatorHeight() {
-    this(Robot.elevator, Robot.buttonBox);
+    this(Robot.buttonBox);
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
   }
 
-  public SetButtonBoxElevatorHeight(Elevator elevator, ButtonBox buttonBox) {
-    this.elevator = elevator;
+  public SetButtonBoxElevatorHeight(ButtonBox buttonBox) {
     this.buttonBox = buttonBox;
 
     // Use requires() here to declare subsystem dependencies
-    requires(elevator);
   }
 
   // Called just before this Command runs the first time
@@ -39,6 +34,8 @@ public class SetButtonBoxElevatorHeight extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Command setpoint = null;
+
     switch (buttonBox.getScoringDirectionState()) {
       case Front:
         switch (buttonBox.getScoringArtifactState()) {
@@ -47,20 +44,20 @@ public class SetButtonBoxElevatorHeight extends Command {
               case Rocket:
                 switch (buttonBox.getPositionState()) {
                   case High:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, 45);
                     break;
                   case Medium:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 0);
                     break;
                   case Low:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0);
                     break;
                   case None:
                     break;
                 }
                 break;
               case CargoShip:
-                elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight);
+                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, 0);
                 break;
               case None:
                 break;
@@ -71,13 +68,13 @@ public class SetButtonBoxElevatorHeight extends Command {
               case Rocket:
                 switch (buttonBox.getPositionState()) {
                   case High:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight, 0);
                     break;
                   case Medium:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight, 0);
                     break;
                   case Low:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0);
                     break;
                   case None:
                     //TODO: add in what should happen when none
@@ -85,7 +82,7 @@ public class SetButtonBoxElevatorHeight extends Command {
                 }
                 break;
               case CargoShip:
-                elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight);
+                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, 0);
                 break;
               case None:
                 //TODO Add in case
@@ -104,20 +101,20 @@ public class SetButtonBoxElevatorHeight extends Command {
               case Rocket:
                 switch (buttonBox.getPositionState()) {
                   case High:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, 180);
                     break;
                   case Medium:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight, 180);
                     break;
                   case Low:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, 180);
                     break;
                   case None:
                     break;
                 }
                 break;
               case CargoShip:
-                elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight);
+                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, 180);
                 break;
               case None:
                 //TODO: add in case
@@ -129,13 +126,13 @@ public class SetButtonBoxElevatorHeight extends Command {
               case Rocket:
                 switch (buttonBox.getPositionState()) {
                   case High:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackTopHatchHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopHatchHeight, 180);
                     break;
                   case Medium:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackMiddleHatchHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleHatchHeight, 180);
                     break;
                   case Low:
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight);
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight, 180);
                     break;
                   case None:
                     //TODO: add in what should happen when none
@@ -143,7 +140,7 @@ public class SetButtonBoxElevatorHeight extends Command {
                 }
                 break;
               case CargoShip:
-                elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight);
+                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, 180);
                 break;                
               case None:
                 //TODO: add in case
@@ -158,6 +155,9 @@ public class SetButtonBoxElevatorHeight extends Command {
       case None:
         //TODO: add in case
         break;
+    }
+    if (setpoint != null) {
+      setpoint.start();
     }
   }
   // Make this return true when this Command no longer needs to run execute()
