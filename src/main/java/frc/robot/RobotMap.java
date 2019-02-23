@@ -229,6 +229,8 @@ public class RobotMap {
 
       elevatorCollectCargoHeight = 0,
       
+      elevatorSafeFlipHeight = 23000,
+
       armBackParallel = 660,
       armFrontParallel = 150,
       armVertical = 415;

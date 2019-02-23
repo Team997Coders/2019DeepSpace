@@ -10,193 +10,160 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.buttonbox.ButtonBox;
-import frc.robot.subsystems.Elevator;
 import frc.robot.RobotMap;
 
 public class SetButtonBoxElevatorHeight extends Command {
-  Elevator elevator;
   ButtonBox buttonBox;
 
   public SetButtonBoxElevatorHeight() {
-    this(Robot.elevator, Robot.buttonBox);
+    this(Robot.buttonBox);
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
   }
 
-  public SetButtonBoxElevatorHeight(Elevator elevator, ButtonBox buttonBox) {
-    this.elevator = elevator;
+  public SetButtonBoxElevatorHeight(ButtonBox buttonBox) {
     this.buttonBox = buttonBox;
 
     // Use requires() here to declare subsystem dependencies
-    requires(elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Command setpoint = null;
+
+    switch (buttonBox.getScoringDirectionState()) {
+      case Front:
+        switch (buttonBox.getScoringArtifactState()) {
+          case Ball:
+            switch (buttonBox.getScoringDestinationState()) {
+              case Rocket:
+                switch (buttonBox.getPositionState()) {
+                  case High:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, 45);
+                    break;
+                  case Medium:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 0);
+                    break;
+                  case Low:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0);
+                    break;
+                  case None:
+                    break;
+                }
+                break;
+              case CargoShip:
+                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, 0);
+                break;
+              case None:
+                break;
+            }
+            break;
+          case Hatch:
+            switch (buttonBox.getScoringDestinationState()) {
+              case Rocket:
+                switch (buttonBox.getPositionState()) {
+                  case High:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight, 0);
+                    break;
+                  case Medium:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight, 0);
+                    break;
+                  case Low:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0);
+                    break;
+                  case None:
+                    //TODO: add in what should happen when none
+                    break;
+                }
+                break;
+              case CargoShip:
+                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, 0);
+                break;
+              case None:
+                //TODO Add in case
+                break;
+            }
+            break;
+          case None:
+            //TODO add in case
+            break;
+        }
+        break;
+      case Back:
+        switch (buttonBox.getScoringArtifactState()) {
+          case Ball:
+            switch (buttonBox.getScoringDestinationState()) {
+              case Rocket:
+                switch (buttonBox.getPositionState()) {
+                  case High:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, 180);
+                    break;
+                  case Medium:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight, 180);
+                    break;
+                  case Low:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, 180);
+                    break;
+                  case None:
+                    break;
+                }
+                break;
+              case CargoShip:
+                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, 180);
+                break;
+              case None:
+                //TODO: add in case
+                break;
+            }
+            break;
+          case Hatch:
+            switch (buttonBox.getScoringDestinationState()) {
+              case Rocket:
+                switch (buttonBox.getPositionState()) {
+                  case High:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopHatchHeight, 180);
+                    break;
+                  case Medium:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleHatchHeight, 180);
+                    break;
+                  case Low:
+                    setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight, 180);
+                    break;
+                  case None:
+                    //TODO: add in what should happen when none
+                    break;
+                }
+                break;
+              case CargoShip:
+                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, 180);
+                break;                
+              case None:
+                //TODO: add in case
+                break;
+            }
+            break;
+          case None:
+            //TODO: add in case
+            break;
+        }
+        break;
+      case None:
+        //TODO: add in case
+        break;
+    }
+    if (setpoint != null) {
+      setpoint.start();
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    switch (buttonBox.getScoringDirectionState()){
-      case Front:{
-        switch (buttonBox.getScoringArtifactState()){
-          case Ball:
-            switch (buttonBox.getScoringDestinationState()){
-              case Rocket:
-                switch (buttonBox.getPositionState()){
-                  case High: {
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight);
-                    break;
-                  
-                  }
-                  case Medium:{
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight);
-                    break;
-                  }
-                  case Low:{
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight);
-                    break;
-                  }
-                  case None:{
-                    break;
-                  }
-                }
-              case CargoShip:{
-                elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight);
-                break;
-              }
-                
-              case None:{
-                break;
-              }
-            }
-          case Hatch:{
-            switch (buttonBox.getScoringDestinationState()){
-              case Rocket:{
-                switch (buttonBox.getPositionState()){
-                  case High: {
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight);
-                    break;
-                  }
-                  case Medium:{
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight);
-                    break;
-                  }
-                  case Low:{
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight);
-                    break;
-                  }
-                  case None:{
-                    //TODO: add in what should happen when none
-                    break;
-                  }
-                }
-                break;
-              }
-              case CargoShip:{
-                elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight);
-                break;
-              }
-              case None:{
-              //TODO Add in case
-                break;
-              }
-            }  
-          }
-          case None:{
-            //TODO add in case
-            break;
-          }
-        }
-        break;
-      }
-      case Back:{
-        switch (buttonBox.getScoringArtifactState()){
-          case Ball:{
-            switch (buttonBox.getScoringDestinationState()){
-              case Rocket:
-                switch (buttonBox.getPositionState()){
-                  case High: {
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight);
-                    break;
-                  }
-                  case Medium:{
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight);
-                    break;
-                  }
-                  case Low:{
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight);
-                    break;
-                  }
-                  case None:{
-                    break;
-                  }
-                }
-              case CargoShip:{
-                elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight);
-                break;
-              }
-              case None:{
-                //TODO: add in case
-                break;
-              }
-             }
-            }
-          case Hatch:{
-            switch (buttonBox.getScoringDestinationState()){
-              case Rocket:
-                switch (buttonBox.getPositionState()){
-                  case High: {
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackTopHatchHeight);
-                    break;
-                  }
-                  case Medium:{
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackMiddleHatchHeight);
-                    break;
-                  }
-                  case Low:{
-                    elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight);
-                    break;
-                  }
-                  case None:{
-                    //TODO: add in what should happen when none
-                    break;
-                  }
-                }
-                break;
-              case CargoShip:{
-                elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight);
-                break;
-              }
-                
-              case None:{
-                //TODO: add in case
-                break;
-              }
-            }
-          }
-          case None:{
-            //TODO: add in case
-            break;
-          }
-        }
-      }
-        case None:{
-          //TODO: add in case
-          break;
-        }
-      }
-     
-    }
-
-
-
+  }
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
