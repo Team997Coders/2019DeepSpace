@@ -39,160 +39,127 @@ public class SetButtonBoxElevatorHeight extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    switch (buttonBox.getScoringDirectionState()){
-      case Front:{
-        switch (buttonBox.getScoringArtifactState()){
+    switch (buttonBox.getScoringDirectionState()) {
+      case Front:
+        switch (buttonBox.getScoringArtifactState()) {
           case Ball:
-            switch (buttonBox.getScoringDestinationState()){
+            switch (buttonBox.getScoringDestinationState()) {
               case Rocket:
-                switch (buttonBox.getPositionState()){
-                  case High: {
+                switch (buttonBox.getPositionState()) {
+                  case High:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight);
                     break;
-                  
-                  }
-                  case Medium:{
+                  case Medium:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight);
                     break;
-                  }
-                  case Low:{
+                  case Low:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight);
                     break;
-                  }
-                  case None:{
+                  case None:
                     break;
-                  }
                 }
-              case CargoShip:{
+                break;
+              case CargoShip:
                 elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight);
                 break;
-              }
-                
-              case None:{
+              case None:
                 break;
-              }
             }
-          case Hatch:{
-            switch (buttonBox.getScoringDestinationState()){
-              case Rocket:{
-                switch (buttonBox.getPositionState()){
-                  case High: {
+            break;
+          case Hatch:
+            switch (buttonBox.getScoringDestinationState()) {
+              case Rocket:
+                switch (buttonBox.getPositionState()) {
+                  case High:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight);
                     break;
-                  }
-                  case Medium:{
+                  case Medium:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight);
                     break;
-                  }
-                  case Low:{
+                  case Low:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight);
                     break;
-                  }
-                  case None:{
+                  case None:
                     //TODO: add in what should happen when none
                     break;
-                  }
                 }
                 break;
-              }
-              case CargoShip:{
+              case CargoShip:
                 elevator.SetPosition(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight);
                 break;
-              }
-              case None:{
-              //TODO Add in case
+              case None:
+                //TODO Add in case
                 break;
-              }
-            }  
-          }
-          case None:{
+            }
+            break;
+          case None:
             //TODO add in case
             break;
-          }
         }
         break;
-      }
-      case Back:{
-        switch (buttonBox.getScoringArtifactState()){
-          case Ball:{
-            switch (buttonBox.getScoringDestinationState()){
+      case Back:
+        switch (buttonBox.getScoringArtifactState()) {
+          case Ball:
+            switch (buttonBox.getScoringDestinationState()) {
               case Rocket:
-                switch (buttonBox.getPositionState()){
-                  case High: {
+                switch (buttonBox.getPositionState()) {
+                  case High:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight);
                     break;
-                  }
-                  case Medium:{
+                  case Medium:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight);
                     break;
-                  }
-                  case Low:{
+                  case Low:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight);
                     break;
-                  }
-                  case None:{
+                  case None:
                     break;
-                  }
                 }
-              case CargoShip:{
+                break;
+              case CargoShip:
                 elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight);
                 break;
-              }
-              case None:{
+              case None:
                 //TODO: add in case
                 break;
-              }
-             }
             }
-          case Hatch:{
-            switch (buttonBox.getScoringDestinationState()){
+            break;
+          case Hatch:
+            switch (buttonBox.getScoringDestinationState()) {
               case Rocket:
-                switch (buttonBox.getPositionState()){
-                  case High: {
+                switch (buttonBox.getPositionState()) {
+                  case High:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackTopHatchHeight);
                     break;
-                  }
-                  case Medium:{
+                  case Medium:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackMiddleHatchHeight);
                     break;
-                  }
-                  case Low:{
+                  case Low:
                     elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight);
                     break;
-                  }
-                  case None:{
+                  case None:
                     //TODO: add in what should happen when none
                     break;
-                  }
                 }
                 break;
-              case CargoShip:{
+              case CargoShip:
                 elevator.SetPosition(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight);
-                break;
-              }
-                
-              case None:{
+                break;                
+              case None:
                 //TODO: add in case
                 break;
-              }
             }
-          }
-          case None:{
+            break;
+          case None:
             //TODO: add in case
             break;
-          }
         }
-      }
-        case None:{
-          //TODO: add in case
-          break;
-        }
-      }
-     
+        break;
+      case None:
+        //TODO: add in case
+        break;
     }
-
-
-
+  }
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
