@@ -67,10 +67,8 @@ public class DriveToDistance extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    boolean onLeftTarget = ((error(driveTrain.leftEncoderTicks(), leftTarget) < (leftTarget + errorMargin))
-          && (error(driveTrain.leftEncoderTicks(), leftTarget) > (leftTarget - errorMargin)));
-    boolean onRightTarget = ((error(driveTrain.rightEncoderTicks(), rightTarget) < (rightTarget + errorMargin))
-          && (error(driveTrain.rightEncoderTicks(), rightTarget) > (rightTarget - errorMargin)));
+    boolean onLeftTarget = (Math.abs(error(driveTrain.leftEncoderTicks(), leftTarget))) < errorMargin;
+    boolean onRightTarget = (Math.abs(error(driveTrain.rightEncoderTicks(), rightTarget))) < errorMargin;
     return onLeftTarget && onRightTarget;
   }
 
