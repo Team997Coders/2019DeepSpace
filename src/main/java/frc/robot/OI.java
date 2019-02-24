@@ -3,10 +3,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.*;
 
-import frc.robot.commands.DeployLandingGear;
-import frc.robot.commands.FollowLineAndDeliverHatch;
-import frc.robot.commands.RetractLandingGear;
-
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,6 +28,8 @@ public class OI {
   private JoystickButton retractLandingGear;
   private JoystickButton toggleHatch;
 
+  private JoystickButton drived;
+
   public OI() {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
@@ -44,6 +42,9 @@ public class OI {
 
     followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
     followLine.whenPressed(new FollowLineAndDeliverHatch());
+
+    drived = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    drived.whenPressed(new PDriveToDistance(0.25, 4100));
 
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ToggleHatch());
