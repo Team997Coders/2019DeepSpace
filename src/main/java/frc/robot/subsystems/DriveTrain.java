@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
@@ -30,7 +31,7 @@ public class DriveTrain extends Subsystem {
   public boolean decell = true;
 
   // Decell Data
-  private double ramp = 1.0;
+  private double ramp = 4.0;
   private double prevL = 0, prevR = 0, prevY = 0;
 
   // GearBox class stores information for the motor controllers for one gearbox
@@ -142,8 +143,12 @@ public class DriveTrain extends Subsystem {
       newY = (maxIncrement * sign) + prevY;
     }
 
-    leftTalon.set(ControlMode.Current, newY + turn);
-    rightTalon.set(ControlMode.Current, newY - turn);
+    if (Math.abs(newY) > 0.6) {
+      newY = (Math.abs(newY) / newY) * 0.6;
+    }
+
+    leftTalon.set(ControlMode.PercentOutput, newY + turn);
+    rightTalon.set(ControlMode.PercentOutput, newY - turn);
 
     prevY = newY;
   }
@@ -275,7 +280,8 @@ public class DriveTrain extends Subsystem {
     table.getEntry("Left Velocity Drivetrain").setDouble(leftEncoderVelocity());
     table.getEntry("Right Velocity Drivetrain").setDouble(rightEncoderVelocity());
     table.getEntry("Gyro angle").setDouble(getGyroAngle());
-    table.getEntry("Prev Y").setDouble(prevY);
+    
+    SmartDashboard.putNumber("Prev Y", prevY);
   }
 
   @Override
