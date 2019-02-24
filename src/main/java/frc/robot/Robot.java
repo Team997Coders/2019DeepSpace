@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    kDeltaTime = System.currentTimeMillis() - lastTime;
+    kDeltaTime = (System.currentTimeMillis() - lastTime) / 1000;
     lastTime = System.currentTimeMillis();
 
     updateSmartDashboard();
@@ -224,5 +224,7 @@ public class Robot extends TimedRobot {
     frontInfraredRangeFinder.updateSmartDashboard();
     backInfraredRangeFinder.updateSmartDashboard();
     buttonBox.updateSmartDashboard();
+
+    SmartDashboard.putNumber("Delta Time", kDeltaTime);
   }
 }

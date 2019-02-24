@@ -149,7 +149,7 @@ public class RobotMap {
     public static final double
 
       // PDriveToDistance PID Variables
-      driveDistanceP = .00025, //placeholders
+      driveDistanceP = .003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
       protobotTickPerFoot= 2449,
