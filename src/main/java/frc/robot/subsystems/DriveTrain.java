@@ -130,6 +130,8 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, 0);
   }
 
+  //TODO: This function has a bug...prevL and prevR are never set.
+  
   /**
    * Sets the percentage input for the left and right talon but with a
    * deceleration dampener.
