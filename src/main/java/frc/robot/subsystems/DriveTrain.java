@@ -29,10 +29,10 @@ import com.kauailabs.navx.frc.AHRS;
  */
 public class DriveTrain extends Subsystem {
 
-  public boolean decell = false;
+  public boolean decell = true;
 
   // Decell Data
-  private double dampRate = 1.66; // Power / Seconds ^2
+  private double ramp = 1.66; // Power / Seconds ^2
   private double prevL = 0, prevR = 0;
 
   // GearBox class stores information for the motor controllers for one gearbox
@@ -111,24 +111,42 @@ public class DriveTrain extends Subsystem {
    * @param left  Percentage input for the left talon
    * @param right Percentage input for the right talon
    */
-  public void setVoltsDecel(double left, double right) {
+  public void setRampTankVolts(double left, double right) {
     double L = left;
     double R = right;
 
-    double deltaTime = Robot.getDeltaTime();
+    double maxIncrement = ramp * Robot.getDeltaTime();
 
-    if (Math.abs(left) > Math.abs(prevL) + (dampRate * deltaTime)) {
-      L = prevL + ((prevL / Math.abs(prevL)) * (dampRate * deltaTime));
+    prevL = leftTalon.getMotorOutputPercent();
+    prevR = rightTalon.getMotorOutputPercent();
+
+    if (Math.abs(left - prevL) > + maxIncrement) {
+      double sign = (left - prevL) / Math.abs(left - prevL);
+      L = (maxIncrement * sign) + prevL;
     }
 
-    if (Math.abs(right) > Math.abs(prevR) + (dampRate * deltaTime)) {
-      R = prevR + ((prevR / Math.abs(prevR)) * (dampRate * deltaTime));
+    if (Math.abs(right - prevR) > + maxIncrement) {
+      double sign = (right - prevR) / Math.abs(right - prevR);
+      R = (maxIncrement * sign) + prevR;
     }
 
     setVolts(L, R);
+}
 
-    prevL = L;
-    prevR = R;
+  public void setRampArcadeVolts(double front, double turn) {
+    double newY = front;
+
+    double prev = (leftTalon.getMotorOutputPercent() + rightTalon.getMotorOutputPercent()) / 2;
+
+    double maxIncrement = Robot.getDeltaTime() * ramp;
+
+    if (Math.abs(front - prev) > maxIncrement) {
+      double sign = (front - prev) / Math.abs(front - prev);
+      newY = (maxIncrement * sign) + prev;
+    }
+
+    leftTalon.set(ControlMode.Current, newY + turn);
+    rightTalon.set(ControlMode.Current, newY - turn);
   }
 
   /**

@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
-  public static int heightIndex; 
+  public static int heightIndex;
   // used by the scoringHeight logic commands to grab the correct height from
   // the height array in RobotMap.
 
