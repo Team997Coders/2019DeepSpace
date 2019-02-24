@@ -146,8 +146,10 @@ public class RobotMap {
   }
 
   public static class Values {
-    public static final double
+    public static int 
+      ticksPerRev = 4203; //4096;
 
+    public static final double
       driveDistanceP = .0003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
@@ -201,7 +203,27 @@ public class RobotMap {
 
       // Camera values
       leftAngleInDegrees = 75,
-      rightAngleInDegrees = 115;
+      rightAngleInDegrees = 115,
+      //PathFnder values
+      pf_timestep = 0.02,
+      pf_max_vel = 10.87, // max velocity in ft/sec.
+      pf_max_acc = 6.79,
+      pf_max_jerk = 60,
+      pf_Kp = 0.001,
+      pf_Ki = 0.0,
+      pf_Kd = 0.06,
+      pf_Kv = (1/pf_max_vel),
+      pf_Ka = 0.0,
+      //pf_Kt = 0.35,
+      
+
+      robotLength = 39.125, //in inches (includes bumpers)
+      robotWidth = 33.625,	
+      robotWheelBase = 23.526, // inches or 2.5ft or 0.6 meters.  Use 0.0254 meters/in or 39.37in/m
+      robotWheelDia = 0.1524;// Javadocs requests that this is in meters not feet-> 6/12; // remember all pf variables are in ft.  Need to convert when used.
+      
+    public static boolean
+      pf_path_ready = false;
   }
 
   public static class ElevatorHeights {

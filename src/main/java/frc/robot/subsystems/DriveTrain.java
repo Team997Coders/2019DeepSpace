@@ -32,6 +32,8 @@ public class DriveTrain extends Subsystem {
   // Decell Data
   private double ramp = 1.0;
   private double prevL = 0, prevR = 0, prevY = 0;
+  private double init_angle;
+  public boolean gyropresent = false;
 
   // GearBox class stores information for the motor controllers for one gearbox
   private final TalonSRX leftTalon, rightTalon;
@@ -57,6 +59,11 @@ public class DriveTrain extends Subsystem {
       null,
       NetworkTableInstance.create().getTable("SmartDashboard")
     );
+  }
+
+  public void resetGyro() {
+    init_angle = gyro.getAngle();
+    gyro.zeroYaw();
   }
 
   /**
@@ -87,6 +94,9 @@ public class DriveTrain extends Subsystem {
         this.gyro = new AHRS(RobotMap.Ports.AHRS);
         System.out.println("ahrs is coolio!");
         this.gyro.reset();
+        this.gyro.zeroYaw();
+        init_angle = this.gyro.getAngle();
+        gyropresent = true;
       } catch (RuntimeException e) {
         System.out.println("DT- Im been a bad Gyro daddy uwu");
       }
@@ -209,6 +219,14 @@ public class DriveTrain extends Subsystem {
     rightTalon.setSelectedSensorPosition(0, 0, 10);
   }
 
+  public double getHeading() {
+		if (gyropresent) {
+			return( gyro.getAngle() - init_angle );
+		} else {
+			return 0.0;
+		}
+	}
+	  
   /**
    * Gets PID constants from the SmartDashboard and then uses setPIDValues(double,
    * double, double)

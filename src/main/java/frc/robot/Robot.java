@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
+  public static MotionProfile motionProfile;
   public static CameraMount frontCameraMount;
   public static CameraMount backCameraMount;
   private NetworkTableInstance networkTableInstance;
@@ -129,6 +130,8 @@ public class Robot extends TimedRobot {
     oi = new OI();
     bb = new ButtonBoxOI();
     //logitechVisionOI = new LogitechVisionOI();
+
+    motionProfile = MotionProfile.getInstance();
   }
 
   @Override
