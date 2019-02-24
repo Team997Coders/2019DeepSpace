@@ -7,6 +7,7 @@ import org.junit.Test;
 import frc.robot.RobotMap;
 import frc.robot.helpers.DriveTrainMocks;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -49,5 +50,20 @@ public class DriveToDistanceIntegrationTest {
     verify(driveTrainMocks.leftTalonMock, times(1)).set(ControlMode.Position, 0);
     verify(driveTrainMocks.rightTalonMock, times(1)).set(ControlMode.Position, 0);
   }
-}
 
+  @Test
+  public void itFinishesWhenWithinMarginOfError() {
+    // Assemble
+    double leftTarget = 10;
+    double rightTarget = 100;
+    double errorMargin = 5;
+    DriveTrainMocks driveTrainMocks = new DriveTrainMocks();
+    DriveTrain driveTrain = new DriveTrain(driveTrainMocks.leftBoxMock, driveTrainMocks.rightBoxMock, driveTrainMocks.gyroMock, driveTrainMocks.smartDashboardMock);
+    DriveToDistance driveToDistance = new DriveToDistance(driveTrain, errorMargin, leftTarget, rightTarget);
+    when(driveTrainMocks.leftTalonMock.getSelectedSensorPosition(anyInt())).thenReturn((int)leftTarget - (int)errorMargin + 1);
+    when(driveTrainMocks.rightTalonMock.getSelectedSensorPosition(anyInt())).thenReturn((int)rightTarget - (int)errorMargin + 1);
+
+    // Assert
+    assertEquals(true, driveToDistance.isFinished());
+  }
+}
