@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.misc.GearBox;
@@ -27,11 +27,11 @@ import com.kauailabs.navx.frc.AHRS;
  */
 public class DriveTrain extends Subsystem {
 
-  public boolean decell = false;
+  public boolean decell = true;
 
   // Decell Data
-  private double dampRate = 0.01;
-  private double prevL = 0, prevR = 0;
+  private double ramp = 0.5;
+  private double prevL = 0, prevR = 0, prevY = 0;
 
   // GearBox class stores information for the motor controllers for one gearbox
   private final TalonSRX leftTalon, rightTalon;
@@ -130,28 +130,22 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, 0);
   }
 
-  //TODO: This function has a bug...prevL and prevR are never set.
-  
-  /**
-   * Sets the percentage input for the left and right talon but with a
-   * deceleration dampener.
-   * 
-   * @param left  Percentage input for the left talon
-   * @param right Percentage input for the right talon
-   */
-  public void setVoltsDecel(double left, double right) {
-    double L = left;
-    double R = right;
+  public void setRampArcadeVolts(double front, double turn) {
+    double newY = front;
 
-    if (Math.abs(left) > Math.abs(prevL) + dampRate) {
-      L = prevL + ((prevL / Math.abs(prevL)) * dampRate);
+    //prevY = (leftTalon.getMotorOutputPercent() + rightTalon.getMotorOutputPercent()) / 2;
+
+    double maxIncrement = Robot.kDeltaTime * ramp;
+
+    if (Math.abs(front - prevY) > maxIncrement) {
+      double sign = (front - prevY) / Math.abs(front - prevY);
+      newY = (maxIncrement * sign) + prevY;
     }
 
-    if (Math.abs(right) > Math.abs(prevR) + dampRate) {
-      R = prevR + ((prevR / Math.abs(prevR)) * dampRate);
-    }
+    leftTalon.set(ControlMode.Current, newY + turn);
+    rightTalon.set(ControlMode.Current, newY - turn);
 
-    setVolts(L, R);
+    prevY = newY;
   }
 
   /**
