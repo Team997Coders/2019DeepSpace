@@ -148,7 +148,7 @@ public class RobotMap {
   public static class Values {
     public static final double
 
-      driveDistanceP = .00025, //placeholders
+      driveDistanceP = .0003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
       protobotTickPerFoot= 2449,

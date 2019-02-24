@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ArcadeDrive extends Command {
@@ -28,11 +29,17 @@ public class ArcadeDrive extends Command {
     double front = Robot.oi.getLeftYAxis();
     double turn = Robot.oi.getRightXAxis();
 
-    if (Robot.driveTrain.decell) {
+    SmartDashboard.putNumber("Left Y", front);
+
+    //Robot.driveTrain.setVolts(front + turn, front - turn);
+
+    Robot.driveTrain.setRampArcadeVolts(front, turn);
+
+    /*if (Robot.driveTrain.decell) {
       Robot.driveTrain.setRampArcadeVolts(front, turn);
     } else {
       Robot.driveTrain.setVolts(front + turn, front - turn);
-    }
+    }*/
   }
 
   @Override

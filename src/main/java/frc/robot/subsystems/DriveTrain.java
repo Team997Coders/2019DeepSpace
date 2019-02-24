@@ -30,7 +30,7 @@ public class DriveTrain extends Subsystem {
   public boolean decell = true;
 
   // Decell Data
-  private double ramp = 0.5;
+  private double ramp = 1.0;
   private double prevL = 0, prevR = 0, prevY = 0;
 
   // GearBox class stores information for the motor controllers for one gearbox
@@ -275,6 +275,7 @@ public class DriveTrain extends Subsystem {
     table.getEntry("Left Velocity Drivetrain").setDouble(leftEncoderVelocity());
     table.getEntry("Right Velocity Drivetrain").setDouble(rightEncoderVelocity());
     table.getEntry("Gyro angle").setDouble(getGyroAngle());
+    table.getEntry("Prev Y").setDouble(prevY);
   }
 
   @Override
