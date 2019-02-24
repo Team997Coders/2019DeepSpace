@@ -50,7 +50,7 @@ public class DriveToDistance extends Command {
   @Override
   protected void initialize() {
     driveTrain.resetEncoders();
-    driveTrain.setPIDValues(RobotMap.Values.driveToDistance_kP, RobotMap.Values.driveToDistance_kI, RobotMap.Values.driveToDistance_kD);
+    driveTrain.setPIDValues(RobotMap.Values.driveDistanceP, RobotMap.Values.driveDistanceI, RobotMap.Values.driveDistanceD);
   }
 
   // Called repeatedly when this Command is scheduled to run

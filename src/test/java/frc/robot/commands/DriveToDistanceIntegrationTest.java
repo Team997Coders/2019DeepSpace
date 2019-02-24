@@ -24,12 +24,12 @@ public class DriveToDistanceIntegrationTest {
     driveToDistance.initialize();
 
     // Assert
-    verify(driveTrainMocks.leftTalonMock, times(1)).config_kP(0, RobotMap.Values.driveToDistance_kP, 0);
-    verify(driveTrainMocks.rightTalonMock, times(1)).config_kP(0, RobotMap.Values.driveToDistance_kP, 0);
-    verify(driveTrainMocks.leftTalonMock, times(1)).config_kI(0, RobotMap.Values.driveToDistance_kI, 0);
-    verify(driveTrainMocks.rightTalonMock, times(1)).config_kI(0, RobotMap.Values.driveToDistance_kI, 0);
-    verify(driveTrainMocks.leftTalonMock, times(1)).config_kD(0, RobotMap.Values.driveToDistance_kD, 0);
-    verify(driveTrainMocks.rightTalonMock, times(1)).config_kD(0, RobotMap.Values.driveToDistance_kD, 0);
+    verify(driveTrainMocks.leftTalonMock, times(1)).config_kP(0, RobotMap.Values.driveDistanceP, 0);
+    verify(driveTrainMocks.rightTalonMock, times(1)).config_kP(0, RobotMap.Values.driveDistanceP, 0);
+    verify(driveTrainMocks.leftTalonMock, times(1)).config_kI(0, RobotMap.Values.driveDistanceI, 0);
+    verify(driveTrainMocks.rightTalonMock, times(1)).config_kI(0, RobotMap.Values.driveDistanceI, 0);
+    verify(driveTrainMocks.leftTalonMock, times(1)).config_kD(0, RobotMap.Values.driveDistanceD, 0);
+    verify(driveTrainMocks.rightTalonMock, times(1)).config_kD(0, RobotMap.Values.driveDistanceD, 0);
   }
 
   @Test
