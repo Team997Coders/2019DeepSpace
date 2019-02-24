@@ -66,4 +66,36 @@ public class DriveToDistanceIntegrationTest {
     // Assert
     assertEquals(true, driveToDistance.isFinished());
   }
+
+  @Test
+  public void itDoesNotFinishWhenRightTargetNotWithinMarginOfError() {
+    // Assemble
+    double leftTarget = 10;
+    double rightTarget = 100;
+    double errorMargin = 5;
+    DriveTrainMocks driveTrainMocks = new DriveTrainMocks();
+    DriveTrain driveTrain = new DriveTrain(driveTrainMocks.leftBoxMock, driveTrainMocks.rightBoxMock, driveTrainMocks.gyroMock, driveTrainMocks.smartDashboardMock);
+    DriveToDistance driveToDistance = new DriveToDistance(driveTrain, errorMargin, leftTarget, rightTarget);
+    when(driveTrainMocks.leftTalonMock.getSelectedSensorPosition(anyInt())).thenReturn((int)leftTarget - (int)errorMargin + 1);
+    when(driveTrainMocks.rightTalonMock.getSelectedSensorPosition(anyInt())).thenReturn((int)rightTarget - (int)errorMargin);
+
+    // Assert
+    assertEquals(false, driveToDistance.isFinished());
+  }
+
+  @Test
+  public void itDoesNotFinishWhenLeftTargetNotWithinMarginOfError() {
+    // Assemble
+    double leftTarget = 10;
+    double rightTarget = 100;
+    double errorMargin = 5;
+    DriveTrainMocks driveTrainMocks = new DriveTrainMocks();
+    DriveTrain driveTrain = new DriveTrain(driveTrainMocks.leftBoxMock, driveTrainMocks.rightBoxMock, driveTrainMocks.gyroMock, driveTrainMocks.smartDashboardMock);
+    DriveToDistance driveToDistance = new DriveToDistance(driveTrain, errorMargin, leftTarget, rightTarget);
+    when(driveTrainMocks.leftTalonMock.getSelectedSensorPosition(anyInt())).thenReturn((int)leftTarget - (int)errorMargin);
+    when(driveTrainMocks.rightTalonMock.getSelectedSensorPosition(anyInt())).thenReturn((int)rightTarget - (int)errorMargin + 1);
+
+    // Assert
+    assertEquals(false, driveToDistance.isFinished());
+  }
 }
