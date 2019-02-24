@@ -148,10 +148,18 @@ public class RobotMap {
   public static class Values {
     public static final double
 
+      // PDriveToDistance PID Variables
       driveDistanceP = .00025, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
       protobotTickPerFoot= 2449,
+
+      // PDriveToAngle PID Variables
+      driveAngleP = .00025, //placeholders
+      driveAngleI = 0.0,
+      driveAngleD = 0.0,
+
+      //
 
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
       ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
@@ -174,11 +182,6 @@ public class RobotMap {
       noPowerMotor = -.25,
       normal = .10,        //for double line seen
       straight = .3,
-
-      // Drive to Distance PID values
-      driveToDistance_kP = 0.0001,
-      driveToDistance_kI = 0.0,
-      driveToDistance_kD = 0.0,
 
       // Arm and Elevator Values
       elevatorPidP = 0.00002, // 0.0005

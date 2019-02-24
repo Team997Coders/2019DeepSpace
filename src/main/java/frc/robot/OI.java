@@ -44,7 +44,7 @@ public class OI {
     followLine.whenPressed(new FollowLineAndDeliverHatch());
 
     drived = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    drived.whenPressed(new PDriveToDistance(0.25, 4100));
+    drived.whenPressed(new PDriveToAngle(90));
 
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ToggleHatch());
