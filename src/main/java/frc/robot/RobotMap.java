@@ -155,7 +155,7 @@ public class RobotMap {
       protobotTickPerFoot= 2449,
 
       // PDriveToAngle PID Variables
-      driveAngleP = .00025, //placeholders
+      driveAngleP = .007, //placeholders
       driveAngleI = 0.0,
       driveAngleD = 0.0,
 
