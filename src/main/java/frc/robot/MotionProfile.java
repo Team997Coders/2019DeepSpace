@@ -95,8 +95,8 @@ public class MotionProfile {
 			// left_drive = (left_speed  * 12 * 223); //+ turn;
 			// right_drive = (right_speed * 12 * 223); //- turn;
 
-			left_drive = left_speed + turn;
-			right_drive = right_speed - turn;
+			left_drive = left_speed - turn;
+			right_drive = right_speed + turn;
 
 			// Robot.driveTrain.setVelocity(left_drive, right_drive);
 
