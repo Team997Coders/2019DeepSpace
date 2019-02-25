@@ -27,6 +27,7 @@ public class OI {
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton toggleHatch;
+  private JoystickButton follow;
 
   private JoystickButton drived;
 
@@ -34,14 +35,17 @@ public class OI {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
 
+    follow = new JoystickButton(gamepad1, 1);
+    follow.whenPressed(new FollowPath("Test"));
+
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
 
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
 
-    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
-    followLine.whenPressed(new FollowLineAndDeliverHatch());
+    //followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    //followLine.whenPressed(new FollowLineAndDeliverHatch());
 
     drived = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     drived.whenPressed(new PDriveToAngle(90));

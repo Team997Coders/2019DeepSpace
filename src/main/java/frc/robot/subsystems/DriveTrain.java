@@ -63,6 +63,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetGyro() {
+    gyro.reset();
     init_angle = gyro.getAngle();
     gyro.zeroYaw();
   }
@@ -298,7 +299,8 @@ public class DriveTrain extends Subsystem {
     table.getEntry("Left Velocity Drivetrain").setDouble(leftEncoderVelocity());
     table.getEntry("Right Velocity Drivetrain").setDouble(rightEncoderVelocity());
     table.getEntry("Gyro angle").setDouble(getGyroAngle());
-    
+
+    SmartDashboard.putNumber("Gyro Angle", getGyroAngle());
     SmartDashboard.putNumber("Prev Y", prevY);
   }
 

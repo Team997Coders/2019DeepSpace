@@ -209,7 +209,7 @@ public class RobotMap {
       rightAngleInDegrees = 115,
       //PathFnder values
       pf_timestep = 0.02,
-      pf_max_vel = 10.87, // max velocity in ft/sec.
+      pf_max_vel = 2.5, // max velocity in ft/sec.
       pf_max_acc = 6.79,
       pf_max_jerk = 60,
       pf_Kp = 0.001,
@@ -220,10 +220,10 @@ public class RobotMap {
       //pf_Kt = 0.35,
       
 
-      robotLength = 39.125, //in inches (includes bumpers)
-      robotWidth = 33.625,	
-      robotWheelBase = 23.526, // inches or 2.5ft or 0.6 meters.  Use 0.0254 meters/in or 39.37in/m
-      robotWheelDia = 0.1524;// Javadocs requests that this is in meters not feet-> 6/12; // remember all pf variables are in ft.  Need to convert when used.
+      robotLength = 0.75, //in inches (includes bumpers)
+      robotWidth = 0.7,	
+      robotWheelBase = 0.7, // inches or 2.5ft or 0.6 meters.  Use 0.0254 meters/in or 39.37in/m
+      robotWheelDia = 0.15;// Javadocs requests that this is in meters not feet-> 6/12; // remember all pf variables are in ft.  Need to convert when used.
       
     public static boolean
       pf_path_ready = false;
