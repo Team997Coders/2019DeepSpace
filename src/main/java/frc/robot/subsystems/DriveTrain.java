@@ -58,7 +58,7 @@ public class DriveTrain extends Subsystem {
         RobotMap.Ports.rightVictor2, 
         true),
       null,
-      NetworkTableInstance.create().getTable("SmartDashboard")
+      NetworkTableInstance.getDefault().getTable("SmartDashboard")
     );
   }
 
