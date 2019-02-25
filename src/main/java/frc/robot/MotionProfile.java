@@ -41,23 +41,27 @@ public class MotionProfile {
 	public double right_drive;
 	public double left_drive;
 
+  public boolean forward;
 
-	public static MotionProfile getInstance() {
+	/*public static MotionProfile getInstance() {
 		if (instance == null) {
 			instance = new MotionProfile();
 		}
 		return instance;
   }
 
-  public MotionProfile() { }
+  public MotionProfile() { }*/
 
   /**
    * Create a MotionProfile in one init.
    * 
    * @param pathname the name of the path file (exclude the file extensions and sub-dir as long as its in ~/deploy/paths/)
    */
-  public MotionProfile(String pathname) {
+  public MotionProfile(String pathname, boolean forward) {
     this.name = pathname;
+
+    this.forward = forward;
+
     try {
       pfInit(pathname);
     } catch (Exception e) {
@@ -77,9 +81,11 @@ public class MotionProfile {
 		/*left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left"); // FIX:  Know bug in Pathweaver paths
 		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right"); // FIX:  See screensteps documentation*/
 
-		// MARK: Screensteps fix
-		left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
-		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+    // MARK: Screensteps fix
+    if (forward) {
+		  left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
+      right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+    }
 
 		m_left_follower = new EncoderFollower(left_trajectory);
 		m_right_follower = new EncoderFollower(right_trajectory);
@@ -113,7 +119,7 @@ public class MotionProfile {
 			right_speed = m_right_follower.calculate((int) Robot.driveTrain.rightEncoderTicks());
 			heading = Robot.driveTrain.getHeading();
 			desired_heading = -Pathfinder.r2d(m_left_follower.getHeading()); //FIX: Another defect in PathWeaver
-			double heading_difference = Pathfinder.boundHalfDegrees(-desired_heading - heading);
+			double heading_difference = Pathfinder.boundHalfDegrees(-desired_heading - heading); // You may need to reverse the heading when going backwards. IDK
 			turn = (-1.0 / 80.0) * heading_difference;
 
 			// left_drive = (left_speed  * 12 * 223); //+ turn;
