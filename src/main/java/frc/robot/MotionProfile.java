@@ -89,7 +89,7 @@ public class MotionProfile {
 			right_speed = m_right_follower.calculate((int) Robot.driveTrain.rightEncoderTicks());
 			heading = Robot.driveTrain.getHeading();
 			desired_heading = -Pathfinder.r2d(m_left_follower.getHeading()); //FIX: Another defect in PathWeaver
-			double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
+			double heading_difference = Pathfinder.boundHalfDegrees(-desired_heading - heading);
 			turn = (-1.0 / 80.0) * heading_difference;
 
 			// left_drive = (left_speed  * 12 * 223); //+ turn;

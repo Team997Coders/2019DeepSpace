@@ -36,7 +36,7 @@ public class OI {
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
 
     follow = new JoystickButton(gamepad1, 1);
-    follow.whenPressed(new FollowPath("Test"));
+    follow.whenPressed(new FollowPath("TurnTest"));
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
