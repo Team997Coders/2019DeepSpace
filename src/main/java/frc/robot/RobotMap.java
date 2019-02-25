@@ -147,8 +147,7 @@ public class RobotMap {
 
   public static class Values {
     public static int 
-      ticksPerRev = 4203; //4096;
-
+      ticksPerRev = 4096; // Protobot
     public static double
       // PDriveToDistance PID Variables
       driveDistanceP = .003, //placeholders
@@ -221,8 +220,8 @@ public class RobotMap {
       
 
       robotLength = 0.75, //in inches (includes bumpers)
-      robotWidth = 0.7,	
-      robotWheelBase = 0.7, // inches or 2.5ft or 0.6 meters.  Use 0.0254 meters/in or 39.37in/m
+      robotWidth = 0.8,	
+      robotWheelBase = 0.62, // inches or 2.5ft or 0.6 meters.  Use 0.0254 meters/in or 39.37in/m
       robotWheelDia = 0.15;// Javadocs requests that this is in meters not feet-> 6/12; // remember all pf variables are in ft.  Need to convert when used.
       
     public static boolean
