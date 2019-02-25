@@ -24,6 +24,8 @@ import frc.robot.Robot;
  */
 public class MotionProfile {
 
+  public String name;
+
 	private static MotionProfile instance;
 	private Notifier m_follower_notifier;
 	private EncoderFollower m_left_follower;
@@ -31,13 +33,13 @@ public class MotionProfile {
 	Trajectory left_trajectory;
 	Trajectory right_trajectory;
 
-	public static double left_speed;
-	public static double right_speed;
-	public static double heading;
-	public static double desired_heading;
-	public static double turn;
-	public static double right_drive;
-	public static double left_drive;
+	public double left_speed;
+	public double right_speed;
+	public double heading;
+	public double desired_heading;
+	public double turn;
+	public double right_drive;
+	public double left_drive;
 
 
 	public static MotionProfile getInstance() {
@@ -45,8 +47,30 @@ public class MotionProfile {
 			instance = new MotionProfile();
 		}
 		return instance;
-	}
+  }
 
+  public MotionProfile() { }
+
+  /**
+   * Create a MotionProfile in one init.
+   * 
+   * @param pathname the name of the path file (exclude the file extensions and sub-dir as long as its in ~/deploy/paths/)
+   */
+  public MotionProfile(String pathname) {
+    this.name = pathname;
+    try {
+      pfInit(pathname);
+    } catch (Exception e) {
+      System.out.println("Exception when initalizing path '" + pathname + "'");
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Initalize this object with a pathname
+   * 
+   * @param Pathname the name of the path file (exclude the file extensions and sub-dir as long as its in ~/deploy/paths/)
+   */
 	public void pfInit(String Pathname) throws IOException {
 
 		// https://wpilib.screenstepslive.com/s/currentCS/m/84338/l/1021631-integrating-path-following-into-a-robot-program

@@ -11,6 +11,11 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * This command does basically what 2 other commands do
+ * 
+ * @deprecated
+ */
 public class ScoreGamePiece extends Command {
   private boolean gamePieceType; // True = hatch | false = cargo
   private boolean scoringSide; // back = true | front = false
