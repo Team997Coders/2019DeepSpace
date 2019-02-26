@@ -41,26 +41,15 @@ public class MotionProfile {
 	public double right_drive;
 	public double left_drive;
 
-  public boolean forward;
-
-	/*public static MotionProfile getInstance() {
-		if (instance == null) {
-			instance = new MotionProfile();
-		}
-		return instance;
-  }
-
-  public MotionProfile() { }*/
+  public boolean forwards = true;
 
   /**
    * Create a MotionProfile in one init.
    * 
    * @param pathname the name of the path file (exclude the file extensions and sub-dir as long as its in ~/deploy/paths/)
    */
-  public MotionProfile(String pathname, boolean forward) {
+  public MotionProfile(String pathname) {
     this.name = pathname;
-
-    this.forward = forward;
 
     try {
       pfInit(pathname);
@@ -68,6 +57,25 @@ public class MotionProfile {
       System.out.println("Exception when initalizing path '" + pathname + "'");
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Sets the follow direction.
+   * 
+   * @param forwards True if going forwards, false if backwards.
+   */
+  public void setFollowDirection(boolean forwards) {
+    this.forwards = forwards;
+  }
+
+  /**
+   * Toggle the follow direction.
+   * 
+   * @return Updated follow direction.
+   */
+  public boolean toggleFollowDirection() {
+    forwards = !forwards;
+    return forwards;
   }
 
   /**
@@ -82,10 +90,8 @@ public class MotionProfile {
 		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right"); // FIX:  See screensteps documentation*/
 
     // MARK: Screensteps fix
-    if (forward) {
-		  left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
-      right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
-    }
+		left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
+    right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
 
 		m_left_follower = new EncoderFollower(left_trajectory);
 		m_right_follower = new EncoderFollower(right_trajectory);
@@ -130,8 +136,12 @@ public class MotionProfile {
 
 			// Robot.driveTrain.setVelocity(left_drive, right_drive);
 
-			Robot.driveTrain.setVolts(left_drive, right_drive);
-		}
+      if (forwards) {
+			  Robot.driveTrain.setVolts(left_drive, right_drive);
+      } else {
+        Robot.driveTrain.setVolts(-right_drive, -left_drive); // This should make the path go backwards
+      }
+    }
 		
 	}
 }
