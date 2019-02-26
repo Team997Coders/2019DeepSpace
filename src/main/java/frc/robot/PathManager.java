@@ -38,8 +38,9 @@ public class PathManager {
    */
   private PathManager() {
     // Load pathnames in the queue
-    pathnames.add("Test");
-    pathnames.add("TurnTest");
+    pathnames.add("Hab1MiddleToShipRight");
+    pathnames.add("ShipRightToLoadingStationRight");
+    pathnames.add("LoadingStationRightToCargoCenterLeft");
 
     daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {

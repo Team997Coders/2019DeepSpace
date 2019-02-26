@@ -44,11 +44,9 @@ public class Arm extends Subsystem {
   // Read Encoder Vars
   private final double MAX = 1022;
   private final double LIMIT = 500;
-  private double initRead = 0;
   private double prevRead = -1;
   private int revs = 0;
   private int flipModifier = 1;
-  private double tolerance;
   private double fConstant = RobotMap.Values.armMaxPidF;
   public boolean armState;
 
@@ -79,7 +77,10 @@ public class Arm extends Subsystem {
 
     discBrake = new Solenoid(RobotMap.Ports.discBrake);
 
-    initRead = getRawEncoder();
+    SmartDashboard.putNumber("Arm/Arm Pid P", RobotMap.Values.armPidP);
+    SmartDashboard.putNumber("Arm/Arm Pid I", RobotMap.Values.armPidI);
+    SmartDashboard.putNumber("Arm/Arm Pid D", RobotMap.Values.armPidD);
+    SmartDashboard.putNumber("Arm/Arm Pid F", RobotMap.Values.armMaxPidF);
   }
 
   public void setPower(double speed) {
@@ -135,7 +136,7 @@ public class Arm extends Subsystem {
       }
     }
     prevRead = newVal;
-    return (int)(((revs * MAX) + (newVal/* - initRead*/)));
+    return (int)((revs * MAX) + newVal);
   }
 
   private double getRawEncoder() {
@@ -195,20 +196,20 @@ public class Arm extends Subsystem {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Arm Absolute Raw", getRawEncoder());
-    SmartDashboard.putNumber("Absolute Parsed", readEncoder());
-    SmartDashboard.putBoolean("Disc Brake state: ", discBrake.get());
-    SmartDashboard.putBoolean("Arm forward limit switch", getForwardLimitSwitch());
-    pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
-    pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
-    pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));
-    fConstant = SmartDashboard.getNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
-    SmartDashboard.putNumber("Arm F", pidController.getFF());
-    SmartDashboard.putBoolean("Arm Front Limit", frontLimitSwitch.get());
-    SmartDashboard.putBoolean("Arm Back Limit", backLimitSwitch.get());
-    SmartDashboard.putNumber("Arm voltage", sparkMax.getAppliedOutput());
-    SmartDashboard.putNumber("Arm Current", getCurrent());
-    SmartDashboard.putNumber("Arm Motor Temp", getMotorTemp());
+    SmartDashboard.putNumber("Arm/Arm Absolute Raw", getRawEncoder());
+    SmartDashboard.putNumber("Arm/Absolute Parsed", readEncoder());
+    SmartDashboard.putBoolean("Arm/Disc Brake state: ", discBrake.get());
+    SmartDashboard.putBoolean("Arm/Arm forward limit switch", getForwardLimitSwitch());
+    pidController.setP(SmartDashboard.getNumber("Arm/Arm Pid P", RobotMap.Values.armPidP));
+    pidController.setI(SmartDashboard.getNumber("Arm/Arm Pid I", RobotMap.Values.armPidI));
+    pidController.setD(SmartDashboard.getNumber("Arm/Arm Pid D", RobotMap.Values.armPidD));
+    fConstant = SmartDashboard.getNumber("Arm/Arm Pid F", RobotMap.Values.armMaxPidF);
+    SmartDashboard.putNumber("Arm/Arm F", pidController.getFF());
+    SmartDashboard.putBoolean("Arm/Arm Front Limit", frontLimitSwitch.get());
+    SmartDashboard.putBoolean("Arm/Arm Back Limit", backLimitSwitch.get());
+    SmartDashboard.putNumber("Arm/Arm voltage", sparkMax.getAppliedOutput());
+    SmartDashboard.putNumber("Arm/Arm Current", getCurrent());
+    SmartDashboard.putNumber("Arm/Arm Motor Temp", getMotorTemp());
   }
 
 
