@@ -24,6 +24,8 @@ import frc.robot.Robot;
  */
 public class MotionProfile {
 
+  public String name;
+
 	private static MotionProfile instance;
 	private Notifier m_follower_notifier;
 	private EncoderFollower m_left_follower;
@@ -31,31 +33,59 @@ public class MotionProfile {
 	Trajectory left_trajectory;
 	Trajectory right_trajectory;
 
-	public static double left_speed;
-	public static double right_speed;
-	public static double heading;
-	public static double desired_heading;
-	public static double turn;
-	public static double right_drive;
-	public static double left_drive;
+	public double left_speed;
+	public double right_speed;
+	public double heading;
+	public double desired_heading;
+	public double turn;
+	public double right_drive;
+	public double left_drive;
 
+  public boolean forward;
 
-	public static MotionProfile getInstance() {
+	/*public static MotionProfile getInstance() {
 		if (instance == null) {
 			instance = new MotionProfile();
 		}
 		return instance;
-	}
+  }
 
+  public MotionProfile() { }*/
+
+  /**
+   * Create a MotionProfile in one init.
+   * 
+   * @param pathname the name of the path file (exclude the file extensions and sub-dir as long as its in ~/deploy/paths/)
+   */
+  public MotionProfile(String pathname, boolean forward) {
+    this.name = pathname;
+
+    this.forward = forward;
+
+    try {
+      pfInit(pathname);
+    } catch (Exception e) {
+      System.out.println("Exception when initalizing path '" + pathname + "'");
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Initalize this object with a pathname
+   * 
+   * @param Pathname the name of the path file (exclude the file extensions and sub-dir as long as its in ~/deploy/paths/)
+   */
 	public void pfInit(String Pathname) throws IOException {
 
 		// https://wpilib.screenstepslive.com/s/currentCS/m/84338/l/1021631-integrating-path-following-into-a-robot-program
 		/*left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left"); // FIX:  Know bug in Pathweaver paths
 		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right"); // FIX:  See screensteps documentation*/
 
-		// MARK: Screensteps fix
-		left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
-		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+    // MARK: Screensteps fix
+    if (forward) {
+		  left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
+      right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+    }
 
 		m_left_follower = new EncoderFollower(left_trajectory);
 		m_right_follower = new EncoderFollower(right_trajectory);
@@ -89,7 +119,7 @@ public class MotionProfile {
 			right_speed = m_right_follower.calculate((int) Robot.driveTrain.rightEncoderTicks());
 			heading = Robot.driveTrain.getHeading();
 			desired_heading = -Pathfinder.r2d(m_left_follower.getHeading()); //FIX: Another defect in PathWeaver
-			double heading_difference = Pathfinder.boundHalfDegrees(-desired_heading - heading);
+			double heading_difference = Pathfinder.boundHalfDegrees(-desired_heading - heading); // You may need to reverse the heading when going backwards. IDK
 			turn = (-1.0 / 80.0) * heading_difference;
 
 			// left_drive = (left_speed  * 12 * 223); //+ turn;

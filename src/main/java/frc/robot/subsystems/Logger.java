@@ -108,13 +108,13 @@ public class Logger {
         this.writer.write(String.format(",%.3f", Robot.driveTrain.rightEncoderTicks()));
         this.writer.write(String.format(",%.3f", Robot.driveTrain.leftEncoderVelocity()));
         this.writer.write(String.format(",%.3f", Robot.driveTrain.rightEncoderVelocity()));
-        this.writer.write(String.format(",%.3f", Robot.motionProfile.left_speed));
+        /*this.writer.write(String.format(",%.3f", Robot.motionProfile.left_speed));
         this.writer.write(String.format(",%.3f", Robot.motionProfile.right_speed));
         this.writer.write(String.format(",%.3f", Robot.motionProfile.heading));
         this.writer.write(String.format(",%.3f", Robot.motionProfile.desired_heading));
         this.writer.write(String.format(",%.3f", Robot.motionProfile.turn));
         this.writer.write(String.format(",%.3f", Robot.motionProfile.left_drive));
-        this.writer.write(String.format(",%.3f", Robot.motionProfile.right_drive));
+        this.writer.write(String.format(",%.3f", Robot.motionProfile.right_drive));*/
 
 
         this.writer.newLine();
