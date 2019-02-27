@@ -285,7 +285,7 @@ public class CameraControlStateMachine {
     config.configure(State.Calibrating)
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
-          visionNetworkTable.getEntry(STATEKEY).setString(State.Calibrating.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Calibrating.toString());
           visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
       }})
       .permit(Trigger.AButton, State.IdentifyingTargets)
@@ -297,8 +297,25 @@ public class CameraControlStateMachine {
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton);
 
+    config.configure(State.AutoLocking)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition){
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Calibrating.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).getString("");          
+        }
+      })
+      .ignore(Trigger.BButton, State.DrivingToTarget)
+      .ignore(Trigger.AButton, State.IdentifyingTargets)
+      .ignore(Trigger.IdentifyTargets, State.IdentifyingTargets)
+      .ignore(Trigger.LoseLock, State.LockLost)
+      .ignore(Trigger.Slew)
+      .ignore(Trigger.LeftThumbstickButton)
+      .ignore(Trigger.XButton)
+      .ignore(Trigger.YButton)
+      .ignore(Trigger.LeftShoulderButton);
     return config;
   }
+  
 
   public void aButtonPressed() {
     stateMachine.fire(Trigger.AButton);
@@ -402,7 +419,7 @@ public class CameraControlStateMachine {
    * The valid states of the state machine.
    */
   public enum State {
-    IdentifyingTargets, SlewingToTarget, TargetLocked, LockFailed, LockLost, DrivingToTarget, Slewing, Centering, Calibrating
+    IdentifyingTargets, SlewingToTarget, TargetLocked, LockFailed, LockLost, DrivingToTarget, Slewing, Centering, Calibrating, AutoLocking
   }
 
   /**
