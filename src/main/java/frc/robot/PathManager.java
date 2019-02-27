@@ -8,6 +8,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
@@ -38,17 +39,19 @@ public class PathManager {
    */
   private PathManager() {
     // Load pathnames in the queue
+    pathnames = new LinkedList<String>();
+    profiles = new ArrayList<MotionProfile>();
     pathnames.add("Hab1MiddleToShipRight");
     pathnames.add("ShipRightToLoadingStationRight");
-    pathnames.add("LoadingStationRightToCargoCenterLeft");
+    //pathnames.add("LoadingStationRightToCargoCenterLeft");
 
-    daemons = new Thread[daemonCount];
+    //daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {
-      daemons[i] = new Thread(this::loadPath);
+      //daemons[i] = new Thread(this::loadPath);
     }
 
     for (int i = 0; i < daemonCount; i++) {
-      daemons[i].start();
+      //daemons[i].start();
     }
   }
 
@@ -77,6 +80,7 @@ public class PathManager {
       if (pathname == null) {
         run = false;
       } else {
+        System.out.println(pathname);
         mp = new MotionProfile(pathname);
         profiles.add(mp);
       }

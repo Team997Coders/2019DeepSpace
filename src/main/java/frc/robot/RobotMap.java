@@ -134,8 +134,8 @@ public class RobotMap {
       //CAMERA PORTS
       frontPanServo = 9,
       frontTiltServo = 8,
-      backPanServo = 7,
-      backTiltServo = 6,
+      backPanServo = 1,
+      backTiltServo = 0,
 
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;

@@ -117,7 +117,7 @@ public class ControlCamera extends Command {
           cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockFailed ||
           cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockLost ||
           cameraControlStateMachine.getState() == CameraControlStateMachine.State.Slewing) {
-        cameraMount.slew(cameraControlStateMachine.getPanRate(), cameraControlStateMachine.getTiltRate());
+        cameraMount.slew(-cameraControlStateMachine.getPanRate(), -cameraControlStateMachine.getTiltRate());
       // Center the camera under operator control
       } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.Centering) {
         cameraMount.center();

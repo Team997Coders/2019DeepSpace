@@ -28,6 +28,7 @@ public class OI {
   private JoystickButton retractLandingGear;
   private JoystickButton toggleHatch;
   private JoystickButton follow;
+  private JoystickButton autoDriveToTarget;
 
   private JoystickButton drived;
 
@@ -35,8 +36,8 @@ public class OI {
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
 
-    follow = new JoystickButton(gamepad1, 1);
-    follow.whenPressed(new FollowPath("TurnTest"));
+    //follow = new JoystickButton(gamepad1, 1); //TODO: Commented out for testing purposes
+    //follow.whenPressed(new FollowPath("TurnTest"));
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
@@ -85,6 +86,9 @@ public class OI {
 
     elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
+
+    autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(new AutoDriveToTarget());
   }
 
   public double getLeftYAxis() {
