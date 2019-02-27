@@ -304,11 +304,11 @@ public class CameraControlStateMachine {
           visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).getString("");          
         }
       })
-      .ignore(Trigger.BButton, State.DrivingToTarget)
-      .ignore(Trigger.AButton, State.IdentifyingTargets)
-      .ignore(Trigger.IdentifyTargets, State.IdentifyingTargets)
-      .ignore(Trigger.LoseLock, State.LockLost)
-      .ignore(Trigger.Slew)
+      .permit(Trigger.Slew, State.AutoLocking)
+      .ignore(Trigger.BButton)
+      .ignore(Trigger.AButton)
+      .ignore(Trigger.IdentifyTargets)
+      .ignore(Trigger.LoseLock)
       .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton)
