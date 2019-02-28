@@ -21,7 +21,7 @@
       "workingDirectory": "${workspaceFolder}",
       "args": [],
       "vmargs": [],
-      "env": { "PATH":"build/tmp/jniExtractDir"}
+      "env": { "PATH":"${workspaceFolder}/build/tmp/jniExtractDir"}
     }
   ],
   "java.test.defaultConfig": "includeNativesConfiguration"

@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import static org.junit.Assume.assumeNoException;
-
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifier.PWMChannel;
 import com.ctre.phoenix.CANifier.GeneralPin;
@@ -21,12 +19,10 @@ import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
-import frc.robot.commands.LockArm;
 import frc.robot.data.ArmData;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 /**
  * Add your docs here.
