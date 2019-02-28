@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
   public static LogitechVisionOI logitechVisionOI;
 
   Command autonomousCommand;
-  SendableChooser<Command> chooser = new SendableChooser<>();
+  SendableChooser<AutonomousOptions> chooser = new SendableChooser<>();
 
   public static int heightIndex;
   // used by the scoringHeight logic commands to grab the correct height from
@@ -122,8 +122,11 @@ public class Robot extends TimedRobot {
     pdp = new PowerDistributionPanel();
     pdp.clearStickyFaults();
 
-    chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
-    // chooser.addOption("My Auto", new MyAutoCommand());
+    chooser.setDefaultOption("Do Nothing", AutonomousOptions.DoNothing);
+    chooser.addOption("Left Cargo Ship", AutonomousOptions.LeftCargoShip);
+    chooser.addOption("Right Cargo Ship", AutonomousOptions.RightCargoShip);
+    chooser.addOption("Left Bottom Rocket", AutonomousOptions.LeftBottomRocket);
+    chooser.addOption("Right Bottom Rocket", AutonomousOptions.RightBottomRocket);
     SmartDashboard.putData("Auto mode", chooser);
 
 
@@ -160,13 +163,42 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // Init hatch target finding vision camera
-    cameraControlStateMachine.identifyTargets();
-    autonomousCommand = chooser.getSelected();
+    // Get the autonomous chooser option
+    AutonomousOptions autonomousOption = chooser.getSelected();
 
-    if (autonomousCommand != null) {
-      autonomousCommand.start();
+    // An autonomous command must be set as a result of this activity
+
+    if (autonomousOption == null) {
+      // If it is null for some reason, do nothing. This should not happen and maybe
+      // should be logged...
+      autonomousCommand = new AutoDoNothing();
+    } else {
+      // TODO: Fill in these commands with the appropriate action
+      // The camera control state machine can do it, but more than left/right would have to be
+      // passed in.
+      switch(autonomousOption) {
+        case LeftCargoShip:
+          cameraControlStateMachine.autoLock(CameraControlStateMachine.ClosestToCenter.Left);
+          autonomousCommand = new AutoDoNothing();
+          break;
+        case RightCargoShip:
+          cameraControlStateMachine.autoLock(CameraControlStateMachine.ClosestToCenter.Right);
+          autonomousCommand = new AutoDoNothing();
+          break;
+        case LeftBottomRocket:
+          cameraControlStateMachine.autoLock(CameraControlStateMachine.ClosestToCenter.Left);
+          autonomousCommand = new AutoDoNothing();
+          break;
+        case RightBottomRocket:
+          cameraControlStateMachine.autoLock(CameraControlStateMachine.ClosestToCenter.Right);
+          autonomousCommand = new AutoDoNothing();
+          break;
+        case DoNothing:
+          autonomousCommand = new AutoDoNothing();
+          break;
+      }
     }
+    autonomousCommand.start();
   }
 
   @Override
@@ -232,5 +264,9 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Delta Time", kDeltaTime);
     SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().loaded);
+  }
+
+  public enum AutonomousOptions {
+    LeftCargoShip, RightCargoShip, LeftBottomRocket, RightBottomRocket, DoNothing
   }
 }

@@ -3,8 +3,10 @@ package frc.robot.vision;
 import com.github.oxo42.stateless4j.StateMachine;
 import com.github.oxo42.stateless4j.StateMachineConfig;
 import com.github.oxo42.stateless4j.delegates.Action1;
+import com.github.oxo42.stateless4j.delegates.Action2;
 import com.github.oxo42.stateless4j.delegates.FuncBoolean;
 import com.github.oxo42.stateless4j.transitions.Transition;
+import com.github.oxo42.stateless4j.triggers.TriggerWithParameters1;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
@@ -100,6 +102,8 @@ public class CameraControlStateMachine {
       NetworkTable visionNetworkTable, 
       Command autoDriveToTarget) {
     StateMachineConfig<State, Trigger> config = new StateMachineConfig<>();
+    TriggerWithParameters1<ClosestToCenter, State, Trigger> triggerWith1Parameter =
+      new TriggerWithParameters1<>(Trigger.AutoLock, ClosestToCenter.class);
 
     // It would be super nice to use the permitIfOtherwiseIgnore function,
     // but alas it is not available in a release version.
@@ -297,22 +301,44 @@ public class CameraControlStateMachine {
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton);
 
+    config.setTriggerParameters(Trigger.AutoLock, ClosestToCenter.class);
     config.configure(State.AutoLocking)
-      .onEntry(new Action1<Transition<State,Trigger>>() {
-        public void doIt(Transition<State, Trigger> transition){
-          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Calibrating.toString());
-          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).getString("");          
-        }
-      })
-      .permit(Trigger.Slew, State.AutoLocking)
+      .onEntryFrom(triggerWith1Parameter, new Action1<ClosestToCenter>() {
+          public void doIt(ClosestToCenter closestToCenter){
+            visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.AutoLocking.toString());
+            visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString(closestToCenter.toString());          
+          }
+        },
+        ClosestToCenter.class)
+      .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
+      .permitReentry(Trigger.AutoLock)
+      .permit(Trigger.AButton, State.IdentifyingTargets)
+      .permit(Trigger.LockOn, State.AutoLocked)
+      .permit(Trigger.FailedToLock, State.LockFailed)
+      .ignore(Trigger.Slew)
       .ignore(Trigger.BButton)
-      .ignore(Trigger.AButton)
-      .ignore(Trigger.IdentifyTargets)
-      .ignore(Trigger.LoseLock)
       .ignore(Trigger.LeftThumbstickButton)
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton)
       .ignore(Trigger.LeftShoulderButton);
+
+    config.configure(State.AutoLocked)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition){
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.AutoLocked.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");          
+        }
+      })
+      .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
+      .permit(Trigger.AButton, State.IdentifyingTargets)
+      .permit(Trigger.LoseLock, State.LockLost)
+      .ignore(Trigger.Slew)
+      .ignore(Trigger.BButton)
+      .ignore(Trigger.LeftThumbstickButton)
+      .ignore(Trigger.XButton)
+      .ignore(Trigger.YButton)
+      .ignore(Trigger.LeftShoulderButton);
+
     return config;
   }
   
@@ -383,6 +409,12 @@ public class CameraControlStateMachine {
     stateMachine.fire(Trigger.FailedToLock);
   }
 
+  public void autoLock(ClosestToCenter closestToCenter) {
+    TriggerWithParameters1<ClosestToCenter, State, Trigger> triggerWith1Parameter =
+      new TriggerWithParameters1<>(Trigger.AutoLock, ClosestToCenter.class);
+    stateMachine.fire(triggerWith1Parameter, closestToCenter);
+  }
+
   public void lockOn() {
     stateMachine.fire(Trigger.LockOn);
   }
@@ -419,13 +451,17 @@ public class CameraControlStateMachine {
    * The valid states of the state machine.
    */
   public enum State {
-    IdentifyingTargets, SlewingToTarget, TargetLocked, LockFailed, LockLost, DrivingToTarget, Slewing, Centering, Calibrating, AutoLocking
+    IdentifyingTargets, SlewingToTarget, TargetLocked, LockFailed, LockLost, DrivingToTarget, Slewing, Centering, Calibrating, AutoLocking, AutoLocked
   }
 
   /**
    * Triggers that cause state transitions.
    */
   public enum Trigger {
-    AButton, BButton, XButton, YButton, LockOn, FailedToLock, LoseLock, IdentifyTargets, Slew, LeftThumbstickButton, LeftShoulderButton
+    AButton, BButton, XButton, YButton, LockOn, FailedToLock, LoseLock, IdentifyTargets, Slew, LeftThumbstickButton, LeftShoulderButton, AutoLock
+  }
+
+  public enum ClosestToCenter {
+    Left, Right
   }
 }
