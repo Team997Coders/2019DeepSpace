@@ -13,9 +13,8 @@ import frc.robot.misc.RoboMisc;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -37,8 +36,8 @@ public class DriveTrain extends Subsystem {
   public boolean gyropresent = false;
 
   // GearBox class stores information for the motor controllers for one gearbox
-  private final TalonSRX leftTalon, rightTalon;
-  private final VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
+  private final WPI_TalonSRX leftTalon, rightTalon;
+  private final WPI_VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
   private AHRS gyro;
 
   private NetworkTable table;
