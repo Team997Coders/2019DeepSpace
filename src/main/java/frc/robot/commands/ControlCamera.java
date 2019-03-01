@@ -142,7 +142,8 @@ public class ControlCamera extends Command {
         }
       // Keep the camera in the center of FOV under automated control.
       } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked || 
-          cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
+                cameraControlStateMachine.getState() == CameraControlStateMachine.State.AutoLocked ||
+                cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
         // Get the selected target to process
         SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
         // Follow it
