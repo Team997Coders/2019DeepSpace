@@ -94,9 +94,9 @@ public class AutoDriveToTarget extends Command {
     	double derivative = (error - this.previous_error) / .02;
         this.previous_error = error;
         return 
-        	(RobotMap.Values.driveDistanceP * error) + 
-        	(RobotMap.Values.driveDistanceI * this.integral) + 
-        	(RobotMap.Values.driveDistanceD * derivative);
+        	(100 * RobotMap.Values.driveDistanceP * error) + 
+        	(100 * RobotMap.Values.driveDistanceI * this.integral) + 
+        	(100 * RobotMap.Values.driveDistanceD * derivative);
     }
     
     // Called repeatedly when this Command is scheduled to run
@@ -134,17 +134,18 @@ public class AutoDriveToTarget extends Command {
     	//Robot.driveTrain.SetVoltssetVolts(-pfactor, -pfactor); //without yaw correction, accel
 
     	// Debug information to be placed on the smart dashboard.
-    	SmartDashboard.putNumber("Setpoint", distSetpoint);
-    	SmartDashboard.putNumber("Encoder Distance", this.encoderDistance());
+    	SmartDashboard.putNumber("autodtd/Setpoint", distSetpoint);
+    	SmartDashboard.putNumber("autodtd/Encoder Distance", this.encoderDistance());
     	//SmartDashboard.putNumber("Encoder Rate", Robot.driveTrain.getEncoderRate());
-    	SmartDashboard.putNumber("Distance Error", piderror());
-    	SmartDashboard.putNumber("K-P factor", pfactor);
-    	SmartDashboard.putNumber("K-P factor Accel", pfactor2);
-    	SmartDashboard.putNumber("deltaT", deltaT);
-    	SmartDashboard.putNumber("Theta Correction", yawcorrect);
-    	SmartDashboard.putBoolean("On Target", onTarget());
-    	SmartDashboard.putNumber("NavX Heading", Robot.driveTrain.getGyroAngle());
-    	SmartDashboard.putNumber("Init Yaw", initYaw);
+    	SmartDashboard.putNumber("autodtd/Distance Error", piderror());
+    	SmartDashboard.putNumber("autodtd/K-P factor", pfactor);
+    	SmartDashboard.putNumber("autodtd/K-P factor Accel", pfactor2);
+    	SmartDashboard.putNumber("autodtd/deltaT", deltaT);
+    	SmartDashboard.putNumber("autodtd/Theta Correction", yawcorrect);
+    	SmartDashboard.putBoolean("autodtd/On Target", onTarget());
+    	SmartDashboard.putNumber("autodtd/NavX Heading", Robot.driveTrain.getGyroAngle());
+		SmartDashboard.putNumber("autodtd/Init Yaw", initYaw);
+		interrupted();
     }
 
     private double piderror() {
