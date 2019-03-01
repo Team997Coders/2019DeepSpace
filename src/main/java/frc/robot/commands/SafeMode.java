@@ -5,15 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.vision.commands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class HoldPanRight extends Command {
-  public HoldPanRight() {
+public class SafeMode extends Command {
+  public SafeMode() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.arm);
+    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
@@ -24,27 +26,22 @@ public class HoldPanRight extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.cameraControlStateMachine != null) {
-      Robot.cameraControlStateMachine.slew(-0.25, 0);
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.cameraControlStateMachine.slew(0, 0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

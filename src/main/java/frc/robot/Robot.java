@@ -31,7 +31,6 @@ import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
 import frc.robot.vision.CameraControlStateMachine;
-import frc.robot.subsystems.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -94,8 +93,8 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 80, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
-    backCameraMount = new CameraMount(0, 120, 10, 170, 2, 80, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
+    frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
+    backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
     backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,
@@ -152,7 +151,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
     arm.Unlock();
-    Logger.getInstance().close();
+    logger.close();
   }
 
   @Override
@@ -229,7 +228,7 @@ public class Robot extends TimedRobot {
 
     arm.Lock();
 
-    Logger.getInstance().openFile();
+    logger.openFile();
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -251,7 +250,7 @@ public class Robot extends TimedRobot {
       cameraControlStateMachine.slew(logitechVisionOI.getVisionLeftXAxis(), logitechVisionOI.getVisionLeftYAxis());
     }
 
-    Logger.getInstance().logAll();
+    logger.logAll();
   }
 
   @Override

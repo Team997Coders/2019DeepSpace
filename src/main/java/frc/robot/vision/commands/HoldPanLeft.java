@@ -25,7 +25,7 @@ public class HoldPanLeft extends Command {
   @Override
   protected void execute() {
     if (Robot.cameraControlStateMachine != null) {
-      Robot.cameraControlStateMachine.slew(-0.25, 0);
+      Robot.cameraControlStateMachine.slew(0.25, 0);
     }
   }
 
