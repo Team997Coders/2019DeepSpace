@@ -185,7 +185,7 @@ public class RobotMap {
       straight = .3,
 
       // Arm and Elevator Values
-      elevatorPidP = 0.00002, // 0.0005
+      elevatorPidP = 0.00005, // 0.0005
       elevatorPidI = 0.0,
       elevatorPidD = 0.000, // 0.0005
       elevatorPidF = 0.0000,
@@ -196,11 +196,11 @@ public class RobotMap {
       armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
       armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
 
-      armPidP = 0,
+      armPidP = 0.0008,
       armPidI = 0,
       armPidD = 0,
       armPidK = 0,
-      armMaxPidF = 0.0055,
+      armMaxPidF = 0.00, // 0.0055
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit)),
 
       // Camera values
