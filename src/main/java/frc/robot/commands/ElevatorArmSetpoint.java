@@ -7,7 +7,7 @@ import frc.robot.RobotMap;
 
 public class ElevatorArmSetpoint extends Command {
 
-  private boolean longWay = false, armMoving = false, elevatorMoving = false;
+  private boolean longWay = false, armMoving = false, elevatorMoving = false, end = false;
   private double angle, height;
 
   private SetElevatorHeight e = null;
@@ -91,7 +91,17 @@ public class ElevatorArmSetpoint extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return elevatorMoving && armMoving;
+    if ((elevatorMoving && armMoving) && !end) {
+      end = true;
+    }
+
+    if (end) {
+      if (e.isCompleted() && a.isCompleted()) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   // Called once after isFinished returns true
