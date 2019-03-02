@@ -17,25 +17,28 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class FollowPath extends Command {
   private String _pathName;
+  private boolean a = true;
 
   private MotionProfile path;
 
-  public FollowPath(String Pathname) {
+  public FollowPath(String Pathname, boolean forwards) {
     requires(Robot.driveTrain);
     this._pathName = Pathname;
+    a = forwards;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     path = PathManager.getInstance().getProfile(_pathName);
+    path.setFollowDirection(a);
     path.startPath();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    path.followPath();
+    //path.followPath();
   }
 
   // Make this return true when this Command no longer needs to run execute()

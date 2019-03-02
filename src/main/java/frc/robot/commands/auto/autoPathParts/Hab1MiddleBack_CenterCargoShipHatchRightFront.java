@@ -16,8 +16,8 @@ public class Hab1MiddleBack_CenterCargoShipHatchRightFront extends CommandGroup 
    * Add your docs here.
    */
   public Hab1MiddleBack_CenterCargoShipHatchRightFront() {
-    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0));
-    addParallel(new FollowPath("Hab1MiddleToShipRight"), 15);
+    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0), 15);
+    addParallel(new FollowPath("Hab1MiddleToShipRight", true), 15);
 
     // Add Commands here:
     // e.g. addSequential(new Command1());

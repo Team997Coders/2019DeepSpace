@@ -19,7 +19,7 @@ public class Hab1MiddleToShipRightSide extends CommandGroup {
    */
   public Hab1MiddleToShipRightSide() {
     addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, 0), 15);
-    addParallel(new FollowPath("Hab1MiddleToShipRight"), 15);
+    addParallel(new FollowPath("Hab1MiddleToShipRight", true), 15);
     //addSequential(new ToggleHatch(), 15);
     // Add Commands here:
     // e.g. addSequential(new Command1());

@@ -16,8 +16,8 @@ public class RightLoadingStationBack_CenterCargoShipHatchLeftFront extends Comma
    * Add your docs here.
    */
   public RightLoadingStationBack_CenterCargoShipHatchLeftFront() {
-    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0));
-    addParallel(new FollowPath("LoadingStationRightToCargoCenterLeft"), 15);
+    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0), 15);
+    addParallel(new FollowPath("LoadingStationRightToCargoCenterLeft", true), 15);
 
     // Add Commands here:
     // e.g. addSequential(new Command1());

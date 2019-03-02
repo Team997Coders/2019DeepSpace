@@ -16,8 +16,8 @@ public class CenterCargoShipRightFront_RightLoadingStationBack extends CommandGr
    * Add your docs here.
    */
   public CenterCargoShipRightFront_RightLoadingStationBack() {
-    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight, 180));
-    addParallel(new FollowPath("ShipRightToLoadingStationRight"), 15);
+    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight, 180), 15);
+    addParallel(new FollowPath("ShipRightToLoadingStationRight", true), 15);
 
     // Add Commands here:
     // e.g. addSequential(new Command1());

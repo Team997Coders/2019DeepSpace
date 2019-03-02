@@ -18,7 +18,7 @@ public class RocketHatchToLoadingStationRight extends CommandGroup {
    */
   public RocketHatchToLoadingStationRight() {
     addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight,0), 15);
-    addParallel(new FollowPath("RocketHatchToLoadingStationRight"), 15);
+    addParallel(new FollowPath("RocketHatchToLoadingStationRight", true), 15);
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

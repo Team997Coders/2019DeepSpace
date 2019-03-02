@@ -16,8 +16,8 @@ public class RightHab1Back_RightRocketHatchLowFront extends CommandGroup {
    * Add your docs here.
    */
   public RightHab1Back_RightRocketHatchLowFront() {
-    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0));
-    addParallel(new FollowPath("Hab1ToRocketHatchRight"), 15);
+    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0), 15);
+    addParallel(new FollowPath("Hab1ToRocketHatchRight", true), 15);
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
