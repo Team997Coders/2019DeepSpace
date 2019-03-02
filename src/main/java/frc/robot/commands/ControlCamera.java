@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.buttonbox.ButtonBox;
@@ -30,6 +31,7 @@ public class ControlCamera extends Command {
   private final MiniPID pidY;
   private final double lockThresholdFactor;
   private final ButtonBox buttonBox;
+  private final NetworkTable smartDashboard;
 
   /**
    * Default constructor to be used as the default command
@@ -44,7 +46,9 @@ public class ControlCamera extends Command {
       Robot.visionNetworkTable, 
       new MiniPID(0.25, 0, 0), 
       new MiniPID(0.25, 0, 0),
-      0.05);
+      0.05,
+      NetworkTableInstance.getDefault().getTable("SmartDashboard")
+      );
   }
 
   /**
@@ -69,7 +73,8 @@ public class ControlCamera extends Command {
       NetworkTable visionNetworkTable,
       MiniPID pidX,
       MiniPID pidY,
-      double lockThresholdFactor) {
+      double lockThresholdFactor,
+      NetworkTable smartDashboard) {
     this.scoringDirection = scoringDirection;
     this.buttonBox = buttonBox;
     this.cameraControlStateMachine = cameraControlStateMachine;
@@ -77,6 +82,7 @@ public class ControlCamera extends Command {
     this.pidX = pidX;
     this.pidY = pidY;
     this.lockThresholdFactor = lockThresholdFactor;
+    this.smartDashboard = smartDashboard;
     if (scoringDirection == ButtonBox.ScoringDirectionStates.Front) {
       this.cameraMount = frontCameraMount;
     } else if (scoringDirection == ButtonBox.ScoringDirectionStates.Back) {
@@ -142,7 +148,8 @@ public class ControlCamera extends Command {
         }
       // Keep the camera in the center of FOV under automated control.
       } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked || 
-          cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
+                cameraControlStateMachine.getState() == CameraControlStateMachine.State.AutoLocked ||
+                cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
         // Get the selected target to process
         SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
         // Follow it
@@ -167,6 +174,8 @@ public class ControlCamera extends Command {
     // slew based on PID values related to how close we are to slewpoint
     double panRate = pidX.getOutput(selectedTarget.normalizedPointFromCenter.x);
     double tiltRate = pidY.getOutput(selectedTarget.normalizedPointFromCenter.y) * -1.0;
+    smartDashboard.getEntry("Camera Control panRate").setDouble(panRate);
+    smartDashboard.getEntry("Camera Control tiltRate").setDouble(tiltRate);
     cameraMount.slew(panRate, tiltRate);
   }
 

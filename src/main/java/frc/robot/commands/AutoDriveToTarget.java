@@ -31,6 +31,7 @@ import frc.robot.RobotMap;
  */
 public class AutoDriveToTarget extends Command {
   private final DriveTrain driveTrain;
+  private final CameraControlStateMachine cameraControlStateMachine;
   private boolean weMadeIt;
 
   private double distSetpoint;
@@ -46,42 +47,44 @@ public class AutoDriveToTarget extends Command {
 	private double targetAngle;
 
   public AutoDriveToTarget() {
-    this(Robot.driveTrain);
+    this(Robot.driveTrain, Robot.cameraControlStateMachine);
   }
 
-  public AutoDriveToTarget(DriveTrain driveTrain) {
-    this.driveTrain = driveTrain;
+  public AutoDriveToTarget(DriveTrain driveTrain, CameraControlStateMachine cameraControStateMachine) {
+		this.driveTrain = driveTrain;
+		this.cameraControlStateMachine = cameraControStateMachine;
     requires(driveTrain);
   }
    
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	lastVoltage = 0;
-    	Robot.driveTrain.resetEncoders();
-    	Robot.driveTrain.setBrake();
-    	initYaw = Robot.driveTrain.getGyroAngle();
-    	this.previous_error = this.piderror();
-    	timer.reset();
-    	timer.start();
-		System.out.println("(PDTD-INIT) OMG, I got initialized!!! :O");
-		System.out.println("targetAngle: " + targetAngle);
-    	lastTime = 0;
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		lastVoltage = 0;
+		// TODO: From CCB - just use driveTrain to make code testable
+		Robot.driveTrain.resetEncoders();
+		Robot.driveTrain.setBrake();
+		initYaw = Robot.driveTrain.getGyroAngle();
+		this.previous_error = this.piderror();
+		timer.reset();
+		timer.start();
+	System.out.println("(PDTD-INIT) OMG, I got initialized!!! :O");
+	System.out.println("targetAngle: " + targetAngle);
+		lastTime = 0;
+	}
     
-    // current algorithm assumes that we are starting
-    // from a stop
-    private double linearAccel(double input) {
-    	double Klin = 0.8;
-    	double deltaT = timer.get() - lastTime;
-    	lastTime = timer.get();
-    	
-    	double Volts = lastVoltage + Klin * (deltaT);
-    	if (Volts > input) {
-    		Volts = input;
-    	}
-    	lastVoltage = Volts;
-    	return Volts;
-    }
+	// current algorithm assumes that we are starting
+	// from a stop
+	private double linearAccel(double input) {
+		double Klin = 0.8;
+		double deltaT = timer.get() - lastTime;
+		lastTime = timer.get();
+		
+		double Volts = lastVoltage + Klin * (deltaT);
+		if (Volts > input) {
+			Volts = input;
+		}
+		lastVoltage = Volts;
+		return Volts;
+	}
 
     
     public double pFactor() {
@@ -99,11 +102,12 @@ public class AutoDriveToTarget extends Command {
         	(100 * RobotMap.Values.driveDistanceD * derivative);
     }
     
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-		// compute the pid P value
-		//System.out.println("Im driving");
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+	// compute the pid P value
+	//System.out.println("Im driving");
 		try {
+			// TODO: From CCB - just use cameraControlStateMachine to make code testable
 			SelectedTarget selectedTarget = Robot.cameraControlStateMachine.getSelectedTarget();
 			distSetpoint = (selectedTarget.rangeInInches- 24) * (RobotMap.Values.protobotTickPerFoot/12) ;
 			targetAngle = selectedTarget.angleToTargetInDegrees;
@@ -112,26 +116,28 @@ public class AutoDriveToTarget extends Command {
 
 
 			/*
-			  selectedTarget contains: 
-			  rangeInInches
-			  cameraAngleInDegrees - camermount pan angle relative to robot, -90 to 90, with 0 being center
-			  angleToTargetInDegrees - robot's angle to target, from target's POV, -90 to 90, with 0 being perpenticular to target
+				selectedTarget contains: 
+				rangeInInches
+				cameraAngleInDegrees - camermount pan angle relative to robot, -90 to 90, with 0 being center
+				angleToTargetInDegrees - robot's angle to target, from target's POV, -90 to 90, with 0 being perpenticular to target
 			*/
-		  } catch (TargetNotLockedException e) {
+		} catch (TargetNotLockedException e) {
+			// TODO: From CCB - this variable is set and never used...what happens when lock is lost?
+			// Probably we just finish.
 			weMadeIt = false;
-		  }
-    	double pfactor = speed * Utils.clamp(this.pFactor(), -1, 1);
-    	double pfactor2 = linearAccel(pfactor);
-    	double deltaTheta = Robot.driveTrain.getGyroAngle() - initYaw;
-    	deltaT = timer.get() - lastTime;
-    	lastTime = timer.get();
+		}
+		double pfactor = speed * Utils.clamp(this.pFactor(), -1, 1);
+		double pfactor2 = linearAccel(pfactor);
+		double deltaTheta = Robot.driveTrain.getGyroAngle() - initYaw;
+		deltaT = timer.get() - lastTime;
+		lastTime = timer.get();
 
-    	// calculate yaw correction
-    	double yawcorrect = deltaTheta * Ktheta;
-    	
-    	// set the output voltage
-    	Robot.driveTrain.setVolts(-(pfactor2 + yawcorrect), -(pfactor2 - yawcorrect)); //TODO check these signs...
-    	//Robot.driveTrain.SetVoltssetVolts(-pfactor, -pfactor); //without yaw correction, accel
+		// calculate yaw correction
+		double yawcorrect = deltaTheta * Ktheta;
+		
+		// set the output voltage
+		Robot.driveTrain.setVolts(-(pfactor2 + yawcorrect), -(pfactor2 - yawcorrect)); //TODO check these signs...
+		//Robot.driveTrain.SetVoltssetVolts(-pfactor, -pfactor); //without yaw correction, accel
 
     	// Debug information to be placed on the smart dashboard.
     	SmartDashboard.putNumber("autodtd/Setpoint", distSetpoint);
@@ -148,52 +154,50 @@ public class AutoDriveToTarget extends Command {
 		interrupted();
     }
 
-    private double piderror() {
-    	// shouldn't we average this out between both of the encoders?
-    	return distSetpoint - this.encoderDistance();
-    }
-    
-    private double encoderDistance() {
-    	return (Robot.driveTrain.leftEncoderTicks() + Robot.driveTrain.rightEncoderTicks()) / 2;
-    }
-    
-    private boolean onTarget() {
-    	return piderror() < minError;
-    }
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	if (Robot.driveTrain.leftEncoderVelocity() <= 0 && 
-    			Robot.driveTrain.rightEncoderVelocity() <= 0 &&
-    			onTarget()) {
-    		System.out.println("(PDTD-ISFINISHED) PDTD ended with isFinished!");
-    		 return onTarget();
-    	} else {
-    		/*if (Robot.collector.getAvgLeftVoltage() > RobotMap.Values.autoIRthreshold ||
-    			Robot.collector.getAvgRightVoltage() > RobotMap.Values.autoIRthreshold) {
-    			return true;
-    		} else {
-    			return false;
-    		}*/
-    		return false;
-    	}
-    	
-    }
-    
-    // Called once after isFinished returns true
-    protected void end() {
-    	System.out.println(this.encoderDistance());
-    	System.out.println("PDrive End");
-    	timer.stop();
-    	Robot.driveTrain.setVolts(0, 0);
-    }
+	private double piderror() {
+		// shouldn't we average this out between both of the encoders?
+		return distSetpoint - this.encoderDistance();
+	}
+	
+	private double encoderDistance() {
+		return (Robot.driveTrain.leftEncoderTicks() + Robot.driveTrain.rightEncoderTicks()) / 2;
+	}
+	
+	private boolean onTarget() {
+		return piderror() < minError;
+	}
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		// TODO: CCB - Also check the weMadeIt variable here in order to deal with lost lock
+		if (Robot.driveTrain.leftEncoderVelocity() <= 0 && 
+				Robot.driveTrain.rightEncoderVelocity() <= 0 &&
+				onTarget()) {
+			System.out.println("(PDTD-ISFINISHED) PDTD ended with isFinished!");
+				return onTarget();
+		} else {
+			/*if (Robot.collector.getAvgLeftVoltage() > RobotMap.Values.autoIRthreshold ||
+				Robot.collector.getAvgRightVoltage() > RobotMap.Values.autoIRthreshold) {
+				return true;
+			} else {
+				return false;
+			}*/
+			return false;
+		}
+		
+	}
+	
+	// Called once after isFinished returns true
+	protected void end() {
+		System.out.println(this.encoderDistance());
+		System.out.println("PDrive End");
+		timer.stop();
+		Robot.driveTrain.setVolts(0, 0);
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    	System.out.println("(PDTD-INTERRUPTED) I got interrupted!! D:");
-    }
-  }
-  
-
-  
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		end();
+		System.out.println("(PDTD-INTERRUPTED) I got interrupted!! D:");
+	}
+}

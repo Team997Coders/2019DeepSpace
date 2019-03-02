@@ -114,6 +114,8 @@ public class CameraControlStateMachine {
       .permitReentry(Trigger.IdentifyTargets)
       .permit(Trigger.LeftThumbstickButton, State.Centering)
       .permit(Trigger.LeftShoulderButton, State.Calibrating)
+      .permit(Trigger.AutoLockLeft, State.SlewingToTarget)
+      .permit(Trigger.AutoLockRight, State.SlewingToTarget)
       .permitIf(Trigger.AButton, State.SlewingToTarget, new FuncBoolean() {
         @Override
         public boolean call() {
@@ -210,6 +212,7 @@ public class CameraControlStateMachine {
           visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString(transition.getTrigger().toString());
       }})
       .permit(Trigger.LockOn, State.TargetLocked)
+      .permit(Trigger.AutoLockOn, State.AutoLocked)
       .permit(Trigger.FailedToLock, State.LockFailed)
       .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
       .permit(Trigger.AButton, State.IdentifyingTargets)
@@ -285,7 +288,7 @@ public class CameraControlStateMachine {
     config.configure(State.Calibrating)
       .onEntry(new Action1<Transition<State,Trigger>>() {
         public void doIt(Transition<State, Trigger> transition) {
-          visionNetworkTable.getEntry(STATEKEY).setString(State.Calibrating.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.Calibrating.toString());
           visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");
       }})
       .permit(Trigger.AButton, State.IdentifyingTargets)
@@ -297,8 +300,26 @@ public class CameraControlStateMachine {
       .ignore(Trigger.XButton)
       .ignore(Trigger.YButton);
 
+    config.configure(State.AutoLocked)
+      .onEntry(new Action1<Transition<State,Trigger>>() {
+        public void doIt(Transition<State, Trigger> transition){
+          visionNetworkTable.getEntry(CameraControlStateMachine.STATEKEY).setString(State.AutoLocked.toString());
+          visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).setString("");          
+        }
+      })
+      .permit(Trigger.IdentifyTargets, State.IdentifyingTargets)
+      .permit(Trigger.AButton, State.IdentifyingTargets)
+      .permit(Trigger.LoseLock, State.LockLost)
+      .ignore(Trigger.Slew)
+      .ignore(Trigger.BButton)
+      .ignore(Trigger.LeftThumbstickButton)
+      .ignore(Trigger.XButton)
+      .ignore(Trigger.YButton)
+      .ignore(Trigger.LeftShoulderButton);
+
     return config;
   }
+  
 
   public void aButtonPressed() {
     stateMachine.fire(Trigger.AButton);
@@ -366,8 +387,31 @@ public class CameraControlStateMachine {
     stateMachine.fire(Trigger.FailedToLock);
   }
 
+  public void autoLock() {
+    stateMachine.fire(Trigger.AutoLockLeft);
+  }
+
+  public void autoLockLeft() {
+    stateMachine.fire(Trigger.AutoLockLeft);
+  }
+
+  public void autoLockRight() {
+    stateMachine.fire(Trigger.AutoLockRight);
+  }
+
   public void lockOn() {
-    stateMachine.fire(Trigger.LockOn);
+    // Is this lockon the result of a driver initiated selection or from autolock?
+    String triggerString = visionNetworkTable.getEntry(CameraControlStateMachine.TRIGGERKEY).getString("");
+    if (triggerString != "") {
+      Trigger trigger = Enum.valueOf(CameraControlStateMachine.Trigger.class, triggerString);
+      if (trigger == Trigger.AutoLockLeft || trigger == Trigger.AutoLockRight) {
+        stateMachine.fire(Trigger.AutoLockOn);
+      } else {
+        stateMachine.fire(Trigger.LockOn);
+      }
+    } else {
+      stateMachine.fire(Trigger.LockOn);
+    }
   }
 
   public void loseLock() {
@@ -390,7 +434,7 @@ public class CameraControlStateMachine {
    * @throws TargetNotLockedException If there is no locked target.
    */
   public SelectedTarget getSelectedTarget() throws TargetNotLockedException {
-    if (getState() == State.TargetLocked || getState() == State.DrivingToTarget) {
+    if (getState() == State.TargetLocked || getState() == State.DrivingToTarget || getState() == State.AutoLocked) {
       SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
       return selectedTarget;
     } else {
@@ -402,13 +446,13 @@ public class CameraControlStateMachine {
    * The valid states of the state machine.
    */
   public enum State {
-    IdentifyingTargets, SlewingToTarget, TargetLocked, LockFailed, LockLost, DrivingToTarget, Slewing, Centering, Calibrating
+    IdentifyingTargets, SlewingToTarget, TargetLocked, LockFailed, LockLost, DrivingToTarget, Slewing, Centering, Calibrating, AutoLocked
   }
 
   /**
    * Triggers that cause state transitions.
    */
   public enum Trigger {
-    AButton, BButton, XButton, YButton, LockOn, FailedToLock, LoseLock, IdentifyTargets, Slew, LeftThumbstickButton, LeftShoulderButton
+    AButton, BButton, XButton, YButton, LockOn, FailedToLock, LoseLock, IdentifyTargets, Slew, LeftThumbstickButton, LeftShoulderButton, AutoLockLeft, AutoLockRight, AutoLockOn
   }
 }
