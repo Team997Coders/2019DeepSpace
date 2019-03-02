@@ -5,22 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.auto;
+package frc.robot.commands.auto.autofullpaths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.ElevatorArmSetpoint;
-import frc.robot.RobotMap;
-import frc.robot.commands.FollowPath;
+import frc.robot.commands.auto.autoPathParts.*;
 import frc.robot.commands.ToggleHatch;
 
-public class Hab1MiddleToShipRightSide extends CommandGroup {
+public class Hab1Right_RocketHatchRight_LoadingStation_RocketHatchRight extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public Hab1MiddleToShipRightSide() {
-    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, 0), 15);
-    addParallel(new FollowPath("Hab1MiddleToShipRight"), 15);
-    //addSequential(new ToggleHatch(), 15);
+  public Hab1Right_RocketHatchRight_LoadingStation_RocketHatchRight() {
+    addSequential(new RightHab1Back_RightRocketHatchLowFront());
+    addSequential(new ToggleHatch());
+    addSequential(new RightRocketFront_RightLoadingStationBack());
+    addSequential(new ToggleHatch());
+    addSequential(new RightLoadingStationBack_RightRocketHatchMiddleFront());
+    addSequential(new ToggleHatch());
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
