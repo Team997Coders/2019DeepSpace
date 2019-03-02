@@ -1,0 +1,45 @@
+For naming paths:
+
+The start point and end destination are separated by a "_"
+Example:
+<where you start>_<where you end>
+
+The start point contains, in this order, the side of the field/hab, the place, and the position of the arm.
+Example:
+RightHab1Front
+
+The the end point contains, in this order, the side of the field/hab, the place, the game piece,
+    the height of the elevator, and the position of the arm, unless some of these don't apply.
+Example:
+LeftRocketHatchHighFront
+RightLoadingStationBack, (In this case the game piece and elevator height don't matter.)
+
+In the case of places on the cargo ship, the space normally taken by side of the field is instead the
+    region of the cargo ship. (The left side, the center, or the right side.) The space taken normally
+    by the elevator height will instead be the part of the cargo ship we want to score to. (far, center,
+    or close for the sides, and left or right for the front.)
+
+Sides:
+-Left
+-Center
+-Right
+
+Places:
+-Hab1 / Hab2 / Hab3
+-Rocket
+-CargoShip
+-LoadingStation
+-Depot 
+
+Game Pieces:
+-Hatch
+-Cargo
+
+Heights:
+-High
+-Middle
+-Low
+
+Arm Positions:
+-Front
+-Back

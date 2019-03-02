@@ -43,15 +43,15 @@ public class PathManager {
     profiles = new ArrayList<MotionProfile>();
     pathnames.add("Hab1MiddleToShipRight");
     pathnames.add("ShipRightToLoadingStationRight");
-    //pathnames.add("LoadingStationRightToCargoCenterLeft");
+    pathnames.add("LoadingStationRightToCargoCenterLeft");
 
-    //daemons = new Thread[daemonCount];
+    daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {
-      //daemons[i] = new Thread(this::loadPath);
+      daemons[i] = new Thread(this::loadPath);
     }
 
     for (int i = 0; i < daemonCount; i++) {
-      //daemons[i].start();
+      daemons[i].start();
     }
   }
 

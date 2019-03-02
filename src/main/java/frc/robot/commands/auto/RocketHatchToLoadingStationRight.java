@@ -3,22 +3,22 @@
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 package frc.robot.commands.auto;
+import frc.robot.RobotMap;
+import frc.robot.commands.FollowPath;
+import frc.robot.commands.ElevatorArmSetpoint;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.RobotMap;
-import frc.robot.commands.ElevatorArmSetpoint;
-import frc.robot.commands.FollowPath;
 
-public class Hab1ToCargoRightRocketLow extends CommandGroup {
+public class RocketHatchToLoadingStationRight extends CommandGroup {
   /**
-   * Flips arm to the front and set elevator height to FrontBottomCargo
+   * Add your docs here.
    */
-  public Hab1ToCargoRightRocketLow() {
-
-    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0), 15);
-    addSequential(new FollowPath("Hab1ToCargoRocketRight", true), 15);
+  public RocketHatchToLoadingStationRight() {
+    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight,0), 15);
+    addParallel(new FollowPath("RocketHatchToLoadingStationRight", true), 15);
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

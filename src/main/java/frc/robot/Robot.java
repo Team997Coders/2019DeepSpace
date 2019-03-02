@@ -31,6 +31,7 @@ import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
 import frc.robot.vision.CameraControlStateMachine;
+import frc.robot.commands.auto.autofullpaths.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -121,11 +122,12 @@ public class Robot extends TimedRobot {
     pdp = new PowerDistributionPanel();
     pdp.clearStickyFaults();
 
-    chooser.setDefaultOption("Do Nothing", AutonomousOptions.DoNothing);
-    chooser.addOption("Left Cargo Ship", AutonomousOptions.LeftCargoShip);
-    chooser.addOption("Right Cargo Ship", AutonomousOptions.RightCargoShip);
-    chooser.addOption("Left Bottom Rocket", AutonomousOptions.LeftBottomRocket);
-    chooser.addOption("Right Bottom Rocket", AutonomousOptions.RightBottomRocket);
+    chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
+    chooser.addOption("RightHab1_2HatchRocket", new Hab1Right_RocketHatchRight_LoadingStation_RocketHatchRight());
+    chooser.addOption("MiddleHab1_2HatchCargoShip", new Hab1Center_CargoShipHatch_LoadingStation_CargoShipHatch());
+    chooser.addOption("RightHab1_Rocket_Test", new Hab1Right_NoElevator());
+    chooser.addOption("CenterHab1_CargoShip_Test", new Hab1Center_CargoShip_NoElevator());
+    // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
 
 
@@ -136,6 +138,7 @@ public class Robot extends TimedRobot {
 
     //motionProfile = MotionProfile.getInstance();
     pathManager = PathManager.getInstance();
+    arm.Lock();
   }
 
   @Override
@@ -150,7 +153,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
-    arm.Unlock();
+    //arm.Unlock();
     logger.close();
   }
 
