@@ -11,6 +11,7 @@ import com.ctre.phoenix.CANifier;
 
 import org.graalvm.compiler.nodes.StaticDeoptimizingNode;
 
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -44,7 +45,8 @@ import frc.robot.subsystems.Logger;
  */
 public class Robot extends TimedRobot {
   public static Arm arm;
-  public StaticDeoptimizingNode               *19 Elevator elevator;
+ // public StaticDeoptimizingNode;               
+  public static Elevator elevator;
   public static BallManipulator ballManipulator;
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;

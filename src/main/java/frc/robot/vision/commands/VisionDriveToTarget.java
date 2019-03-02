@@ -8,19 +8,18 @@
 package frc.robot.vision.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-
 import frc.robot.Robot;
+
+
+
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LineDetector;
 
+import Robot.cameraControlStateMachine;
 
-
-public class AutoAlignment extends Command {
-
-  public AutoAlignment() {
-    requires(Robot.driveTrain);
-    requires(Robot.backLineDetector);
+public class VisionDriveToTarget extends Command {
+  public VisionDriveToTarget() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -33,25 +32,13 @@ public class AutoAlignment extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-  
-    SelectedTarget cameraAngle = Robot.cameraControlStateMachine.getSelectedTarget();
-
-    while(cameraAngle >= 90 ){
-      Robot.driveTrain.setVolts(-.5,-.5);//Negative because the camera is on the back
-      while(cameraAngle !=90){                                                                                                                                    
-        Robot.driveTrain.setVolts(.5,-.5);
-      }
-    }
-    while(cameraAngle <= 90){
-      Robot.driveTrain.setVolts(-.5, -.5);//Negative because the camera is on the back
-      while(cameraAngle !=90){
-        Robot.driveTrain.setVolts(-.5,.5);
-      }
-    }
-    /*if(cameraAngle == 90 && LineDetector.noLineSeen()){ //TODO: make 'noLineSeen' static before testing
-      Robot.driveTrain.setVolts(-.5, -.5); //Negativve because the camera is on the back
-    } */   
+   SelectedTarget cameraAngle = Robot.cameraControlStateMachine.getSelectedTarget();
+   SelectedTarget targetDistance = Robot.cameraControlStateMachine.getSelectedTarget();
   }
+
+ 
+
+  
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
@@ -70,29 +57,3 @@ public class AutoAlignment extends Command {
   protected void interrupted() {
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

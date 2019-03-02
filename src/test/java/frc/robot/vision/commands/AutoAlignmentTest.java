@@ -9,22 +9,53 @@ package frc.robot.vision.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.vision.commands.AutoAlignment;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.subsystems.DriveTrain;
+import static org.mockito.Mockito.*;
+import frc.robot.helpers.DriveTrainMocks;
+
+
+import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LineDetector;
 
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class AutoAlignment extends Command {
 
-  public AutoAlignment() {
-    requires(Robot.driveTrain);
-    requires(Robot.backLineDetector);
+import static org.junit.Assert.assertEquals;
+
+
+
+public class AutoAlignmentTest extends Command {
+  DriveTrain driveTrain;
+  AutoAlignment autoAlignment;
+
+  @Before
+  public void initializeMocks() {
+
+    driveTrain = mock(DriveTrain.class);
+    autoAlignment= mock(AutoAlignment.class);
+
+    
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
+  @Test
+  public void goStraightIfCameraAngleAt90(){
+    //Assemble
+    //DriveTrainMocks driveTrainMocks = new DriveTrainMocks();
+    assertEquals(90, 90, 0);
+    
+    //Assert
+    autoAlignment.execute();
+    //assertEquals();
+    //Act
+    verify(driveTrain, times(1)).setVolts(-.5, -.5);
+  }
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
@@ -33,24 +64,6 @@ public class AutoAlignment extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-  
-    SelectedTarget cameraAngle = Robot.cameraControlStateMachine.getSelectedTarget();
-
-    while(cameraAngle >= 90 ){
-      Robot.driveTrain.setVolts(-.5,-.5);//Negative because the camera is on the back
-      while(cameraAngle !=90){                                                                                                                                    
-        Robot.driveTrain.setVolts(.5,-.5);
-      }
-    }
-    while(cameraAngle <= 90){
-      Robot.driveTrain.setVolts(-.5, -.5);//Negative because the camera is on the back
-      while(cameraAngle !=90){
-        Robot.driveTrain.setVolts(-.5,.5);
-      }
-    }
-    /*if(cameraAngle == 90 && LineDetector.noLineSeen()){ //TODO: make 'noLineSeen' static before testing
-      Robot.driveTrain.setVolts(-.5, -.5); //Negativve because the camera is on the back
-    } */   
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -70,29 +83,3 @@ public class AutoAlignment extends Command {
   protected void interrupted() {
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
