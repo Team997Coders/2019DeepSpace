@@ -25,7 +25,7 @@ public class PathManager {
 
   public Thread[] daemons;
   private int finishedCount = 0;
-  private int daemonCount = 2;
+  private int daemonCount = 1;
 
   public static PathManager getInstance() {
     if (instance == null) {
@@ -45,14 +45,18 @@ public class PathManager {
     pathnames.add("ShipRightToLoadingStationRight");
     pathnames.add("LoadingStationRightToCargoCenterLeft");
 
-    daemons = new Thread[daemonCount];
+    loadPath();
+
+    /*daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {
       daemons[i] = new Thread(this::loadPath);
+      //System.out.println("Created a new loader daemon");
     }
 
     for (int i = 0; i < daemonCount; i++) {
       daemons[i].start();
     }
+    */
   }
 
   public MotionProfile getProfile(String name) {
@@ -80,7 +84,7 @@ public class PathManager {
       if (pathname == null) {
         run = false;
       } else {
-        System.out.println(pathname);
+        System.out.println("Daemon is loading path: " + pathname);
         mp = new MotionProfile(pathname);
         profiles.add(mp);
       }

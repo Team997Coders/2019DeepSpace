@@ -69,7 +69,8 @@ public class Robot extends TimedRobot {
   public static LogitechVisionOI logitechVisionOI;
 
   Command autonomousCommand;
-  SendableChooser<AutonomousOptions> chooser = new SendableChooser<>();
+  //SendableChooser<AutonomousOptions> chooser = new SendableChooser<>();
+  SendableChooser<Command> chooser = new SendableChooser<>();
 
   public static int heightIndex;
   // used by the scoringHeight logic commands to grab the correct height from
@@ -85,6 +86,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
+    driveTrain = new DriveTrain();
+
+    //motionProfile = MotionProfile.getInstance();
+    pathManager = PathManager.getInstance();
+
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
@@ -93,7 +99,6 @@ public class Robot extends TimedRobot {
     hatchManipulator = new HatchManipulator();
     elevator = new Elevator();
     liftGear = new LiftGear();
-    driveTrain = new DriveTrain();
     frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
     backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
     backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
@@ -136,8 +141,7 @@ public class Robot extends TimedRobot {
     bb = new ButtonBoxOI();
     //logitechVisionOI = new LogitechVisionOI();
 
-    //motionProfile = MotionProfile.getInstance();
-    pathManager = PathManager.getInstance();
+    
     arm.Lock();
   }
 
@@ -173,6 +177,8 @@ public class Robot extends TimedRobot {
     // and so there should be no problem.
 
     // Get the autonomous chooser option
+    
+    /*
     AutonomousOptions autonomousOption = chooser.getSelected();
 
     // An autonomous command must be set as a result of this activity
@@ -210,6 +216,12 @@ public class Robot extends TimedRobot {
       }
     }
     autonomousCommand.start();
+    */
+
+    autonomousCommand = chooser.getSelected();
+    if(autonomousCommand != null) {
+      autonomousCommand.start();
+    }
   }
 
   @Override

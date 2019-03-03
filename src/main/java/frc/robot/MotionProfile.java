@@ -85,16 +85,20 @@ public class MotionProfile {
    */
 	public void pfInit(String Pathname) throws IOException {
 
+		System.out.println("Constructing MotionProfile " + Pathname);
+
 		// https://wpilib.screenstepslive.com/s/currentCS/m/84338/l/1021631-integrating-path-following-into-a-robot-program
 		/*left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left"); // FIX:  Know bug in Pathweaver paths
 		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right"); // FIX:  See screensteps documentation*/
 
     // MARK: Screensteps fix
 		left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
-    right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+		System.out.println("Got trajectories for " + Pathname);
 
 		m_left_follower = new EncoderFollower(left_trajectory);
 		m_right_follower = new EncoderFollower(right_trajectory);
+		System.out.println("Created EncoderFollowers for " + Pathname);
 
 		m_left_follower.configureEncoder((int) Robot.driveTrain.leftEncoderTicks(), RobotMap.Values.ticksPerRev,
 				RobotMap.Values.robotWheelDia);
@@ -105,6 +109,8 @@ public class MotionProfile {
 				RobotMap.Values.robotWheelDia);
 		// You must tune the PID values on the following line!
 		m_right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / RobotMap.Values.pf_max_vel, 0);
+
+		System.out.println("Finished constructing MotionProfile " + Pathname);
 	}
 
 	public void startPath() {

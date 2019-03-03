@@ -1,0 +1,42 @@
+Debugging notes for the motionProfile loader.
+### THE PROBLEM ###
+When the robot is loading motion profile paths, it randomly breaks the code and throws an error outside
+of the JVM. But then sometimes it works.
+
+### NOTES FROM DEBUGGING ###
+It doesn't matter what path gets loaded first, the code always breaks after the first path gets loaded.
+It claims it's trying to load the third path in the list. (this only happened once.)
+Error reports are stored in the /tmp file on the rio
+
+The log file claims there are four threads with the name: Thread-#, Thread-0, Thread-1, Thread-2, Thread-3. Hunter's
+	Daemon creator might be making too many daemons. That shouldn't be the problem though, since they should end
+	after they find a null.
+>The loader only creates two daemons, this ain't it.
+
+!!The constructor for the MotionProfile object starts working but never finishes with the pfInit method for
+	either path that gets created.
+!!If you only have one daemon working, it only starts constructing one MotionProfile before it breaks. (and still
+	doesn't finish the pfInit() method.
+!! With three daemons it's the same story.
+
+An outlier happened:
+	Using one daemon, it successfully built all three paths, and the robot code was happy. Excellent.
+	Tried rebuilding with no changes, it broke the first time, and then worked after rebooting again.
+
+After testing rebuilds with one daemon several times, the code always throws an error while it trys to run
+	PathfinderFRC.getTrajectory() in MotionProfile (lines 95 & 96.) Shall investigate further.
+
+Spooped around in the definition of PathfinderFRC.getTrajectory() for a little bit. If it can't find the file, it
+	should throw an IOException, so it's finding the file.
+ 
+The error seems to be in the native C code, which is unfortunate since we can't do anything about it.
+
+The more threads you have running pathloading, the more times the code seems to break. Got rid of Hunter's
+fancy multi-threading code, and just ran it in the main thread. It seems to work better, but still breaks
+randomly.
+
+ ### THE (BAD AND TEMPORARY) SOLUTION ###
+ Moved the initializer for PathManager all the way up in Robot.java. It's right after Drivetrain, since 
+ drivetrain is PathManager's only dependency. This way, if the pathloading breaks, the robot doesn't have
+ to rebuild evey subsystem before it gets back to the pathmanager. Also got rid of the fancy multi-threading,
+ since more threads seems to perform worse.
