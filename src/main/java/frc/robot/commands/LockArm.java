@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -21,7 +20,7 @@ public class LockArm extends Command {
     }
     
     protected void execute() {
-      Robot.arm.SetPostion(position);
+      Robot.arm.SetPosition(position);
       System.out.println("Locking Arm at position " + position);
     }
 

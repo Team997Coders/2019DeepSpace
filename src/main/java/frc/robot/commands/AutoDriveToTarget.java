@@ -12,6 +12,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.vision.SelectedTarget;
 import frc.robot.vision.TargetNotLockedException;
+import frc.robot.vision.CameraControlStateMachine;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Utils;
@@ -30,6 +31,7 @@ import frc.robot.RobotMap;
  */
 public class AutoDriveToTarget extends Command {
   private final DriveTrain driveTrain;
+  private final CameraControlStateMachine cameraControlStateMachine;
 
   private double distSetpoint;
 	private double minError = 3;
@@ -44,11 +46,12 @@ public class AutoDriveToTarget extends Command {
 	private double targetAngle;
 
   public AutoDriveToTarget() {
-    this(Robot.driveTrain);
+    this(Robot.driveTrain, Robot.cameraControlStateMachine);
   }
 
-  public AutoDriveToTarget(DriveTrain driveTrain) {
-    this.driveTrain = driveTrain;
+  public AutoDriveToTarget(DriveTrain driveTrain, CameraControlStateMachine cameraControStateMachine) {
+		this.driveTrain = driveTrain;
+		this.cameraControlStateMachine = cameraControStateMachine;
     requires(driveTrain);
   }
    
@@ -203,6 +206,3 @@ public class AutoDriveToTarget extends Command {
     	System.out.println("(ADTD-INTERRUPTED) I got interrupted!! D:");
     }
   }
-  
-
-  

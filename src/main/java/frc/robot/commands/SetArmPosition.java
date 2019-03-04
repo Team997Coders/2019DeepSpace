@@ -32,7 +32,7 @@ public class SetArmPosition extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.SetPostion(setpoint);
+    Robot.arm.SetPosition(setpoint);
     Robot.arm.UpdateF();
   }
 

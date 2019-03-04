@@ -61,12 +61,6 @@ public class DriveTrain extends Subsystem {
     );
   }
 
-  public void resetGyro() {
-    gyro.reset();
-    init_angle = gyro.getAngle();
-    gyro.zeroYaw();
-  }
-
   /**
    * Drivetrain constructor to use for testing purposes.
    * 
@@ -123,14 +117,44 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
-
-  public double getGyroAngle(){
-    if (gyro != null){
-    return gyro.getAngle();
-  } else{
-    return 0;
+ /**
+  * Reset the gyro.  set the base angle to 0.
+  */
+  public void resetGyro() {
+    gyro.reset();
+    init_angle = gyro.getAngle();
+    gyro.zeroYaw();
   }
-}
+
+  /**
+   * Get the Yaw angle from the gyro.
+   * @return The robot's angle bound between -180 and +180
+   */
+  public double getHeading() {
+		if (gyropresent) {
+      //return( gyro.getAngle() - init_angle );
+      return gyro.getYaw();
+		} else {
+			return 0.0;
+		}
+	}
+	  
+
+   /**
+   * Get the accumulated (does not change from 359-0, but continues from 359-360) angle
+   * from the NavX gyro.  Should we be using getHeading() instead?  These gyro methods
+   * will also return 0 if no gyro is present.
+   * 
+   * @return the accumulated angle.
+   */
+  public double getGyroAngle() {
+    if (gyro != null) {
+      return gyro.getAngle();
+    } else {
+      return 0;
+    }
+  }
+
   /**
    * Sets the percentage input for the left and right talon to zero
    */
@@ -224,14 +248,7 @@ public class DriveTrain extends Subsystem {
     rightTalon.setSelectedSensorPosition(0, 0, 10);
   }
 
-  public double getHeading() {
-		if (gyropresent) {
-			return( gyro.getAngle() - init_angle );
-		} else {
-			return 0.0;
-		}
-	}
-	  
+  
   /**
    * Gets PID constants from the SmartDashboard and then uses setPIDValues(double,
    * double, double)

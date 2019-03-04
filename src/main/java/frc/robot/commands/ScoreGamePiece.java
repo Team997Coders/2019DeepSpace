@@ -41,9 +41,9 @@ public class ScoreGamePiece extends Command {
   @Override
   protected void execute() {
     if (scoringSide == true) {
-      Robot.arm.SetPostion(RobotMap.Values.armBackLimit);
+      Robot.arm.SetPosition(RobotMap.Values.armBackLimit);
     } else {
-      Robot.arm.SetPostion(RobotMap.Values.armFrontLimit);
+      Robot.arm.SetPosition(RobotMap.Values.armFrontLimit);
     }
     Robot.arm.releaseBrake();
     if (scoringSide == Robot.arm.getArmSide() || elevatorHeight > Robot.elevator.GetPosition()) {

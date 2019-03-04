@@ -25,7 +25,23 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 /**
- * Add your docs here.
+ * Manage the Arm on the Elevator:
+ * Need to encode the logic to prevent the arm from running into the elevator
+ * There needs to be some basic intelligence to say: "Are we moving the arm to the 
+ * other side of the robot?" and then if not we can move.  If we are moving to the 
+ * other side of the robot: "Is the elevator carriage high enough so that the arm
+ * won't hit the elevator.  Is the elevator above the 'ElevatorArmSafeHeight?'?"
+ * If the elevator is above the safe height, then we can move.  If the elevator carriage
+ * is too low, then we will have to move the elevator!
+ *   a - save the current elevator position
+ *   b - schedule the elevator to move to the safe height
+ *   c - wait (loop) until the elevator is high enough
+ *   d - move arm across to other side to specified angle
+ *   e - move the elevator back to the original position
+ *   f - clean up our variables
+ * If we knew the new expected elevator position, we could check if we should move it
+ * first.   Maybe this is a good case for a unified Elevator and Arm Movement method.
+ * 
  */
 public class Arm extends Subsystem {
 
@@ -79,20 +95,63 @@ public class Arm extends Subsystem {
     SmartDashboard.putNumber("Arm/Arm Pid F", RobotMap.Values.armMaxPidF);
   }
 
+  /**
+   * Implement logic to determine if it is safe to move the arm
+   * @return boolean to indicate if we are safe to move the arm to a given new angle
+   */
+  public boolean checkSafeMove(double m_newangle) {
+    // we probably need new angles that form a 'V' at the top of the elevator
+    //   and create a no-mans-land that we can't move into when the elevator
+    //   isn't high enough and not just one variable.
+
+    //1 - get the current arm angle and elevator height
+    int m_height = Robot.elevator.GetPosition();
+    double m_angle = this.readEncoder();
+    
+    // 2 - check if we are trying to move to the other side
+    if ((m_angle < RobotMap.Values.armEncoderCenter && 
+            m_newangle < RobotMap.Values.armEncoderCenter) ||
+            (m_angle > RobotMap.Values.armEncoderCenter && 
+            m_newangle > RobotMap.Values.armEncoderCenter))
+             {
+              // Move is on same side of elevator.
+              return true; // safe.
+            }
+    // 3 - check if the elevator is high enough
+    else if (m_height > RobotMap.Values.armSwitchHeight) {
+      // elevator is high enough so that we can move the arm
+      return true;
+    }
+    // otherwise we are in trouble and need to move the elevator first.
+    System.out.println("Unsafe Arm Movement, need to lift the elevator first!");
+    return false;
+  }
+
   public void setPower(double speed) {
     //sparkMax.set(speed);
     pidController.setReference(speed, ControlType.kDutyCycle);
   }
   
-
-  public boolean getArmSide(){
-    if(readEncoder() < RobotMap.Values.armEncoderCenter){
-      return true; // arm on the front of the robot
+  public void resetArmToUpperQuadrants() {
+    if (getArmSide()) {
+      // front-side
+      if (readEncoder() < RobotMap.ElevatorHeights.armFrontParallel) {
+        this.SetPosition(RobotMap.ElevatorHeights.armFrontParallel);
+      }
+    } else {
+      // back-side
+      if (readEncoder() > RobotMap.ElevatorHeights.armBackParallel) {
+        this.SetPosition(RobotMap.ElevatorHeights.armBackParallel);
+      }
     }
-    else{
+  }
+
+  public boolean getArmSide() {
+    if (readEncoder() < RobotMap.Values.armEncoderCenter) {
+      return true; // arm on the front of the robot
+    } else {
       return false;
     }
-
   }
 
   // This function only works if the inital read of the arm is horizontal
@@ -104,11 +163,13 @@ public class Arm extends Subsystem {
     return sparkMax.getOutputCurrent();
   }
 
-  public void SetPostion(double setpoint){
-    releaseBrake();
-    System.out.println("Set position to " + setpoint);
-    pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
-    UpdateF();
+  public void SetPosition(double setpoint){
+    if (checkSafeMove((double) setpoint)) {
+      releaseBrake();
+      System.out.println("Set position to " + setpoint);
+      pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
+      UpdateF();
+    }
   }
 
   public double readEncoder() {
@@ -135,11 +196,11 @@ public class Arm extends Subsystem {
     return (int)((revs * MAX) + newVal);
   }
 
-  private double getRawEncoder() {
+  private int getRawEncoder() {
     double[] a = new double[2];
     dataBus.getPWMInput(PWMChannel.PWMChannel0, a);
     SmartDashboard.putNumber("Duty Cycle", a[1]);
-    return a[0];
+    return (int) a[0];
   }
 
   public void engageBrake() {

@@ -35,16 +35,17 @@ public class OI {
     //    left stick Y-axis is drive power
     //    right stick X-axis is drive direction
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
+    gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
 
-    ballOutake = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    /*ballOutake = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
     ballOutake.whenPressed(new BallOuttake());
 
     // buttonB is spare
 
-    ballIntake = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    ballIntake.whenPressed(new BallIntake());
+    /*ballIntake = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    ballIntake.whenPressed(new BallIntake());*/
 
-    toggleHatch = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ToggleHatch());
 
     deployLandingGear = new JoystickTrigger(gamepad1, RobotMap.Buttons.buttonLeftTrigger);
@@ -89,15 +90,15 @@ public class OI {
     ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballOutake.whileHeld(new BallOuttake());
 
-    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-    elevatorGoDown.whileHeld(new ElevatorDownity());
-    elevatorGoDown.whenInactive(new LockElevator());
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    //elevatorGoUp.whileHeld(new ElevatorDownity());
+    //elevatorGoUp.whenInactive(new LockElevator());
     
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
-    elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    //elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
 
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
-    elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
+    // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    // elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
 
     autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     autoDriveToTarget.whenPressed(new AutoDriveToTarget());

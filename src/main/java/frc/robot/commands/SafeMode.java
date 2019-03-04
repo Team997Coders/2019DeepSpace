@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 
 public class SafeMode extends Command {
@@ -21,6 +22,7 @@ public class SafeMode extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Scheduler.getInstance().add(new ElevatorArmSetpoint(2000, 180 - 45));
   }
 
   // Called repeatedly when this Command is scheduled to run
