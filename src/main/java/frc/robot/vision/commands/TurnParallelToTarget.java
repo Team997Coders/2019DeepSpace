@@ -15,13 +15,21 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.buttonbox.ButtonBox;
 
 public class TurnParallelToTarget extends Command {
-  private CameraControlStateMachine camera = Robot.cameraControlStateMachine;
-  public DriveTrain driveTrain = Robot.driveTrain;
-  public ButtonBox buttonBox = Robot.buttonBox;
-  public TurnParallelToTarget() {
+  private final CameraControlStateMachine camera;
+  private final DriveTrain driveTrain;
+  private final ButtonBox buttonBox;
 
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+  public TurnParallelToTarget() {
+    this(Robot.cameraControlStateMachine, Robot.driveTrain, Robot.buttonBox);
+  }
+
+  public TurnParallelToTarget(CameraControlStateMachine camera, 
+      DriveTrain driveTrain, 
+      ButtonBox buttonBox) {
+    this.camera = camera;
+    this.driveTrain = driveTrain;
+    this.buttonBox = buttonBox;
+    requires(driveTrain);
   }
 
   // Called just before this Command runs the first time
