@@ -31,7 +31,6 @@ import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
 import frc.robot.vision.CameraControlStateMachine;
-import frc.robot.subsystems.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -95,8 +94,8 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 80, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
-    backCameraMount = new CameraMount(0, 120, 10, 170, 2, 80, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
+    frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
+    backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
     backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,
@@ -153,7 +152,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
     arm.Unlock();
-    Logger.getInstance().close();
+    logger.close();
   }
 
   @Override
@@ -164,6 +163,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    cameraControlStateMachine.identifyTargets();
+
+    // NOTE: There must be a delay of AT LEAST 20ms to give
+    // the camera subsystem time to ingest some frames. The assumption
+    // is that autolock vision will be sandwiched between other commands,
+    // and so there should be no problem.
+
     // Get the autonomous chooser option
     AutonomousOptions autonomousOption = chooser.getSelected();
 
@@ -174,24 +180,26 @@ public class Robot extends TimedRobot {
       // should be logged...
       autonomousCommand = new AutoDoNothing();
     } else {
-      // TODO: Fill in these commands with the appropriate action
-      // The camera control state machine can do it, but more than left/right would have to be
-      // passed in.
+      // TODO: Fill in these commands with the appropriate actions.
+      // You can call cameraControlStateMachine.autoLockRight(), 
+      // cameraControlStateMachine.autoLockLeft(), or cameraControlStateMachine.autoLock()
+      // from your commands if you want to sandwich in vision autolocking after initial
+      // motion profile driving. Once initiated, then in a subsequent command to perform
+      // auto-drive based on vision feedback, use if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.AutoLocked)
+      // conditional to determine if target is locked. Finally, use cameraControlStateMachine.getSelectedTarget() to get information
+      // about target. This function goes to network tables for you and gets the information about the lock on target
+      // as documented here: https://github.com/Team997Coders/2019DSHatchFindingVision/tree/master/CameraVision
       switch(autonomousOption) {
         case LeftCargoShip:
-          cameraControlStateMachine.autoLock(CameraControlStateMachine.ClosestToCenter.Left);
           autonomousCommand = new AutoDoNothing();
           break;
         case RightCargoShip:
-          cameraControlStateMachine.autoLock(CameraControlStateMachine.ClosestToCenter.Right);
           autonomousCommand = new AutoDoNothing();
           break;
         case LeftBottomRocket:
-          cameraControlStateMachine.autoLock(CameraControlStateMachine.ClosestToCenter.Left);
           autonomousCommand = new AutoDoNothing();
           break;
         case RightBottomRocket:
-          cameraControlStateMachine.autoLock(CameraControlStateMachine.ClosestToCenter.Right);
           autonomousCommand = new AutoDoNothing();
           break;
         case DoNothing:
@@ -221,7 +229,7 @@ public class Robot extends TimedRobot {
 
     arm.Lock();
 
-    Logger.getInstance().openFile();
+    logger.openFile();
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -243,7 +251,7 @@ public class Robot extends TimedRobot {
       cameraControlStateMachine.slew(logitechVisionOI.getVisionLeftXAxis(), logitechVisionOI.getVisionLeftYAxis());
     }
 
-    Logger.getInstance().logAll();
+    logger.logAll();
   }
 
   @Override

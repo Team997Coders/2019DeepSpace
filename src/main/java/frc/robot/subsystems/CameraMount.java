@@ -70,7 +70,7 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
   public void center() {
     // TODO: Pull this function into SpartanLib
     panToAngle(90d);
-    tiltToAngle(90d);
+    tiltToAngle(75d);
   }
 
   /**
