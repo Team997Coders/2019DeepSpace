@@ -10,12 +10,12 @@ package frc.robot.vision.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.FollowLine;
 
-public class VisionAlignWithTarget extends CommandGroup {
+public class Hab1ToCargoShipEndRightSide extends CommandGroup {
   /**
    * Add your docs here.
    */
 
-  public VisionAlignWithTarget() {
+  public Hab1ToCargoShipEndRightSide() {
     addSequential(new TurnParallelToTarget());
     addSequential(new DriveParallelToTarget());
     addSequential(new TurnToFaceTarget());
