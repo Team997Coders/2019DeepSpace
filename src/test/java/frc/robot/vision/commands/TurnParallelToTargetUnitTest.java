@@ -21,8 +21,7 @@ public class TurnParallelToTargetUnitTest {
         SelectedTarget selectedTarget = mock(SelectedTarget.class);
         DriveTrain driveTrain = mock(DriveTrain.class);
         ButtonBox buttonBox = mock(ButtonBox.class);
-        // TODO: Chuck, fix me please!
-        when(selectedTarget.cameraAngleInDegrees).thenReturn(30D);
+        selectedTarget.cameraAngleInDegrees = 30D;
         when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
         when(camera.getSelectedTarget()).thenReturn(selectedTarget);
         TurnParallelToTarget turnParallelToTarget = new TurnParallelToTarget(camera, driveTrain, buttonBox);

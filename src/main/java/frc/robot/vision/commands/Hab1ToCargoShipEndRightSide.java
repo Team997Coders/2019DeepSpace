@@ -8,34 +8,23 @@
 package frc.robot.vision.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.ElevatorArmSetpoint;
 import frc.robot.commands.FollowLine;
+import frc.robot.commands.PDriveToDistance;
+import frc.robot.commands.Waittill;
 
 public class Hab1ToCargoShipEndRightSide extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-
   public Hab1ToCargoShipEndRightSide() {
-    addSequential(new TurnParallelToTarget());
-    addSequential(new DriveParallelToTarget());
-    addSequential(new TurnToFaceTarget());
-    addSequential(new VisionDriveToTarget());
-    addSequential(new FollowLine(1000));
-    // Add Commands here:
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
-
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
-
-    // A command group will require all of the subsystems that each member
-    // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
-    // a CommandGroup containing them would require both the chassis and the
-    // arm.
+    addSequential(new PDriveToDistance(1000));            // Takes ticks unfortunately. We need to drive off the hab. How far is that in ticks? How about taking inches, please?
+    // addSequential(new ElevatorArmSetpoint());          // Do we need to do this? Which values to use?
+    addSequential(new AutoLock(AutoLock.Side.Right));     // Auto-lock the camera to the right side of the end of the cargo ship.
+    addSequential(new TurnParallelToTarget());            // Turn to drive across the target
+    addSequential(new DriveParallelToTarget());           // Drive across the target until directly in front of it
+    addSequential(new TurnToFaceTarget());                // Turn to directly face target
+    addSequential(new DriveStraightToTarget());           // Drive to the target and stop when over line following line
+    addSequential(new FollowLine(1000));                  // Follow the line
+    addSequential(new Waittill(.5));                      // Give hatch time to grab velcro
+    //addSequential(new ReleaseHatchIfOnTarget());        // If distance sensor says we are close to something, release the hatch
+    //addSequential(new BackingUp());                     // Finally back off
   }
 }

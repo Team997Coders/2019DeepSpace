@@ -15,7 +15,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.buttonbox.ButtonBox;
 
 public class TurnParallelToTarget extends Command {
-  private final CameraControlStateMachine camera;
+  private final CameraControlStateMachine cameraControlStateMachine;
   private final DriveTrain driveTrain;
   private final ButtonBox buttonBox;
 
@@ -23,10 +23,10 @@ public class TurnParallelToTarget extends Command {
     this(Robot.cameraControlStateMachine, Robot.driveTrain, Robot.buttonBox);
   }
 
-  public TurnParallelToTarget(CameraControlStateMachine camera, 
+  public TurnParallelToTarget(CameraControlStateMachine cameraControlStateMachine, 
       DriveTrain driveTrain, 
       ButtonBox buttonBox) {
-    this.camera = camera;
+    this.cameraControlStateMachine = cameraControlStateMachine;
     this.driveTrain = driveTrain;
     this.buttonBox = buttonBox;
     requires(driveTrain);
@@ -40,43 +40,51 @@ public class TurnParallelToTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SelectedTarget selectedTarget = camera.getSelectedTarget();
-    if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front)
-      if(selectedTarget.cameraAngleInDegrees >= 0){
+    SelectedTarget selectedTarget = cameraControlStateMachine.getSelectedTarget();
+    
+    if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front) {
+      if (selectedTarget.cameraAngleInDegrees >= 0) {
         driveTrain.setVolts(.5,-.5);
-      }else if(selectedTarget.cameraAngleInDegrees < 0){
+      } else if (selectedTarget.cameraAngleInDegrees < 0) {
         driveTrain.setVolts(-.5,.5);
-    }else if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back)
-      if(selectedTarget.cameraAngleInDegrees >= 0){
+      }
+    } else if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
+      if (selectedTarget.cameraAngleInDegrees >= 0) {
         driveTrain.setVolts(-.5,.5);
-      }else if(selectedTarget.cameraAngleInDegrees < 0){
+      } else if (selectedTarget.cameraAngleInDegrees < 0) {
         driveTrain.setVolts(.5,-.5);
       }
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    SelectedTarget selectedTarget = camera.getSelectedTarget();
-
-    if(Math.abs(selectedTarget.cameraAngleInDegrees) < 30){
+    // If we are not locked on to target, stop.
+    if (cameraControlStateMachine.getState() != CameraControlStateMachine.State.AutoLocked) {
       return true;
-    }else{
+    }
+
+    SelectedTarget selectedTarget = cameraControlStateMachine.getSelectedTarget();
+
+    if (Math.abs(selectedTarget.cameraAngleInDegrees) < 30) {
+      return true;
+    } else {
       return false;
     }
-      
-      
-    
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    driveTrain.setBrake();
+    driveTrain.stopVolts();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

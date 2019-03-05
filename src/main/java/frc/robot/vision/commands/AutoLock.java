@@ -12,19 +12,40 @@ import frc.robot.Robot;
 import frc.robot.vision.CameraControlStateMachine;
 
 public class AutoLock extends Command {
-  CameraControlStateMachine cameraControlStateMachine;
+  private final CameraControlStateMachine cameraControlStateMachine;
+  private final Side side;
 
-  public AutoLock() {
-    this(Robot.cameraControlStateMachine);
+  /**
+   * Auto-lock camera on to left or right most target
+   * that are closest to the center of the FOV.
+   * 
+   * @param side  Go to the left or right side target. If only one
+   *              target is in the FOV, it will go to that target. 
+   */
+  public AutoLock(Side side) {
+    this(Robot.cameraControlStateMachine, side);
   }
 
-  public AutoLock(CameraControlStateMachine cameraControlStateMachine) {
+  /**
+   * Pass in all depdendencies for auto-lock so that we can easily
+   * test as desired.
+   */
+  public AutoLock(CameraControlStateMachine cameraControlStateMachine, Side side) {
     this.cameraControlStateMachine = cameraControlStateMachine;
+    this.side = side;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    switch(side) {
+      case Right:
+        cameraControlStateMachine.autoLockLeft();
+        break;
+      case Left:
+        cameraControlStateMachine.autoLockRight();
+        break;
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -35,7 +56,11 @@ public class AutoLock extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.SlewingToTarget) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   // Called once after isFinished returns true
@@ -47,5 +72,9 @@ public class AutoLock extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+  }
+
+  public enum Side {
+    Right, Left
   }
 }

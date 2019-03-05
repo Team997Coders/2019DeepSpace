@@ -9,21 +9,28 @@ package frc.robot.vision.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
-
 import frc.robot.vision.CameraControlStateMachine;
 import frc.robot.Robot;
 import frc.robot.vision.SelectedTarget;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.buttonbox.ButtonBox;
+
 public class TurnToFaceTarget extends Command {
-  private CameraControlStateMachine camera = Robot.cameraControlStateMachine;
-  public DriveTrain driveTrain = Robot.driveTrain;
-  public ButtonBox buttonBox = Robot.buttonBox;
+  private final CameraControlStateMachine cameraControlStateMachine;
+  private final DriveTrain driveTrain;
+  private final ButtonBox buttonBox;
 
   public TurnToFaceTarget() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    this(Robot.cameraControlStateMachine, Robot.driveTrain, Robot.buttonBox);
+  }
+
+  public TurnToFaceTarget(CameraControlStateMachine cameraControlStateMachine, 
+      DriveTrain driveTrain, 
+      ButtonBox buttonBox) {
+    this.cameraControlStateMachine = cameraControlStateMachine;
+    this.driveTrain = driveTrain;
+    this.buttonBox = buttonBox;
+    requires(driveTrain);
   }
 
   // Called just before this Command runs the first time
@@ -34,33 +41,34 @@ public class TurnToFaceTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SelectedTarget selectedTarget = camera.getSelectedTarget();
-    if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front){
-      driveTrain.setVolts(.5,.5);
-      if(selectedTarget.cameraAngleInDegrees >= 0){
+    SelectedTarget selectedTarget = cameraControlStateMachine.getSelectedTarget();
+
+    if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front) {
+      if (selectedTarget.cameraAngleInDegrees >= 0) {
         driveTrain.setVolts(-.5,.5);
-      }else if(selectedTarget.cameraAngleInDegrees < 0){
+      } else if (selectedTarget.cameraAngleInDegrees < 0) {
         driveTrain.setVolts(.5,-.5);
       }
-    }else if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back){
-      driveTrain.setVolts(-.5,-.5);
-      if(selectedTarget.cameraAngleInDegrees >= 0){
+    } else if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
+      if (selectedTarget.cameraAngleInDegrees >= 0) {
         driveTrain.setVolts(.5,-.5);
-      }else if(selectedTarget.cameraAngleInDegrees < 0){
+      } else if (selectedTarget.cameraAngleInDegrees < 0) {
         driveTrain.setVolts(-.5,.5);
       }
     }
-    
-  
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    SelectedTarget selectedTarget = camera.getSelectedTarget();
-    if(selectedTarget.cameraAngleInDegrees <= 5 && selectedTarget.cameraAngleInDegrees >= -5){
+    // If we are not locked on to target, stop.
+    if (cameraControlStateMachine.getState() != CameraControlStateMachine.State.AutoLocked) {
       return true;
-    }else{ 
+    }
+    SelectedTarget selectedTarget = cameraControlStateMachine.getSelectedTarget();
+    if (selectedTarget.cameraAngleInDegrees <= 5 && selectedTarget.cameraAngleInDegrees >= -5) {
+      return true;
+    } else { 
       return false;
     }
   }
@@ -68,11 +76,14 @@ public class TurnToFaceTarget extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    driveTrain.setBrake();
+    driveTrain.stopVolts();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }
