@@ -31,6 +31,7 @@ import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
 import frc.robot.vision.CameraControlStateMachine;
+import frc.robot.vision.commands.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -150,6 +151,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    cameraControlStateMachine.identifyTargets();
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
     arm.Unlock();
     logger.close();
@@ -163,7 +165,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    cameraControlStateMachine.identifyTargets();
+    
 
     // NOTE: There must be a delay of AT LEAST 20ms to give
     // the camera subsystem time to ingest some frames. The assumption
@@ -194,7 +196,7 @@ public class Robot extends TimedRobot {
           autonomousCommand = new AutoDoNothing();
           break;
         case RightCargoShip:
-          autonomousCommand = new AutoDoNothing();
+          autonomousCommand = new Hab1ToCargoShipEndRightSide();
           break;
         case LeftBottomRocket:
           autonomousCommand = new AutoDoNothing();

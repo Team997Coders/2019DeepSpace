@@ -19,6 +19,7 @@ public class TurnToFaceTarget extends Command {
   private final CameraControlStateMachine cameraControlStateMachine;
   private final DriveTrain driveTrain;
   private final ButtonBox buttonBox;
+  private final double speed = 0.153;
 
   public TurnToFaceTarget() {
     this(Robot.cameraControlStateMachine, Robot.driveTrain, Robot.buttonBox);
@@ -45,15 +46,15 @@ public class TurnToFaceTarget extends Command {
 
     if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front) {
       if (selectedTarget.cameraAngleInDegrees >= 0) {
-        driveTrain.setVolts(-.5,.5);
+        driveTrain.setVolts(speed, -speed);
       } else if (selectedTarget.cameraAngleInDegrees < 0) {
-        driveTrain.setVolts(.5,-.5);
+        driveTrain.setVolts(-speed ,speed);
       }
     } else if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
       if (selectedTarget.cameraAngleInDegrees >= 0) {
-        driveTrain.setVolts(.5,-.5);
+        driveTrain.setVolts(-speed, speed);
       } else if (selectedTarget.cameraAngleInDegrees < 0) {
-        driveTrain.setVolts(-.5,.5);
+        driveTrain.setVolts(speed, -speed);
       }
     }
   }

@@ -19,6 +19,7 @@ public class DriveParallelToTarget extends Command {
   private final CameraControlStateMachine cameraControlStateMachine;
   private final DriveTrain driveTrain;
   private final ButtonBox buttonBox;
+  private final double speed = 0.16;
 
   public DriveParallelToTarget() {
     this(Robot.cameraControlStateMachine, Robot.driveTrain, Robot.buttonBox);
@@ -43,9 +44,9 @@ public class DriveParallelToTarget extends Command {
   protected void execute() {
     
     if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front){
-      driveTrain.setVolts(.5,.5);
+      driveTrain.setVolts(speed,speed);
     }else if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back){
-      driveTrain.setVolts(-.5,-.5);
+      driveTrain.setVolts(-speed,-speed);
     }
   }
 
@@ -69,6 +70,7 @@ public class DriveParallelToTarget extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+   
     driveTrain.setBrake();
     driveTrain.stopVolts();
   }

@@ -18,6 +18,7 @@ public class TurnParallelToTarget extends Command {
   private final CameraControlStateMachine cameraControlStateMachine;
   private final DriveTrain driveTrain;
   private final ButtonBox buttonBox;
+  private final double speed = 0.153;
 
   public TurnParallelToTarget() {
     this(Robot.cameraControlStateMachine, Robot.driveTrain, Robot.buttonBox);
@@ -44,15 +45,15 @@ public class TurnParallelToTarget extends Command {
     
     if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front) {
       if (selectedTarget.cameraAngleInDegrees >= 0) {
-        driveTrain.setVolts(.5,-.5);
+        driveTrain.setVolts(-speed,speed);
       } else if (selectedTarget.cameraAngleInDegrees < 0) {
-        driveTrain.setVolts(-.5,.5);
+        driveTrain.setVolts(speed,-speed);
       }
     } else if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
       if (selectedTarget.cameraAngleInDegrees >= 0) {
-        driveTrain.setVolts(-.5,.5);
+        driveTrain.setVolts(speed,-speed);
       } else if (selectedTarget.cameraAngleInDegrees < 0) {
-        driveTrain.setVolts(.5,-.5);
+        driveTrain.setVolts(-speed,speed);
       }
     }
   }
@@ -67,7 +68,7 @@ public class TurnParallelToTarget extends Command {
 
     SelectedTarget selectedTarget = cameraControlStateMachine.getSelectedTarget();
 
-    if (Math.abs(selectedTarget.cameraAngleInDegrees) < 30) {
+    if (Math.abs(selectedTarget.cameraAngleInDegrees) > 65) {
       return true;
     } else {
       return false;

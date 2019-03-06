@@ -31,7 +31,7 @@ public class DriveStraightToTarget extends Command {
     this.cameraControlStateMachine = cameraControlStateMachine;
     this.driveTrain = driveTrain;
     this.buttonBox = buttonBox;
-    pid = new MiniPID(0.1, 0, 0);
+    pid = new MiniPID(0.0001, 0, 0);
     requires(driveTrain);
   }
 
@@ -48,9 +48,9 @@ public class DriveStraightToTarget extends Command {
 
     double offset = pid.getOutput(selectedTarget.angleToTargetInDegrees, 0);
     if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front) {
-      driveTrain.setVolts(.5 + offset,.5 - offset);
+      driveTrain.setVolts(.16 + offset,.16 - offset);
     } else if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
-      driveTrain.setVolts(-.5 + offset,-.5 - offset);
+      driveTrain.setVolts(-.16 + offset,-.16 - offset);
     }
   }
 

@@ -40,10 +40,10 @@ public class AutoLock extends Command {
   protected void initialize() {
     switch(side) {
       case Right:
-        cameraControlStateMachine.autoLockLeft();
+        cameraControlStateMachine.autoLockRight();
         break;
       case Left:
-        cameraControlStateMachine.autoLockRight();
+        cameraControlStateMachine.autoLockLeft();
         break;
     }
   }

@@ -41,8 +41,8 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
       ButtonBox.ScoringDirectionStates scoringDirection) {
     // Call the constructor to reverse servo behavior based on motion
     // of production servos mounted to comp bot.
-    super(new Servo(panServoPortId), 
-      new Servo(tiltServoPortId, 544, 2250),
+    super(new Servo(panServoPortId, 553, 2250), 
+      new Servo(tiltServoPortId, 553, 2250),
       tiltLowerLimitInDegrees,
       tiltUpperLimitInDegrees,
       true,                       // Reverses tilt servo
