@@ -55,6 +55,7 @@ dependencies {
     compile wpi.deps.vendor.java()
     compile 'com.github.team997coders:SpartanLib:0.0.2-rc2'
     compile 'com.github.oxo42:stateless4j:2.5.0'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'

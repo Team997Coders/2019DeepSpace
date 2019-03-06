@@ -1,0 +1,112 @@
+{
+    "Setpoints": {
+        "FrontBallRocketHigh": {
+            "side": "front",
+            "height": 52400,
+            "angle": 45,
+            "valid": true
+        },
+        "FrontBallRocketMiddle": {
+            "side": "front",
+            "height": 45360,
+            "angle": 0,
+            "valid": true
+        },
+        "FrontBallRocketLow": {
+            "side": "front",
+            "height": 22200,
+            "angle": 0,
+            "valid": true
+        },
+        "FrontBallCargoShip": {
+            "side": "front",
+            "height": 38125,
+            "angle": 0,
+            "valid": true
+        },
+        "FrontHatchRocketHigh": {
+            "side": "front",
+            "height": 52400,
+            "angle": 0,
+            "valid": true
+        },
+        "FrontHatchRocketMiddle": {
+            "side": "front",
+            "height": 30530,
+            "angle": 0,
+            "valid": true
+        },
+        "FrontHatchRocketLow": {
+            "side": "front",
+            "height": 1520,
+            "angle": 0,
+            "valid": true
+        },
+        "FrontHatchCargoShip": {
+            "side": "front",
+            "height": 1520,
+            "angle": 0,
+            "valid": true
+        },
+        "BackBallRocketHigh": {
+            "side": "back",
+            "height": 52400,
+            "angle": 180,
+            "valid": true
+        },
+        "BackBallRocketMiddle": {
+            "side": "back",
+            "height": 34400,
+            "angle": 180,
+            "valid": true
+        },
+        "BackBallRocketLow": {
+            "side": "back",
+            "height": 9100,
+            "angle": 180,
+            "valid": true
+        },
+        "BackBallCargoShip": {
+            "side": "back",
+            "height": 24650,
+            "angle": 180,
+            "valid": true
+        },
+        "BackHatchRocketHigh": {
+            "side": "back",
+            "height": -1,
+            "angle": 180,
+            "valid": false
+        },
+        "BackHatchRocketMiddle": {
+            "side": "back",
+            "height": -1,
+            "angle": 180,
+            "valid": false
+        },
+        "BackHatchRocketLow": {
+            "side": "back",
+            "height": -1,
+            "angle": 180,
+            "valid": false
+        },
+        "BackHatchCargoShip": {
+            "side": "back",
+            "height": 8900,
+            "angle": 180,
+            "valid": true
+        },
+        "Collect": {
+            "side": "front",
+            "height": 0,
+            "angle": 0,
+            "valid": true
+        },
+        "SafeMode": {
+            "side": "back",
+            "height": 0,
+            "angle": 45,
+            "valid": true
+        }
+    }
+}

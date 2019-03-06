@@ -32,6 +32,11 @@ import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
 import frc.robot.vision.CameraControlStateMachine;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import org.json.simple.parser.ParseException;
+
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -46,7 +51,7 @@ public class Robot extends TimedRobot {
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
-  //public static MotionProfile motionProfile;
+  // public static MotionProfile motionProfile;
   public static PathManager pathManager;
   public static CameraMount frontCameraMount;
   public static CameraMount backCameraMount;
@@ -66,6 +71,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static ButtonBoxOI bb;
   public static LogitechVisionOI logitechVisionOI;
+  public static JsonLoader jl;
 
   Command autonomousCommand;
   SendableChooser<AutonomousOptions> chooser = new SendableChooser<>();
@@ -83,7 +89,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
+    try {
+        jl = new JsonLoader();
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+  
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
@@ -182,30 +197,38 @@ public class Robot extends TimedRobot {
       autonomousCommand = new AutoDoNothing();
     } else {
       // TODO: Fill in these commands with the appropriate actions.
-      // You can call cameraControlStateMachine.autoLockRight(), 
-      // cameraControlStateMachine.autoLockLeft(), or cameraControlStateMachine.autoLock()
-      // from your commands if you want to sandwich in vision autolocking after initial
-      // motion profile driving. Once initiated, then in a subsequent command to perform
-      // auto-drive based on vision feedback, use if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.AutoLocked)
-      // conditional to determine if target is locked. Finally, use cameraControlStateMachine.getSelectedTarget() to get information
-      // about target. This function goes to network tables for you and gets the information about the lock on target
-      // as documented here: https://github.com/Team997Coders/2019DSHatchFindingVision/tree/master/CameraVision
-      switch(autonomousOption) {
-        case LeftCargoShip:
-          autonomousCommand = new AutoDoNothing();
-          break;
-        case RightCargoShip:
-          autonomousCommand = new AutoDoNothing();
-          break;
-        case LeftBottomRocket:
-          autonomousCommand = new AutoDoNothing();
-          break;
-        case RightBottomRocket:
-          autonomousCommand = new AutoDoNothing();
-          break;
-        case DoNothing:
-          autonomousCommand = new AutoDoNothing();
-          break;
+      // You can call cameraControlStateMachine.autoLockRight(),
+      // cameraControlStateMachine.autoLockLeft(), or
+      // cameraControlStateMachine.autoLock()
+      // from your commands if you want to sandwich in vision autolocking after
+      // initial
+      // motion profile driving. Once initiated, then in a subsequent command to
+      // perform
+      // auto-drive based on vision feedback, use if
+      // (cameraControlStateMachine.getState() ==
+      // CameraControlStateMachine.State.AutoLocked)
+      // conditional to determine if target is locked. Finally, use
+      // cameraControlStateMachine.getSelectedTarget() to get information
+      // about target. This function goes to network tables for you and gets the
+      // information about the lock on target
+      // as documented here:
+      // https://github.com/Team997Coders/2019DSHatchFindingVision/tree/master/CameraVision
+      switch (autonomousOption) {
+      case LeftCargoShip:
+        autonomousCommand = new AutoDoNothing();
+        break;
+      case RightCargoShip:
+        autonomousCommand = new AutoDoNothing();
+        break;
+      case LeftBottomRocket:
+        autonomousCommand = new AutoDoNothing();
+        break;
+      case RightBottomRocket:
+        autonomousCommand = new AutoDoNothing();
+        break;
+      case DoNothing:
+        autonomousCommand = new AutoDoNothing();
+        break;
       }
     }
     autonomousCommand.start();
@@ -247,7 +270,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    // Set current vision pan/tilt joystick values if Chuck's logitech joystick is plugged in
+    // Set current vision pan/tilt joystick values if Chuck's logitech joystick is
+    // plugged in
     if (logitechVisionOI != null) {
       cameraControlStateMachine.slew(logitechVisionOI.getVisionLeftXAxis(), logitechVisionOI.getVisionLeftYAxis());
     }

@@ -4,18 +4,24 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - ReadJsonTest",
+      "request": "launch",
+      "mainClass": "ReadJsonTest",
+      "projectName": "2019DeepSpace"
+    },
     {
       "type": "wpilib",
       "name": "WPILib Desktop Debug",
       "request": "launch",
-      "desktop": true,
+      "desktop": true
     },
     {
       "type": "wpilib",
       "name": "WPILib roboRIO Debug",
       "request": "launch",
-      "desktop": false,
+      "desktop": false
     },
     {
       "type": "java",
@@ -23,10 +29,9 @@
       "request": "launch",
       "cwd": "${workspaceRoot}",
       "mainClass": "org.junit.runner.JUnitCore",
-      "sourcePaths": ["${workspaceRoot}/src/test/java"]
-    
-
-
+      "sourcePaths": [
+        "${workspaceRoot}/src/test/java"
+      ]
     }
   ]
 }

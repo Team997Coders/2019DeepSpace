@@ -16,6 +16,10 @@ public class ElevatorArmSetpoint extends Command {
   //TODO: Make height represent inches.
   //TODO: Do we need angle guards?
 
+  public ElevatorArmSetpoint() {
+    // TODO: Crab position
+  }
+
   /**
    * Sets the elevator and arm position in one command activity.
    * 
@@ -23,6 +27,11 @@ public class ElevatorArmSetpoint extends Command {
    * @param angle   In degrees with 0 being front horizontal and 180 being back horizontal.
    */
   public ElevatorArmSetpoint(double height, double angle) {
+    this.height = height;
+    this.angle = (RobotMap.ElevatorHeights.armBackParallel - RobotMap.ElevatorHeights.armFrontParallel) * (angle / 180);
+  }
+
+  public void setHeightAndAngle(double height, double angle) {
     this.height = height;
     this.angle = (RobotMap.ElevatorHeights.armBackParallel - RobotMap.ElevatorHeights.armFrontParallel) * (angle / 180);
   }
