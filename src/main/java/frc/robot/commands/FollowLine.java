@@ -23,6 +23,7 @@ public class FollowLine extends Command {
   private final long gracePeriodTimeInMs;
   private long gracePeriodStartTimeInMs;
   private LineDetector lineDetector;
+
   private final LineDetector backLineDetector;
   private final LineDetector frontLineDetector;
   private InfraredRangeFinder infraredRangeFinder;
