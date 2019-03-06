@@ -30,6 +30,7 @@ public class JsonLoader {
   public JsonLoader() throws ParseException, FileNotFoundException, IOException {
       JSONParser parser = new JSONParser();
       
+      // TODO: Use "deploy/ElevatorArmSetpoints.json"
       try (FileReader reader = new FileReader("C:/Users/RED/Local Documents/GitHub/2019DeepSpace/src/main/deploy/ElevatorArmSetpoints.json"))
       {
           // Read JSON file
