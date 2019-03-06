@@ -42,7 +42,8 @@ public class SetButtonBoxElevatorHeight extends Command {
                     setpoint.setHeightAndAngle(Robot.jl.getHeight("FrontBallRocketHigh"), Robot.jl.getAngle("FrontBallRocketHigh"));
                     break;
                   case Medium:
-                    setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 0);
+                    setpoint.setHeightAndAngle(Robot.jl.getHeight("FrontBallRocketMiddle"), Robot.jl.getAngle("FrontBallRocketMiddle"));
+                    //setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 0);
                     break;
                   case Low:
                     setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0);
