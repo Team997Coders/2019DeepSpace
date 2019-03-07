@@ -38,12 +38,12 @@ public class SetButtonBoxElevatorHeight extends Command {
               case Rocket:
                 switch (buttonBox.getPositionState()) {
                   case High:
-                    //setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, 45);
-                    setpoint.setHeightAndAngle(Robot.jl.getHeight("FrontBallRocketHigh"), Robot.jl.getAngle("FrontBallRocketHigh"));
+                    setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, 45);
+                    //setpoint.setHeightAndAngle(Robot.jl.getHeight("FrontBallRocketHigh"), Robot.jl.getAngle("FrontBallRocketHigh"));
                     break;
                   case Medium:
-                    setpoint.setHeightAndAngle(Robot.jl.getHeight("FrontBallRocketMiddle"), Robot.jl.getAngle("FrontBallRocketMiddle"));
-                    //setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 0);
+                    //setpoint.setHeightAndAngle(Robot.jl.getHeight("FrontBallRocketMiddle"), Robot.jl.getAngle("FrontBallRocketMiddle"));
+                    setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 0);
                     break;
                   case Low:
                     setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0);
@@ -136,7 +136,7 @@ public class SetButtonBoxElevatorHeight extends Command {
                 }
                 break;
               case CargoShip:
-                setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, 180);
+                setpoint.setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, 180);
                 break;                
               case None:
                 //TODO: add in case

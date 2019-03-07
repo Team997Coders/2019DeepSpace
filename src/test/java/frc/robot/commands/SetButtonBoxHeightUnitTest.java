@@ -23,26 +23,24 @@ import org.junit.Test;
  * Add your docs here.
  */
 public class SetButtonBoxHeightUnitTest {
-/*
     @Test
     public void itSetsFrontBallRocketHigh(){
         // Assemble
         ButtonBox buttonBox = mock(ButtonBox.class);
-        Elevator elevator = mock(Elevator.class);
+        ElevatorArmSetpoint setpoint = mock(ElevatorArmSetpoint.class);
         when(buttonBox.getPositionState()).thenReturn(ButtonBox.PositionStates.High);
         when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Ball);
         when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
         when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
-        SetButtonBoxElevatorHeight dut = new SetButtonBoxElevatorHeight(elevator, buttonBox);
+        SetButtonBoxElevatorHeight dut = new SetButtonBoxElevatorHeight(buttonBox, setpoint);
         // Act
-        dut.execute();
+        dut.initialize();
         // Assert
-        verify(elevator, times(1)).SetPosition(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight);
+        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, 45d);
     }
-*/
 
     @Test
-    public void itSetsFrontBallRocketMedium(){
+    public void itSetsFrontBallRocketMedium() {
         // Assemble
         ButtonBox buttonBox = mock(ButtonBox.class);
         ElevatorArmSetpoint setpoint = mock(ElevatorArmSetpoint.class);
@@ -88,7 +86,7 @@ public class SetButtonBoxHeightUnitTest {
         when(buttonBox.getPositionState()).thenReturn(ButtonBox.PositionStates.Low);
         when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Ball);
         when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
-        when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
+        when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.CargoShip);
         SetButtonBoxElevatorHeight dut = new SetButtonBoxElevatorHeight(buttonBox, setpoint);
 
         // Act
@@ -125,7 +123,7 @@ public class SetButtonBoxHeightUnitTest {
         ElevatorArmSetpoint setpoint = mock(ElevatorArmSetpoint.class);
 
         when(buttonBox.getPositionState()).thenReturn(ButtonBox.PositionStates.Medium);
-        when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Ball);
+        when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
         when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
         when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
         SetButtonBoxElevatorHeight dut = new SetButtonBoxElevatorHeight(buttonBox, setpoint);
@@ -144,7 +142,7 @@ public class SetButtonBoxHeightUnitTest {
         ElevatorArmSetpoint setpoint = mock(ElevatorArmSetpoint.class);
 
         when(buttonBox.getPositionState()).thenReturn(ButtonBox.PositionStates.Low);
-        when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Ball);
+        when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
         when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
         when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
         SetButtonBoxElevatorHeight dut = new SetButtonBoxElevatorHeight(buttonBox, setpoint);
@@ -163,7 +161,7 @@ public class SetButtonBoxHeightUnitTest {
         ElevatorArmSetpoint setpoint = mock(ElevatorArmSetpoint.class);
 
         when(buttonBox.getPositionState()).thenReturn(ButtonBox.PositionStates.Low);
-        when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Ball);
+        when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
         when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
         when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
         SetButtonBoxElevatorHeight dut = new SetButtonBoxElevatorHeight(buttonBox, setpoint);
@@ -192,7 +190,7 @@ public class SetButtonBoxHeightUnitTest {
         dut.initialize();
 
         // Assert
-        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, 0);
+        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, 180);
     }
 
 
@@ -212,7 +210,7 @@ public class SetButtonBoxHeightUnitTest {
         dut.initialize();
 
         // Assert
-        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight, 0);
+        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight, 180);
     }
 
 
@@ -232,7 +230,7 @@ public class SetButtonBoxHeightUnitTest {
         dut.initialize();
 
         // Assert
-        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, 0);
+        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, 180);
     }
 
     @Test
@@ -251,11 +249,12 @@ public class SetButtonBoxHeightUnitTest {
         dut.initialize();
 
         // Assert
-        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, 0);
+        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, 180);
 
     }
 
     @Test
+    // impossible position
     public void itSetsBackHatchRocketHigh(){
         // Assemble
         ButtonBox buttonBox = mock(ButtonBox.class);
@@ -271,7 +270,7 @@ public class SetButtonBoxHeightUnitTest {
         dut.initialize();
 
         // Assert
-        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackTopHatchHeight, 0);
+        verify(setpoint, times(1)).setHeightAndAngle(0, 180);
     }
 
 
@@ -291,7 +290,7 @@ public class SetButtonBoxHeightUnitTest {
         dut.initialize();
 
         // Assert
-        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackMiddleHatchHeight, 0);
+        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackMiddleHatchHeight, 180);
     }
 
 
@@ -311,12 +310,12 @@ public class SetButtonBoxHeightUnitTest {
         dut.initialize();
 
         // Assert
-        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight, 0);
+        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight, 180);
     }
 
     @Test
-    public void itSetsBackHatchCargoShip(){
-        //Assemble
+    public void itSetsBackHatchCargoShip() {
+        // Assemble
         ButtonBox buttonBox = mock(ButtonBox.class);
         ElevatorArmSetpoint setpoint = mock(ElevatorArmSetpoint.class);
 
@@ -326,11 +325,12 @@ public class SetButtonBoxHeightUnitTest {
         when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.CargoShip);
         SetButtonBoxElevatorHeight dut = new SetButtonBoxElevatorHeight(buttonBox, setpoint);
 
+
         // Act
         dut.initialize();
 
         // Assert
-        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, 100);
+        verify(setpoint, times(1)).setHeightAndAngle(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, 180);
     }
 
 }
