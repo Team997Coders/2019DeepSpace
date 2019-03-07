@@ -30,6 +30,6 @@ public class TurnParallelToTargetUnitTest {
         turnParallelToTarget.execute();
 
         // Assert
-        verify(driveTrain, times(1)).setVolts(.5,-.5);
+        verify(driveTrain, times(1)).setVolts(-0.153, 0.153);
     }
 }
