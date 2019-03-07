@@ -325,7 +325,6 @@ public class SetButtonBoxHeightUnitTest {
         when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.CargoShip);
         SetButtonBoxElevatorHeight dut = new SetButtonBoxElevatorHeight(buttonBox, setpoint);
 
-
         // Act
         dut.initialize();
 
