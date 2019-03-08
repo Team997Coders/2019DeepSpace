@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.AutoDoNothing;
+import frc.robot.commands.PDriveToDistance;
 import frc.robot.subsystems.Logger;
 import frc.robot.buttonbox.ButtonBox;
 import frc.robot.subsystems.Arm;
@@ -128,6 +129,8 @@ public class Robot extends TimedRobot {
     chooser.addOption("Right Cargo Ship", AutonomousOptions.RightCargoShip);
     chooser.addOption("Left Bottom Rocket", AutonomousOptions.LeftBottomRocket);
     chooser.addOption("Right Bottom Rocket", AutonomousOptions.RightBottomRocket);
+    chooser.addOption("Hab 1", AutonomousOptions.DriveOffHab1);
+    chooser.addOption("Hab 2", AutonomousOptions.DriveOffHab2);
     SmartDashboard.putData("Auto mode", chooser);
 
 
@@ -154,7 +157,7 @@ public class Robot extends TimedRobot {
     cameraControlStateMachine.identifyTargets();
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
     arm.Unlock();
-    logger.close();
+    //logger.close();
   }
 
   @Override
@@ -207,6 +210,11 @@ public class Robot extends TimedRobot {
         case DoNothing:
           autonomousCommand = new AutoDoNothing();
           break;
+        case DriveOffHab1:
+          autonomousCommand = new PDriveToDistance(0.4, 4);
+          break;
+        case DriveOffHab2:
+          autonomousCommand = new PDriveToDistance(0.4, 9);
       }
     }
     autonomousCommand.start();
@@ -231,7 +239,7 @@ public class Robot extends TimedRobot {
 
     arm.Lock();
 
-    logger.openFile();
+    //logger.openFile();
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -253,7 +261,7 @@ public class Robot extends TimedRobot {
       cameraControlStateMachine.slew(logitechVisionOI.getVisionLeftXAxis(), logitechVisionOI.getVisionLeftYAxis());
     }
 
-    logger.logAll();
+    //logger.logAll();
   }
 
   @Override
@@ -278,6 +286,8 @@ public class Robot extends TimedRobot {
   }
 
   public enum AutonomousOptions {
-    LeftCargoShip, RightCargoShip, LeftBottomRocket, RightBottomRocket, DoNothing
+    LeftCargoShip, RightCargoShip, LeftBottomRocket,
+    RightBottomRocket, DoNothing, DriveOffHab1,
+    DriveOffHab2
   }
 }

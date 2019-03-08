@@ -42,6 +42,11 @@ public class MoveArm extends Command {
     //   Robot.elevator.SetPower(value);
     // }
 
+    if ((Robot.arm.readEncoder() > RobotMap.ElevatorHeights.armBackParallel) && speed > 0) {
+      speed = 0;
+    } else if ((Robot.arm.readEncoder() < RobotMap.ElevatorHeights.armFrontParallel) && speed < 0) {
+      speed = 0;
+    }
     System.out.println("Moving Arm " + speed);
     Robot.arm.setPower(speed);
   }

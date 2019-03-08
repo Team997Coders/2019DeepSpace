@@ -65,9 +65,9 @@ public class Arm extends Subsystem {
     pidController.setOutputRange(-0.6, 0.6);
 
     frontLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
-    frontLimitSwitch.enableLimitSwitch(true);
+    frontLimitSwitch.enableLimitSwitch(false);
     backLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
-    backLimitSwitch.enableLimitSwitch(true);
+    backLimitSwitch.enableLimitSwitch(false);
 
     dataBus = Robot.armCanifier;
 
@@ -178,6 +178,10 @@ public class Arm extends Subsystem {
   public void initDefaultCommand() {
     //setDefaultCommand(new LockArm());
   }
+
+  /*public double getAngle() {
+    (RobotMap.ElevatorHeights.armBackParallel - RobotMap.ElevatorHeights.armFrontParallel) 
+  }*/
 
   public ArmData getArmData() {
     ArmData a = new ArmData();

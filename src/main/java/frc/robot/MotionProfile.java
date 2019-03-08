@@ -41,6 +41,8 @@ public class MotionProfile {
 	public double right_drive;
 	public double left_drive;
 
+	public boolean stopTrigger = true;
+
   public boolean forwards = true;
 
   /**
@@ -108,12 +110,16 @@ public class MotionProfile {
 	}
 
 	public void startPath() {
+		stopTrigger = false;
 		Robot.driveTrain.resetGyro();
 		m_follower_notifier = new Notifier(this::followPath);
 		m_follower_notifier.startPeriodic(left_trajectory.get(0).dt);
 	}
 
 	public boolean isFinished() {
+
+		if (stopTrigger) { return true; }
+
 		return m_left_follower.isFinished() || m_right_follower.isFinished();
 	}
 
@@ -143,5 +149,9 @@ public class MotionProfile {
       }
     }
 		
+	}
+
+	public void Abort() {
+		stopTrigger = true;
 	}
 }

@@ -25,7 +25,7 @@ public class PathManager {
 
   public Thread[] daemons;
   private int finishedCount = 0;
-  private int daemonCount = 2;
+  private int daemonCount = 1;
 
   public static PathManager getInstance() {
     if (instance == null) {
@@ -42,8 +42,8 @@ public class PathManager {
     pathnames = new LinkedList<String>();
     profiles = new ArrayList<MotionProfile>();
     pathnames.add("Hab1MiddleToShipRight");
-    pathnames.add("ShipRightToLoadingStationRight");
-    //pathnames.add("LoadingStationRightToCargoCenterLeft");
+    //pathnames.add("ShipRightToLoadingStationRight");
+    pathnames.add("LoadingStationRightToCargoCenterLeft");
 
     //daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {
@@ -81,8 +81,13 @@ public class PathManager {
         run = false;
       } else {
         System.out.println(pathname);
-        mp = new MotionProfile(pathname);
-        profiles.add(mp);
+        try {
+          mp = new MotionProfile(pathname);
+          profiles.add(mp);
+        } catch (Exception e) {
+          System.out.println("\n\nLoading profile '" + pathname + "' has failed.'\n\n");
+          e.printStackTrace();
+        }
       }
     }
 
