@@ -17,6 +17,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
 import frc.robot.data.ArmData;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.buttonbox.ButtonBox.ScoringDirectionStates;
 /**
  * Add your docs here.
  */
@@ -85,12 +87,12 @@ public class Arm extends Subsystem {
   }
   
 
-  public boolean getArmSide(){
+  public ScoringDirectionStates getArmSide(){
     if(readEncoder() < RobotMap.Values.armEncoderCenter){
-      return true; // arm on the front of the robot
+      return ScoringDirectionStates.Front;
     }
     else{
-      return false;
+      return ScoringDirectionStates.Back;
     }
 
   }
@@ -106,7 +108,7 @@ public class Arm extends Subsystem {
 
   public void SetPostion(double setpoint){
     releaseBrake();
-    System.out.println("Set position to " + setpoint);
+    //System.out.println("Set position to " + setpoint);
     pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
     UpdateF();
   }

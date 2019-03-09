@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.buttonbox.ButtonBox.ScoringDirectionStates;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -16,16 +17,16 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ScoreGamePiece extends Command {
   private boolean gamePieceType; // True = hatch | false = cargo
-  private boolean scoringSide; // back = true | front = false
+  private ScoringDirectionStates scoringSide; // back = true | front = false
   private int elevatorHeight; // height in ticks, scoringHeightLogic should take care of actually getting this.
   private int tolerance= 10;
   
-  public ScoreGamePiece(boolean gamePieceType,boolean scoringSide, int elevatorHeight) {
+  public ScoreGamePiece(boolean gamePieceType, ScoringDirectionStates scoringSide, int elevatorHeight) {
     requires(Robot.arm);
     requires(Robot.elevator);
     this.elevatorHeight = elevatorHeight;
     this.gamePieceType = gamePieceType;
-    this.scoringSide= scoringSide;
+    this.scoringSide = scoringSide;
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -40,7 +41,7 @@ public class ScoreGamePiece extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (scoringSide == true) {
+    if (scoringSide == ScoringDirectionStates.Front) {
       Robot.arm.SetPostion(RobotMap.Values.armBackLimit);
     } else {
       Robot.arm.SetPostion(RobotMap.Values.armFrontLimit);

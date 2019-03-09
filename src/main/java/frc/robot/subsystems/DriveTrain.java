@@ -62,9 +62,13 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetGyro() {
-    gyro.reset();
+    if (gyro != null) {
+      gyro.reset();
     init_angle = gyro.getAngle();
-    gyro.zeroYaw();
+      gyro.zeroYaw();
+    } else {
+      //programmer.sadness()
+    }
   }
 
   /**
@@ -79,8 +83,6 @@ public class DriveTrain extends Subsystem {
       GearBox rightBox, 
       AHRS gyro,
       NetworkTable smartDashboardNetworkTable) {
-
-    System.out.println("Starting Drivetrain...");
 
     // Grab the objects created by the RoboMisc function and store them in this class
     leftTalon = leftBox.talon;
@@ -99,7 +101,8 @@ public class DriveTrain extends Subsystem {
         init_angle = this.gyro.getAngle();
         gyropresent = true;
       } catch (RuntimeException e) {
-        System.out.println("DT- Im been a bad Gyro daddy uwu");
+        System.out.println("DT- The gyro broke.");
+        gyro = null;
       }
     } else {
       this.gyro = gyro;
@@ -136,7 +139,6 @@ public class DriveTrain extends Subsystem {
    */
   public void stopVolts() {
     // Set Motor Volts to 0
-    // System.out.println("Stop Volts Called");
     leftTalon.set(ControlMode.PercentOutput, 0);
     rightTalon.set(ControlMode.PercentOutput, 0);
   }
@@ -225,7 +227,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getHeading() {
-		if (gyropresent) {
+		if (gyro != null) {
 			return( gyro.getAngle() - init_angle );
 		} else {
 			return 0.0;

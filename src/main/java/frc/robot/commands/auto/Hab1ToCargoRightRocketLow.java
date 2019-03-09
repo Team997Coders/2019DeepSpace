@@ -16,7 +16,7 @@ public class Hab1ToCargoRightRocketLow extends CommandGroup {
    * Flips arm to the front and set elevator height to FrontBottomCargo
    */
   public Hab1ToCargoRightRocketLow() {
-    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0), 15);
+    //addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0), 15);
     addSequential(new FollowPath("Hab1ToCargoRocketRight"), 15);
     // Add Commands here:
     // e.g. addSequential(new Command1());

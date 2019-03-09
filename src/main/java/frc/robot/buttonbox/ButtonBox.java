@@ -267,8 +267,8 @@ public class ButtonBox {
    */
   private void setStartupState() {
     scoringDirectionState = ScoringDirectionStates.Back;
-    scoringArtifactState = ScoringArtifactStates.None;
-    scoringDestinationState = ScoringDestinationStates.None;
+    scoringArtifactState = ScoringArtifactStates.Hatch;
+    scoringDestinationState = ScoringDestinationStates.CargoShip;
     positionState = PositionStates.None;
     intakeState = false;
   }

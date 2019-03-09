@@ -149,6 +149,7 @@ public class FollowLine extends Command {
   }
 
   protected boolean isCloseToTarget() {
+    try {
     if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
       if (buttonBox.getScoringDestinationState() == ButtonBox.ScoringDestinationStates.Rocket) {
         if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Hatch) {
@@ -191,6 +192,10 @@ public class FollowLine extends Command {
       }
     } else {
       throw new RuntimeException("Scoring direction is unknown or must be set.");
+    }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return true;
     }
   }
 

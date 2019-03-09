@@ -11,6 +11,7 @@ import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -20,6 +21,7 @@ import frc.robot.RobotMap;
 public class MoveArm extends Command {
 
   double speed;
+  double moveSpeed = 0;
   //public double value;
   //public double position;
 
@@ -35,6 +37,7 @@ public class MoveArm extends Command {
   }
 
   protected void execute() {
+    
     // if (Robot.arm.readEncoder() >= RobotMap.Values.armBackLimit && value > 0) {
     //   Scheduler.getInstance().add(new LockArm());
     // } else {
@@ -43,12 +46,14 @@ public class MoveArm extends Command {
     // }
 
     if ((Robot.arm.readEncoder() > RobotMap.ElevatorHeights.armBackParallel) && speed > 0) {
-      speed = 0;
+      moveSpeed = 0;
     } else if ((Robot.arm.readEncoder() < RobotMap.ElevatorHeights.armFrontParallel) && speed < 0) {
-      speed = 0;
+      moveSpeed = 0;
+    } else {
+      moveSpeed = speed;
     }
-    System.out.println("Moving Arm " + speed);
-    Robot.arm.setPower(speed);
+    SmartDashboard.putNumber("Arm speed", moveSpeed);
+    Robot.arm.setPower(moveSpeed);
   }
 
   protected boolean isFinished() {
@@ -58,6 +63,7 @@ public class MoveArm extends Command {
   protected void end() {
     Robot.arm.engageBrake();
     Robot.arm.setPower(0);
+    Scheduler.getInstance().add(new LockArm());
     //Robot.arm.SetPostion(Robot.arm.readEncoder());
   }
 

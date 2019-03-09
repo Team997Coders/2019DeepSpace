@@ -26,7 +26,7 @@ import frc.robot.vision.commands.PressX;
 
 public class ButtonBoxOI {
 
-  Joystick buttonBoxJoystick;
+  /*Joystick buttonBoxJoystick;
 
   private JoystickButton activate;
   private JoystickButton backDirection;
@@ -45,7 +45,7 @@ public class ButtonBoxOI {
   private JoystickButton visionX;
   private POVButton visionLeft;
   private POVButton visionCenter;
-  private POVButton visionRight;
+  private POVButton visionRight;*/
 
   /**
    * Default constructor which maps joystick id to RobotMap
@@ -69,9 +69,9 @@ public class ButtonBoxOI {
    */
   public ButtonBoxOI(int joystickId) {
     // Instantiate joystick
-    buttonBoxJoystick = new Joystick(joystickId);
+    //buttonBoxJoystick = new Joystick(joystickId);
 
-    Robot.buttonBox.whenActivateClicked(new SetButtonBoxElevatorHeight());
+    /*Robot.buttonBox.whenActivateClicked(new SetButtonBoxElevatorHeight());
     Robot.buttonBox.whenVisionAClicked(new PressA());
     Robot.buttonBox.whenVisionBClicked(new PressB());
     Robot.buttonBox.whenVisionXClicked(new PressX());
@@ -131,7 +131,7 @@ public class ButtonBoxOI {
     visionCenter.whenPressed(new VisionCenter());
 
     visionRight = new POVButton(buttonBoxJoystick, RobotMap.Buttons.ButtonBox.rightJoystickHatAngle);
-    visionRight.whileHeld(new VisionRight());
+    visionRight.whileHeld(new VisionRight());*/
   }
 
   // KEEP THESE COMMENTS

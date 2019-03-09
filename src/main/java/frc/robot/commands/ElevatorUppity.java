@@ -8,6 +8,7 @@
 package frc.robot.commands;
 import frc.robot.subsystems.Elevator;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -21,13 +22,12 @@ public class ElevatorUppity extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("initialized elevator up-ing");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.SetPower(.5);
+    Robot.elevator.SetPower(.3);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -39,8 +39,8 @@ public class ElevatorUppity extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    System.out.println("ended elevator up-ing");
     Robot.elevator.SetPosition(Robot.elevator.GetPosition());
+    Scheduler.getInstance().add(new LockElevator());
   }
 
   // Called when another command which requires one or more of the same

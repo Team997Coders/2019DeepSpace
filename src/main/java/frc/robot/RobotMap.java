@@ -69,8 +69,8 @@ public class RobotMap {
       buttonRightShoulder = 6,      // TODO: Need to check this
       buttonLeftThumbstick = 9,     // TODO: Need to check this
       buttonRightThumbstick = 10,    // TODO: Need to check this
-      buttonLeftTrigger = 9,        // TODO: Need to check this
-      buttonRightTrigger = 10,      // TODO: Need to check this
+      buttonRightTrigger = 9,        // TODO: Need to check this
+      buttonLeftTrigger = 10,      // TODO: Need to check this
       buttonBack = 7,
       buttonStart = 8,
 
@@ -192,15 +192,15 @@ public class RobotMap {
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
-      armEncoderCenter= 9002,//another place holder
-      armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
-      armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
+      armEncoderCenter= 462,//another place holder
+      armFrontLimit = 195, //encoder ticks @ the front limit. placeholder.
+      armBackLimit = 702, //encoder ticks @ the back limit. placeholder.
 
-      armPidP = 0.0008,
+      armPidP = 0.0006,
       armPidI = 0,
       armPidD = 0,
       armPidK = 0,
-      armMaxPidF = 0.00, // 0.0055
+      armMaxPidF = 0.0055, // 0.0055
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit)),
 
       // Camera values
@@ -255,9 +255,9 @@ public class RobotMap {
       
       elevatorSafeFlipHeight = 23000,
 
-      armBackParallel = 660,
-      armFrontParallel = 150,
-      armVertical = 415;
+      armBackParallel = 702,
+      armFrontParallel = 195,
+      armVertical = 462;
 
       public static int[]
       elevatorFrontHatchHeightArray = {

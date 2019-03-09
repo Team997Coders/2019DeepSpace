@@ -24,10 +24,10 @@ public class OI {
   public JoystickButton ArmForward;
   public JoystickButton ArmReverse;
 
-  private JoystickTrigger deployLandingGear;
+  private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton toggleHatch;
-  private JoystickTrigger followLine;
+  private JoystickButton followLine;
   private JoystickButton autoDriveToTarget;
 
   public OI() {
@@ -48,14 +48,14 @@ public class OI {
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ToggleHatch());
 
-    deployLandingGear = new JoystickTrigger(gamepad1, RobotMap.Buttons.buttonLeftTrigger);
+    deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
 
     driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
     driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
     
-    followLine = new JoystickTrigger(gamepad1, RobotMap.Buttons.buttonRightTrigger);
-    followLine.whenPressed(new FollowLineAndDeliverHatch());
+    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    followLine.whenPressed(new FollowLine(1000));
 
     // buttonStart is spare
 
@@ -68,26 +68,26 @@ public class OI {
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
 
     ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
-    ArmReverse.whileHeld(new MoveArm(-0.5));
-    ArmReverse.whenInactive(new LockArm());
+    ArmReverse.whileHeld(new MoveArm(0.5));
+    //ArmReverse.whenInactive(new LockArm());
 
     ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
-    ArmForward.whileHeld(new MoveArm(0.5));
-    ArmForward.whenInactive(new LockArm());
+    ArmForward.whileHeld(new MoveArm(-0.5));
+    //ArmForward.whenInactive(new LockArm());
 
     /* Adding Setpoint buttons for testing */
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     elevatorGoUp.whileHeld(new ElevatorUppity());
-    elevatorGoUp.whenInactive(new LockElevator());
+    //elevatorGoUp.whenInactive(new LockElevator());
 
-    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoDown.whileHeld(new ElevatorDownity());
-    elevatorGoDown.whenInactive(new LockElevator());      
+    //elevatorGoDown.whenInactive(new LockElevator());      
     
-    ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballIntake.whileHeld(new BallIntake());
 
-    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
     ballOutake.whileHeld(new BallOuttake());
 
     //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
