@@ -155,7 +155,7 @@ public class Robot extends TimedRobot {
     kDeltaTime = (System.currentTimeMillis() - lastTime) / 1000;
     lastTime = System.currentTimeMillis();
 
-    updateSmartDashboard();
+    //updateSmartDashboard();
   }
 
   @Override
