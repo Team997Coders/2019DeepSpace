@@ -30,7 +30,7 @@ public class FollowPath extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    path = PathManager.getInstance().getProfile(_pathName);
+    path = Robot.p;//PathManager.getInstance().getProfile(_pathName);
     path.setFollowDirection(a);
     path.startPath();
   }
@@ -38,7 +38,7 @@ public class FollowPath extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //path.followPath();
+    path.followPath();
   }
 
   // Make this return true when this Command no longer needs to run execute()

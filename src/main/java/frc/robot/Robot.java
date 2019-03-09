@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.AutoDoNothing;
+import frc.robot.commands.FollowPath;
 import frc.robot.subsystems.Logger;
 import frc.robot.buttonbox.ButtonBox;
 import frc.robot.subsystems.Arm;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
 import frc.robot.vision.CameraControlStateMachine;
 import frc.robot.commands.auto.autofullpaths.*;
+import frc.robot.commands.auto.autoPathParts.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -63,6 +65,8 @@ public class Robot extends TimedRobot {
   public static CANifier armCanifier;
   public static CANifier elevatorCanifier;
 
+  public static MotionProfile p;
+
   public static ButtonBox buttonBox;
   public static OI oi;
   public static ButtonBoxOI bb;
@@ -87,9 +91,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     driveTrain = new DriveTrain();
+    
+    p = new MotionProfile("bigboi");
 
     //motionProfile = MotionProfile.getInstance();
-    pathManager = PathManager.getInstance();
+    //pathManager = PathManager.getInstance();
 
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
@@ -128,10 +134,12 @@ public class Robot extends TimedRobot {
     pdp.clearStickyFaults();
 
     chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
-    chooser.addOption("RightHab1_2HatchRocket", new Hab1Right_RocketHatchRight_LoadingStation_RocketHatchRight());
-    chooser.addOption("MiddleHab1_2HatchCargoShip", new Hab1Center_CargoShipHatch_LoadingStation_CargoShipHatch());
-    chooser.addOption("RightHab1_Rocket_Test", new Hab1Right_NoElevator());
-    chooser.addOption("CenterHab1_CargoShip_Test", new Hab1Center_CargoShip_NoElevator());
+    //chooser.addOption("RightHab1_2HatchRocket", new Hab1Right_RocketHatchRight_LoadingStation_RocketHatchRight());
+    //chooser.addOption("MiddleHab1_2HatchCargoShip", new Hab1Center_CargoShipHatch_LoadingStation_CargoShipHatch());
+    //chooser.addOption("RightHab1_Rocket_Test", new Hab1Right_NoElevator());
+    //chooser.addOption("CenterHab1_CargoShip_Test", new Hab1Center_CargoShip_NoElevator());
+    chooser.addOption("MotionProfile", new Hab1MiddleBack_CenterCargoShipHatchRightFront());
+    chooser.addOption("Profile Test", new FollowPath("hek yoyu", true));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
 
