@@ -43,6 +43,9 @@ import edu.wpi.first.wpilibj.Watchdog;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  public static final boolean DEBUG = false;
+
   public static Arm arm;
  // public StaticDeoptimizingNode;               
   public static Elevator elevator;
@@ -155,7 +158,10 @@ public class Robot extends TimedRobot {
     kDeltaTime = (System.currentTimeMillis() - lastTime) / 1000;
     lastTime = System.currentTimeMillis();
 
-    //updateSmartDashboard();
+    if (DEBUG)
+      updateSmartDashboard();
+    else
+      updateSmartDashboardRequired();
   }
 
   @Override
@@ -291,6 +297,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Delta Time", kDeltaTime);
     SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().loaded);
   }
+
+  public void updateSmartDashboardRequired() { }
 
   public enum AutonomousOptions {
     LeftCargoShip, RightCargoShip, LeftBottomRocket,
