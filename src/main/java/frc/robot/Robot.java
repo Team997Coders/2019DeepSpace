@@ -298,7 +298,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().loaded);
   }
 
-  public void updateSmartDashboardRequired() { }
+  public void updateSmartDashboardRequired() {
+    SmartDashboard.putNumber("Delta Time", kDeltaTime);
+  }
 
   public enum AutonomousOptions {
     LeftCargoShip, RightCargoShip, LeftBottomRocket,
