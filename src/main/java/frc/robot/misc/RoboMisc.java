@@ -58,6 +58,10 @@ public class RoboMisc {
 
     new SensorCollection(a);
 
+    a.setSafetyEnabled(false);
+    b.setSafetyEnabled(false);
+    c.setSafetyEnabled(false);
+
     return new GearBox(a, b, c);
   }
 
