@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ButtonBoxUnitTest {
@@ -39,6 +38,7 @@ public class ButtonBoxUnitTest {
   public void itSetsScoringDestinationStateToRocketWhenClicked() {
     // Assemble
     ButtonBox console = new ButtonBox();
+    console.clickScoringDirectionFrontButton();
 
     // Act
     console.clickScoringDestinationRocketButton();
@@ -87,6 +87,8 @@ public class ButtonBoxUnitTest {
   public void itSetsPositionToHighWhenClicked() {
     // Assemble
     ButtonBox console = new ButtonBox();
+    console.clickScoringDirectionFrontButton();
+    console.clickScoringDestinationRocketButton();
 
     // Act
     console.clickHighPositionButton();
@@ -99,6 +101,8 @@ public class ButtonBoxUnitTest {
   public void itSetsPositionToMeduimWhenClicked() {
     // Assemble
     ButtonBox console = new ButtonBox();
+    console.clickScoringDirectionFrontButton();
+    console.clickScoringDestinationRocketButton();
 
     // Act
     console.clickMediumPositionButton();
@@ -111,6 +115,8 @@ public class ButtonBoxUnitTest {
   public void itSetsPositionToLowWhenClicked() {
     // Assemble
     ButtonBox console = new ButtonBox();
+    console.clickScoringDirectionFrontButton();
+    console.clickScoringDestinationRocketButton();
 
     // Act
     console.clickLowPositionButton();
@@ -191,8 +197,8 @@ public class ButtonBoxUnitTest {
 
     // Assert
     assertEquals(ButtonBox.ScoringDirectionStates.Back, console.getScoringDirectionState());
-    assertEquals(ButtonBox.ScoringDestinationStates.None, console.getScoringDestinationState());
-    assertEquals(ButtonBox.ScoringArtifactStates.None, console.getScoringArtifactState());
+    assertEquals(ButtonBox.ScoringDestinationStates.CargoShip, console.getScoringDestinationState());
+    assertEquals(ButtonBox.ScoringArtifactStates.Hatch, console.getScoringArtifactState());
     assertEquals(ButtonBox.PositionStates.None, console.getPositionState());
     assertEquals(false, console.getIntakeState());
   }
