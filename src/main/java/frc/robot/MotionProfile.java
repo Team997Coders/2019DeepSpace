@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import java.io.File;
 import java.io.IOException;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -92,8 +93,11 @@ public class MotionProfile {
 		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right"); // FIX:  See screensteps documentation*/
 
     // MARK: Screensteps fix
-		left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
-    right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+		//left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
+    //right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+
+    left_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/paths/" + Pathname + ".right.pf1.csv"));
+    right_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/paths/" + Pathname + ".left.pf1.csv"));
 
 		m_left_follower = new EncoderFollower(left_trajectory);
 		m_right_follower = new EncoderFollower(right_trajectory);
