@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.AutoDoNothing;
 import frc.robot.commands.PDriveToDistance;
+import frc.robot.commands.auto.Hab1ToCargoRightRocketLow;
 //import frc.robot.subsystems.Logger;
 import frc.robot.buttonbox.ButtonBox;
 import frc.robot.subsystems.Arm;
@@ -95,18 +96,18 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    armCanifier = new CANifier(RobotMap.Ports.armCanifier);
-    elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
-    arm = new Arm();
-    ballManipulator = new BallManipulator();
+    //armCanifier = new CANifier(RobotMap.Ports.armCanifier);
+    //elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
+    //arm = new Arm();
+    //ballManipulator = new BallManipulator();
     //pdp = new PowerDistributionPanel();
-    hatchManipulator = new HatchManipulator();
-    elevator = new Elevator();
+    //hatchManipulator = new HatchManipulator();
+    //elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
     //backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
-    backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
+    /*backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,
       ButtonBox.ScoringDirectionStates.Back);
@@ -116,7 +117,7 @@ public class Robot extends TimedRobot {
       ButtonBox.ScoringDirectionStates.Front);
     backInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.backInfraredSensor, ButtonBox.ScoringDirectionStates.Back);
     frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor, ButtonBox.ScoringDirectionStates.Front);
-
+    */
     //networkTableInstance = NetworkTableInstance.getDefault();
     //visionNetworkTable = networkTableInstance.getTable("Vision");
     //cameraControlStateMachine = new CameraControlStateMachine();
@@ -168,14 +169,14 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     //cameraControlStateMachine.identifyTargets();
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
-    arm.Unlock();
+    //arm.Unlock();
     //logger.close();
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
-    elevator.ZeroElevator();
+    //elevator.ZeroElevator();
   }
 
   @Override
@@ -230,7 +231,9 @@ public class Robot extends TimedRobot {
           autonomousCommand = new PDriveToDistance(0.4, 9);
       }
     }
-    autonomousCommand.start();
+    //autonomousCommand.start();
+
+    Scheduler.getInstance().add(new Hab1ToCargoRightRocketLow());
   }
 
   @Override
@@ -250,7 +253,7 @@ public class Robot extends TimedRobot {
 
     System.out.println("---------------------");
 
-    arm.Lock();
+    //arm.Lock();
 
     //logger.openFile();
 
@@ -282,17 +285,17 @@ public class Robot extends TimedRobot {
   }
 
   public void updateSmartDashboard() {
-    liftGear.updateSmartDashboard();
+    //liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
     //frontCameraMount.updateSmartDashboard();
     //backCameraMount.updateSmartDashboard();
-    arm.updateSmartDashboard();
-    elevator.updateSmartDashboard();
-    frontLineDetector.updateSmartDashboard();
-    backLineDetector.updateSmartDashboard();
-    frontInfraredRangeFinder.updateSmartDashboard();
-    backInfraredRangeFinder.updateSmartDashboard();
-    buttonBox.updateSmartDashboard();
+    //arm.updateSmartDashboard();
+    //elevator.updateSmartDashboard();
+    //frontLineDetector.updateSmartDashboard();
+    //backLineDetector.updateSmartDashboard();
+    //frontInfraredRangeFinder.updateSmartDashboard();
+    //backInfraredRangeFinder.updateSmartDashboard();
+    //buttonBox.updateSmartDashboard();
 
     SmartDashboard.putNumber("Delta Time", kDeltaTime);
     SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().loaded);
