@@ -49,7 +49,7 @@ public class FollowLine extends Command {
 
   public FollowLine(
       LineDetector frontLineDetector, 
-      LineDetector backLineDetector, 
+      //LineDetector backLineDetector, 
       InfraredRangeFinder frontInfraredRangeFinder,
       InfraredRangeFinder backInfraredRangeFinder,
       DriveTrain driveTrain, 

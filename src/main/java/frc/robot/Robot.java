@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
   //public static Logger logger;
   //public static PowerDistributionPanel pdp;
   public static LineDetector frontLineDetector;
-  public static LineDetector backLineDetector;
+  //public static LineDetector backLineDetector;
   public static InfraredRangeFinder frontInfraredRangeFinder;
   public static InfraredRangeFinder backInfraredRangeFinder;
   public static CANifier armCanifier;
@@ -106,15 +106,17 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain();
     //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
     //backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
-    backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
+    /*
+      backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,
       ButtonBox.ScoringDirectionStates.Back);
+    */
     frontLineDetector = new LineDetector(RobotMap.Ports.lineSensorFrontLeft, 
       RobotMap.Ports.lineSensorFrontCenter, 
       RobotMap.Ports.lineSensorFrontRight, 
-      ButtonBox.ScoringDirectionStates.Front);
-    backInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.backInfraredSensor, ButtonBox.ScoringDirectionStates.Back);
+      //ButtonBox.ScoringDirectionStates.Front);
+    //backInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.backInfraredSensor, ButtonBox.ScoringDirectionStates.Back);
     frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor, ButtonBox.ScoringDirectionStates.Front);
 
     //networkTableInstance = NetworkTableInstance.getDefault();

@@ -19,10 +19,12 @@ public class LineDetector extends Subsystem {
   private final DigitalInput m_sensorLeftInput;
   private final DigitalInput m_sensorRightInput;
   private final DigitalInput m_sensorCenterInput;
-  private final ButtonBox.ScoringDirectionStates scoringDirection;
+  //private final ButtonBox.ScoringDirectionStates scoringDirection;
 
-  public LineDetector(int leftPort, int centerPort, int rightPort, ButtonBox.ScoringDirectionStates scoringDirection) {
-    this.scoringDirection = scoringDirection;
+  public LineDetector(int leftPort, int centerPort, int rightPort
+  // ButtonBox.ScoringDirectionStates scoringDirection
+   ) {
+    //this.scoringDirection = scoringDirection;
     m_sensorLeftInput = new DigitalInput(leftPort);
     m_sensorRightInput = new DigitalInput(rightPort);
     m_sensorCenterInput = new DigitalInput(centerPort);
@@ -93,9 +95,15 @@ public class LineDetector extends Subsystem {
   }
 
   public void updateSmartDashboard(){
-    SmartDashboard.putBoolean(String.format("%s left line seen", scoringDirection.toString()), leftLineSeen());
-    SmartDashboard.putBoolean(String.format("%s right line seen", scoringDirection.toString()), rightLineSeen());
-    SmartDashboard.putBoolean(String.format("%s center line seen", scoringDirection.toString()), centerLineSeen());
+    SmartDashboard.putBoolean(String.format("%s left line seen", 
+    //scoringDirection.toString()
+    ), leftLineSeen());
+    SmartDashboard.putBoolean(String.format("%s right line seen",
+    // scoringDirection.toString()
+     ), rightLineSeen());
+    SmartDashboard.putBoolean(String.format("%s center line seen", 
+   // scoringDirection.toString()
+    ), centerLineSeen());
   }
 
   @Override
