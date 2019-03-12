@@ -95,15 +95,16 @@ public class LineDetector extends Subsystem {
   }
 
   public void updateSmartDashboard(){
-    SmartDashboard.putBoolean(String.format("%s left line seen", 
+    SmartDashboard.putBoolean(String.format("%s left line seen") 
     //scoringDirection.toString()
-    ), leftLineSeen());
-    SmartDashboard.putBoolean(String.format("%s right line seen",
+    , leftLineSeen());
+    SmartDashboard.putBoolean(String.format("%s right line seen")
     // scoringDirection.toString()
-     ), rightLineSeen());
-    SmartDashboard.putBoolean(String.format("%s center line seen", 
+
+    , rightLineSeen());
+    SmartDashboard.putBoolean(String.format("%s center line seen") 
    // scoringDirection.toString()
-    ), centerLineSeen());
+   , centerLineSeen());
   }
 
   @Override
