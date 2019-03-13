@@ -114,7 +114,7 @@ public class Robot extends TimedRobot {
     */
     frontLineDetector = new LineDetector(RobotMap.Ports.lineSensorFrontLeft, 
       RobotMap.Ports.lineSensorFrontCenter, 
-      RobotMap.Ports.lineSensorFrontRight, 
+      RobotMap.Ports.lineSensorFrontRight); 
       //ButtonBox.ScoringDirectionStates.Front);
     //backInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.backInfraredSensor, ButtonBox.ScoringDirectionStates.Back);
     frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor, ButtonBox.ScoringDirectionStates.Front);
@@ -291,7 +291,7 @@ public class Robot extends TimedRobot {
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
     frontLineDetector.updateSmartDashboard();
-    backLineDetector.updateSmartDashboard();
+   // backLineDetector.updateSmartDashboard();
     frontInfraredRangeFinder.updateSmartDashboard();
     backInfraredRangeFinder.updateSmartDashboard();
     buttonBox.updateSmartDashboard();

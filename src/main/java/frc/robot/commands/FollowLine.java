@@ -24,7 +24,7 @@ public class FollowLine extends Command {
   private long gracePeriodStartTimeInMs;
   private LineDetector lineDetector;
 
-  private final LineDetector backLineDetector;
+  //private final LineDetector backLineDetector;
   private final LineDetector frontLineDetector;
   private InfraredRangeFinder infraredRangeFinder;
   private final InfraredRangeFinder backInfraredRangeFinder;
@@ -39,13 +39,16 @@ public class FollowLine extends Command {
 
   public FollowLine(long gracePeriodTimeInMs) {    
     this(Robot.frontLineDetector, 
-      Robot.backLineDetector, 
+     // Robot.backLineDetector, 
       Robot.frontInfraredRangeFinder,
       Robot.backInfraredRangeFinder,
       Robot.driveTrain, 
       gracePeriodTimeInMs, 
       Robot.buttonBox);
   }
+
+ 
+
 
   public FollowLine(
       LineDetector frontLineDetector, 
@@ -63,13 +66,13 @@ public class FollowLine extends Command {
     this.frontInfraredRangeFinder = frontInfraredRangeFinder;
     this.backInfraredRangeFinder = backInfraredRangeFinder;
     this.frontLineDetector = frontLineDetector;
-    this.backLineDetector = backLineDetector;
+  //  this.backLineDetector = backLineDetector;
 
     // Require subsystems
     requires(frontInfraredRangeFinder);
     requires(backInfraredRangeFinder);
     requires(frontLineDetector);
-    requires(backLineDetector);
+  //  requires(backLineDetector);
     requires(driveTrain);
   }
 
@@ -92,6 +95,7 @@ public class FollowLine extends Command {
     }
     
     // Set up appropriate sensors based on our current scoring direction
+    /*
     if(buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
       lineDetector = backLineDetector;
       infraredRangeFinder = backInfraredRangeFinder;
@@ -99,6 +103,7 @@ public class FollowLine extends Command {
       lineDetector = frontLineDetector;
       infraredRangeFinder = frontInfraredRangeFinder;
     }
+    */
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -149,7 +154,7 @@ public class FollowLine extends Command {
   }
 
   protected boolean isCloseToTarget() {
-    try {
+    try {/*
     if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Back) {
       if (buttonBox.getScoringDestinationState() == ButtonBox.ScoringDestinationStates.Rocket) {
         if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Hatch) {
@@ -170,7 +175,8 @@ public class FollowLine extends Command {
       } else {
         throw new RuntimeException("Scoring destination is unknown or must be set.");
       }
-    } else if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front) {
+    }*/
+    if (buttonBox.getScoringDirectionState() == ButtonBox.ScoringDirectionStates.Front) {
       if (buttonBox.getScoringDestinationState() == ButtonBox.ScoringDestinationStates.Rocket) {
         if (buttonBox.getScoringArtifactState() == ButtonBox.ScoringArtifactStates.Hatch) {
           return (infraredRangeFinder.getRawValue() > RobotMap.Values.frontInfraredSensorHatchRocket);

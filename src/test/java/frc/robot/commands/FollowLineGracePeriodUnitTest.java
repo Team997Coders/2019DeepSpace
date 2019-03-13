@@ -47,7 +47,7 @@ public class FollowLineGracePeriodUnitTest {
 	// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -72,7 +72,7 @@ public class FollowLineGracePeriodUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -99,7 +99,7 @@ public class FollowLineGracePeriodUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -123,7 +123,7 @@ public class FollowLineGracePeriodUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
