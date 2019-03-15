@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 
 /**
@@ -135,6 +136,9 @@ public class OI {
   }
 
   public void manualConfig() {
+
+    SmartDashboard.putString("Controller Config", "Manual");
+
     //probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     probCargo.whenPressed(new AutoDoNothing());
 
@@ -153,6 +157,9 @@ public class OI {
   }
 
   public void cargoFrontConfig() {
+
+    SmartDashboard.putString("Controller Config", "Cargo Front");
+
     //probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     probCargo.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, RobotMap.ElevatorHeights.armFrontParallel));
 
@@ -171,6 +178,9 @@ public class OI {
   }
 
   public void cargoBackConfig() {
+
+    SmartDashboard.putString("Controller Config", "Cargo Back");
+
     //probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     probCargo.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, RobotMap.ElevatorHeights.armBackParallel));
 
@@ -189,6 +199,9 @@ public class OI {
   }
 
   public void hatchFrontConfig() {
+
+    SmartDashboard.putString("Controller Config", "Hatch Front");
+
     //probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     probCargo.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, RobotMap.ElevatorHeights.armFrontParallel));
 
@@ -207,6 +220,9 @@ public class OI {
   }
 
   public void hatchBackConfig() {
+
+    SmartDashboard.putString("Controller Config", "Hatch Back");
+
     //probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     probCargo.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, RobotMap.ElevatorHeights.armBackParallel));
 
