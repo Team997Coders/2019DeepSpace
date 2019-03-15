@@ -39,7 +39,7 @@ public class FollowLine extends Command {
 
   public FollowLine(long gracePeriodTimeInMs) {    
     this(Robot.frontLineDetector, 
-      Robot.backLineDetector, 
+      //Robot.backLineDetector, 
       Robot.frontInfraredRangeFinder,
       Robot.backInfraredRangeFinder,
       Robot.driveTrain, 
@@ -63,13 +63,13 @@ public class FollowLine extends Command {
     this.frontInfraredRangeFinder = frontInfraredRangeFinder;
     this.backInfraredRangeFinder = backInfraredRangeFinder;
     this.frontLineDetector = frontLineDetector;
-    this.backLineDetector = backLineDetector;
+    //this.backLineDetector = backLineDetector;
 
     // Require subsystems
     requires(frontInfraredRangeFinder);
     requires(backInfraredRangeFinder);
     requires(frontLineDetector);
-    requires(backLineDetector);
+    //requires(backLineDetector);
     requires(driveTrain);
   }
 

@@ -43,7 +43,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+			//backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -71,7 +71,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -99,7 +99,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -127,7 +127,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+			//backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -155,7 +155,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -183,7 +183,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -211,7 +211,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -237,7 +237,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -263,7 +263,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -289,7 +289,7 @@ public class FollowLineSensorReactionUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 

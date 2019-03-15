@@ -31,7 +31,7 @@ public class FollowLineCloseToTargetUnitTest {
 	@Before
 	public void initializeMocks() {
 		frontLineDetector = mock(LineDetector.class);
-		backLineDetector = mock(LineDetector.class);
+	//	backLineDetector = mock(LineDetector.class);
 		frontInfraredRangeFinder = mock(InfraredRangeFinder.class);
 		backInfraredRangeFinder = mock(InfraredRangeFinder.class);
     driveTrain = mock(DriveTrain.class);
@@ -46,7 +46,7 @@ public class FollowLineCloseToTargetUnitTest {
 	  // Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 
@@ -66,7 +66,7 @@ public class FollowLineCloseToTargetUnitTest {
 	// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
+		//	backLineDetector, 
 			frontInfraredRangeFinder, 
 			backInfraredRangeFinder, 
 			driveTrain, 

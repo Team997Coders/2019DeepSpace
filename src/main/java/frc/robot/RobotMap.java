@@ -174,9 +174,9 @@ public class RobotMap {
       frontInfraredSensorBallCargoship = 5,         //TODO: Need to check this      
       frontUltrasonicSensorBallRocket = 5,          //TODO: Need to check this   
       frontInfraredSensorBallRocket = 5,            //TODO: Need to check this   
-      backInfraredSensorHatchCargoship = 1200,  
-      backInfraredSensorBallRocket = 5,             //TODO: Need to check this
-      backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
+      //backInfraredSensorHatchCargoship = 1200,  
+      //backInfraredSensorBallRocket = 5,             //TODO: Need to check this
+     // backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
 
       // Line following voltage values
       powerMotor = 0.5,
