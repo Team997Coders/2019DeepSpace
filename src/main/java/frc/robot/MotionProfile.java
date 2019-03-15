@@ -31,8 +31,8 @@ public class MotionProfile {
 	private Notifier m_follower_notifier;
 	private EncoderFollower m_left_follower;
 	private EncoderFollower m_right_follower;
-	Trajectory left_trajectory;
-	Trajectory right_trajectory;
+	private Trajectory left_trajectory;
+	private Trajectory right_trajectory;
 
 	public double left_speed;
 	public double right_speed;

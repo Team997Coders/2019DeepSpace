@@ -57,7 +57,7 @@ public class PathManager {
 
   public MotionProfile getProfile(String name) {
     for (int i = 0; i < profiles.size(); i++) {
-      if (profiles.get(i).name.equals(name)) {
+      if (profiles.get(i).name.equalsIgnoreCase(name)) {
         return profiles.get(i);
       }
     }
