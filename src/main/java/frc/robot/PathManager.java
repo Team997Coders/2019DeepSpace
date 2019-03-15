@@ -42,16 +42,16 @@ public class PathManager {
     pathnames = new LinkedList<String>();
     profiles = new ArrayList<MotionProfile>();
     pathnames.add("Hab1MiddleToShipRight");
-    //pathnames.add("ShipRightToLoadingStationRight");
+    pathnames.add("ShipRightToLoadingStationRight");
     pathnames.add("LoadingStationRightToCargoCenterLeft");
 
-    //daemons = new Thread[daemonCount];
+    daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {
-      //daemons[i] = new Thread(this::loadPath);
+      daemons[i] = new Thread(this::loadPath);
     }
 
     for (int i = 0; i < daemonCount; i++) {
-      //daemons[i].start();
+      daemons[i].start();
     }
   }
 
@@ -84,8 +84,9 @@ public class PathManager {
         try {
           mp = new MotionProfile(pathname);
           profiles.add(mp);
+          System.out.println("\n\nLoading profile '" + pathname + "' has passed.\n\n");
         } catch (Exception e) {
-          System.out.println("\n\nLoading profile '" + pathname + "' has failed.'\n\n");
+          System.out.println("\n\nLoading profile '" + pathname + "' has failed.\n\n");
           e.printStackTrace();
         }
       }

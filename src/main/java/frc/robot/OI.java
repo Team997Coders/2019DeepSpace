@@ -2,6 +2,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.*;
+import frc.robot.commands.auto.Hab1ToCargoRightRocketLow;
 
 
 /**
@@ -45,50 +46,50 @@ public class OI {
     /*ballIntake = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     ballIntake.whenPressed(new BallIntake());*/
 
-    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-    toggleHatch.whenPressed(new ToggleHatch());
+    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    //toggleHatch.whenPressed(new Hab1ToCargoRightRocketLow());
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
 
-    driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
-    driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
+    //driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
+    //driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
     
-    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
-    followLine.whenPressed(new FollowLine(1000));
+    //followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    //followLine.whenPressed(new FollowLine(1000));
 
     // buttonStart is spare
 
-    retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
-    retractLandingGear.whenPressed(new RetractLandingGear());
+    //retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
+    //retractLandingGear.whenPressed(new RetractLandingGear());
 
     /*
      * aux/manual controls for testing
      */
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
 
-    ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
-    ArmReverse.whileHeld(new MoveArm(0.5));
+    //ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
+    //ArmReverse.whileHeld(new MoveArm(0.5));
     //ArmReverse.whenInactive(new LockArm());
 
-    ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
-    ArmForward.whileHeld(new MoveArm(-0.5));
+    //ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
+    //ArmForward.whileHeld(new MoveArm(-0.5));
     //ArmForward.whenInactive(new LockArm());
 
     /* Adding Setpoint buttons for testing */
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-    elevatorGoUp.whileHeld(new ElevatorUppity());
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    //elevatorGoUp.whileHeld(new ElevatorUppity());
     //elevatorGoUp.whenInactive(new LockElevator());
 
-    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-    elevatorGoDown.whileHeld(new ElevatorDownity());
+    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    //elevatorGoDown.whileHeld(new ElevatorDownity());
     //elevatorGoDown.whenInactive(new LockElevator());      
     
-    ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
-    ballIntake.whileHeld(new BallIntake());
+    //ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    //ballIntake.whileHeld(new BallIntake());
 
-    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
-    ballOutake.whileHeld(new BallOuttake());
+    //ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    //ballOutake.whileHeld(new BallOuttake());
 
     //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     //elevatorGoUp.whileHeld(new ElevatorDownity());
@@ -100,8 +101,8 @@ public class OI {
     // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     // elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
 
-    autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
-    autoDriveToTarget.whenPressed(new AutoDriveToTarget());
+    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    //autoDriveToTarget.whenPressed(new AutoDriveToTarget());
   }
 
   public double getLeftYAxis() {
