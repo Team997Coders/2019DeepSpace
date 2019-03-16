@@ -8,8 +8,10 @@
 package frc.robot;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Add your docs here.
@@ -18,15 +20,15 @@ public class PathManager {
 
   private static PathManager instance = null;
 
-  public boolean loaded = false;
+  private Queue<String> pathnames;
+  private ArrayList<MotionProfile> profiles;
 
-  public Queue<String> pathnames;
-  public static ArrayList<MotionProfile> profiles;
+  private Thread[] daemons;
+  private final int daemonCount = 2;
 
-  public Thread[] daemons;
-  private int finishedCount = 0;
-  private int daemonCount = 1;
-
+  /**
+   * Implement the singleton pattern
+   */
   public static PathManager getInstance() {
     if (instance == null) {
       instance = new PathManager();
@@ -35,30 +37,44 @@ public class PathManager {
   }
 
   /**
+   * Returns true once all paths are loaded
+   */
+  public boolean isLoaded() {
+    for (int i = 0; i < daemonCount; i++) {
+      if (daemons[i].isAlive()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
    * Takes hard coded pathnames and runs daemons
    */
   private PathManager() {
     // Load pathnames in the queue
-    pathnames = new LinkedList<String>();
+    pathnames = new ConcurrentLinkedQueue<String>();
     profiles = new ArrayList<MotionProfile>();
     pathnames.add("Hab1MiddleToShipRight");
     //pathnames.add("ShipRightToLoadingStationRight");
     pathnames.add("LoadingStationRightToCargoCenterLeft");
 
-    //daemons = new Thread[daemonCount];
+    daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {
-      //daemons[i] = new Thread(this::loadPath);
-    }
-
-    for (int i = 0; i < daemonCount; i++) {
-      //daemons[i].start();
+      daemons[i] = new Thread(this::loadPath);
+      daemons[i].start();
     }
   }
 
+  /**
+   * Given a profile name, gets you back the loaded profile.
+   */
   public MotionProfile getProfile(String name) {
-    for (int i = 0; i < profiles.size(); i++) {
-      if (profiles.get(i).name.equals(name)) {
-        return profiles.get(i);
+    if (isLoaded()) {
+      for (int i = 0; i < profiles.size(); i++) {
+        if (profiles.get(i).name.equals(name)) {
+          return profiles.get(i);
+        }
       }
     }
     return null;
@@ -73,6 +89,8 @@ public class PathManager {
 
     String pathname;
     boolean run = true;
+    Lock lock = new ReentrantLock();
+
     while (run) {
 
       pathname = pathnames.poll();
@@ -83,19 +101,14 @@ public class PathManager {
         System.out.println(pathname);
         try {
           mp = new MotionProfile(pathname);
+          lock.lock();
           profiles.add(mp);
+          lock.unlock();
         } catch (Exception e) {
           System.out.println("\n\nLoading profile '" + pathname + "' has failed.'\n\n");
           e.printStackTrace();
         }
       }
     }
-
-    if (daemonCount - 1 <= finishedCount) {
-      loaded = true;
-    }
-
-    finishedCount++;
   }
-
 }
