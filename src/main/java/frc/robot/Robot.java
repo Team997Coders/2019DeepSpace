@@ -295,7 +295,7 @@ public class Robot extends TimedRobot {
     buttonBox.updateSmartDashboard();
 
     SmartDashboard.putNumber("Delta Time", kDeltaTime);
-    SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().loaded);
+    SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().isLoaded());
   }
 
   public void updateSmartDashboardRequired() {
