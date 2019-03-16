@@ -45,7 +45,7 @@ import edu.wpi.first.wpilibj.Watchdog;
  */
 public class Robot extends TimedRobot {
 
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
 
   public static Arm arm;
  // public StaticDeoptimizingNode;               
@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     //cameraControlStateMachine.identifyTargets();
-    driveTrain.setCoast(); // So the drivers don't want to kill us ;)
+    driveTrain.setBrake(); // So the drivers don't want to kill us ;)
     //arm.Unlock();
     //logger.close();
   }
