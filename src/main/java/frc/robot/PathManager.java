@@ -26,6 +26,9 @@ public class PathManager {
   private Thread[] daemons;
   private final int daemonCount = 2;
 
+  /**
+   * Implement the singleton pattern
+   */
   public static PathManager getInstance() {
     if (instance == null) {
       instance = new PathManager();
@@ -33,6 +36,9 @@ public class PathManager {
     return instance;
   }
 
+  /**
+   * Returns true once all paths are loaded
+   */
   public boolean isLoaded() {
     for (int i = 0; i < daemonCount; i++) {
       if (daemons[i].isAlive()) {
@@ -60,6 +66,9 @@ public class PathManager {
     }
   }
 
+  /**
+   * Given a profile name, gets you back the loaded profile.
+   */
   public MotionProfile getProfile(String name) {
     if (isLoaded()) {
       for (int i = 0; i < profiles.size(); i++) {
