@@ -86,9 +86,6 @@ public class Robot extends TimedRobot {
   // used by the scoringHeight logic commands to grab the correct height from
   // the height array in RobotMap.
 
-  private double lastTime = 0;
-  public static double kDeltaTime;
-
   /*public Robot() {
     super(0.02);
   }*/
@@ -178,7 +175,7 @@ public class Robot extends TimedRobot {
       loopCount++;
     }
 
-    kDeltaTime = (System.currentTimeMillis() - lastTime) / 1000;
+    deltaTime = (System.currentTimeMillis() - lastTime) / 1000;
     lastTime = System.currentTimeMillis();
 
     if (DEBUG)
@@ -311,12 +308,12 @@ public class Robot extends TimedRobot {
     frontInfraredRangeFinder.updateSmartDashboard();
     backInfraredRangeFinder.updateSmartDashboard();
     buttonBox.updateSmartDashboard();
-    SmartDashboard.putNumber("Delta Time", kDeltaTime);
+    SmartDashboard.putNumber("Delta Time", deltaTime);
     SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().isLoaded());
   }
 
   public void updateSmartDashboardRequired() {
-    SmartDashboard.putNumber("Delta Time", kDeltaTime);
+    SmartDashboard.putNumber("Delta Time", deltaTime);
   }
 
   public enum AutonomousOptions {

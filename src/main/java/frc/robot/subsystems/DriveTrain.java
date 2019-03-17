@@ -148,7 +148,7 @@ public class DriveTrain extends Subsystem {
 
     //prevY = (leftTalon.getMotorOutputPercent() + rightTalon.getMotorOutputPercent()) / 2;
 
-    double maxIncrement = Robot.kDeltaTime * ramp;
+    double maxIncrement = Robot.getDeltaTime() * ramp;
 
     if (Math.abs(front - prevY) > maxIncrement) {
       double sign = (front - prevY) / Math.abs(front - prevY);

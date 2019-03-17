@@ -211,7 +211,7 @@ public class RobotMap {
       bottomElevatorAccelPosLimit = 5000,
       bottomElevatorLimitVelocity = -0.28,
       topElevatorAccelPosLimit = 49000,
-      topElevatorLimitVelocity = 0.4;
+      topElevatorLimitVelocity = 0.4,
       //PathFnder values
       pf_timestep = 0.02,
       pf_max_vel = 2.5, // max velocity in ft/sec.
