@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.2.1"
+    id "edu.wpi.first.GradleRIO" version "2019.4.1"
 }
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
@@ -53,24 +53,13 @@ dependencies {
 
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
-    compile 'com.github.team997coders:SpartanLib:0.0.2-rc1'
+    compile 'com.github.team997coders:SpartanLib:0.0.2-rc2'
     compile 'com.github.oxo42:stateless4j:2.5.0'
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-    testCompile 'junit:junit:4.11'
-    compile 'junit:junit:4.11'
-    //testCompile 'org.mockito:mockito-core:2.23.4'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.23.4'
+    testCompile 'org.mockito:mockito-inline:2.23.4'
 }
-
-/*sourceSets {
-    test {
-        java {
-            srcDirs = ["src/main/java/test"]  // Note @Peter's comment below
-        }
-    }
-}*/
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib

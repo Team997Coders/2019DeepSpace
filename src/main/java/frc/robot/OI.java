@@ -3,8 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.smartdashboard.*;
-
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -20,9 +18,9 @@ public class OI {
   //temporary elevator testing buttons.
   public JoystickButton elevatorGoUp;
   public JoystickButton elevatorGoDown;
-  public JoystickButton followLine;
   public JoystickButton ballIntake;
   public JoystickButton ballOutake;
+  public JoystickButton driveSafe;
 
   public JoystickButton ArmForward;
   public JoystickButton ArmReverse;
@@ -30,71 +28,106 @@ public class OI {
   private JoystickButton deployLandingGear;
   private JoystickButton retractLandingGear;
   private JoystickButton toggleHatch;
-  private JoystickButton probCargo;
+  private JoystickButton followLine;
+  private JoystickButton autoDriveToTarget;
 
   public OI() {
+    // driver controls... game sticks control the motion of the robot
+    //    left stick Y-axis is drive power
+    //    right stick X-axis is drive direction
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
+
+    /*ballOutake = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    ballOutake.whenPressed(new BallOuttake());
+
+    // buttonB is spare
+
+    /*ballIntake = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    ballIntake.whenPressed(new BallIntake());*/
+
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ToggleHatch());
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployLandingGear());
 
+    driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
+    driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
+    
+    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    followLine.whenPressed(new FollowLine(1000));
+
+    // buttonStart is spare
+
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
-
-    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
-    followLine.whenPressed(new FollowLineAndDeliverHatch());
-
-    probCargo = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
-
-    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-
-    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-
-    manualConfig();
+    /*
+     * aux/manual controls for testing
+     */
+    gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
 
     ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
-    ArmReverse.whileHeld(new MoveArm(-0.5));
-    ArmReverse.whenInactive(new LockArm());
+    ArmReverse.whileHeld(new MoveArm(0.5));
+    //ArmReverse.whenInactive(new LockArm());
 
     ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
-    ArmForward.whileHeld(new MoveArm(0.5));
-    ArmForward.whenInactive(new LockArm());
+    ArmForward.whileHeld(new MoveArm(-0.5));
+    //ArmForward.whenInactive(new LockArm());
 
     /* Adding Setpoint buttons for testing */
-    ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoUp.whileHeld(new ElevatorUppity());
+    //elevatorGoUp.whenInactive(new LockElevator());
+
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoDown.whileHeld(new ElevatorDownity());
+    //elevatorGoDown.whenInactive(new LockElevator());      
+    
+    ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballIntake.whileHeld(new BallIntake());
     //ballIntake.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorSafeFlipHeight, 100));
 
-    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
     ballOutake.whileHeld(new BallOuttake());
-    //ballOutake.whenPressed(new SetElevatorHeight(0, 100));
+
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    //elevatorGoUp.whileHeld(new ElevatorDownity());
+    //elevatorGoUp.whenInactive(new LockElevator());
     
-    // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
-    // elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    //elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, 10));
 
     // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     // elevatorGoUp.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 10));
+
+    autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(new AutoDriveToTarget());
   }
 
   public double getLeftYAxis() {
-    return bing(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
+    return condition_gamepad_axis(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
   }
 
   public double getLeftYAxis2() {
-    return bing(0.05, -gamepad3.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
+    return condition_gamepad_axis(0.05, -gamepad3.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
   }
 
   public double getRightXAxis() {
-    return bing(0.05, gamepad1.getRawAxis(RobotMap.Buttons.rightXAxis), -1, 1);
+    return condition_gamepad_axis(0.05, gamepad1.getRawAxis(RobotMap.Buttons.rightXAxis), -1, 1);
   }
 
   public double getRightYAxis() {
-    return bing(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.rightYAxis), -1, 1);
+    return condition_gamepad_axis(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.rightYAxis), -1, 1);
   }
 
+  /**
+   * Make the gamepad axis less sensitive to changes near their null/zero point.
+   * 
+   * @param value raw value from the gamepad axis
+   * @param dead  value for the deadband size 
+   * @return
+   */
   public double deadBand(double value, double dead) {
     if (Math.abs(value) < dead) {
       return 0;
@@ -103,6 +136,13 @@ public class OI {
     }
   }
 
+  /**
+   * Clamp/Limit the value to only be within two limits
+   * @param min lower limit
+   * @param max upper limit
+   * @param val value to check
+   * @return
+   */
   public double clamp(double min, double max, double val) {
     if (min > val) {
       return min;
@@ -114,17 +154,19 @@ public class OI {
   }
 
   /**
+   * Combine both a joystick limit and a clamp within standard limits.
+   * 
    * I really wish programmers would name methods descriptively so that I do
    * not have to waste my time figuring out what things like "bing" and "stuff" do!
    * I am guessing that this does good "stuff" to my joystick. CCB.
    * 
-   * @param dead
-   * @param val
-   * @param min
-   * @param max
-   * @return    I wish I knew
+   * @param dead deadband limit, no output within this limit. Normally 0.05
+   * @param val raw value from axis
+   * @param min lower limit for axis. Normally -1
+   * @param max upper limit on axis. Normally +1
+   * @return    conditioned value from axis (limited -1 to +1, with a )
    */
-  public double bing(double dead, double val, double min, double max) {
+  public double condition_gamepad_axis(double dead, double val, double min, double max) {
     return clamp(min, max, deadBand(val, dead));
   }
 

@@ -9,8 +9,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.buttonbox.ButtonBox;
 import frc.robot.misc.MiniPID;
 import frc.robot.subsystems.CameraMount;
 import frc.robot.vision.CameraControlStateMachine;
@@ -18,33 +20,44 @@ import frc.robot.vision.SelectedTarget;
 
 /**
  * This command interacts with the CameraControlStateMachine to
- * control CameraMount servo movements.
+ * control front and back CameraMount servo movements.
  */
 public class ControlCamera extends Command {
   private final CameraMount cameraMount;
+  private final ButtonBox.ScoringDirectionStates scoringDirection;
   private final CameraControlStateMachine cameraControlStateMachine;
   private final NetworkTable visionNetworkTable;
   private final MiniPID pidX;
   private final MiniPID pidY;
   private final double lockThresholdFactor;
+  private final ButtonBox buttonBox;
+  private final NetworkTable smartDashboard;
 
   /**
    * Default constructor to be used as the default command
    * for the CameraMount subsystem.
    */
-  public ControlCamera() {
-    this(Robot.cameraMount, 
+  public ControlCamera(ButtonBox.ScoringDirectionStates scoringDirection) {
+    this(Robot.frontCameraMount,
+      Robot.backCameraMount, 
+      scoringDirection,
+      Robot.buttonBox,
       Robot.cameraControlStateMachine, 
       Robot.visionNetworkTable, 
       new MiniPID(0.25, 0, 0), 
       new MiniPID(0.25, 0, 0),
-      0.05);
+      0.05,
+      NetworkTableInstance.getDefault().getTable("SmartDashboard")
+      );
   }
 
   /**
    * Accept dependencies to make this easily testable.
    * 
-   * @param cameraMount                 The camera mount pan/tilt system to act upon.
+   * @param frontCameraMount            The front camera mount pan/tilt system to act upon.
+   * @param backCameraMount             The back camera mount pan/tilt system to act upon.
+   * @param scoringDirection            The direction of this mount.
+   * @param buttonBox                   The button box for determining current direction.
    * @param cameraControlStateMachine   A state machine that manages current state of the camera control system.
    * @param visionNetworkTable          A network table containing state shared between robot and Pi CameraVision application.
    * @param pidX                        A mini PID implementation to control CameraMount automated panning.
@@ -52,18 +65,31 @@ public class ControlCamera extends Command {
    * @param lockThresholdFactor         A percentage of error (n < 1) that we will consider target locked. Smaller the percentage
    *                                    the tighter the tolerance.
    */
-  public ControlCamera(CameraMount cameraMount, 
+  public ControlCamera(CameraMount frontCameraMount, 
+      CameraMount backCameraMount,
+      ButtonBox.ScoringDirectionStates scoringDirection,
+      ButtonBox buttonBox,
       CameraControlStateMachine cameraControlStateMachine, 
       NetworkTable visionNetworkTable,
       MiniPID pidX,
       MiniPID pidY,
-      double lockThresholdFactor) {
-    this.cameraMount = cameraMount;
+      double lockThresholdFactor,
+      NetworkTable smartDashboard) {
+    this.scoringDirection = scoringDirection;
+    this.buttonBox = buttonBox;
     this.cameraControlStateMachine = cameraControlStateMachine;
     this.visionNetworkTable = visionNetworkTable;
     this.pidX = pidX;
     this.pidY = pidY;
     this.lockThresholdFactor = lockThresholdFactor;
+    this.smartDashboard = smartDashboard;
+    if (scoringDirection == ButtonBox.ScoringDirectionStates.Front) {
+      this.cameraMount = frontCameraMount;
+    } else if (scoringDirection == ButtonBox.ScoringDirectionStates.Back) {
+      this.cameraMount = backCameraMount;
+    } else {
+      throw new IllegalArgumentException(String.format("Scoring direction %s not supported.", scoringDirection.toString()));
+    }
     requires(cameraMount);
     // Set up a listener to fire when state changes to SlewingToTarget so we can reset pids
     visionNetworkTable.addEntryListener("State", (table, key, entry, value, flags) -> {
@@ -80,51 +106,63 @@ public class ControlCamera extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    cameraMount.setLightRingOutput(100);
+    // Turn our light ring on if pointing in our direction
+    if (buttonBox.getScoringDirectionState() == scoringDirection) {
+      cameraMount.setLightRingOutput(100);
+    }
     cameraMount.center();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Slew the camera under operator control
-    if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.IdentifyingTargets || 
-        cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockFailed ||
-        cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockLost ||
-        cameraControlStateMachine.getState() == CameraControlStateMachine.State.Slewing) {
-      cameraMount.slew(cameraControlStateMachine.getPanRate(), cameraControlStateMachine.getTiltRate());
-    // Center the camera under operator control
-    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.Centering) {
-      cameraMount.center();
-      cameraControlStateMachine.identifyTargets();
-    // Slew the camera under automated control. Determine when locked.
-    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.SlewingToTarget) {
-      // Get the selected target to process
-      SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
-      if (selectedTarget.active) {
+    if (buttonBox.getScoringDirectionState() == scoringDirection) {
+      cameraMount.setLightRingOutput(100);
+      // Slew the camera under operator control
+      if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.IdentifyingTargets || 
+          cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockFailed ||
+          cameraControlStateMachine.getState() == CameraControlStateMachine.State.LockLost ||
+          cameraControlStateMachine.getState() == CameraControlStateMachine.State.Slewing) {
+        cameraMount.slew(cameraControlStateMachine.getPanRate(), cameraControlStateMachine.getTiltRate());
+      // Center the camera under operator control
+      } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.Centering) {
+        cameraMount.center();
+        cameraControlStateMachine.identifyTargets();
+      // Slew the camera under automated control. Determine when locked.
+      } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.SlewingToTarget) {
+        // Get the selected target to process
+        SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
+        if (selectedTarget.active) {
+          // Follow it
+          followTarget(selectedTarget);
+          // Check to see if we are locked on
+          // We could do this in the vision project, since most other triggers are fired
+          // there, but leaving it here makes it more easily tweakable, unless we wanted
+          // to put the factor in networktables...
+          if (selectedTarget.normalizedPointFromCenter.x >= (-1.0 * lockThresholdFactor) &&
+              selectedTarget.normalizedPointFromCenter.x <= lockThresholdFactor &&
+              selectedTarget.normalizedPointFromCenter.y >= (-1.0 * lockThresholdFactor) &&
+              selectedTarget.normalizedPointFromCenter.y <= lockThresholdFactor) {
+            cameraControlStateMachine.lockOn();
+          }
+        }
+      // Keep the camera in the center of FOV under automated control.
+      } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked || 
+                cameraControlStateMachine.getState() == CameraControlStateMachine.State.AutoLocked ||
+                cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
+        // Get the selected target to process
+        SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
         // Follow it
-        followTarget(selectedTarget);
-        // Check to see if we are locked on
-        // We could do this in the vision project, since most other triggers are fired
-        // there, but leaving it here makes it more easily tweakable, unless we wanted
-        // to put the factor in networktables...
-        if (selectedTarget.normalizedPointFromCenter.x >= (-1.0 * lockThresholdFactor) &&
-            selectedTarget.normalizedPointFromCenter.x <= lockThresholdFactor &&
-            selectedTarget.normalizedPointFromCenter.y >= (-1.0 * lockThresholdFactor) &&
-            selectedTarget.normalizedPointFromCenter.y <= lockThresholdFactor) {
-          cameraControlStateMachine.lockOn();
+        if (selectedTarget.active) {
+          followTarget(selectedTarget);
         }
       }
-    // Keep the camera in the center of FOV under automated control.
-    } else if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.TargetLocked || 
-        cameraControlStateMachine.getState() == CameraControlStateMachine.State.DrivingToTarget) {
-      // Get the selected target to process
-      SelectedTarget selectedTarget = new SelectedTarget(visionNetworkTable);
-      // Follow it
-      if (selectedTarget.active) {
-        followTarget(selectedTarget);
-      }
-    } 
+    } else {    // (buttonBox.getScoringDirectionState() != scoringDirection)
+      // Turn off out light ring
+      cameraMount.setLightRingOff();
+      // Stop the mounts
+      cameraMount.slew(0, 0);
+    }
   }
 
   /**
@@ -136,6 +174,8 @@ public class ControlCamera extends Command {
     // slew based on PID values related to how close we are to slewpoint
     double panRate = pidX.getOutput(selectedTarget.normalizedPointFromCenter.x);
     double tiltRate = pidY.getOutput(selectedTarget.normalizedPointFromCenter.y) * -1.0;
+    smartDashboard.getEntry("Camera Control panRate").setDouble(panRate);
+    smartDashboard.getEntry("Camera Control tiltRate").setDouble(tiltRate);
     cameraMount.slew(panRate, tiltRate);
   }
 
@@ -149,6 +189,7 @@ public class ControlCamera extends Command {
   @Override
   protected void end() {
     cameraMount.setLightRingOutput(0);
+    cameraMount.slew(0, 0);
   }
 
   // Called when another command which requires one or more of the same

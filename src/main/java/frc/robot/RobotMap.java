@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import com.ctre.phoenix.CANifier.LEDChannel;
+
 import edu.wpi.first.wpilibj.SerialPort;
 
 /**
@@ -38,6 +40,23 @@ public class RobotMap {
         centerJoystickHatAngle = 0,
         rightJoystickHatAngle = 45;      
     }
+
+    public static class Logitech {
+      public static int 
+        Gamepad4 = 3,
+        buttonA = 2,
+        buttonB = 3,
+        buttonX = 1,
+        buttonY = 4,
+        buttonLeftThumbstick = 11,
+        buttonRightThumbstick = 12,
+        leftJoystickHatAngle = 270,
+        centerJoystickHatAngle = 0,
+        rightJoystickHatAngle = 90,
+        leftXAxis = 0,
+        leftYAxis = 1;
+      }
+
     public static int
 
       GamePad1 = 0,
@@ -50,8 +69,8 @@ public class RobotMap {
       buttonRightShoulder = 6,      // TODO: Need to check this
       buttonLeftThumbstick = 9,     // TODO: Need to check this
       buttonRightThumbstick = 10,    // TODO: Need to check this
-      buttonLeftTrigger = 9,        // TODO: Need to check this
-      buttonRightTrigger = 10,      // TODO: Need to check this
+      buttonRightTrigger = 9,        // TODO: Need to check this
+      buttonLeftTrigger = 10,      // TODO: Need to check this
       buttonBack = 7,
       buttonStart = 8,
 
@@ -113,20 +132,35 @@ public class RobotMap {
       landingGearFloorSensor = 1,
 
       //CAMERA PORTS
-      panservo = 9,
-      tiltservo = 8,
+      frontPanServo = 9,
+      frontTiltServo = 8,
+      backPanServo = 1,
+      backTiltServo = 0,
 
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;
+      
+    public static LEDChannel
+      frontLightRing = LEDChannel.LEDChannelA,
+      backLightRing = LEDChannel.LEDChannelC;
   }
 
   public static class Values {
-    public static final double
-
-      driveDistanceP = .00025, //placeholders
+    public static int 
+      ticksPerRev = 4096; // Protobot
+    public static double
+      // PDriveToDistance PID Variables
+      driveDistanceP = .003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
       protobotTickPerFoot= 2449,
+
+      // PDriveToAngle PID Variables
+      driveAngleP = .007, //placeholders
+      driveAngleI = 0.0,
+      driveAngleD = 0.0,
+
+      //
 
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
       ticksPerFoot = ((49152/(3.97*Math.PI)))*.9, //3940, //encoder ticks per foot
@@ -150,28 +184,23 @@ public class RobotMap {
       normal = .10,        //for double line seen
       straight = .3,          //TODO: Need to check this 
 
-      // Drive to Distance PID values
-      driveToDistance_kP = 0.0001,
-      driveToDistance_kI = 0.0,
-      driveToDistance_kD = 0.0,
-
       // Arm and Elevator Values
-      elevatorPidP = 0.00002, // 0.0005
+      elevatorPidP = 0.00005, // 0.0005
       elevatorPidI = 0.0,
       elevatorPidD = 0.000, // 0.0005
       elevatorPidF = 0.0000,
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
-      armEncoderCenter= 9002,//another place holder
-      armFrontLimit = 9002, //encoder ticks @ the front limit. placeholder.
-      armBackLimit = 9002, //encoder ticks @ the back limit. placeholder.
+      armEncoderCenter= 462,//another place holder
+      armFrontLimit = 195, //encoder ticks @ the front limit. placeholder.
+      armBackLimit = 702, //encoder ticks @ the back limit. placeholder.
 
-      armPidP = 0,
+      armPidP = 0.0006,
       armPidI = 0,
       armPidD = 0,
       armPidK = 0,
-      armMaxPidF = 0.0055,
+      armMaxPidF = 0.0055, // 0.0055
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit)),
 
       // Camera values
@@ -183,6 +212,26 @@ public class RobotMap {
       bottomElevatorLimitVelocity = -0.28,
       topElevatorAccelPosLimit = 49000,
       topElevatorLimitVelocity = 0.4;
+      //PathFnder values
+      pf_timestep = 0.02,
+      pf_max_vel = 2.5, // max velocity in ft/sec.
+      pf_max_acc = 6.79,
+      pf_max_jerk = 60,
+      pf_Kp = 0.001,
+      pf_Ki = 0.0,
+      pf_Kd = 0.06,
+      pf_Kv = (1/pf_max_vel),
+      pf_Ka = 0.0,
+      //pf_Kt = 0.35,
+      
+
+      robotLength = 0.75, //in inches (includes bumpers)
+      robotWidth = 0.8,	
+      robotWheelBase = 0.62, // inches or 2.5ft or 0.6 meters.  Use 0.0254 meters/in or 39.37in/m
+      robotWheelDia = 0.15;// Javadocs requests that this is in meters not feet-> 6/12; // remember all pf variables are in ft.  Need to convert when used.
+      
+    public static boolean
+      pf_path_ready = false;
   }
 
   public static class ElevatorHeights {
@@ -211,10 +260,10 @@ public class RobotMap {
       elevatorCollectCargoHeight = 0,
       
       elevatorSafeFlipHeight = 23000,
-      
-      armBackParallel = 660,
-      armFrontParallel = 150,
-      armVertical = 415;
+
+      armBackParallel = 702,
+      armFrontParallel = 195,
+      armVertical = 462;
 
       public static int[]
       elevatorFrontHatchHeightArray = {

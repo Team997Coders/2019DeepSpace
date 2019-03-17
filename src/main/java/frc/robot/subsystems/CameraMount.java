@@ -14,7 +14,7 @@ import org.team997coders.spartanlib.hardware.roborio.Servo;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
+import frc.robot.buttonbox.ButtonBox;
 import frc.robot.commands.ControlCamera;
 
 /**
@@ -24,6 +24,7 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
   private final double maxDegreesPerHeartbeat;
   private final CANifier canifier;
   private final LEDChannel lightRingLEDChannel;
+  private final ButtonBox.ScoringDirectionStates scoringDirection;
 
   /**
    * Convenience constructor to hard-wire CameraMount to Roborio servo implementation.
@@ -34,15 +35,23 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
       int panUpperLimitInDegrees,
       double slewRate180DegreesInSec,
       double heartbeatRateInMs,
-      LEDChannel lightRingLEDChannel) {
-    super(new Servo(RobotMap.Ports.panservo), 
-      new Servo(RobotMap.Ports.tiltservo, 544, 2250),
+      LEDChannel lightRingLEDChannel,
+      int panServoPortId,
+      int tiltServoPortId,
+      ButtonBox.ScoringDirectionStates scoringDirection) {
+    // Call the constructor to reverse servo behavior based on motion
+    // of production servos mounted to comp bot.
+    super(new Servo(panServoPortId, 553, 2250), 
+      new Servo(tiltServoPortId, 553, 2250),
       tiltLowerLimitInDegrees,
       tiltUpperLimitInDegrees,
+      true,                       // Reverses tilt servo
       panLowerLimitInDegrees,
-      panUpperLimitInDegrees);
+      panUpperLimitInDegrees,
+      true);                      // Reverses pan servo
       canifier = Robot.elevatorCanifier;
       this.lightRingLEDChannel = lightRingLEDChannel;
+      this.scoringDirection = scoringDirection;
       this.maxDegreesPerHeartbeat = (180D / slewRate180DegreesInSec) / (1000D / heartbeatRateInMs);
     }
 
@@ -52,7 +61,7 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new ControlCamera());
+    setDefaultCommand(new ControlCamera(scoringDirection));
   } 
 
   /**
@@ -61,7 +70,7 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
   public void center() {
     // TODO: Pull this function into SpartanLib
     panToAngle(90d);
-    tiltToAngle(90d);
+    tiltToAngle(75d);
   }
 
   /**
@@ -97,7 +106,7 @@ public class CameraMount extends org.team997coders.spartanlib.subsystems.CameraM
    * Updates the SmartDashboard with subsystem data
    */
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Camera Pan Angle", getPanAngleInDegrees());
-    SmartDashboard.putNumber("Camera Tilt Angle", getTiltAngleInDegrees());
+    SmartDashboard.putNumber(String.format("%s Camera Pan Angle", scoringDirection.toString()), getPanAngleInDegrees());
+    SmartDashboard.putNumber(String.format("%s Camera Tilt Angle", scoringDirection.toString()), getTiltAngleInDegrees());
   }
 }

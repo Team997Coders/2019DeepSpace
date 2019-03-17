@@ -23,7 +23,7 @@ public class LockArm extends Command {
     
     protected void execute() {
       Robot.arm.SetPostion(position);
-      System.out.println("Locking Arm at position " + position);
+      //System.out.println("Locking Arm at position " + position);
     }
 
     protected boolean isFinished() {

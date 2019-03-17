@@ -4,6 +4,11 @@ import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.buttonbox.commands.HighHeight;
 
+// TODO: The activate command should shift current state into
+// a holding area that then the getState methods should read from.
+// Simply changing the state from the box should not make it
+// so on the robot until "Activated".
+
 /**
  * This class implements the Deepspace operator 2 custom console
  * for running on the roborio. Hook wpilibj joystick whenPressed
@@ -25,6 +30,8 @@ public class ButtonBox {
   private Command visionXClickedCommand;
   private Command visionLeftClickedCommand;
   private Command visionRightClickedCommand;
+  private Command visionLeftHeldCommand;
+  private Command visionRightHeldCommand;
   private Command visionCenterClickedCommand;
 
   /**
@@ -63,11 +70,6 @@ public class ButtonBox {
   public void clickHighPositionButton(){
     if (this.scoringDestinationState != ScoringDestinationStates.CargoShip) {
       this.positionState = PositionStates.High;
-    if(getScoringArtifactState() == ScoringArtifactStates.Ball &&
-        getScoringDestinationState() == ScoringDestinationStates.Rocket &&
-         getScoringDirectionState() == ScoringDirectionStates.Front){
-      positionState = PositionStates.Medium;
-      }
     }
   }
 
@@ -96,11 +98,6 @@ public class ButtonBox {
    */
   public void clickScoringArtifactBallButton() {
     this.scoringArtifactState = ScoringArtifactStates.Ball;
-    if(getPositionState() == PositionStates.High &&
-        getScoringDestinationState() == ScoringDestinationStates.Rocket &&
-         getScoringDirectionState() == ScoringDirectionStates.Front){
-      positionState = PositionStates.Medium;
-    }
   }
 
   /**
@@ -137,11 +134,6 @@ public class ButtonBox {
    */
   public void clickScoringDirectionFrontButton() {
     this.scoringDirectionState = ScoringDirectionStates.Front;
-    if(getScoringArtifactState() == ScoringArtifactStates.Ball &&
-        getScoringDestinationState() == ScoringDestinationStates.Rocket &&
-         getPositionState() == PositionStates.High){
-      positionState = PositionStates.Medium;
-    }
   }
 
   /**
@@ -155,10 +147,6 @@ public class ButtonBox {
       clickScoringDestinationCargoShipButton();
     } else {
       this.scoringDestinationState = ScoringDestinationStates.Rocket;
-    }if(getScoringArtifactState() == ScoringArtifactStates.Ball &&
-    getPositionState() == PositionStates.High &&
-     getScoringDirectionState() == ScoringDirectionStates.Front){
-  positionState = PositionStates.Medium;
     }
   }
 
@@ -204,7 +192,35 @@ public class ButtonBox {
    * Click event handler for the vision pan right button.
    */
   public void clickVisionRightButton() {
-  visionRightClickedCommand.start();
+    visionRightClickedCommand.start();
+  }
+
+  /**
+   * Hold event handler for the vision pan left button.
+   */
+  public void holdVisionLeftButton() {
+    visionLeftHeldCommand.start();
+  }
+
+  /**
+   * Hold event handler for the vision pan right button.
+   */
+  public void holdVisionRightButton() {
+    visionRightHeldCommand.start();
+  }
+
+  /**
+   * Hold event handler for the vision pan left button.
+   */
+  public void releaseVisionLeftButton() {
+    visionLeftHeldCommand.cancel();
+  }
+
+  /**
+   * Hold event handler for the vision pan right button.
+   */
+  public void releaseVisionRightButton() {
+    visionRightHeldCommand.cancel();
   }
 
   /**
@@ -251,8 +267,8 @@ public class ButtonBox {
    */
   private void setStartupState() {
     scoringDirectionState = ScoringDirectionStates.Back;
-    scoringArtifactState = ScoringArtifactStates.None;
-    scoringDestinationState = ScoringDestinationStates.None;
+    scoringArtifactState = ScoringArtifactStates.Hatch;
+    scoringDestinationState = ScoringDestinationStates.CargoShip;
     positionState = PositionStates.None;
     intakeState = false;
   }
@@ -299,7 +315,7 @@ public class ButtonBox {
 
   /**
    * Set up the command that will be called when the vision pan left
-   * button is pressed.
+   * button is clicked.
    * 
    * @param visionLeftClickedCommand The command to start.
    */
@@ -309,12 +325,32 @@ public class ButtonBox {
 
   /**
    * Set up the command that will be called when the vision pan right
-   * button is pressed.
+   * button is clicked.
    * 
    * @param visionRightClickedCommand The command to start.
    */
   public void whenVisionRightClicked(Command visionRightClickedCommand) {
     this.visionRightClickedCommand = visionRightClickedCommand;
+  }
+
+    /**
+   * Set up the command that will be called when the vision pan left
+   * button is held.
+   * 
+   * @param visionLeftHeldCommand The command to start.
+   */
+  public void whenVisionLeftHeld(Command visionLeftHeldCommand) {
+    this.visionLeftHeldCommand = visionLeftHeldCommand;
+  }
+
+  /**
+   * Set up the command that will be called when the vision pan right
+   * button is held.
+   * 
+   * @param visionRightHeldCommand The command to start.
+   */
+  public void whenVisionRightHeld(Command visionRightHeldCommand) {
+    this.visionRightHeldCommand = visionRightHeldCommand;
   }
 
   /**

@@ -46,9 +46,6 @@ public class Elevator extends Subsystem {
   public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.Ports.followerElevatorMotor, MotorType.kBrushless);
-
-// TODO: Hunter, please review this merge...
-// The next 6 lines did not exist in master but I left them from scrimmage.
     
     master.restoreFactoryDefaults();
     follower.restoreFactoryDefaults();
@@ -60,9 +57,6 @@ public class Elevator extends Subsystem {
     // This line must be this way now that the canifiers are shared recources
     canifier = Robot.elevatorCanifier;
     limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
-// In particular, this line came over from master, but looked like you meant param 2 to be kReverse,
-// so I left it as it was in scrimmage.
-//    limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
     
     limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
@@ -93,10 +87,10 @@ public class Elevator extends Subsystem {
     SetPosition(GetPosition());
     isZeroed = limitSwitchBottom.get();
 
-    /*SmartDashboard.putNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
-    SmartDashboard.putNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
-    SmartDashboard.putNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
-    SmartDashboard.putNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);*/
+    SmartDashboard.putNumber("Elevator/Elevator Pid P", RobotMap.Values.elevatorPidP);
+    SmartDashboard.putNumber("Elevator/Elevator Pid I", RobotMap.Values.elevatorPidI);
+    SmartDashboard.putNumber("Elevator/Elevator Pid D", RobotMap.Values.elevatorPidD);
+    SmartDashboard.putNumber("Elevator/Elevator Pid F", RobotMap.Values.elevatorPidF);
   }
 
   public void SetPosition(double height) {
@@ -241,14 +235,14 @@ public class Elevator extends Subsystem {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Elevator volts", master.get());
-    SmartDashboard.putNumber("Elevator Height: ", GetPosition());
-    SmartDashboard.putBoolean("Bottom Limit Switch", limitSwitchBottom.get());
-    SmartDashboard.putBoolean("Top Limit Switch", limitSwitchTop.get());
-    SmartDashboard.putNumber("Elevator", master.getOutputCurrent());
-    SmartDashboard.putNumber("Elevator Internal Encoder", getInternalEncoderPos());
-    SmartDashboard.putNumber("Elevator Master Temp", getMasterTemp());
-    SmartDashboard.putNumber("Elevator Follower Temp", getFollowerTemp());
+    SmartDashboard.putNumber("Elevator/Elevator volts", master.get());
+    SmartDashboard.putNumber("Elevator/Elevator Height: ", GetPosition());
+    SmartDashboard.putBoolean("Elevator/Bottom Limit Switch", limitSwitchBottom.get());
+    SmartDashboard.putBoolean("Elevator/Top Limit Switch", limitSwitchTop.get());
+    SmartDashboard.putNumber("Elevator/Elevator", master.getOutputCurrent());
+    SmartDashboard.putNumber("Elevator/Elevator Internal Encoder", getInternalEncoderPos());
+    SmartDashboard.putNumber("Elevator/Elevator Master Temp", getMasterTemp());
+    SmartDashboard.putNumber("Elevator/Elevator Follower Temp", getFollowerTemp());
     
     SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
     SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);

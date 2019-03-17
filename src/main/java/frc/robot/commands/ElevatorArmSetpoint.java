@@ -6,18 +6,25 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ElevatorArmSetpoint extends Command {
-
-  private boolean longWay = false, armMoving = false, elevatorMoving = false;
+  
+  private boolean longWay = false, armMoving = false, elevatorMoving = false, end = false;
   private double angle, height;
 
   private SetElevatorHeight e = null;
   private SetArmPosition a = null;
+  
+  //TODO: Make height represent inches.
+  //TODO: Do we need angle guards?
 
-  public ElevatorArmSetpoint(double height, double angle) { // angle isn't actually an angle
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+  /**
+   * Sets the elevator and arm position in one command activity.
+   * 
+   * @param height
+   * @param angle   In degrees with 0 being front horizontal and 180 being back horizontal.
+   */
+  public ElevatorArmSetpoint(double height, double angle) {
     this.height = height;
-    this.angle = angle;
+    this.angle = (RobotMap.ElevatorHeights.armBackParallel - RobotMap.ElevatorHeights.armFrontParallel) * (angle / 180);
   }
 
   // Called just before this Command runs the first time
@@ -84,7 +91,17 @@ public class ElevatorArmSetpoint extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return elevatorMoving && armMoving;
+    if ((elevatorMoving && armMoving) && !end) {
+      end = true;
+    }
+
+    if (end) {
+      if (e.isCompleted() && a.isCompleted()) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   // Called once after isFinished returns true

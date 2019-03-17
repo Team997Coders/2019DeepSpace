@@ -1,5 +1,5 @@
 {
-  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -8,7 +8,21 @@
     "**/.DS_Store": true,
     "bin/": true,
     ".classpath": true,
-    ".project": true
+    ".project": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
   },
-  "wpilib.online": true
+  "wpilib.online": true,
+  "java.test.config": [
+    {
+      "name": "includeNativesConfiguration",
+      "workingDirectory": "${workspaceFolder}",
+      "args": [],
+      "vmargs": [],
+      "env": { "PATH":"${workspaceFolder}/build/tmp/jniExtractDir"}
+    }
+  ],
+  "java.test.defaultConfig": "includeNativesConfiguration"
 }

@@ -10,12 +10,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.buttonbox.ButtonBox.ScoringDirectionStates;
 
 public class ScoringHeightLogic extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public ScoringHeightLogic(boolean armSide, boolean gamePieceType,int scoringHeight, boolean scoreDestination) {
+  public ScoringHeightLogic(ScoringDirectionStates armSide, boolean gamePieceType,int scoringHeight, boolean scoreDestination) {
     int elevatorHeight= 0;
     if(armSide != Robot.arm.getArmSide()) {
       if(Robot.elevator.GetPosition() < RobotMap.Values.armSwitchHeight) {
@@ -24,13 +25,13 @@ public class ScoringHeightLogic extends CommandGroup {
     }
     if(scoreDestination) {               //rocket = true cargoship = false
       if(gamePieceType) {                 //hatch = true cargo = false
-        if(armSide) {
+        if(armSide == ScoringDirectionStates.Front) {
           elevatorHeight = RobotMap.ElevatorHeights.elevatorBackHatchHeightArray[scoringHeight];
         } else {
           elevatorHeight = RobotMap.ElevatorHeights.elevatorFrontHatchHeightArray[scoringHeight];
         } 
       } else {
-        if(armSide) {
+        if(armSide == ScoringDirectionStates.Front) {
           elevatorHeight = RobotMap.ElevatorHeights.elevatorBackCargoHeightArray[scoringHeight];
         } else {
           elevatorHeight = RobotMap.ElevatorHeights.elevatorFrontCargoHeightArray[scoringHeight];
@@ -38,13 +39,13 @@ public class ScoringHeightLogic extends CommandGroup {
       }
     }else{
       if(gamePieceType) {
-        if(armSide) {
+        if(armSide == ScoringDirectionStates.Front) {
           elevatorHeight = RobotMap.ElevatorHeights.elevatorBackShipHatchHeight;
         } else {
           elevatorHeight = RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight;
         }
       } else {
-        if(armSide) {
+        if(armSide == ScoringDirectionStates.Front) {
           elevatorHeight = RobotMap.ElevatorHeights.elevatorBackShipCargoHeight;
         } else {
           elevatorHeight = RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight;

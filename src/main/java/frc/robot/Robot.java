@@ -8,9 +8,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.CANifier;
-import com.ctre.phoenix.CANifier.LEDChannel;
-
-import org.team997coders.spartanlib.commands.CenterCamera;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -23,7 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.AutoDoNothing;
-import frc.robot.subsystems.Logger;
+import frc.robot.commands.PDriveToDistance;
+//import frc.robot.subsystems.Logger;
 import frc.robot.buttonbox.ButtonBox;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -35,7 +33,8 @@ import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
 import frc.robot.vision.CameraControlStateMachine;
-import frc.robot.subsystems.Logger;
+import frc.robot.vision.commands.*;
+import edu.wpi.first.wpilibj.Watchdog;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,19 +44,25 @@ import frc.robot.subsystems.Logger;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  public static final boolean DEBUG = false;
+
   public static Arm arm;
+ // public StaticDeoptimizingNode;               
   public static Elevator elevator;
   public static BallManipulator ballManipulator;
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
-  public static CameraMount cameraMount;
-  private CenterCamera centerCamera;
+  //public static MotionProfile motionProfile;
+  public static PathManager pathManager;
+  public static CameraMount frontCameraMount;
+  public static CameraMount backCameraMount;
   private NetworkTableInstance networkTableInstance;
   public static NetworkTable visionNetworkTable;
   public static CameraControlStateMachine cameraControlStateMachine;
-  public static Logger logger;
-  public static PowerDistributionPanel pdp;
+  //public static Logger logger;
+  //public static PowerDistributionPanel pdp;
   public static LineDetector frontLineDetector;
   public static LineDetector backLineDetector;
   public static InfraredRangeFinder frontInfraredRangeFinder;
@@ -68,17 +73,25 @@ public class Robot extends TimedRobot {
   public static ButtonBox buttonBox;
   public static OI oi;
   public static ButtonBoxOI bb;
+  public static LogitechVisionOI logitechVisionOI;
 
   private double lastTime = 0; // millis seconds
   private static double deltaTime = 0; // seconds
   private int loopCount = 0, executeLoopCount = 30;
 
   Command autonomousCommand;
-  SendableChooser<Command> chooser = new SendableChooser<>();
+  SendableChooser<AutonomousOptions> chooser = new SendableChooser<>();
 
   public static int heightIndex;
   // used by the scoringHeight logic commands to grab the correct height from
   // the height array in RobotMap.
+
+  private double lastTime = 0;
+  public static double kDeltaTime;
+
+  /*public Robot() {
+    super(0.02);
+  }*/
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -91,12 +104,13 @@ public class Robot extends TimedRobot {
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
     ballManipulator = new BallManipulator();
-    pdp = new PowerDistributionPanel();
+    //pdp = new PowerDistributionPanel();
     hatchManipulator = new HatchManipulator();
     elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
-    cameraMount = new CameraMount(0, 120, 10, 170, 2, 20, LEDChannel.LEDChannelA);
+    //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
+    //backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
     backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
       RobotMap.Ports.lineSensorBackCenter, 
       RobotMap.Ports.lineSensorBackRight,
@@ -108,10 +122,9 @@ public class Robot extends TimedRobot {
     backInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.backInfraredSensor, ButtonBox.ScoringDirectionStates.Back);
     frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor, ButtonBox.ScoringDirectionStates.Front);
 
-    networkTableInstance = NetworkTableInstance.getDefault();
-    visionNetworkTable = networkTableInstance.getTable("Vision");
-    cameraControlStateMachine = new CameraControlStateMachine();
-    centerCamera = new CenterCamera(cameraMount);
+    //networkTableInstance = NetworkTableInstance.getDefault();
+    //visionNetworkTable = networkTableInstance.getTable("Vision");
+    //cameraControlStateMachine = new CameraControlStateMachine();
     buttonBox = new ButtonBox();
 
     // Create the logging instance so we can use it for tuning the PID subsystems
@@ -121,13 +134,16 @@ public class Robot extends TimedRobot {
     // however, we need to clear the faults so that the LEDs on the PDP go green.
     // I can never (and I have tried) find the source of the warnings that cause
     // the LED's to be Amber.
-    pdp = new PowerDistributionPanel();
-    pdp.clearStickyFaults();
+    //pdp = new PowerDistributionPanel();
+    //pdp.clearStickyFaults();
 
-    LiveWindow.disableTelemetry(pdp);
-
-    chooser.setDefaultOption("Do Nothing", new AutoDoNothing());
-    // chooser.addOption("My Auto", new MyAutoCommand());
+    chooser.setDefaultOption("Do Nothing", AutonomousOptions.DoNothing);
+    chooser.addOption("Left Cargo Ship", AutonomousOptions.LeftCargoShip);
+    chooser.addOption("Right Cargo Ship", AutonomousOptions.RightCargoShip);
+    chooser.addOption("Left Bottom Rocket", AutonomousOptions.LeftBottomRocket);
+    chooser.addOption("Right Bottom Rocket", AutonomousOptions.RightBottomRocket);
+    chooser.addOption("Hab 1", AutonomousOptions.DriveOffHab1);
+    chooser.addOption("Hab 2", AutonomousOptions.DriveOffHab2);
     SmartDashboard.putData("Auto mode", chooser);
 
     SmartDashboard.putNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
@@ -145,7 +161,12 @@ public class Robot extends TimedRobot {
 
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
-    bb = new ButtonBoxOI();
+    //bb = new ButtonBoxOI();
+    //logitechVisionOI = new LogitechVisionOI();
+
+    //motionProfile = MotionProfile.getInstance();
+    
+    pathManager = PathManager.getInstance();
   }
 
   @Override
@@ -157,15 +178,20 @@ public class Robot extends TimedRobot {
       loopCount++;
     }
 
-    deltaTime = (System.currentTimeMillis() - lastTime) / 1000;
+    kDeltaTime = (System.currentTimeMillis() - lastTime) / 1000;
     lastTime = System.currentTimeMillis();
+
+    if (DEBUG)
+      updateSmartDashboard();
+    else
+      updateSmartDashboardRequired();
   }
 
   @Override
   public void disabledInit() {
+    //cameraControlStateMachine.identifyTargets();
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
     arm.Unlock();
-    //Logger.getInstance().close();
   }
 
   @Override
@@ -176,12 +202,57 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    centerCamera.start();
-    autonomousCommand = chooser.getSelected();
+    
 
-    if (autonomousCommand != null) {
-      autonomousCommand.start();
+    // NOTE: There must be a delay of AT LEAST 20ms to give
+    // the camera subsystem time to ingest some frames. The assumption
+    // is that autolock vision will be sandwiched between other commands,
+    // and so there should be no problem.
+
+    // Get the autonomous chooser option
+    AutonomousOptions autonomousOption = chooser.getSelected();
+
+    // An autonomous command must be set as a result of this activity
+
+    if (autonomousOption == null) {
+      // If it is null for some reason, do nothing. This should not happen and maybe
+      // should be logged...
+      autonomousCommand = new AutoDoNothing();
+    } else {
+      // TODO: Fill in these commands with the appropriate actions.
+      // You can call cameraControlStateMachine.autoLockRight(), 
+      // cameraControlStateMachine.autoLockLeft(), or cameraControlStateMachine.autoLock()
+      // from your commands if you want to sandwich in vision autolocking after initial
+      // motion profile driving. Once initiated, then in a subsequent command to perform
+      // auto-drive based on vision feedback, use if (cameraControlStateMachine.getState() == CameraControlStateMachine.State.AutoLocked)
+      // conditional to determine if target is locked. Finally, use cameraControlStateMachine.getSelectedTarget() to get information
+      // about target. This function goes to network tables for you and gets the information about the lock on target
+      // as documented here: https://github.com/Team997Coders/2019DSHatchFindingVision/tree/master/CameraVision
+      switch(autonomousOption) {
+        case LeftCargoShip:
+          autonomousCommand = new AutoDoNothing();
+          break;
+        case RightCargoShip:
+          autonomousCommand = new AutoDoNothing();
+          //new Hab1ToCargoShipEndRightSide();
+          break;
+        case LeftBottomRocket:
+          autonomousCommand = new AutoDoNothing();
+          break;
+        case RightBottomRocket:
+          autonomousCommand = new AutoDoNothing();
+          break;
+        case DoNothing:
+          autonomousCommand = new AutoDoNothing();
+          break;
+        case DriveOffHab1:
+          autonomousCommand = new PDriveToDistance(0.4, 4);
+          break;
+        case DriveOffHab2:
+          autonomousCommand = new PDriveToDistance(0.4, 9);
+      }
     }
+    autonomousCommand.start();
   }
 
   @Override
@@ -194,8 +265,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     // Init hatch target finding vision camera
-    centerCamera.start();
-    cameraControlStateMachine.identifyTargets();
+    //cameraControlStateMachine.identifyTargets();
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -205,8 +275,6 @@ public class Robot extends TimedRobot {
     System.out.println("---------------------");
 
     arm.Lock();
-
-    //Logger.getInstance().openFile();
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -222,9 +290,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
-    //Logger.getInstance().logAll();
-
     oi.reconfigureButtons();
   }
 
@@ -237,7 +302,8 @@ public class Robot extends TimedRobot {
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
-    cameraMount.updateSmartDashboard();
+    //frontCameraMount.updateSmartDashboard();
+    //backCameraMount.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
     frontLineDetector.updateSmartDashboard();
@@ -245,7 +311,17 @@ public class Robot extends TimedRobot {
     frontInfraredRangeFinder.updateSmartDashboard();
     backInfraredRangeFinder.updateSmartDashboard();
     buttonBox.updateSmartDashboard();
+    SmartDashboard.putNumber("Delta Time", kDeltaTime);
+    SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().isLoaded());
+  }
 
-    SmartDashboard.putNumber("POV", oi.getPOV());
+  public void updateSmartDashboardRequired() {
+    SmartDashboard.putNumber("Delta Time", kDeltaTime);
+  }
+
+  public enum AutonomousOptions {
+    LeftCargoShip, RightCargoShip, LeftBottomRocket,
+    RightBottomRocket, DoNothing, DriveOffHab1,
+    DriveOffHab2
   }
 }

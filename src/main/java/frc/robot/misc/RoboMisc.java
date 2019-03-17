@@ -4,8 +4,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import frc.robot.misc.GearBox;
 
@@ -17,9 +17,9 @@ public class RoboMisc {
   // This creates the Talon and 2 slave Victors for our standard half of the
   // drivetrain
   public static GearBox standTalonSRXSetup(int talon, int victor1, int victor2, boolean reverse) {
-    TalonSRX a = new TalonSRX(talon);
-    VictorSPX b = new VictorSPX(victor1);
-    VictorSPX c = new VictorSPX(victor2);
+    WPI_TalonSRX a = new WPI_TalonSRX(talon);
+    WPI_VictorSPX b = new WPI_VictorSPX(victor1);
+    WPI_VictorSPX c = new WPI_VictorSPX(victor2);
 
     b.follow(a);
     c.follow(a);

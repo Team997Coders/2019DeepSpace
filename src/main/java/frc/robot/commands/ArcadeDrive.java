@@ -1,13 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ArcadeDrive extends Command {
 
+  private double prevFront = 0;
+
   public ArcadeDrive() {
     requires(Robot.driveTrain);
-    System.out.println("Arcade Init");
   }
   
   @Override
@@ -25,12 +27,18 @@ public class ArcadeDrive extends Command {
   protected void execute() {
     double front = Robot.oi.getLeftYAxis();
     double turn = Robot.oi.getRightXAxis();
+    SmartDashboard.putNumber("Drive/Left Y", front);
+    SmartDashboard.putNumber("Drive/Turn", turn);
 
-    if (Robot.driveTrain.decell) {
+    //Robot.driveTrain.setVolts(front + turn, front - turn);
+
+    Robot.driveTrain.setRampArcadeVolts(front, 0.8 * turn);
+
+    /*if (Robot.driveTrain.decell) {
       Robot.driveTrain.setRampArcadeVolts(front, turn);
     } else {
       Robot.driveTrain.setVolts(front + turn, front - turn);
-    }
+    }*/
   }
 
   @Override
