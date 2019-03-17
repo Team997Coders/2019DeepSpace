@@ -142,7 +142,7 @@ public class DriveTrain extends Subsystem {
     leftTalon.set(ControlMode.PercentOutput, 0);
     rightTalon.set(ControlMode.PercentOutput, 0);
   }
-
+  
   public void setRampArcadeVolts(double front, double turn) {
     double newY = front;
 

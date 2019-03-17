@@ -163,7 +163,7 @@ public class RobotMap {
       //
 
       inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
-      ticksPerFoot = ((49152/(3.97*Math.PI)))*.9,//3940, //encoder ticks per foot
+      ticksPerFoot = ((49152/(3.97*Math.PI)))*.9, //3940, //encoder ticks per foot
 
       //INFRARED DISTANCES for Line Following
       frontUltrasonicSensorHatchCargoship = 91,     //TODO: Need to check this      
@@ -179,10 +179,10 @@ public class RobotMap {
       backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
 
       // Line following voltage values
-      powerMotor = 0.5,
-      noPowerMotor = -.25,
+      powerMotor = 0.5,       //TODO: Need to check this 
+      noPowerMotor = -.25,    //TODO: Need to check this 
       normal = .10,        //for double line seen
-      straight = .3,
+      straight = .3,          //TODO: Need to check this 
 
       // Arm and Elevator Values
       elevatorPidP = 0.00005, // 0.0005
@@ -206,6 +206,12 @@ public class RobotMap {
       // Camera values
       leftAngleInDegrees = 75,
       rightAngleInDegrees = 115,
+      
+      // Elevator Deccel/Accel Values
+      bottomElevatorAccelPosLimit = 5000,
+      bottomElevatorLimitVelocity = -0.28,
+      topElevatorAccelPosLimit = 49000,
+      topElevatorLimitVelocity = 0.4;
       //PathFnder values
       pf_timestep = 0.02,
       pf_max_vel = 2.5, // max velocity in ft/sec.
@@ -232,9 +238,9 @@ public class RobotMap {
     //in inches
     public static int
       elevatorBackTopHatchHeight = 0, //impossible
-      elevatorBackMiddleHatchHeight = 0, 
-      elevatorBackBottomHatchHeight = 0,
-      elevatorBackShipHatchHeight = 8900,
+      elevatorBackMiddleHatchHeight = 0, //impossible
+      elevatorBackBottomHatchHeight = 0, //impossible
+      elevatorBackShipHatchHeight = 8900, //impossible
 
       elevatorBackTopCargoHeight = 52400, // probably higher
       elevatorBackMiddleCargoHeight = 34400,
@@ -246,7 +252,7 @@ public class RobotMap {
       elevatorFrontBottomHatchHeight = 1520,
       elevatorFrontShipHatchHeight = 1520,
 
-      elevatorFrontTopCargoHeight = 52400, //impossible
+      elevatorFrontTopCargoHeight = 52400,
       elevatorFrontMiddleCargoHeight = 45360,
       elevatorFrontBottomCargoHeight = 22200,
       elevatorFrontShipCargoHeight = 38125,

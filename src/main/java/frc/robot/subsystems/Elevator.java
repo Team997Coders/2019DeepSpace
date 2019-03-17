@@ -30,6 +30,8 @@ public class Elevator extends Subsystem {
 
   private CANEncoder encoder;
 
+  private double rampAccel = 0.5; // Use this value to see if the elevator is actually being deccelerated
+
   private CANPIDController pidController;
   private CANDigitalInput limitSwitchTop;
   private CANDigitalInput limitSwitchBottom;
@@ -57,7 +59,7 @@ public class Elevator extends Subsystem {
     limitSwitchTop = new CANDigitalInput(master, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchTop.enableLimitSwitch(true);
     
-    limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kForward , LimitSwitchPolarity.kNormallyOpen);
+    limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchBottom.enableLimitSwitch(true);
 
     //master.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
@@ -70,11 +72,11 @@ public class Elevator extends Subsystem {
 
     follower.follow(master, true); // reverse the follower in the follow command
 
-    master.setOpenLoopRampRate(0.25);
-    follower.setOpenLoopRampRate(0.25); // Not sure if this is need for the follower motor but just in case
+    //master.setOpenLoopRampRate(0.25);
+    //follower.setOpenLoopRampRate(0.25); // Not sure if this is need for the follower motor but just in case
 
     pidController = master.getPIDController();
-    pidController.setOutputRange(-0.3, 0.3);
+    pidController.setOutputRange(-0.4, 0.6);
     pidController.setP(RobotMap.Values.elevatorPidP);
     pidController.setI(RobotMap.Values.elevatorPidI);
     pidController.setD(RobotMap.Values.elevatorPidD);
@@ -128,6 +130,59 @@ public class Elevator extends Subsystem {
     master.set(volts);
   }
 
+  /**
+   * This function processes the power given and limits it based on position and current
+   * speed to determine an appropriate speed to go at for a smooth, nice elevator.
+   * It probably doesn't work... PLEASE ADJUST THE ACCELERATION INSTEAD OF DELETING / NOT USING THIS
+   * 
+   * @param pow The desired power which you shall not receive
+   * 
+   * Timothy: Our cpu usage is hella high.
+   * Hunter: Let me run this large processing function to determine the speed we should go at.
+   * Timothy: but the RIO is gonna die...
+   * Hunter: ... i commented it....
+   * Timothy: Bad Hunter.
+   * Hunter: It's fine I'll just disable the logger.
+   * [Tests robot]
+   * Hunter and Timothy: ....
+   * Hunter: It's doing some weird stuff...
+   * Timothy: If only we had the logger... >:C
+   */
+  public void setDeccelPower(double pow) {
+    double last = master.get(); // The last set power to the motor
+    double hek = pow;
+    boolean didMod = false; // Did I need to alter the power
+
+    double deltaTime = Robot.getDeltaTime();
+
+    if (Math.abs(pow) > Math.abs(last) + (rampAccel * deltaTime)) { // Did is the motor going to over accelerate?
+      hek = last + ((last / Math.abs(last)) * (rampAccel * deltaTime)); // Limit how much it changes
+      didMod = true; // Record it
+    }
+
+    if (didMod) { // Did you mod it?
+      if (hek < 0) { // Is the new values moving up
+        if ((GetPosition() < RobotMap.Values.bottomElevatorAccelPosLimit) && (hek < RobotMap.Values.bottomElevatorLimitVelocity)) { // Is it approching the bottom of the elevator and is going rather fast?
+          hek = RobotMap.Values.bottomElevatorLimitVelocity; // Limit the velocity even more
+        }
+      } else if ((GetPosition() > RobotMap.Values.topElevatorAccelPosLimit) && (hek > RobotMap.Values.topElevatorLimitVelocity)) { // Is it approching the top of the elevator and is going rather fast?
+        hek = RobotMap.Values.topElevatorLimitVelocity; // Limit the velocity even more
+      }
+    }
+
+    SetPower(hek); // Apply new velocity
+  }
+
+  public void smartSetPoint(double setpoint) {
+    double a = CtreToSparkEncoder(setpoint) - encoder.getPosition();
+
+    //pidController.setSmart
+  }
+
+  public double CtreToSparkEncoder(double ctre) {
+    return ((ctre / 1024) / 2.5) * 42;
+  }
+
   public void ZeroElevator(){
 
     if (limitSwitchBottom.get()){
@@ -172,6 +227,13 @@ public class Elevator extends Subsystem {
     return e;
   }
 
+  public void updatePID() {
+    pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
+    pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));
+    pidController.setD(SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD));
+    pidController.setFF(SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF));
+  }
+
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Elevator/Elevator volts", master.get());
     SmartDashboard.putNumber("Elevator/Elevator Height: ", GetPosition());
@@ -182,9 +244,9 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator/Elevator Master Temp", getMasterTemp());
     SmartDashboard.putNumber("Elevator/Elevator Follower Temp", getFollowerTemp());
     
-    pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
-    pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));
-    pidController.setD(SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD));
-    pidController.setFF(SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF));
+    SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
+    SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
+    SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
+    SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);
   }
 }

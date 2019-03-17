@@ -6,13 +6,13 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ElevatorArmSetpoint extends Command {
-
+  
   private boolean longWay = false, armMoving = false, elevatorMoving = false, end = false;
   private double angle, height;
 
   private SetElevatorHeight e = null;
   private SetArmPosition a = null;
-
+  
   //TODO: Make height represent inches.
   //TODO: Do we need angle guards?
 

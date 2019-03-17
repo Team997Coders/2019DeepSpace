@@ -27,7 +27,6 @@ public class ArcadeDrive extends Command {
   protected void execute() {
     double front = Robot.oi.getLeftYAxis();
     double turn = Robot.oi.getRightXAxis();
-
     SmartDashboard.putNumber("Drive/Left Y", front);
     SmartDashboard.putNumber("Drive/Turn", turn);
 

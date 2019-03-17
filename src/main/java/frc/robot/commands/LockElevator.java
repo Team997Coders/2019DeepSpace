@@ -22,7 +22,8 @@ public class LockElevator extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-   position = Robot.elevator.GetPosition();
+    position = Robot.elevator.GetPosition();
+    Robot.elevator.updatePID();
   }
 
   // Called repeatedly when this Command is scheduled to run

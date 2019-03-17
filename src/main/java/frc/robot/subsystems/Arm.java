@@ -197,6 +197,13 @@ public class Arm extends Subsystem {
     return a;
   }
 
+  public void updatePID() {
+    pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
+    pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
+    pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));
+    fConstant = SmartDashboard.getNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
+  }
+
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Arm/Arm Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Arm/Absolute Parsed", readEncoder());

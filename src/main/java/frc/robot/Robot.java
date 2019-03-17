@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -73,6 +74,10 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static ButtonBoxOI bb;
   public static LogitechVisionOI logitechVisionOI;
+
+  private double lastTime = 0; // millis seconds
+  private static double deltaTime = 0; // seconds
+  private int loopCount = 0, executeLoopCount = 30;
 
   Command autonomousCommand;
   SendableChooser<AutonomousOptions> chooser = new SendableChooser<>();
@@ -141,6 +146,18 @@ public class Robot extends TimedRobot {
     chooser.addOption("Hab 2", AutonomousOptions.DriveOffHab2);
     SmartDashboard.putData("Auto mode", chooser);
 
+    SmartDashboard.putNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
+    SmartDashboard.putNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
+    SmartDashboard.putNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
+    SmartDashboard.putNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);
+
+    SmartDashboard.putNumber("Elevator Setpoint", 0);
+
+    SmartDashboard.putNumber("Arm Pid P", RobotMap.Values.armPidP);
+    SmartDashboard.putNumber("Arm Pid I", RobotMap.Values.armPidI);
+    SmartDashboard.putNumber("Arm Pid D", RobotMap.Values.armPidD);
+    SmartDashboard.putNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
+    SmartDashboard.putNumber("Arm F", Robot.arm.pidController.getFF());
 
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
@@ -154,6 +171,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    if (loopCount > executeLoopCount) {
+      updateSmartDashboard();
+      loopCount = 0;
+    } else {
+      loopCount++;
+    }
 
     kDeltaTime = (System.currentTimeMillis() - lastTime) / 1000;
     lastTime = System.currentTimeMillis();
@@ -169,13 +192,12 @@ public class Robot extends TimedRobot {
     //cameraControlStateMachine.identifyTargets();
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
     arm.Unlock();
-    //logger.close();
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
-    elevator.ZeroElevator();
+    //elevator.ZeroElevator();
   }
 
   @Override
@@ -236,6 +258,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+
+    oi.reconfigureButtons();
   }
 
   @Override
@@ -252,8 +276,6 @@ public class Robot extends TimedRobot {
 
     arm.Lock();
 
-    //logger.openFile();
-
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
@@ -268,18 +290,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
-    // Set current vision pan/tilt joystick values if Chuck's logitech joystick is plugged in
-    /*if (logitechVisionOI != null) {
-      cameraControlStateMachine.slew(logitechVisionOI.getVisionLeftXAxis(), logitechVisionOI.getVisionLeftYAxis());
-    }*/
-
-    //logger.logAll();
+    oi.reconfigureButtons();
   }
 
   @Override
   public void testPeriodic() {
   }
+
+  public static double getDeltaTime() { return deltaTime; }
 
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();
@@ -293,7 +311,6 @@ public class Robot extends TimedRobot {
     frontInfraredRangeFinder.updateSmartDashboard();
     backInfraredRangeFinder.updateSmartDashboard();
     buttonBox.updateSmartDashboard();
-
     SmartDashboard.putNumber("Delta Time", kDeltaTime);
     SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().isLoaded());
   }
