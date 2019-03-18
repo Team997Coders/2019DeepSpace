@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.buttonbox.ButtonBox.ScoringDirectionStates;
+import frc.robot.commands.LockArm;
 /**
  * Add your docs here.
  */
@@ -66,6 +67,8 @@ public class Arm extends Subsystem {
     pidController.setD(RobotMap.Values.armPidD);
     pidController.setOutputRange(-0.6, 0.6);
 
+    pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
+    
     frontLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     frontLimitSwitch.enableLimitSwitch(false);
     backLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
@@ -154,11 +157,11 @@ public class Arm extends Subsystem {
     SmartDashboard.putBoolean("Brake", false);
   }
 
-  public void Lock() {
+  public void SetIdleBrakeMode() {
     sparkMax.setIdleMode(IdleMode.kBrake);
   }
 
-  public void Unlock() {
+  public void SetIdleCoastMode() {
     sparkMax.setIdleMode(IdleMode.kCoast);
   }
 

@@ -20,10 +20,10 @@ public class LockArm extends Command {
       position = Robot.arm.readEncoder();
       Robot.arm.updatePID();
     }
-    
+
     protected void execute() {
       Robot.arm.SetPostion(position);
-      //System.out.println("Locking Arm at position " + position);
+      System.out.println("Locking Arm at position " + position);
     }
 
     protected boolean isFinished() {
@@ -40,3 +40,4 @@ public class LockArm extends Command {
       end();
     }
 }
+
