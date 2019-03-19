@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 
-public class DeployLandingGear extends Command {
-  public DeployLandingGear() {
+public class DeployBackLandingGear extends Command {
+  public DeployBackLandingGear() {
     requires(Robot.liftGear);
   }
   
@@ -21,14 +21,14 @@ public class DeployLandingGear extends Command {
   
   @Override
   protected void execute() {
-    if (!Robot.liftGear.getPistonState()) {
+    if (!Robot.liftGear.getBackPistonState()) {
       Robot.liftGear.extend();
     }
   }
   
   @Override
   protected boolean isFinished() {
-    return Robot.liftGear.getIRSensorVoltage() < 0.4;
+    return Robot.liftGear.getBackIRSensorVoltage() < 0.4;
   }
 
   @Override

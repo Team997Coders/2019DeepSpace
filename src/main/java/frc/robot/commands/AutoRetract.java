@@ -18,6 +18,7 @@ public class AutoRetract extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.liftGear);
+    requires(Robot.rearGear);
   }
 
   // Called just before this Command runs the first time
@@ -28,9 +29,14 @@ public class AutoRetract extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.liftGear.getIRSensorVoltage() > 0.95) {
+    if (Robot.liftGear.getFrontIRSensorVoltage() > 0.95) {
       retracted = true;
       Robot.liftGear.retract();
+    }
+
+    if (Robot.liftGear.getBackIRSensorVoltage() > 0.95) {
+      retracted = true;
+      Robot.rearGear.retract();
     }
   }
 

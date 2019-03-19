@@ -6,44 +6,36 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import  frc.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.Robot;
 
-// Make a retract command
-public class ToggleLandingGear extends Command {
-  public ToggleLandingGear() {
+public class DeployFrontLandingGear extends Command {
+  public DeployFrontLandingGear() {
     requires(Robot.liftGear);
-    requires(Robot.rearGear);
   }
-
+  
   @Override
   protected void initialize() { }
-
+  
   @Override
   protected void execute() {
-    if (Robot.liftGear.getFrontPistonState()) {
-      Robot.liftGear.retract();
-    } else {
+    if (!Robot.liftGear.getFrontPistonState()) {
       Robot.liftGear.extend();
-    }
-
-    if (Robot.rearGear.getBackPistonState()) {
-      Robot.rearGear.retract();
-    } else {
-      Robot.rearGear.extend();
     }
   }
   
   @Override
   protected boolean isFinished() {
-    return true;
+    return Robot.liftGear.getFrontIRSensorVoltage() < 0.4;
+  }
+
+  @Override
+  protected void end() {
+    Scheduler.getInstance().add(new AutoRetractLandingGear());
   }
   
   @Override
-  protected void end() { }
-  
-  @Override
-  protected void interrupted() {
-    end();
-  }
+  protected void interrupted() { }
 }
