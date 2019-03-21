@@ -18,29 +18,6 @@ import edu.wpi.first.wpilibj.SerialPort;
  */
 public class RobotMap {
   public static class Buttons {
-    public static class ButtonBox {
-      public static int
-        ButtonBoxJoystickId = 1,          
-        hatchJoystickButtonId = 1,
-        ballJoystickButtonId = 2,
-        mediumHeightJoystickButtonId = 3,
-        activateJoystickButtonId = 4,
-        lowHeightJoystickButtonId = 5,
-        frontJoystickButtonId = 6,
-        backJoystickButtonId = 7,
-        rocketJoystickButtonId = 8,
-        cargoShipJoystickButtonId = 9,
-        highHeightJoystickButtonId = 10,
-        cancelJoystickButtonId = 11,
-        intakeJoystickButtonId = 12,
-        AJoystickButtonId = 13,
-        BJoystickButtonId = 14,
-        XJoystickButtonId = 15,
-        leftJoystickHatAngle = 315,
-        centerJoystickHatAngle = 0,
-        rightJoystickHatAngle = 45;      
-    }
-
     public static class Logitech {
       public static int 
         Gamepad4 = 3,
@@ -64,13 +41,13 @@ public class RobotMap {
       buttonA = 1,
       buttonB = 2,
       buttonX = 3,            
-      buttonY = 4,            // TODO: Need to check this
-      buttonLeftShoulder = 5,       // TODO: Need to check this
-      buttonRightShoulder = 6,      // TODO: Need to check this
-      buttonLeftThumbstick = 9,     // TODO: Need to check this
-      buttonRightThumbstick = 10,    // TODO: Need to check this
-      buttonRightTrigger = 9,        // TODO: Need to check this
-      buttonLeftTrigger = 10,      // TODO: Need to check this
+      buttonY = 4,
+      buttonLeftShoulder = 5,
+      buttonRightShoulder = 6,
+      buttonLeftThumbstick = 9,
+      buttonRightThumbstick = 10,
+      buttonRightTrigger = 9,
+      buttonLeftTrigger = 10,
       buttonBack = 7,
       buttonStart = 8,
 
