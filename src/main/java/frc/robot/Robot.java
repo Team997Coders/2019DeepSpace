@@ -9,32 +9,24 @@ package frc.robot;
 
 import com.ctre.phoenix.CANifier;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.AutoDoNothing;
 import frc.robot.commands.PDriveToDistance;
 //import frc.robot.subsystems.Logger;
-import frc.robot.buttonbox.ButtonBox;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.BallManipulator;
-import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
-import frc.robot.vision.CameraControlStateMachine;
-import frc.robot.vision.commands.*;
-import edu.wpi.first.wpilibj.Watchdog;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -56,24 +48,14 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   //public static MotionProfile motionProfile;
   public static PathManager pathManager;
-  public static CameraMount frontCameraMount;
-  public static CameraMount backCameraMount;
-  private NetworkTableInstance networkTableInstance;
-  public static NetworkTable visionNetworkTable;
-  public static CameraControlStateMachine cameraControlStateMachine;
   //public static Logger logger;
-  //public static PowerDistributionPanel pdp;
+  public static PowerDistributionPanel pdp;
   public static LineDetector frontLineDetector;
-  public static LineDetector backLineDetector;
   public static InfraredRangeFinder frontInfraredRangeFinder;
-  public static InfraredRangeFinder backInfraredRangeFinder;
   public static CANifier armCanifier;
   public static CANifier elevatorCanifier;
 
-  public static ButtonBox buttonBox;
   public static OI oi;
-  public static ButtonBoxOI bb;
-  public static LogitechVisionOI logitechVisionOI;
 
   private double lastTime = 0; // millis seconds
   private static double deltaTime = 0; // seconds
@@ -108,21 +90,10 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain();
     //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
     //backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
-    backLineDetector =  new LineDetector(RobotMap.Ports.lineSensorBackLeft, 
-      RobotMap.Ports.lineSensorBackCenter, 
-      RobotMap.Ports.lineSensorBackRight,
-      ButtonBox.ScoringDirectionStates.Back);
     frontLineDetector = new LineDetector(RobotMap.Ports.lineSensorFrontLeft, 
       RobotMap.Ports.lineSensorFrontCenter, 
-      RobotMap.Ports.lineSensorFrontRight, 
-      ButtonBox.ScoringDirectionStates.Front);
-    backInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.backInfraredSensor, ButtonBox.ScoringDirectionStates.Back);
-    frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor, ButtonBox.ScoringDirectionStates.Front);
-
-    //networkTableInstance = NetworkTableInstance.getDefault();
-    //visionNetworkTable = networkTableInstance.getTable("Vision");
-    //cameraControlStateMachine = new CameraControlStateMachine();
-    buttonBox = new ButtonBox();
+      RobotMap.Ports.lineSensorFrontRight);
+    frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor);
 
     // Create the logging instance so we can use it for tuning the PID subsystems
     //logger = Logger.getInstance();
@@ -131,8 +102,8 @@ public class Robot extends TimedRobot {
     // however, we need to clear the faults so that the LEDs on the PDP go green.
     // I can never (and I have tried) find the source of the warnings that cause
     // the LED's to be Amber.
-    //pdp = new PowerDistributionPanel();
-    //pdp.clearStickyFaults();
+    pdp = new PowerDistributionPanel();
+    pdp.clearStickyFaults();
 
     chooser.setDefaultOption("Do Nothing", AutonomousOptions.DoNothing);
     chooser.addOption("Left Cargo Ship", AutonomousOptions.LeftCargoShip);
@@ -158,8 +129,6 @@ public class Robot extends TimedRobot {
 
     // Make these last so to chase away the dreaded null subsystem errors!
     oi = new OI();
-    //bb = new ButtonBoxOI();
-    //logitechVisionOI = new LogitechVisionOI();
 
     //motionProfile = MotionProfile.getInstance();
     
@@ -299,15 +268,10 @@ public class Robot extends TimedRobot {
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
-    //frontCameraMount.updateSmartDashboard();
-    //backCameraMount.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
     frontLineDetector.updateSmartDashboard();
-    backLineDetector.updateSmartDashboard();
     frontInfraredRangeFinder.updateSmartDashboard();
-    backInfraredRangeFinder.updateSmartDashboard();
-    buttonBox.updateSmartDashboard();
     SmartDashboard.putNumber("Delta Time", deltaTime);
     SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().isLoaded());
   }

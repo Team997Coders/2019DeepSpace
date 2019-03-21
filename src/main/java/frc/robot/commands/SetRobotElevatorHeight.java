@@ -8,36 +8,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import frc.robot.buttonbox.ButtonBox;
 import frc.robot.RobotMap;
+import frc.robot.data.RobotState;
 
-public class SetButtonBoxElevatorHeight extends Command {
-  ButtonBox buttonBox;
-
-  public SetButtonBoxElevatorHeight() {
-    this(Robot.buttonBox);
-    // Use requires() here to declare subsystem dependencies
-  }
-
-  public SetButtonBoxElevatorHeight(ButtonBox buttonBox) {
-    this.buttonBox = buttonBox;
-
-    // Use requires() here to declare subsystem dependencies
-  }
+public class SetRobotElevatorHeight extends Command {
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     Command setpoint = null;
 
-    switch (buttonBox.getScoringDirectionState()) {
+    switch (RobotState.getScoringDirectionState()) {
       case Front:
-        switch (buttonBox.getScoringArtifactState()) {
+        switch (RobotState.getScoringArtifactState()) {
           case Ball:
-            switch (buttonBox.getScoringDestinationState()) {
+            switch (RobotState.getScoringDestinationState()) {
               case Rocket:
-                switch (buttonBox.getPositionState()) {
+                switch (RobotState.getPositionState()) {
                   case High:
                     setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, 45);
                     break;
@@ -59,9 +46,9 @@ public class SetButtonBoxElevatorHeight extends Command {
             }
             break;
           case Hatch:
-            switch (buttonBox.getScoringDestinationState()) {
+            switch (RobotState.getScoringDestinationState()) {
               case Rocket:
-                switch (buttonBox.getPositionState()) {
+                switch (RobotState.getPositionState()) {
                   case High:
                     setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight, 0);
                     break;
@@ -90,11 +77,11 @@ public class SetButtonBoxElevatorHeight extends Command {
         }
         break;
       case Back:
-        switch (buttonBox.getScoringArtifactState()) {
+        switch (RobotState.getScoringArtifactState()) {
           case Ball:
-            switch (buttonBox.getScoringDestinationState()) {
+            switch (RobotState.getScoringDestinationState()) {
               case Rocket:
-                switch (buttonBox.getPositionState()) {
+                switch (RobotState.getPositionState()) {
                   case High:
                     setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, 180);
                     break;
@@ -117,9 +104,9 @@ public class SetButtonBoxElevatorHeight extends Command {
             }
             break;
           case Hatch:
-            switch (buttonBox.getScoringDestinationState()) {
+            switch (RobotState.getScoringDestinationState()) {
               case Rocket:
-                switch (buttonBox.getPositionState()) {
+                switch (RobotState.getPositionState()) {
                   case High:
                     setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopHatchHeight, 180);
                     break;

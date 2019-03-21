@@ -26,7 +26,6 @@ public class MotionProfile {
 
   public String name;
 
-	private static MotionProfile instance;
 	private Notifier m_follower_notifier;
 	private EncoderFollower m_left_follower;
 	private EncoderFollower m_right_follower;

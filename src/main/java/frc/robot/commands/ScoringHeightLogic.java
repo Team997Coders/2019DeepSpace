@@ -10,14 +10,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.buttonbox.ButtonBox.ScoringDirectionStates;
+import frc.robot.data.RobotState.ScoringDirectionStates;
 
 public class ScoringHeightLogic extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public ScoringHeightLogic(ScoringDirectionStates armSide, boolean gamePieceType,int scoringHeight, boolean scoreDestination) {
+  public ScoringHeightLogic(boolean gamePieceType,int scoringHeight, boolean scoreDestination) {
     int elevatorHeight= 0;
+    ScoringDirectionStates armSide = ScoringDirectionStates.Front;
     if(armSide != Robot.arm.getArmSide()) {
       if(Robot.elevator.GetPosition() < RobotMap.Values.armSwitchHeight) {
         addSequential(new ElevatorToArmHeight(10));

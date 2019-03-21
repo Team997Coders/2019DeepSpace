@@ -173,12 +173,6 @@ public class Elevator extends Subsystem {
     SetPower(hek); // Apply new velocity
   }
 
-  public void smartSetPoint(double setpoint) {
-    double a = CtreToSparkEncoder(setpoint) - encoder.getPosition();
-
-    //pidController.setSmart
-  }
-
   public double CtreToSparkEncoder(double ctre) {
     return ((ctre / 1024) / 2.5) * 42;
   }

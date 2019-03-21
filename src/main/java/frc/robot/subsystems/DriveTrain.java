@@ -31,7 +31,7 @@ public class DriveTrain extends Subsystem {
 
   // Decell Data
   private double ramp = 4.0;
-  private double prevL = 0, prevR = 0, prevY = 0;
+  private double prevY = 0;
   private double init_angle;
   public boolean gyropresent = false;
 

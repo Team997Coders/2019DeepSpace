@@ -7,8 +7,6 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.RobotMap;
-import frc.robot.commands.ElevatorArmSetpoint;
 import frc.robot.commands.FollowPath;
 
 public class Hab1ToCargoRightRocketLow extends CommandGroup {

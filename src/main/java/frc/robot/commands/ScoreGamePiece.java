@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.buttonbox.ButtonBox.ScoringDirectionStates;
+import frc.robot.data.RobotState.ScoringDirectionStates;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**

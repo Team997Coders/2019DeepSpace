@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 import frc.robot.Robot;
-import frc.robot.subsystems.Elevator;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 import edu.wpi.first.wpilibj.command.Command;
