@@ -89,7 +89,7 @@ public class Arm extends Subsystem {
   
 
   public ScoringDirectionStates getArmSide(){
-    if(readEncoder() < RobotMap.Values.armEncoderCenter){
+    if(readEncoder() < RobotMap.Values.armVertical){
       return ScoringDirectionStates.Front;
     }
     else{
@@ -100,7 +100,7 @@ public class Arm extends Subsystem {
 
   // This function only works if the inital read of the arm is horizontal
   public void UpdateF(){
-     pidController.setFF((Math.abs(Math.cos(readEncoder() - RobotMap.ElevatorHeights.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant);
+     pidController.setFF((Math.abs(Math.cos(readEncoder() - RobotMap.Values.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant);
   }
 
   public double getCurrent() {

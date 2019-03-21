@@ -162,27 +162,28 @@ public class RobotMap {
 
       //
 
-      inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
-      ticksPerFoot = ((49152/(3.97*Math.PI)))*.9, //3940, //encoder ticks per foot
+      wheelDiameter = 6.0,
+      inchesPerTick = (wheelDiameter*Math.PI)/4096, //inches per encoder tick
+      ticksPerFoot = ((49152/(wheelDiameter*Math.PI)))*.9, //3940, //encoder ticks per foot
 
       //INFRARED DISTANCES for Line Following
-      frontUltrasonicSensorHatchCargoship = 91,     //TODO: Need to check this      
+      frontUltrasonicSensorHatchCargoship = 91,     
       frontInfraredSensorHatchCargoship = 550,      
-      frontUltrasonicSensorHatchRocket = 5,         //TODO: Need to check this   
-      frontInfraredSensorHatchRocket = 5,           //TODO: Need to check this 
-      frontUltrasonicSensorBallCargoship = 5,       //TODO: Need to check this      
-      frontInfraredSensorBallCargoship = 5,         //TODO: Need to check this      
-      frontUltrasonicSensorBallRocket = 5,          //TODO: Need to check this   
-      frontInfraredSensorBallRocket = 5,            //TODO: Need to check this   
+      frontUltrasonicSensorHatchRocket = 5,  
+      frontInfraredSensorHatchRocket = 5,
+      frontUltrasonicSensorBallCargoship = 5,      
+      frontInfraredSensorBallCargoship = 5,      
+      frontUltrasonicSensorBallRocket = 5,   
+      frontInfraredSensorBallRocket = 5,  
       backInfraredSensorHatchCargoship = 1200,  
-      backInfraredSensorBallRocket = 5,             //TODO: Need to check this
-      backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
+      backInfraredSensorBallRocket = 5, 
+      backInfraredSensorBallCargoship = 5,
 
       // Line following voltage values
-      powerMotor = 0.5,       //TODO: Need to check this 
-      noPowerMotor = -.25,    //TODO: Need to check this 
-      normal = .10,        //for double line seen
-      straight = .3,          //TODO: Need to check this 
+      powerMotor = 0.5, 
+      noPowerMotor = -.25,
+      normal = .10,
+      straight = .3, 
 
       // Arm and Elevator Values
       elevatorPidP = 0.00005, // 0.0005
@@ -192,16 +193,16 @@ public class RobotMap {
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
-      armEncoderCenter= 462,//another place holder
-      armFrontLimit = 195, //encoder ticks @ the front limit. placeholder.
-      armBackLimit = 702, //encoder ticks @ the back limit. placeholder.
+      armBackParallel = 702,
+      armFrontParallel = 195,
+      armVertical = 462,
 
       armPidP = 0.0006,
       armPidI = 0,
       armPidD = 0,
       armPidK = 0,
       armMaxPidF = 0.0055, // 0.0055
-      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit)),
+      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackParallel-armFrontParallel)),
 
       // Camera values
       leftAngleInDegrees = 75,
@@ -212,6 +213,7 @@ public class RobotMap {
       bottomElevatorLimitVelocity = -0.28,
       topElevatorAccelPosLimit = 49000,
       topElevatorLimitVelocity = 0.4,
+
       //PathFnder values
       pf_timestep = 0.02,
       pf_max_vel = 2.5, // max velocity in ft/sec.
@@ -257,13 +259,7 @@ public class RobotMap {
       elevatorFrontBottomCargoHeight = 22200,
       elevatorFrontShipCargoHeight = 38125,
 
-      elevatorCollectCargoHeight = 0,
-      
-      elevatorSafeFlipHeight = 23000,
-
-      armBackParallel = 702,
-      armFrontParallel = 195,
-      armVertical = 462;
+      elevatorCollectCargoHeight = 0;
 
       public static int[]
       elevatorFrontHatchHeightArray = {

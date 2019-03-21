@@ -7,8 +7,6 @@
 package frc.robot.commands;
 
 import frc.robot.data.RobotState;
-import frc.robot.data.RobotState.ScoringArtifactStates;
-import frc.robot.data.RobotState.ScoringDestinationStates;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LineDetector;
