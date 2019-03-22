@@ -188,7 +188,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     //cameraControlStateMachine.identifyTargets();
     driveTrain.setCoast(); // So the drivers don't want to kill us ;)
-    arm.Unlock();
+    arm.SetIdleCoastMode();
   }
 
   @Override
@@ -271,7 +271,7 @@ public class Robot extends TimedRobot {
 
     System.out.println("---------------------");
 
-    arm.Lock();
+    arm.SetIdleBrakeMode();
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
