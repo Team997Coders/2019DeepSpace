@@ -16,7 +16,7 @@ public class LockArm extends Command {
     }
     
     protected void initialize() {
-      //Robot.arm.engageBrake();
+      Robot.arm.engageBrake();
       position = Robot.arm.readEncoder();
       Robot.arm.updatePID();
     }
@@ -32,7 +32,7 @@ public class LockArm extends Command {
 
     protected void end() {
       //Robot.arm.SetPostion(Robot.arm.readEncoder());
-      Robot.arm.releaseBrake();
+      //Robot.arm.releaseBrake();
     }
 
     protected void interrupted() {

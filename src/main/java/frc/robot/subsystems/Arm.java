@@ -56,7 +56,7 @@ public class Arm extends Subsystem {
 
     sparkMax.setInverted(true);
 
-    sparkMax.setOpenLoopRampRate(0);
+    //sparkMax.setOpenLoopRampRate(0);
 
     //sparkMax.setIdleMode(IdleMode.kBrake);
     
@@ -72,6 +72,8 @@ public class Arm extends Subsystem {
     backLimitSwitch.enableLimitSwitch(false);
 
     dataBus = Robot.armCanifier;
+
+    pidController.setReference(0.0, ControlType.kDutyCycle);
 
     discBrake = new Solenoid(RobotMap.Ports.discBrake);
 
