@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.AutoDoNothing;
 import frc.robot.commands.PDriveToDistance;
+import frc.robot.commands.auto.Hab1ToCargoRightRocketLow;
 //import frc.robot.subsystems.Logger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -37,7 +38,7 @@ import frc.robot.subsystems.LineDetector;
  */
 public class Robot extends TimedRobot {
 
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
 
   public static Arm arm;
  // public StaticDeoptimizingNode;               
@@ -79,13 +80,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    armCanifier = new CANifier(RobotMap.Ports.armCanifier);
-    elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
-    arm = new Arm();
-    ballManipulator = new BallManipulator();
+    //armCanifier = new CANifier(RobotMap.Ports.armCanifier);
+    //elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
+    //arm = new Arm();
+    //ballManipulator = new BallManipulator();
     //pdp = new PowerDistributionPanel();
-    hatchManipulator = new HatchManipulator();
-    elevator = new Elevator();
+    //hatchManipulator = new HatchManipulator();
+    //elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
@@ -218,7 +219,9 @@ public class Robot extends TimedRobot {
           autonomousCommand = new PDriveToDistance(0.4, 9);
       }
     }
-    autonomousCommand.start();
+    //autonomousCommand.start();
+
+    Scheduler.getInstance().add(new Hab1ToCargoRightRocketLow());
   }
 
   @Override
@@ -266,7 +269,7 @@ public class Robot extends TimedRobot {
   public static double getDeltaTime() { return deltaTime; }
 
   public void updateSmartDashboard() {
-    liftGear.updateSmartDashboard();
+    //liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();

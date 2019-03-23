@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
+import frc.robot.commands.auto.Hab1ToCargoRightRocketLow;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -50,8 +51,8 @@ public class OI {
     driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
     driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
     
-    followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
-    followLine.whenPressed(new FollowLine(1000));
+    //followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    //followLine.whenPressed(new FollowLine(1000));
 
     //#endregion
 
@@ -66,8 +67,8 @@ public class OI {
     ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballIntake.whileHeld(new BallIntake());
 
-    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
-    ballOutake.whileHeld(new BallOuttake());
+    //ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    //ballOutake.whileHeld(new BallOuttake());
 
     autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);

@@ -129,7 +129,9 @@ public class DriveTrain extends Subsystem {
 
   public double getGyroAngle(){
     if (gyro != null){
-    return gyro.getAngle();
+    //return gyro.getAngle();
+    return (gyro.getAngle()-Math.floor(gyro.getAngle()/360)*360);
+    //Not TESTED
   } else{
     return 0;
   }
