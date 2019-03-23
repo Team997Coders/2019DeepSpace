@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
   public static BallManipulator ballManipulator;
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
+  public static LiftGear rearGear;
   public static DriveTrain driveTrain;
   //public static MotionProfile motionProfile;
   public static PathManager pathManager;
@@ -88,6 +89,7 @@ public class Robot extends TimedRobot {
     //hatchManipulator = new HatchManipulator();
     //elevator = new Elevator();
     liftGear = new LiftGear();
+    rearGear = new LiftGear();
     driveTrain = new DriveTrain();
     //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
     //backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
@@ -269,7 +271,8 @@ public class Robot extends TimedRobot {
   public static double getDeltaTime() { return deltaTime; }
 
   public void updateSmartDashboard() {
-    //liftGear.updateSmartDashboard();
+    rearGear.updateSmartDashboard();
+    liftGear.updateSmartDashboard();
     driveTrain.updateSmartDashboard();
     arm.updateSmartDashboard();
     elevator.updateSmartDashboard();

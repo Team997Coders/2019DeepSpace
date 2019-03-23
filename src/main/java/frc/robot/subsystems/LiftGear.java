@@ -18,28 +18,39 @@ import frc.robot.RobotMap;
  */
 public class LiftGear extends Subsystem {
 
-  private Solenoid piston;
-  private AnalogInput distanceIR;
+  private Solenoid frontPiston;
+  private Solenoid backPiston;
+  private AnalogInput frontDistanceIR;
+  private AnalogInput backDistanceIR;
 
+  public void RearGear() {
+    backPiston = new Solenoid(RobotMap.Ports.rearGearPiston);
+    backPiston.set(false);
+
+    backDistanceIR = new AnalogInput(RobotMap.Ports.rearGearFloorSensor);
+  }
+  
   public LiftGear() {
-    piston = new Solenoid(RobotMap.Ports.landingGearPiston);
-    piston.set(false);
+    frontPiston = new Solenoid(RobotMap.Ports.landingGearPiston);
+    frontPiston.set(false);
 
-    distanceIR = new AnalogInput(RobotMap.Ports.landingGearFloorSensor);
+    frontDistanceIR = new AnalogInput(RobotMap.Ports.landingGearFloorSensor);
   }
   
   /**
    * Extends the single solenoid piston
    */
   public void extend() {
-    piston.set(true);
+    frontPiston.set(true);
+    backPiston.set(true);
   }
 
   /**
    * Retracts the single solenoid piston
    */
   public void retract() {
-    piston.set(false);
+    frontPiston.set(false);
+    backPiston.set(false);
   }
 
   /**
@@ -47,7 +58,8 @@ public class LiftGear extends Subsystem {
    * 
    * @return True for piston is extended and False for retracted
    */
-  public boolean getPistonState() { return piston.get(); }
+  public boolean getFrontPistonState() { return frontPiston.get(); }
+  public boolean getBackPistonState() { return backPiston.get(); }
 
   /**
    * Gets the voltage coming for the Infared Sensor's analog input
@@ -55,15 +67,20 @@ public class LiftGear extends Subsystem {
    * @return The voltage from the sensor. (For proto bot) Either around 1 ish for on
    * the ground or around 0.3 ish for up in the air
    */
-  public double getIRSensorVoltage() {
-    return distanceIR.getVoltage();
+  public double getFrontIRSensorVoltage() {
+    return frontDistanceIR.getVoltage();
+  }
+
+  public double getBackIRSensorVoltage() {
+    return backDistanceIR.getVoltage();
   }
 
   /**
    * Updates the SmartDashboard with subsystem data
    */
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Distance IR", distanceIR.getVoltage());
+    SmartDashboard.putNumber("Front Distance IR", frontDistanceIR.getVoltage());
+    SmartDashboard.putNumber("Back Distance IR", backDistanceIR.getVoltage());
   }
 
   @Override
