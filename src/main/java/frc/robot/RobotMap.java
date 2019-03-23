@@ -107,7 +107,7 @@ public class RobotMap {
       //LANDING GEAR PORTS
       landingGearPiston = 0,
       landingGearFloorSensor = 1,
-      rearGearPiston = 420, //TODO: find the actual port value for this
+      rearGearPiston = 3, //TODO: find the actual port value for this
       rearGearFloorSensor = 69, //TODO: find the actual port value for this
 
       //CAMERA PORTS

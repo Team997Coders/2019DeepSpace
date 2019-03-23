@@ -28,6 +28,7 @@ public class OI {
   public JoystickButton ArmReverse; // Start 2
 
   private JoystickButton deployLandingGear; // B 1
+  private JoystickButton deployBackLandingGear; // Y 1
   private JoystickButton retractLandingGear; // Back 1
   private JoystickButton toggleHatch; // B 2
   private JoystickButton followLine; // A 1
@@ -44,6 +45,9 @@ public class OI {
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new DeployFrontLandingGear());
+
+    deployBackLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
+    deployBackLandingGear.toggleWhenPressed(new DeployBackLandingGear());
 
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());

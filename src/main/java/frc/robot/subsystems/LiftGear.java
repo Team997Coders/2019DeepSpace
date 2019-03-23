@@ -80,7 +80,7 @@ public class LiftGear extends Subsystem {
    */
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Front Distance IR", frontDistanceIR.getVoltage());
-    SmartDashboard.putNumber("Back Distance IR", backDistanceIR.getVoltage());
+    //SmartDashboard.putNumber("Back Distance IR", backDistanceIR.getVoltage());
   }
 
   @Override

@@ -22,20 +22,26 @@ public class DeployBackLandingGear extends Command {
   @Override
   protected void execute() {
     if (!Robot.liftGear.getBackPistonState()) {
-      Robot.liftGear.extend();
+      Robot.rearGear.extend();
     }
   }
   
   @Override
   protected boolean isFinished() {
-    return Robot.liftGear.getBackIRSensorVoltage() < 0.4;
+    return false;
   }
 
   @Override
   protected void end() {
-    Scheduler.getInstance().add(new AutoRetractLandingGear());
+    if (Robot.liftGear.getBackPistonState()) {
+      Robot.rearGear.retract();
+    }
   }
   
   @Override
-  protected void interrupted() { }
+  protected void interrupted() { 
+    if (Robot.liftGear.getBackPistonState()) {
+      Robot.rearGear.retract();
+    }
+  }
 }
