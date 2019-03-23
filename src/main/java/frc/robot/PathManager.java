@@ -21,7 +21,7 @@ public class PathManager {
   private static PathManager instance = null;
 
   private Queue<String> pathnames;
-  private ArrayList<MotionProfile> profiles;
+  public ArrayList<MotionProfile> profiles;
 
   private Thread[] daemons;
   private final int daemonCount = 2;

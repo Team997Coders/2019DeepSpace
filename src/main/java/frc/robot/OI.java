@@ -43,7 +43,7 @@ public class OI {
     //#region Gamepad1 Controls
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
-    deployLandingGear.whenPressed(new DeployLandingGear());
+    deployLandingGear.whenPressed(new DeployFrontLandingGear());
 
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
