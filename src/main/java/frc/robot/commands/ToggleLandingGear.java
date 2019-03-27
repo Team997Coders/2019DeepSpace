@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ToggleLandingGear extends Command {
   public ToggleLandingGear() {
     requires(Robot.liftGear);
-    requires(Robot.rearGear);
   }
 
   @Override
@@ -22,15 +21,15 @@ public class ToggleLandingGear extends Command {
   @Override
   protected void execute() {
     if (Robot.liftGear.getFrontPistonState()) {
-      Robot.liftGear.retract();
+      Robot.liftGear.retractFront();
     } else {
-      Robot.liftGear.extend();
+      Robot.liftGear.extendFront();
     }
 
-    if (Robot.rearGear.getBackPistonState()) {
-      Robot.rearGear.retract();
+    if (Robot.liftGear.getBackPistonState()) {
+      Robot.liftGear.retractBack();
     } else {
-      Robot.rearGear.extend();
+      Robot.liftGear.extendBack();
     }
   }
   

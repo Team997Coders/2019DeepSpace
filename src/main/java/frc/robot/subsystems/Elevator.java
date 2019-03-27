@@ -238,9 +238,5 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator/Elevator Master Temp", getMasterTemp());
     SmartDashboard.putNumber("Elevator/Elevator Follower Temp", getFollowerTemp());
     
-    SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP);
-    SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI);
-    SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD);
-    SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF);
   }
 }

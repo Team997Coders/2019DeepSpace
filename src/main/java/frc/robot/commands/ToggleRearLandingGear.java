@@ -10,14 +10,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class AutoRetract extends Command {
-
-  private boolean retracted = false;
-
-  public AutoRetract() {
+public class ToggleRearLandingGear extends Command {
+  public ToggleRearLandingGear() {
+    requires(Robot.liftGear);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.liftGear);
   }
 
   // Called just before this Command runs the first time
@@ -28,21 +25,17 @@ public class AutoRetract extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.liftGear.getFrontIRSensorVoltage() > 0.95) {
-      retracted = true;
-      Robot.liftGear.retractFront();
-    }
-
-    if (Robot.liftGear.getBackIRSensorVoltage() > 0.95) {
-      retracted = true;
+    if (Robot.liftGear.getBackPistonState()) {
       Robot.liftGear.retractBack();
+    } else {
+      Robot.liftGear.extendBack();
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return retracted;
+    return true;
   }
 
   // Called once after isFinished returns true

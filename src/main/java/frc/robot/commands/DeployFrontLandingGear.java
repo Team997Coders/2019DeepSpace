@@ -22,7 +22,7 @@ public class DeployFrontLandingGear extends Command {
   @Override
   protected void execute() {
     if (!Robot.liftGear.getFrontPistonState()) {
-      Robot.liftGear.extend();
+      Robot.liftGear.extendFront();
     }
   }
   

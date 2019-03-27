@@ -14,7 +14,6 @@ public class AutoRetractLandingGear extends Command {
 
   public AutoRetractLandingGear() {
     requires(Robot.liftGear);
-    requires(Robot.rearGear);
   }
   
   @Override
@@ -25,11 +24,11 @@ public class AutoRetractLandingGear extends Command {
 
     // If the IR sensor detects the platform
     if (Robot.liftGear.getFrontIRSensorVoltage() > 0.95) {
-      Robot.liftGear.retract();
+      Robot.liftGear.retractFront();
     }
 
-    if (Robot.rearGear.getBackIRSensorVoltage() > 0.95) {
-      Robot.rearGear.retract();
+    if (Robot.liftGear.getBackIRSensorVoltage() > 0.95) {
+      Robot.liftGear.retractBack();
     }
   }
   

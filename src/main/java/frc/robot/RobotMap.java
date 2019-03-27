@@ -46,8 +46,6 @@ public class RobotMap {
       buttonRightShoulder = 6,
       buttonLeftThumbstick = 9,
       buttonRightThumbstick = 10,
-      buttonRightTrigger = 9,
-      buttonLeftTrigger = 10,
       buttonBack = 7,
       buttonStart = 8,
 
@@ -56,6 +54,8 @@ public class RobotMap {
       leftYAxis = 1,
       rightXAxis = 4,
       rightYAxis = 5,
+      buttonRightTrigger = 3,
+      buttonLeftTrigger = 2,
 
       end_of_buttons;
   }

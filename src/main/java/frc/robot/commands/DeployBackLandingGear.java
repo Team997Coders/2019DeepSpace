@@ -22,7 +22,7 @@ public class DeployBackLandingGear extends Command {
   @Override
   protected void execute() {
     if (!Robot.liftGear.getBackPistonState()) {
-      Robot.rearGear.extend();
+      Robot.liftGear.extendBack();
     }
   }
   
@@ -34,14 +34,14 @@ public class DeployBackLandingGear extends Command {
   @Override
   protected void end() {
     if (Robot.liftGear.getBackPistonState()) {
-      Robot.rearGear.retract();
+      Robot.liftGear.retractBack();
     }
   }
   
   @Override
   protected void interrupted() { 
     if (Robot.liftGear.getBackPistonState()) {
-      Robot.rearGear.retract();
+      Robot.liftGear.retractBack();
     }
   }
 }

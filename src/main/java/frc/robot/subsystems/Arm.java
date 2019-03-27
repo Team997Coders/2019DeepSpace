@@ -210,16 +210,13 @@ public class Arm extends Subsystem {
     SmartDashboard.putNumber("Arm/Absolute Parsed", readEncoder());
     SmartDashboard.putBoolean("Arm/Disc Brake state: ", discBrake.get());
     SmartDashboard.putBoolean("Arm/Arm forward limit switch", getForwardLimitSwitch());
-    pidController.setP(SmartDashboard.getNumber("Arm/Arm Pid P", RobotMap.Values.armPidP));
-    pidController.setI(SmartDashboard.getNumber("Arm/Arm Pid I", RobotMap.Values.armPidI));
-    pidController.setD(SmartDashboard.getNumber("Arm/Arm Pid D", RobotMap.Values.armPidD));
-    fConstant = SmartDashboard.getNumber("Arm/Arm Pid F", RobotMap.Values.armMaxPidF);
+
     SmartDashboard.putNumber("Arm/Arm F", pidController.getFF());
-    SmartDashboard.putBoolean("Arm/Arm Front Limit", frontLimitSwitch.get());
-    SmartDashboard.putBoolean("Arm/Arm Back Limit", backLimitSwitch.get());
+    SmartDashboard.putBoolean("Arm/Arm Front Limit Switch", frontLimitSwitch.get());
+    SmartDashboard.putBoolean("Arm/Arm Back Limit Switch", backLimitSwitch.get());
     SmartDashboard.putNumber("Arm/Arm voltage", sparkMax.getAppliedOutput());
     SmartDashboard.putNumber("Arm/Arm Current", getCurrent());
-    SmartDashboard.putNumber("Arm/Arm Motor Temp", getMotorTemp());
+    //SmartDashboard.putNumber("Arm/Arm Motor Temp", getMotorTemp());
   }
 
 

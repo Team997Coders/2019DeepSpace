@@ -40,16 +40,22 @@ public class LiftGear extends Subsystem {
   /**
    * Extends the single solenoid piston
    */
-  public void extend() {
+  public void extendFront() {
     frontPiston.set(true);
-    backPiston.set(true);
   }
 
   /**
    * Retracts the single solenoid piston
    */
-  public void retract() {
+  public void retractFront() {
     frontPiston.set(false);
+  }
+
+  public void extendBack() {
+    backPiston.set(true);
+  }
+
+  public void retractBack() {
     backPiston.set(false);
   }
 

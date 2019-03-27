@@ -13,7 +13,6 @@ import frc.robot.Robot;
 public class RetractLandingGear extends Command {
   public RetractLandingGear() {
     requires(Robot.liftGear);
-    requires(Robot.rearGear);
   }
   
   @Override
@@ -21,8 +20,8 @@ public class RetractLandingGear extends Command {
   
   @Override
   protected void execute() { 
-    Robot.liftGear.retract();
-    Robot.rearGear.retract();
+    Robot.liftGear.retractFront();
+    Robot.liftGear.retractBack();
   }
   
   @Override
