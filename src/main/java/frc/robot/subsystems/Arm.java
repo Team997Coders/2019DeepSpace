@@ -84,7 +84,7 @@ public class Arm extends Subsystem {
 
   public void setPower(double speed) {
     //sparkMax.set(speed);
-    pidController.setReference(speed, ControlType.kDutyCycle);
+    pidController.setReference(speed*0.7, ControlType.kDutyCycle);
   }
   
 

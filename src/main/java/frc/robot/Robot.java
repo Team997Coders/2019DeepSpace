@@ -15,9 +15,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import frc.robot.commands.AutoDoNothing;
-import frc.robot.commands.PDriveToDistance;
 import frc.robot.commands.auto.Hab1ToCargoRightRocketLow;
 import frc.robot.commands.*;
 //import frc.robot.subsystems.Logger;
@@ -29,6 +26,7 @@ import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
+import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -80,7 +78,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
+    CameraServer.getInstance().startAutomaticCapture();
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
@@ -236,6 +234,7 @@ public class Robot extends TimedRobot {
     System.out.println("---------------------");
 
     arm.SetIdleBrakeMode();
+    Scheduler.getInstance().add(new LockArm());
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -252,6 +251,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     oi.reconfigureButtons();
+    elevator.ZeroElevator();
   }
 
   @Override
@@ -272,6 +272,7 @@ public class Robot extends TimedRobot {
   }
 
   public void updateSmartDashboardRequired() {
+    elevator.updateSmartDashboard();
     SmartDashboard.putNumber("Delta Time", deltaTime);
   }
 

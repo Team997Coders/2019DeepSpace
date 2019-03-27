@@ -68,10 +68,10 @@ public class OI {
     ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
     ArmReverse.whileHeld(new MoveArm(0.5));
 
-    ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
+    ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
     ballIntake.whileHeld(new BallIntake());
 
-    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballOutake.whileHeld(new BallOuttake());
 
     autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
@@ -79,7 +79,7 @@ public class OI {
     elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
 
-    //autoDriveToTarget.whenPressed(new AutoDriveToTarget());
+    autoDriveToTarget.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight, 100));
     //toggleHatch.whenPressed(new ToggleHatch());
     //elevatorGoDown.whileHeld(new ElevatorDownity());
     //elevatorGoUp.whileHeld(new ElevatorUppity());

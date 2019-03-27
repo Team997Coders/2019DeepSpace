@@ -169,9 +169,9 @@ public class RobotMap {
       elevatorPidF = 0.0000,
       elevatorTopHeight = 100000000, //placeholder
 
-      armSwitchHeight= 9002, //placeholer for height in order for arm to switch
-      armBackParallel = 600,
-      armFrontParallel = 98,
+      armSwitchHeight= 22775, //placeholer for height in order for arm to switch
+      armBackParallel = 500,
+      armFrontParallel = 44,
       armVertical = 462,
 
       armPidP = 0.0012,
@@ -226,9 +226,9 @@ public class RobotMap {
       elevatorBackBottomCargoHeight = 9100,
       elevatorBackShipCargoHeight = 24650,
 
-      elevatorFrontTopHatchHeight = 52400, // probably higher
-      elevatorFrontMiddleHatchHeight = 30530,
-      elevatorFrontBottomHatchHeight = 1520,
+      elevatorFrontTopHatchHeight = 52317, // probably higher
+      elevatorFrontMiddleHatchHeight = 28360,
+      elevatorFrontBottomHatchHeight = 0,
       elevatorFrontShipHatchHeight = 1520,
 
       elevatorFrontTopCargoHeight = 52400,
