@@ -44,10 +44,10 @@ public class OI {
     //#region Gamepad1 Controls
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
-    deployLandingGear.whenPressed(new DeployFrontLandingGear());
+    deployLandingGear.whenPressed(new ToggleFrontLandingGear());
 
     deployBackLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
-    deployBackLandingGear.toggleWhenPressed(new DeployBackLandingGear());
+    deployBackLandingGear.whenPressed(new ToggleRearLandingGear());
 
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
@@ -71,8 +71,8 @@ public class OI {
     ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballIntake.whileHeld(new BallIntake());
 
-    //ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
-    //ballOutake.whileHeld(new BallOuttake());
+    ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
+    ballOutake.whileHeld(new BallOuttake());
 
     autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);

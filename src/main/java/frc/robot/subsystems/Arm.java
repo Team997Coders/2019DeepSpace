@@ -146,12 +146,12 @@ public class Arm extends Subsystem {
   }
 
   public void engageBrake() {
-    discBrake.set(false);
+    //discBrake.set(false);
     SmartDashboard.putBoolean("Brake", true);
   }
 
   public void releaseBrake() {
-    discBrake.set(true);
+    //discBrake.set(true);
     SmartDashboard.putBoolean("Brake", false);
   }
 

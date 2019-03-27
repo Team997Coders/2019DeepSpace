@@ -24,7 +24,7 @@ public class PathManager {
   public ArrayList<MotionProfile> profiles;
 
   private Thread[] daemons;
-  private final int daemonCount = 2;
+  private final int daemonCount = 1;
 
   /**
    * Implement the singleton pattern
@@ -58,6 +58,7 @@ public class PathManager {
     pathnames.add("Hab1MiddleToShipRight");
     pathnames.add("ShipRightToLoadingStationRight");
     pathnames.add("LoadingStationRightToCargoCenterLeft");
+    pathnames.add("DriftRight");
 
     daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {

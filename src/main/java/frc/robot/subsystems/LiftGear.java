@@ -22,19 +22,17 @@ public class LiftGear extends Subsystem {
   private Solenoid backPiston;
   private AnalogInput frontDistanceIR;
   private AnalogInput backDistanceIR;
-
-  public void RearGear() {
-    backPiston = new Solenoid(RobotMap.Ports.rearGearPiston);
-    backPiston.set(false);
-
-    backDistanceIR = new AnalogInput(RobotMap.Ports.rearGearFloorSensor);
-  }
   
   public LiftGear() {
     frontPiston = new Solenoid(RobotMap.Ports.landingGearPiston);
     frontPiston.set(false);
 
     frontDistanceIR = new AnalogInput(RobotMap.Ports.landingGearFloorSensor);
+
+    backPiston = new Solenoid(RobotMap.Ports.rearGearPiston);
+    backPiston.set(false);
+
+    //backDistanceIR = new AnalogInput(RobotMap.Ports.rearGearFloorSensor);
   }
   
   /**

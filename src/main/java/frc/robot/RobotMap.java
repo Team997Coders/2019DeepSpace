@@ -127,8 +127,8 @@ public class RobotMap {
   public static class Values {
     public static int 
       ticksPerRev = 4096; // Protobot
+      //PDriveToDistance PID Variables
     public static double
-      // PDriveToDistance PID Variables
       driveDistanceP = .003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
@@ -138,8 +138,6 @@ public class RobotMap {
       driveAngleP = .007, //placeholders
       driveAngleI = 0.0,
       driveAngleD = 0.0,
-
-      //
 
       wheelDiameter = 6.0,
       inchesPerTick = (wheelDiameter*Math.PI)/4096, //inches per encoder tick
@@ -167,18 +165,18 @@ public class RobotMap {
       // Arm and Elevator Values
       elevatorPidP = 0.00005, // 0.0005
       elevatorPidI = 0.0,
-      elevatorPidD = 0.000, // 0.0005
+      elevatorPidD = 0.005, // 0.0005
       elevatorPidF = 0.0000,
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 9002, //placeholer for height in order for arm to switch
-      armBackParallel = 702,
-      armFrontParallel = 195,
+      armBackParallel = 600,
+      armFrontParallel = 98,
       armVertical = 462,
 
-      armPidP = 0.0006,
+      armPidP = 0.0012,
       armPidI = 0,
-      armPidD = 0,
+      armPidD = 0.001,
       armPidK = 0,
       armMaxPidF = 0.0055, // 0.0055
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackParallel-armFrontParallel)),
