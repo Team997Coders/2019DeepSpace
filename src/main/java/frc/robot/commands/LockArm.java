@@ -22,7 +22,7 @@ public class LockArm extends Command {
 
     protected void execute() {
       Robot.arm.SetPostion(position);
-      System.out.println("Locking Arm at position " + position);
+      //System.out.println("Locking Arm at position " + position);
     }
 
     protected boolean isFinished() {
@@ -30,12 +30,12 @@ public class LockArm extends Command {
     }
 
     protected void end() {
-      //Robot.arm.SetPostion(Robot.arm.readEncoder());
+      Robot.arm.SetPostion(Robot.arm.readEncoder());
       Robot.arm.releaseBrake();
     }
 
     protected void interrupted() {
-      System.out.println("arm lock interrupted");
+      //System.out.println("arm lock interrupted");
       end();
     }
 }

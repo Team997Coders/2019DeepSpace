@@ -37,7 +37,7 @@ import edu.wpi.first.cameraserver.CameraServer;
  */
 public class Robot extends TimedRobot {
 
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
 
   public static Arm arm;
  // public StaticDeoptimizingNode;               
@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
+  public static CameraServer cameraServer;
   //public static MotionProfile motionProfile;
   public static PathManager pathManager;
   //public static Logger logger;
@@ -78,7 +79,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    CameraServer.getInstance().startAutomaticCapture();
+    cameraServer = CameraServer.getInstance();
+    cameraServer.startAutomaticCapture(0);
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
@@ -120,7 +122,7 @@ public class Robot extends TimedRobot {
 
     //motionProfile = MotionProfile.getInstance();
     
-    pathManager = PathManager.getInstance();
+    //pathManager = PathManager.getInstance();
   }
 
   @Override
@@ -134,6 +136,9 @@ public class Robot extends TimedRobot {
 
     deltaTime = (System.currentTimeMillis() - lastTime) / 1000;
     lastTime = System.currentTimeMillis();
+
+    boolean safe = elevator.GetPosition() > RobotMap.Values.armSwitchHeight + 2000;
+    SmartDashboard.putBoolean("wtf/Safe?", safe);
 
     if (DEBUG)
       updateSmartDashboard();
@@ -156,6 +161,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+
+    arm.SetIdleBrakeMode();
+    Scheduler.getInstance().add(new LockArm());
     
 
     // NOTE: There must be a delay of AT LEAST 20ms to give
@@ -206,19 +214,22 @@ public class Robot extends TimedRobot {
           autonomousCommand = new PDriveToDistance(0.4, 9);
           break;
         case TestMotionProfile:
-          autonomousCommand = new FollowPath(PathManager.getInstance().profiles.get(3));
+          autonomousCommand = new AutoDoNothing();//FollowPath(PathManager.getInstance().profiles.get(3));
+          break;
+        default:
+          autonomousCommand = new AutoDoNothing();
       }
     }
     //autonomousCommand.start();
 
-    Scheduler.getInstance().add(new Hab1ToCargoRightRocketLow());
+    //Scheduler.getInstance().add(new Hab1ToCargoRightRocketLow());
   }
 
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
 
-    oi.reconfigureButtons();
+    //oi.reconfigureButtons();
   }
 
   @Override
@@ -250,7 +261,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    oi.reconfigureButtons();
+    //oi.reconfigureButtons();
     elevator.ZeroElevator();
   }
 
@@ -262,17 +273,17 @@ public class Robot extends TimedRobot {
 
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();
-    driveTrain.updateSmartDashboard();
+    //driveTrain.updateSmartDashboard();
     arm.updateSmartDashboard();
-    elevator.updateSmartDashboard();
-    frontLineDetector.updateSmartDashboard();
-    frontInfraredRangeFinder.updateSmartDashboard();
+    //elevator.updateSmartDashboard();
+    //frontLineDetector.updateSmartDashboard();
+    //frontInfraredRangeFinder.updateSmartDashboard();
     SmartDashboard.putNumber("Delta Time", deltaTime);
-    SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().isLoaded());
+    //SmartDashboard.putBoolean("Paths Loaded", PathManager.getInstance().isLoaded());
   }
 
   public void updateSmartDashboardRequired() {
-    elevator.updateSmartDashboard();
+    //elevator.updateSmartDashboard();
     SmartDashboard.putNumber("Delta Time", deltaTime);
   }
 

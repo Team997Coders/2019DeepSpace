@@ -3,22 +3,21 @@
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.auto;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.FollowPath;
-import frc.robot.*;
+import frc.robot.RobotMap;
 
-public class Hab1ToCargoRightRocketLow extends CommandGroup {
+public class FlipArmCmdGroup extends CommandGroup {
   /**
-   * Flips arm to the front and set elevator height to FrontBottomCargo
+   * Add your docs here.
    */
-  public Hab1ToCargoRightRocketLow() {
-    //addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0), 15);
-    //addSequential(new FollowPath(PathManager.getInstance().profiles.get(0)), 15);
-    //addSequential(new FollowPath(PathManager.getInstance().profiles.get(1)), 15);
-    //addSequential(new FollowPath(PathManager.getInstance().profiles.get(2)), 15);
+  public FlipArmCmdGroup() {
+    addSequential(new ElevatorToArmHeight());
+    addSequential(new FlipArm(200));
+    //addSequential(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 100));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

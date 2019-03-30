@@ -86,7 +86,6 @@ public class Arm extends Subsystem {
     //sparkMax.set(speed);
     pidController.setReference(speed*0.7, ControlType.kDutyCycle);
   }
-  
 
   public ScoringDirectionStates getArmSide(){
     if(readEncoder() < RobotMap.Values.armVertical){
@@ -108,10 +107,10 @@ public class Arm extends Subsystem {
   }
 
   public void SetPostion(double setpoint){
-    releaseBrake();
-    //System.out.println("Set position to " + setpoint);
+    //releaseBrake();
+    //System.out.println("Setting arm position to " + setpoint);
     pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
-    UpdateF();
+    //UpdateF();
   }
 
   public double readEncoder() {

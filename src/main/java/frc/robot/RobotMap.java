@@ -108,7 +108,7 @@ public class RobotMap {
       landingGearPiston = 0,
       landingGearFloorSensor = 1,
       rearGearPiston = 3, //TODO: find the actual port value for this
-      rearGearFloorSensor = 69, //TODO: find the actual port value for this
+      rearGearFloorSensor = 0, //TODO: find the actual port value for this
 
       //CAMERA PORTS
       frontPanServo = 9,
@@ -163,16 +163,16 @@ public class RobotMap {
       straight = .3, 
 
       // Arm and Elevator Values
-      elevatorPidP = 0.00005, // 0.0005
-      elevatorPidI = 0.0,
+      elevatorPidP = 0.00005, //0.0006, 
+      elevatorPidI = 0, //0.000000001,
       elevatorPidD = 0.005, // 0.0005
       elevatorPidF = 0.0000,
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 22775, //placeholer for height in order for arm to switch
-      armBackParallel = 500,
-      armFrontParallel = 44,
-      armVertical = 462,
+      armBackParallel = 517,
+      armFrontParallel = 14,
+      armVertical = 264,
 
       armPidP = 0.0012,
       armPidI = 0,
@@ -193,7 +193,7 @@ public class RobotMap {
 
       //PathFnder values
       pf_timestep = 0.02,
-      pf_max_vel = 2.5, // max velocity in ft/sec.
+      pf_max_vel = 2.5, // max velocity in m/sec.
       pf_max_acc = 6.79,
       pf_max_jerk = 60,
       pf_Kp = 0.001,

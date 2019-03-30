@@ -135,9 +135,10 @@ public class MotionProfile {
 			heading = Robot.driveTrain.getHeading();
 			desired_heading = Pathfinder.r2d(m_left_follower.getHeading()); //FIX: Another defect in PathWeaver
 			if (!forwards) {
-				desired_heading -= 360;
+				desired_heading += 180;
 			}
 			double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading); // You may need to reverse the heading when going backwards. IDK
+			//double backwards_heading_difference = Pathfinder.boundHalfDegrees(heading - desired_heading);
 			turn = (-1.0 / 80.0) * heading_difference;
 
 			// left_drive = (left_speed  * 12 * 223); //+ turn;

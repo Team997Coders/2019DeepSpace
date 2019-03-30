@@ -41,6 +41,7 @@ public class MoveElevator extends Command {
     }
 
     protected void interrupted() {
+        System.out.println("Elevator interrupted");
     	//end();
     }
 }

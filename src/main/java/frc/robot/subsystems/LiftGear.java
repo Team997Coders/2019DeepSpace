@@ -32,7 +32,7 @@ public class LiftGear extends Subsystem {
     backPiston = new Solenoid(RobotMap.Ports.rearGearPiston);
     backPiston.set(false);
 
-    //backDistanceIR = new AnalogInput(RobotMap.Ports.rearGearFloorSensor);
+    backDistanceIR = new AnalogInput(RobotMap.Ports.rearGearFloorSensor);
   }
   
   /**
@@ -83,8 +83,8 @@ public class LiftGear extends Subsystem {
    * Updates the SmartDashboard with subsystem data
    */
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Front Distance IR", frontDistanceIR.getVoltage());
-    //SmartDashboard.putNumber("Back Distance IR", backDistanceIR.getVoltage());
+    SmartDashboard.putNumber("Front LiftGear IR", frontDistanceIR.getVoltage());
+    SmartDashboard.putNumber("Back LiftGear IR", backDistanceIR.getVoltage());
   }
 
   @Override

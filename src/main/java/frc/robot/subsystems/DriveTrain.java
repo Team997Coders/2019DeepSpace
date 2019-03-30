@@ -126,11 +126,10 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
-
   public double getGyroAngle(){
     if (gyro != null){
-    //return gyro.getAngle();
-    return (gyro.getAngle()-Math.floor(gyro.getAngle()/360)*360);
+    return gyro.getAngle() % 360;
+    //return (gyro.getAngle()-Math.floor(gyro.getAngle()/360)*360);
     //Not TESTED
   } else{
     return 0;

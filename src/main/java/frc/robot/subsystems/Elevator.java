@@ -76,7 +76,7 @@ public class Elevator extends Subsystem {
     //follower.setOpenLoopRampRate(0.25); // Not sure if this is need for the follower motor but just in case
 
     pidController = master.getPIDController();
-    pidController.setOutputRange(-0.4, 0.6);
+    pidController.setOutputRange(-0.3, 0.5);
     pidController.setP(RobotMap.Values.elevatorPidP);
     pidController.setI(RobotMap.Values.elevatorPidI);
     pidController.setD(RobotMap.Values.elevatorPidD);
@@ -229,14 +229,14 @@ public class Elevator extends Subsystem {
   }
 
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Elevator/Elevator volts", master.get());
+    //SmartDashboard.putNumber("Elevator/Elevator volts", master.get());
     SmartDashboard.putNumber("Elevator/Elevator Height: ", GetPosition());
     SmartDashboard.putBoolean("Elevator/Bottom Limit Switch", limitSwitchBottom.get());
     SmartDashboard.putBoolean("Elevator/Top Limit Switch", limitSwitchTop.get());
-    SmartDashboard.putNumber("Elevator/Elevator", master.getOutputCurrent());
-    SmartDashboard.putNumber("Elevator/Elevator Internal Encoder", getInternalEncoderPos());
-    SmartDashboard.putNumber("Elevator/Elevator Master Temp", getMasterTemp());
-    SmartDashboard.putNumber("Elevator/Elevator Follower Temp", getFollowerTemp());
+    //SmartDashboard.putNumber("Elevator/Elevator", master.getOutputCurrent());
+    //SmartDashboard.putNumber("Elevator/Elevator Internal Encoder", getInternalEncoderPos());
+    //SmartDashboard.putNumber("Elevator/Elevator Master Temp", getMasterTemp());
+    //SmartDashboard.putNumber("Elevator/Elevator Follower Temp", getFollowerTemp());
     
   }
 }
