@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static CameraServer cameraServer;
   //public static MotionProfile motionProfile;
-  public static PathManager pathManager;
+  //public static PathManager pathManager;
   //public static Logger logger;
   //public static PowerDistributionPanel pdp;
   public static LineDetector frontLineDetector;

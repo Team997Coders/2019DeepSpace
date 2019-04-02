@@ -37,6 +37,7 @@ public class Arm extends Subsystem {
   private CANDigitalInput frontLimitSwitch, backLimitSwitch;
 
   private Solenoid discBrake;
+  private double armFrontLimit = RobotMap.Values.armFrontParallel;
 
   // Read Encoder Vars
   private final double MAX = 1022;
@@ -86,7 +87,15 @@ public class Arm extends Subsystem {
 
   public void setPower(double speed) {
     //sparkMax.set(speed);
-    pidController.setReference(speed*0.7, ControlType.kDutyCycle);
+    pidController.setReference(speed, ControlType.kDutyCycle);
+  }
+
+  public void setArmFrontLimit(double value) {
+    armFrontLimit = value;
+  }
+
+  public double getArmFrontLimit() {
+    return armFrontLimit;
   }
 
   public ScoringDirectionStates getArmSide(){
