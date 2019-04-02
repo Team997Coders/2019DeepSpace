@@ -59,7 +59,7 @@ public class MoveArm extends Command {
   }
 
   protected void end() {
-    Robot.arm.engageBrake();
+    //Robot.arm.engageBrake();
     Robot.arm.setPower(0);
     Scheduler.getInstance().add(new LockArm());
     //Robot.arm.SetPostion(Robot.arm.readEncoder());
