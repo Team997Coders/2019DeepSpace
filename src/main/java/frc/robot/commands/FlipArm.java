@@ -29,21 +29,21 @@ public class FlipArm extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Robot.arm.getArmSide() == ScoringDirectionStates.Front) {
-      setpoint = RobotMap.Values.armBackParallel;
-    } else {
+    //if (Robot.arm.getArmSide() == ScoringDirectionStates.Front) {
+      //setpoint = RobotMap.Values.armBackParallel;
+    //} else {
       setpoint = RobotMap.Values.armFrontParallel;
-    }
+    //}
 
-    System.out.println("Initialized flipArm with setpoint " + setpoint);
+    //System.out.println("Initialized flipArm with setpoint " + setpoint);
 
-    Robot.arm.SetPostion(setpoint);
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      
+    Robot.arm.SetPostion(setpoint);
       //System.out.println("FlipArm error is " + Math.abs(setpoint - Robot.arm.readEncoder()));
   }
 

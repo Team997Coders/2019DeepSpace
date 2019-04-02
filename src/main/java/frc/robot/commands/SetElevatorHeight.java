@@ -28,8 +28,9 @@ public class SetElevatorHeight extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    System.out.println("init-ed elevatorToHeight with setpoint " + setpoint);
     //SmartDashboard.putNumber("Elevator Setpoint", setpoint);
-    Robot.elevator.updatePID();
+    //Robot.elevator.updatePID();
   }
 
   // Called repeatedly when this Command is scheduled to run

@@ -49,6 +49,7 @@ public class ElevatorToArmHeight extends Command {
     System.out.println("finished arm to height");
     Robot.elevator.SetPower(0);
     Scheduler.getInstance().add(new LockElevator());
+    Scheduler.getInstance().add(new SetArmPosition(RobotMap.Values.armFrontParallel, 10));
   }
 
   // Called when another command which requires one or more of the same

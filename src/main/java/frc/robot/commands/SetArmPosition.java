@@ -26,14 +26,15 @@ public class SetArmPosition extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.arm.updatePID();
+    System.out.println("Initted armToPosition");
+    //Robot.arm.updatePID();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     Robot.arm.SetPostion(setpoint);
-    Robot.arm.UpdateF();
+    //Robot.arm.UpdateF();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -53,6 +54,7 @@ public class SetArmPosition extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    System.out.println("ArmToPosition interrupted");
     end();
   }
 }

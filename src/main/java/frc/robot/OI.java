@@ -56,9 +56,11 @@ public class OI {
     driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
     driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
 
-    //flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    //flip.whenPressed(new FlipArmCmdGroup());
+    flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    flip.whenPressed(new FlipArmChain());
 
+    //flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    //flip.whenPressed(new SetArmPosition(RobotMap.Values.armFrontParallel, 10));
 
     
     //followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);

@@ -163,8 +163,8 @@ public class RobotMap {
       straight = .3, 
 
       // Arm and Elevator Values
-      elevatorPidP = 0.00005, //0.0006, 
-      elevatorPidI = 0, //0.000000001,
+      elevatorPidP = 0.0005, //0.00005 
+      elevatorPidI = 0.0000000001, //0
       elevatorPidD = 0.005, // 0.0005
       elevatorPidF = 0.0000,
       elevatorTopHeight = 100000000, //placeholder
