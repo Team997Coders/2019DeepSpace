@@ -26,11 +26,6 @@ import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
 import edu.wpi.first.cameraserver.CameraServer;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import org.json.simple.parser.ParseException;
-
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot

@@ -18,22 +18,6 @@ import edu.wpi.first.wpilibj.SerialPort;
  */
 public class RobotMap {
   public static class Buttons {
-    public static class Logitech {
-      public static int 
-        Gamepad4 = 3,
-        buttonA = 2,
-        buttonB = 3,
-        buttonX = 1,
-        buttonY = 4,
-        buttonLeftThumbstick = 11,
-        buttonRightThumbstick = 12,
-        leftJoystickHatAngle = 270,
-        centerJoystickHatAngle = 0,
-        rightJoystickHatAngle = 90,
-        leftXAxis = 0,
-        leftYAxis = 1;
-      }
-
     public static int
 
       GamePad1 = 0,
@@ -78,14 +62,7 @@ public class RobotMap {
       lineSensorFrontCenter = 5,
       lineSensorFrontRight = 6,
       frontUltrasonicSensor = 0, 
-      frontInfraredSensor = 2,  
-
-      lineSensorBackLeft = 2,    
-      lineSensorBackCenter = 1,  
-      lineSensorBackRight = 3,   
-      backInfraredSensor = 3,  
-
-
+      frontInfraredSensor = 2, 
 
       //BALL PORTS
       ballMotor = 12,
@@ -107,14 +84,8 @@ public class RobotMap {
       //LANDING GEAR PORTS
       landingGearPiston = 0,
       landingGearFloorSensor = 1,
-      rearGearPiston = 3, //TODO: find the actual port value for this
-      rearGearFloorSensor = 0, //TODO: find the actual port value for this
-
-      //CAMERA PORTS
-      frontPanServo = 9,
-      frontTiltServo = 8,
-      backPanServo = 1,
-      backTiltServo = 0,
+      rearGearPiston = 3,
+      rearGearFloorSensor = 0,
 
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;

@@ -9,13 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class FlipArmChain extends Command {
 
   private Command elevatorCom = null, armCom = null, elevatorTwoCom = null;
-  private boolean noInterrupt = false;
   private FlipStep step;
 
   public FlipArmChain() {
@@ -71,7 +69,7 @@ public class FlipArmChain extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    if (FlipStep.done == step) {
+    if (step == FlipStep.done) {
       System.out.println("Finished Flip");
     } else {
       System.out.println("Did not finish");
@@ -82,7 +80,7 @@ public class FlipArmChain extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    System.out.println();
+    System.out.println("Flip was interrupted at: "+(String) step.name());
   }
 
   private enum FlipStep {
