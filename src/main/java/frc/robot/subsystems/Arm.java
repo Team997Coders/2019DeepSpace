@@ -20,6 +20,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
 import frc.robot.data.ArmData;
+import frc.robot.data.RobotState.ScoringDirectionStates;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -52,6 +53,7 @@ public class Arm extends Subsystem {
   private CANDigitalInput frontLimitSwitch, backLimitSwitch;
 
   private Solenoid discBrake;
+  private double armFrontLimit = RobotMap.Values.armFrontParallel;
 
   // Read Encoder Vars
   private final double MAX = 1022;
@@ -70,7 +72,7 @@ public class Arm extends Subsystem {
 
     sparkMax.setInverted(true);
 
-    sparkMax.setOpenLoopRampRate(0);
+    //sparkMax.setOpenLoopRampRate(0);
 
     //sparkMax.setIdleMode(IdleMode.kBrake);
     
@@ -80,12 +82,16 @@ public class Arm extends Subsystem {
     pidController.setD(RobotMap.Values.armPidD);
     pidController.setOutputRange(-0.6, 0.6);
 
+    pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
+    
     frontLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
-    frontLimitSwitch.enableLimitSwitch(true);
+    frontLimitSwitch.enableLimitSwitch(false);
     backLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
-    backLimitSwitch.enableLimitSwitch(true);
+    backLimitSwitch.enableLimitSwitch(false);
 
     dataBus = Robot.armCanifier;
+
+    pidController.setReference(0.0, ControlType.kDutyCycle);
 
     discBrake = new Solenoid(RobotMap.Ports.discBrake);
 
@@ -109,10 +115,10 @@ public class Arm extends Subsystem {
     double m_angle = this.readEncoder();
     
     // 2 - check if we are trying to move to the other side
-    if ((m_angle < RobotMap.Values.armEncoderCenter && 
-            m_newangle < RobotMap.Values.armEncoderCenter) ||
-            (m_angle > RobotMap.Values.armEncoderCenter && 
-            m_newangle > RobotMap.Values.armEncoderCenter))
+    if ((m_angle < RobotMap.Values.armVertical && 
+            m_newangle < RobotMap.Values.armVertical) ||
+            (m_angle > RobotMap.Values.armVertical && 
+            m_newangle > RobotMap.Values.armVertical))
              {
               // Move is on same side of elevator.
               return true; // safe.
@@ -131,45 +137,38 @@ public class Arm extends Subsystem {
     //sparkMax.set(speed);
     pidController.setReference(speed, ControlType.kDutyCycle);
   }
-  
-  public void resetArmToUpperQuadrants() {
-    if (getArmSide()) {
-      // front-side
-      if (readEncoder() < RobotMap.ElevatorHeights.armFrontParallel) {
-        this.SetPosition(RobotMap.ElevatorHeights.armFrontParallel);
-      }
-    } else {
-      // back-side
-      if (readEncoder() > RobotMap.ElevatorHeights.armBackParallel) {
-        this.SetPosition(RobotMap.ElevatorHeights.armBackParallel);
-      }
-    }
+
+  public void setArmFrontLimit(double value) {
+    armFrontLimit = value;
   }
 
-  public boolean getArmSide() {
-    if (readEncoder() < RobotMap.Values.armEncoderCenter) {
-      return true; // arm on the front of the robot
-    } else {
-      return false;
+  public double getArmFrontLimit() {
+    return armFrontLimit;
+  }
+
+  public ScoringDirectionStates getArmSide(){
+    if(readEncoder() < RobotMap.Values.armVertical){
+      return ScoringDirectionStates.Front;
+    }
+    else{
+      return ScoringDirectionStates.Back;
     }
   }
 
   // This function only works if the inital read of the arm is horizontal
   public void UpdateF(){
-     pidController.setFF((Math.abs(Math.cos(readEncoder() - RobotMap.ElevatorHeights.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant);
+     pidController.setFF((Math.abs(Math.cos(readEncoder() - RobotMap.Values.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant);
   }
 
   public double getCurrent() {
     return sparkMax.getOutputCurrent();
   }
 
-  public void SetPosition(double setpoint){
-    if (checkSafeMove((double) setpoint)) {
-      releaseBrake();
-      System.out.println("Set position to " + setpoint);
-      pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
-      UpdateF();
-    }
+  public void SetPostion(double setpoint){
+    //releaseBrake();
+    //System.out.println("Setting arm position to " + setpoint);
+    pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
+    //UpdateF();
   }
 
   public double readEncoder() {
@@ -204,20 +203,20 @@ public class Arm extends Subsystem {
   }
 
   public void engageBrake() {
-    discBrake.set(false);
+    //discBrake.set(false);
     SmartDashboard.putBoolean("Brake", true);
   }
 
   public void releaseBrake() {
-    discBrake.set(true);
+    //discBrake.set(true);
     SmartDashboard.putBoolean("Brake", false);
   }
 
-  public void Lock() {
+  public void SetIdleBrakeMode() {
     sparkMax.setIdleMode(IdleMode.kBrake);
   }
 
-  public void Unlock() {
+  public void SetIdleCoastMode() {
     sparkMax.setIdleMode(IdleMode.kCoast);
   }
 
@@ -240,6 +239,10 @@ public class Arm extends Subsystem {
     //setDefaultCommand(new LockArm());
   }
 
+  /*public double getAngle() {
+    (RobotMap.ElevatorHeights.armBackParallel - RobotMap.ElevatorHeights.armFrontParallel) 
+  }*/
+
   public ArmData getArmData() {
     ArmData a = new ArmData();
     a.output = sparkMax.getAppliedOutput();
@@ -252,21 +255,25 @@ public class Arm extends Subsystem {
     return a;
   }
 
+  public void updatePID() {
+    pidController.setP(SmartDashboard.getNumber("Arm Pid P", RobotMap.Values.armPidP));
+    pidController.setI(SmartDashboard.getNumber("Arm Pid I", RobotMap.Values.armPidI));
+    pidController.setD(SmartDashboard.getNumber("Arm Pid D", RobotMap.Values.armPidD));
+    fConstant = SmartDashboard.getNumber("Arm Pid F", RobotMap.Values.armMaxPidF);
+  }
+
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Arm/Arm Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Arm/Absolute Parsed", readEncoder());
     SmartDashboard.putBoolean("Arm/Disc Brake state: ", discBrake.get());
     SmartDashboard.putBoolean("Arm/Arm forward limit switch", getForwardLimitSwitch());
-    pidController.setP(SmartDashboard.getNumber("Arm/Arm Pid P", RobotMap.Values.armPidP));
-    pidController.setI(SmartDashboard.getNumber("Arm/Arm Pid I", RobotMap.Values.armPidI));
-    pidController.setD(SmartDashboard.getNumber("Arm/Arm Pid D", RobotMap.Values.armPidD));
-    fConstant = SmartDashboard.getNumber("Arm/Arm Pid F", RobotMap.Values.armMaxPidF);
+
     SmartDashboard.putNumber("Arm/Arm F", pidController.getFF());
-    SmartDashboard.putBoolean("Arm/Arm Front Limit", frontLimitSwitch.get());
-    SmartDashboard.putBoolean("Arm/Arm Back Limit", backLimitSwitch.get());
+    SmartDashboard.putBoolean("Arm/Arm Front Limit Switch", frontLimitSwitch.get());
+    SmartDashboard.putBoolean("Arm/Arm Back Limit Switch", backLimitSwitch.get());
     SmartDashboard.putNumber("Arm/Arm voltage", sparkMax.getAppliedOutput());
     SmartDashboard.putNumber("Arm/Arm Current", getCurrent());
-    SmartDashboard.putNumber("Arm/Arm Motor Temp", getMotorTemp());
+    //SmartDashboard.putNumber("Arm/Arm Motor Temp", getMotorTemp());
   }
 
 

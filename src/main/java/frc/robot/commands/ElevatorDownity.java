@@ -7,7 +7,7 @@
 
 package frc.robot.commands;
 import frc.robot.Robot;
-import frc.robot.subsystems.Elevator;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -26,7 +26,7 @@ public class ElevatorDownity extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.SetPower(-.15);
+    Robot.elevator.SetPower(-.1);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -38,7 +38,8 @@ public class ElevatorDownity extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-  Robot.elevator.SetPosition(Robot.elevator.GetPosition());
+    Robot.elevator.SetPosition(Robot.elevator.GetPosition());
+    Scheduler.getInstance().add(new LockElevator());
   }
 
   // Called when another command which requires one or more of the same

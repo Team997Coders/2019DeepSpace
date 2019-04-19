@@ -6,11 +6,8 @@ import frc.robot.Robot;
 
 public class ArcadeDrive extends Command {
 
-  private double prevFront = 0;
-
   public ArcadeDrive() {
     requires(Robot.driveTrain);
-    System.out.println("Arcade Init");
   }
   
   @Override
@@ -28,12 +25,12 @@ public class ArcadeDrive extends Command {
   protected void execute() {
     double front = Robot.oi.getLeftYAxis();
     double turn = Robot.oi.getRightXAxis();
-
-    SmartDashboard.putNumber("Left Y", front);
+    SmartDashboard.putNumber("Drive/Left Y", front);
+    SmartDashboard.putNumber("Drive/Turn", turn);
 
     //Robot.driveTrain.setVolts(front + turn, front - turn);
 
-    Robot.driveTrain.setRampArcadeVolts(front, turn);
+    Robot.driveTrain.setRampArcadeVolts(front, 0.8 * turn);
 
     /*if (Robot.driveTrain.decell) {
       Robot.driveTrain.setRampArcadeVolts(front, turn);

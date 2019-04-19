@@ -20,10 +20,16 @@ public class ToggleLandingGear extends Command {
 
   @Override
   protected void execute() {
-    if (Robot.liftGear.getPistonState()) {
-      Robot.liftGear.retract();
+    if (Robot.liftGear.getFrontPistonState()) {
+      Robot.liftGear.retractFront();
     } else {
-      Robot.liftGear.extend();
+      Robot.liftGear.extendFront();
+    }
+
+    if (Robot.liftGear.getBackPistonState()) {
+      Robot.liftGear.retractBack();
+    } else {
+      Robot.liftGear.extendBack();
     }
   }
   

@@ -31,7 +31,7 @@ public class DriveTrain extends Subsystem {
 
   // Decell Data
   private double ramp = 4.0;
-  private double prevL = 0, prevR = 0, prevY = 0;
+  private double prevY = 0;
   private double init_angle;
   public boolean gyropresent = false;
 
@@ -48,17 +48,22 @@ public class DriveTrain extends Subsystem {
   public DriveTrain() {
     // This uses the RoboMisc function standTalonSRXSetup(int, int, int, boolean) to
     // initialize a Talon and 2 slave victors
-    this(RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon, 
-        RobotMap.Ports.leftVictor1,
-        RobotMap.Ports.leftVictor2, 
-        false),
-      RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon, 
-        RobotMap.Ports.rightVictor1,
-        RobotMap.Ports.rightVictor2, 
-        true),
-      null,
-      NetworkTableInstance.getDefault().getTable("SmartDashboard")
-    );
+    this(
+        RoboMisc.standTalonSRXSetup(RobotMap.Ports.leftTalon, RobotMap.Ports.leftVictor1, RobotMap.Ports.leftVictor2,
+            false),
+        RoboMisc.standTalonSRXSetup(RobotMap.Ports.rightTalon, RobotMap.Ports.rightVictor1, RobotMap.Ports.rightVictor2,
+            true),
+        null, NetworkTableInstance.getDefault().getTable("SmartDashboard"));
+  }
+
+  public void resetGyro() {
+    if (gyro != null) {
+      gyro.reset();
+      init_angle = gyro.getAngle();
+      gyro.zeroYaw();
+    } else {
+      // programmer.sadness()
+    }
   }
 
   /**
@@ -69,14 +74,10 @@ public class DriveTrain extends Subsystem {
    * @param gyro
    * @param smartDashboardNetworkTable
    */
-  public DriveTrain(GearBox leftBox, 
-      GearBox rightBox, 
-      AHRS gyro,
-      NetworkTable smartDashboardNetworkTable) {
+  public DriveTrain(GearBox leftBox, GearBox rightBox, AHRS gyro, NetworkTable smartDashboardNetworkTable) {
 
-    System.out.println("Starting Drivetrain...");
-
-    // Grab the objects created by the RoboMisc function and store them in this class
+    // Grab the objects created by the RoboMisc function and store them in this
+    // class
     leftTalon = leftBox.talon;
     rightTalon = rightBox.talon;
     leftVictor1 = leftBox.victor1;
@@ -93,7 +94,8 @@ public class DriveTrain extends Subsystem {
         init_angle = this.gyro.getAngle();
         gyropresent = true;
       } catch (RuntimeException e) {
-        System.out.println("DT- Im been a bad Gyro daddy uwu");
+        System.out.println("DT- The gyro broke.");
+        gyro = null;
       }
     } else {
       this.gyro = gyro;
@@ -117,39 +119,11 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
- /**
-  * Reset the gyro.  set the base angle to 0.
-  */
-  public void resetGyro() {
-    gyro.reset();
-    init_angle = gyro.getAngle();
-    gyro.zeroYaw();
-  }
-
-  /**
-   * Get the Yaw angle from the gyro.
-   * @return The robot's angle bound between -180 and +180
-   */
-  public double getHeading() {
-		if (gyropresent) {
-      //return( gyro.getAngle() - init_angle );
-      return gyro.getYaw();
-		} else {
-			return 0.0;
-		}
-	}
-	  
-
-   /**
-   * Get the accumulated (does not change from 359-0, but continues from 359-360) angle
-   * from the NavX gyro.  Should we be using getHeading() instead?  These gyro methods
-   * will also return 0 if no gyro is present.
-   * 
-   * @return the accumulated angle.
-   */
   public double getGyroAngle() {
     if (gyro != null) {
-      return gyro.getAngle();
+      return gyro.getAngle() % 360;
+      // return (gyro.getAngle()-Math.floor(gyro.getAngle()/360)*360);
+      // Not TESTED
     } else {
       return 0;
     }
@@ -160,7 +134,6 @@ public class DriveTrain extends Subsystem {
    */
   public void stopVolts() {
     // Set Motor Volts to 0
-    // System.out.println("Stop Volts Called");
     leftTalon.set(ControlMode.PercentOutput, 0);
     rightTalon.set(ControlMode.PercentOutput, 0);
   }
@@ -168,9 +141,10 @@ public class DriveTrain extends Subsystem {
   public void setRampArcadeVolts(double front, double turn) {
     double newY = front;
 
-    //prevY = (leftTalon.getMotorOutputPercent() + rightTalon.getMotorOutputPercent()) / 2;
+    // prevY = (leftTalon.getMotorOutputPercent() +
+    // rightTalon.getMotorOutputPercent()) / 2;
 
-    double maxIncrement = Robot.kDeltaTime * ramp;
+    double maxIncrement = Robot.getDeltaTime() * ramp;
 
     if (Math.abs(front - prevY) > maxIncrement) {
       double sign = (front - prevY) / Math.abs(front - prevY);
@@ -248,7 +222,14 @@ public class DriveTrain extends Subsystem {
     rightTalon.setSelectedSensorPosition(0, 0, 10);
   }
 
-  
+  public double getHeading() {
+    if (gyro != null) {
+      return (gyro.getAngle() - init_angle);
+    } else {
+      return 0.0;
+    }
+  }
+
   /**
    * Gets PID constants from the SmartDashboard and then uses setPIDValues(double,
    * double, double)
@@ -269,7 +250,8 @@ public class DriveTrain extends Subsystem {
    * @param d derivative PID constant
    */
   public void setPIDValues(double p, double i, double d) {
-    // Calling the correct config_kx for each parameter might make this work better...;-)
+    // Calling the correct config_kx for each parameter might make this work
+    // better...;-)
     leftTalon.config_kP(0, p, 0);
     rightTalon.config_kP(0, p, 0);
     leftTalon.config_kI(0, i, 0);

@@ -30,6 +30,9 @@ public class DriveToDistanceIntegrationTest {
     verify(driveTrainMocks.rightTalonMock, times(1)).config_kI(0, RobotMap.Values.driveDistanceI, 0);
     verify(driveTrainMocks.leftTalonMock, times(1)).config_kD(0, RobotMap.Values.driveDistanceD, 0);
     verify(driveTrainMocks.rightTalonMock, times(1)).config_kD(0, RobotMap.Values.driveDistanceD, 0);
+
+    // Cleanup
+    driveToDistance.close();
   }
 
   @Test
@@ -49,6 +52,9 @@ public class DriveToDistanceIntegrationTest {
     // Assert
     verify(driveTrainMocks.leftTalonMock, times(1)).set(ControlMode.Position, 0);
     verify(driveTrainMocks.rightTalonMock, times(1)).set(ControlMode.Position, 0);
+
+    // Cleanup
+    driveToDistance.close();
   }
 
   @Test
@@ -65,6 +71,9 @@ public class DriveToDistanceIntegrationTest {
 
     // Assert
     assertEquals(true, driveToDistance.isFinished());
+
+    // Cleanup
+    driveToDistance.close();
   }
 
   @Test
@@ -81,6 +90,9 @@ public class DriveToDistanceIntegrationTest {
 
     // Assert
     assertEquals(false, driveToDistance.isFinished());
+
+    // Cleanup
+    driveToDistance.close();
   }
 
   @Test
@@ -97,5 +109,8 @@ public class DriveToDistanceIntegrationTest {
 
     // Assert
     assertEquals(false, driveToDistance.isFinished());
+
+    // Cleanup
+    driveToDistance.close();
   }
 }

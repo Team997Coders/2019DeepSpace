@@ -102,8 +102,8 @@ public class Logger {
         this.timeSinceStart = (System.currentTimeMillis() - this.startTime) / 1000.0;
 
         this.writer.write(String.format("%.3f", this.timeSinceStart));
-        this.writer.write(String.format(",%.3f", Robot.pdp.getVoltage()));
-        this.writer.write(String.format(",%.3f", Robot.pdp.getTotalCurrent()));
+        //this.writer.write(String.format(",%.3f", Robot.pdp.getVoltage()));
+        //this.writer.write(String.format(",%.3f", Robot.pdp.getTotalCurrent()));
         this.writer.write(String.format(",%.3f", Robot.driveTrain.leftEncoderTicks()));
         this.writer.write(String.format(",%.3f", Robot.driveTrain.rightEncoderTicks()));
         this.writer.write(String.format(",%.3f", Robot.driveTrain.leftEncoderVelocity()));

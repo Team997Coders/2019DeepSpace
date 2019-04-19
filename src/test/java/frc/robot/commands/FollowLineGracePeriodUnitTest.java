@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import frc.robot.RobotMap;
-import frc.robot.buttonbox.ButtonBox;
+import frc.robot.data.RobotState;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -23,23 +23,19 @@ import static org.mockito.Mockito.*;
  */
 public class FollowLineGracePeriodUnitTest {
 	LineDetector frontLineDetector;
-	LineDetector backLineDetector;
 	InfraredRangeFinder frontInfraredRangeFinder;
-	InfraredRangeFinder backInfraredRangeFinder;
-  DriveTrain driveTrain;
-  ButtonBox buttonBox;
+  	DriveTrain driveTrain;
 
 	@Before
 	public void initializeMocks() {
 		frontLineDetector = mock(LineDetector.class);
-		backLineDetector = mock(LineDetector.class);
 		frontInfraredRangeFinder = mock(InfraredRangeFinder.class);
-		backInfraredRangeFinder = mock(InfraredRangeFinder.class);
 		driveTrain = mock(DriveTrain.class);
-    buttonBox = mock(ButtonBox.class);
-    when(buttonBox.getScoringDirectionState()).thenReturn(ButtonBox.ScoringDirectionStates.Front);
-    when(buttonBox.getScoringDestinationState()).thenReturn(ButtonBox.ScoringDestinationStates.Rocket);
-    when(buttonBox.getScoringArtifactState()).thenReturn(ButtonBox.ScoringArtifactStates.Hatch);
+
+		RobotState.setRobotState(RobotState.ScoringDirectionStates.Front, 
+		RobotState.ScoringArtifactStates.Hatch, 
+		RobotState.ScoringDestinationStates.Rocket,
+		RobotState.PositionStates.Low);
 	}
 
 	@Test
@@ -47,12 +43,9 @@ public class FollowLineGracePeriodUnitTest {
 	// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
-			frontInfraredRangeFinder, 
-			backInfraredRangeFinder, 
+			frontInfraredRangeFinder,  
 			driveTrain, 
-      (long) 1000, 
-      buttonBox);
+      		(long) 1000);
 		
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(false);
@@ -65,6 +58,9 @@ public class FollowLineGracePeriodUnitTest {
 
 		//Assert
 		verify(driveTrain, times(1)).setVolts(RobotMap.Values.straight, RobotMap.Values.straight);
+
+		//Cleanup
+		followLine.close();
   }
 
 	@Test
@@ -72,12 +68,10 @@ public class FollowLineGracePeriodUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
-			frontInfraredRangeFinder, 
-			backInfraredRangeFinder, 
+			frontInfraredRangeFinder,
 			driveTrain, 
-      (long) 10, // make grace period short
-      buttonBox);
+			(long) 10 // make grace period short
+			);
 		
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(false);
@@ -92,19 +86,20 @@ public class FollowLineGracePeriodUnitTest {
 
 		//Assert
 		verify(driveTrain, times(2)).setVolts(RobotMap.Values.straight, RobotMap.Values.straight);
+
+		//Cleanup
+		followLine.close();
   }
 
 	@Test
 	public void itFinishesAfterGracePeriodExpiresAndNoLineSeen() throws InterruptedException {
 		// Assemble
 		FollowLine followLine = new FollowLine(
-			frontLineDetector, 
-			backLineDetector, 
-			frontInfraredRangeFinder, 
-			backInfraredRangeFinder, 
+			frontLineDetector,  
+			frontInfraredRangeFinder,  
 			driveTrain, 
-      (long) 10, // make grace period short
-      buttonBox);
+      		(long) 10 // make grace period short
+      	);
 		
     //Assemble
     when(frontLineDetector.noLineSeen()).thenReturn(true);
@@ -116,6 +111,9 @@ public class FollowLineGracePeriodUnitTest {
 
 		//Assert
 		assertEquals(true, followLine.isFinished());
+
+		//Cleanup
+		followLine.close();
   }
 
 	@Test
@@ -123,12 +121,10 @@ public class FollowLineGracePeriodUnitTest {
 		// Assemble
 		FollowLine followLine = new FollowLine(
 			frontLineDetector, 
-			backLineDetector, 
-			frontInfraredRangeFinder, 
-			backInfraredRangeFinder, 
+			frontInfraredRangeFinder,  
 			driveTrain, 
-      (long) 10, // make grace period short
-      buttonBox);
+      		(long) 10 // make grace period short
+      	);
 		
 		//Assemble
 		when(frontLineDetector.leftLineSeen()).thenReturn(false);
@@ -144,5 +140,8 @@ public class FollowLineGracePeriodUnitTest {
 
 		//Assert
 		verify(driveTrain, times(1)).setBrake();
+
+		//Cleanup
+		followLine.close();
   }
 }

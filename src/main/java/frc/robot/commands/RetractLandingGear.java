@@ -20,7 +20,8 @@ public class RetractLandingGear extends Command {
   
   @Override
   protected void execute() { 
-    Robot.liftGear.retract();
+    Robot.liftGear.retractFront();
+    Robot.liftGear.retractBack();
   }
   
   @Override

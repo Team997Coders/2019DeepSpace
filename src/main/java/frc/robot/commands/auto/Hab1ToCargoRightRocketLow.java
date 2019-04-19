@@ -7,17 +7,18 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.RobotMap;
-import frc.robot.commands.ElevatorArmSetpoint;
 import frc.robot.commands.FollowPath;
+import frc.robot.*;
 
 public class Hab1ToCargoRightRocketLow extends CommandGroup {
   /**
    * Flips arm to the front and set elevator height to FrontBottomCargo
    */
   public Hab1ToCargoRightRocketLow() {
-    addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0), 15);
-    addSequential(new FollowPath("Hab1ToCargoRocketRight"), 15);
+    //addParallel(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0), 15);
+    //addSequential(new FollowPath(PathManager.getInstance().profiles.get(0)), 15);
+    //addSequential(new FollowPath(PathManager.getInstance().profiles.get(1)), 15);
+    //addSequential(new FollowPath(PathManager.getInstance().profiles.get(2)), 15);
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

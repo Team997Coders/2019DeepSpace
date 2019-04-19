@@ -28,9 +28,14 @@ public class AutoRetract extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.liftGear.getIRSensorVoltage() > 0.95) {
+    if (Robot.liftGear.getFrontIRSensorVoltage() > 0.95) {
       retracted = true;
-      Robot.liftGear.retract();
+      Robot.liftGear.retractFront();
+    }
+
+    if (Robot.liftGear.getBackIRSensorVoltage() > 0.95) {
+      retracted = true;
+      Robot.liftGear.retractBack();
     }
   }
 

@@ -33,5 +33,8 @@ public class DriveTrainUnitTest {
     verify(driveTrainMocks.rightTalonMock, times(1)).config_kI(0, i, 0);
     verify(driveTrainMocks.leftTalonMock, times(1)).config_kD(0, d, 0);
     verify(driveTrainMocks.rightTalonMock, times(1)).config_kD(0, d, 0);
+
+    //Cleanup
+    driveTrain.close();
   }
 }

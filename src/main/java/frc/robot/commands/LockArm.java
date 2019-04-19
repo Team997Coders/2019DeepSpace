@@ -15,13 +15,14 @@ public class LockArm extends Command {
     }
     
     protected void initialize() {
-      //Robot.arm.engageBrake();
-    	position = Robot.arm.readEncoder();
+      Robot.arm.engageBrake();
+      position = Robot.arm.readEncoder();
+      //Robot.arm.updatePID();
     }
-    
+
     protected void execute() {
-      Robot.arm.SetPosition(position);
-      System.out.println("Locking Arm at position " + position);
+      Robot.arm.SetPostion(position);
+      //System.out.println("Locking Arm at position " + position);
     }
 
     protected boolean isFinished() {
@@ -29,12 +30,13 @@ public class LockArm extends Command {
     }
 
     protected void end() {
-      //Robot.arm.SetPostion(Robot.arm.readEncoder());
+      Robot.arm.SetPostion(Robot.arm.readEncoder());
       Robot.arm.releaseBrake();
     }
 
     protected void interrupted() {
-      System.out.println("arm lock interrupted");
+      //System.out.println("arm lock interrupted");
       end();
     }
 }
+

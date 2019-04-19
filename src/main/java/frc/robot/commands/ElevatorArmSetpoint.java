@@ -6,13 +6,13 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ElevatorArmSetpoint extends Command {
-
+  
   private boolean longWay = false, armMoving = false, elevatorMoving = false, end = false;
   private double angle, height;
 
   private SetElevatorHeight e = null;
   private SetArmPosition a = null;
-
+  
   //TODO: Make height represent inches.
   //TODO: Do we need angle guards?
 
@@ -28,7 +28,7 @@ public class ElevatorArmSetpoint extends Command {
    */
   public ElevatorArmSetpoint(double height, double angle) {
     this.height = height;
-    this.angle = (RobotMap.ElevatorHeights.armBackParallel - RobotMap.ElevatorHeights.armFrontParallel) * (angle / 180);
+    this.angle = (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) * (angle / 180);
   }
 
   public void setHeightAndAngle(double height, double angle) {
@@ -39,9 +39,9 @@ public class ElevatorArmSetpoint extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Math.abs(angle - Robot.arm.readEncoder()) > (RobotMap.ElevatorHeights.armBackParallel - RobotMap.ElevatorHeights.armFrontParallel) / 2) {
+    if (Math.abs(angle - Robot.arm.readEncoder()) > (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) / 2) {
       //needsFlip = true;
-      if ((Robot.elevator.GetPosition() < RobotMap.ElevatorHeights.elevatorSafeFlipHeight) && (height < RobotMap.ElevatorHeights.elevatorSafeFlipHeight)) {
+      if ((Robot.elevator.GetPosition() < RobotMap.Values.armSwitchHeight) && (height < RobotMap.Values.armSwitchHeight)) {
         longWay = true;
       }
     }
@@ -52,9 +52,9 @@ public class ElevatorArmSetpoint extends Command {
   protected void execute() {
     if (longWay) {
       if (e == null) {
-        e = new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorSafeFlipHeight, 100);
+        e = new SetElevatorHeight(RobotMap.Values.armSwitchHeight, 100);
         Scheduler.getInstance().add(e);
-      } else if ((Robot.elevator.GetPosition() >= RobotMap.ElevatorHeights.elevatorSafeFlipHeight - 500) && (a == null)) {
+      } else if ((Robot.elevator.GetPosition() >= RobotMap.Values.armSwitchHeight - 500) && (a == null)) {
         a = new SetArmPosition(angle, 30);
         Scheduler.getInstance().add(a);
         armMoving = true;
@@ -64,14 +64,14 @@ public class ElevatorArmSetpoint extends Command {
         e = new SetElevatorHeight(height, 100);
         elevatorMoving = true;
       }
-    } else if (height < RobotMap.ElevatorHeights.elevatorSafeFlipHeight) {
+    } else if (height < RobotMap.Values.armSwitchHeight) {
       if (a == null) {
         a = new SetArmPosition(angle, 30);
         Scheduler.getInstance().add(a);
         armMoving = true;
       }
       if (e == null) {
-        e = new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorSafeFlipHeight, 100);
+        e = new SetElevatorHeight(RobotMap.Values.armSwitchHeight, 100);
         Scheduler.getInstance().add(e);
       }
       if (getArmError() < 130) {
@@ -87,7 +87,7 @@ public class ElevatorArmSetpoint extends Command {
         Scheduler.getInstance().add(e);
         elevatorMoving = true;
       }
-      if (a == null && ((Robot.elevator.GetPosition() >= RobotMap.ElevatorHeights.elevatorSafeFlipHeight - 500) || (getArmError() < 130))) {
+      if (a == null && ((Robot.elevator.GetPosition() >= RobotMap.Values.armSwitchHeight - 500) || (getArmError() < 130))) {
         a = new SetArmPosition(angle, 30);
         Scheduler.getInstance().add(a);
         armMoving = true;
