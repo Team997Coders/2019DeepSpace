@@ -33,7 +33,7 @@ public class ElevatorArmSetpoint extends Command {
 
   public void setHeightAndAngle(double height, double angle) {
     this.height = height;
-    this.angle = (RobotMap.ElevatorHeights.armBackParallel - RobotMap.ElevatorHeights.armFrontParallel) * (angle / 180);
+    this.angle = (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) * (angle / 180);
   }
 
   // Called just before this Command runs the first time

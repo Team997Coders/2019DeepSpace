@@ -180,10 +180,6 @@ public class RobotMap {
       armPidK = 0,
       armMaxPidF = 0.0055, // 0.0055
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackParallel-armFrontParallel)),
-
-      // Camera values
-      leftAngleInDegrees = 75,
-      rightAngleInDegrees = 115,
       
       // Elevator Deccel/Accel Values
       bottomElevatorAccelPosLimit = 5000,
@@ -202,7 +198,6 @@ public class RobotMap {
       pf_Kv = (1/pf_max_vel),
       pf_Ka = 0.0,
       //pf_Kt = 0.35,
-      
 
       robotLength = 0.75, //in inches (includes bumpers)
       robotWidth = 0.8,	
