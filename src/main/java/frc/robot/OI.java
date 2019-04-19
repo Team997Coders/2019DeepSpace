@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
-import frc.robot.commands.auto.Hab1ToCargoRightRocketLow;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,7 +31,6 @@ public class OI {
   private JoystickButton deployBackLandingGear; // Y 1
   private JoystickButton retractLandingGear; // Back 1
   private JoystickButton toggleHatch; // B 2
-  private JoystickButton followLine; // A 1
   private JoystickButton autoDriveToTarget; // A 2
 
   public OI() {

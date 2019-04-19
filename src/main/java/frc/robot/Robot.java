@@ -9,13 +9,11 @@ package frc.robot;
 
 import com.ctre.phoenix.CANifier;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.auto.Hab1ToCargoRightRocketLow;
 import frc.robot.commands.*;
 //import frc.robot.subsystems.Logger;
 import frc.robot.subsystems.Arm;

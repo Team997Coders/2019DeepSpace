@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.command.Command;
  * Used for moving the elevator high enough to swap the arm's side if so required.
  */
 public class ElevatorToArmHeight extends Command {
-  private double tolerance;
 
   public ElevatorToArmHeight() {
     requires(Robot.elevator);
