@@ -30,6 +30,7 @@ public class MoveArm extends Command {
   }
 
   protected void initialize() {
+    System.out.println("initted moveArm");
     Robot.arm.releaseBrake();
     //position = Robot.arm.readEncoder();
   }

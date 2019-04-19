@@ -276,7 +276,7 @@ public class Robot extends TimedRobot {
   public void updateSmartDashboard() {
     liftGear.updateSmartDashboard();
     //driveTrain.updateSmartDashboard();
-    //arm.updateSmartDashboard();
+    arm.updateSmartDashboard();
     elevator.updateSmartDashboard();
     //frontLineDetector.updateSmartDashboard();
     //frontInfraredRangeFinder.updateSmartDashboard();
