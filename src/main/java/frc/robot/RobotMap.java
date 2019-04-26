@@ -163,22 +163,24 @@ public class RobotMap {
       straight = .3, 
 
       // Arm and Elevator Values
-      elevatorPidP = 0.0005, //0.00005 
-      elevatorPidI = 0.0000000001, //0
-      elevatorPidD = 0.005, // 0.0005
+      elevatorPidP = 0.00055, //0.00005 
+      elevatorPidI = 0.0000000001,//0, // 
+      elevatorPidD = 0.007, // 0.0005
       elevatorPidF = 0.0000,
+      elevatorPidFMax = 0, //0.0005,
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 22775, //placeholer for height in order for arm to switch
-      armBackParallel = 517,
-      armFrontParallel = 14,
-      armVertical = 264,
+      armBackParallel = 520,
+      armFrontParallel = 7,
+      armFrontLower = 7,
+      armVertical = 265,
 
-      armPidP = 0.0012,
+      armPidP = 0.0006, //0.0012
       armPidI = 0,
       armPidD = 0.001,
       armPidK = 0,
-      armMaxPidF = 0.0055, // 0.0055
+      armMaxPidF = 0.002, // 0.0005
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackParallel-armFrontParallel)),
 
       // Camera values
@@ -216,6 +218,8 @@ public class RobotMap {
   public static class ElevatorHeights {
     //in inches
     public static int
+      elevatorMiddleHeight = 28360,
+
       elevatorBackTopHatchHeight = 0, //impossible
       elevatorBackMiddleHatchHeight = 0, //impossible
       elevatorBackBottomHatchHeight = 0, //impossible

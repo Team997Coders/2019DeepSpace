@@ -20,14 +20,14 @@ public class LiftGear extends Subsystem {
 
   private Solenoid frontPiston;
   private Solenoid backPiston;
-  private AnalogInput frontDistanceIR;
+  //private AnalogInput frontDistanceIR;
   private AnalogInput backDistanceIR;
   
   public LiftGear() {
     frontPiston = new Solenoid(RobotMap.Ports.landingGearPiston);
     frontPiston.set(false);
 
-    frontDistanceIR = new AnalogInput(RobotMap.Ports.landingGearFloorSensor);
+    //frontDistanceIR = new AnalogInput(RobotMap.Ports.landingGearFloorSensor);
 
     backPiston = new Solenoid(RobotMap.Ports.rearGearPiston);
     backPiston.set(false);
@@ -71,9 +71,9 @@ public class LiftGear extends Subsystem {
    * @return The voltage from the sensor. (For proto bot) Either around 1 ish for on
    * the ground or around 0.3 ish for up in the air
    */
-  public double getFrontIRSensorVoltage() {
-    return frontDistanceIR.getVoltage();
-  }
+  /*public double getFrontIRSensorVoltage() {
+    //return frontDistanceIR.getVoltage();
+  }*/
 
   public double getBackIRSensorVoltage() {
     return backDistanceIR.getVoltage();
@@ -83,7 +83,7 @@ public class LiftGear extends Subsystem {
    * Updates the SmartDashboard with subsystem data
    */
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("Front LiftGear IR", frontDistanceIR.getVoltage());
+    //SmartDashboard.putNumber("Front LiftGear IR", frontDistanceIR.getVoltage());
     SmartDashboard.putNumber("Back LiftGear IR", backDistanceIR.getVoltage());
   }
 

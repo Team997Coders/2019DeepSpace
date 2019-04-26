@@ -14,7 +14,7 @@ import frc.robot.RobotMap;
 
 public class FlipArmChain extends Command {
 
-  private Command elevatorCom = null, armCom = null, elevatorTwoCom = null;
+  private Command elevatorCom = null, armCom = null, elevatorTwoCom = null, armBoop = null;
   private boolean noInterrupt = false;
   private FlipStep step;
 
@@ -26,7 +26,12 @@ public class FlipArmChain extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    elevatorCom = null; 
+    armCom = null;
+    armBoop = null;
     step = FlipStep.elevatorOne;
+    //armBoop = new SetArmPosition(RobotMap.Values.armBackParallel, 10)
+    //Scheduler.getInstance().add();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -46,17 +51,17 @@ public class FlipArmChain extends Command {
           armCom = new SetArmPosition(RobotMap.Values.armFrontParallel, 10);
           Scheduler.getInstance().add(armCom);
         } else if (armCom.isCompleted()) {
-          step = FlipStep.elevatorTwo;
+          step = FlipStep.done;
         }
         break;
-      case elevatorTwo:
+      /*case elevatorTwo:
         if (elevatorTwoCom == null) {
           elevatorTwoCom = new SetElevatorHeight(0, 100);
           Scheduler.getInstance().add(elevatorTwoCom);
         } else if (elevatorTwoCom.isCompleted()) {
           step = FlipStep.done;
         }
-        break;
+        break;*/
       default:
         break;
     }
@@ -86,6 +91,6 @@ public class FlipArmChain extends Command {
   }
 
   private enum FlipStep {
-    elevatorOne(), arm(), elevatorTwo(), done();
+    elevatorOne(), arm(), /*elevatorTwo(),*/ done();
   }
 }

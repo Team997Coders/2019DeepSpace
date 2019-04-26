@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import frc.robot.commands.LockElevator;
+import frc.robot.commands.SetArmPosition;
 import frc.robot.data.ElevatorData;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -96,6 +97,7 @@ public class Elevator extends Subsystem {
   public void SetPosition(double height) {
     //System.out.println("Set elevator to go to height " + height); 
     pidController.setReference(height - GetPosition(), ControlType.kPosition);
+    updateF();
   }
 
   public void resetElevatorEncoder() {
@@ -114,6 +116,10 @@ public class Elevator extends Subsystem {
     return limitSwitchBottom.get();
   }
 
+  public boolean getTopLimitSwitch() {
+    return limitSwitchTop.get();
+  }
+
   public double getMasterTemp() {
     return master.getMotorTemperature();
   }
@@ -128,6 +134,7 @@ public class Elevator extends Subsystem {
 
   public void SetPower(double volts){
     master.set(volts);
+    //updateF();
   }
 
   /**
@@ -177,13 +184,24 @@ public class Elevator extends Subsystem {
     return ((ctre / 1024) / 2.5) * 42;
   }
 
+  public void updateF() {
+    if (GetPosition() > RobotMap.ElevatorHeights.elevatorMiddleHeight) {
+      pidController.setFF(RobotMap.Values.elevatorPidFMax);
+    } else {
+      pidController.setFF(RobotMap.Values.elevatorPidF);
+    }
+  }
+
   public void ZeroElevator(){
 
     if (limitSwitchBottom.get()){
 
       resetElevatorEncoder();
       isZeroed = true;
-    } 
+      Robot.arm.setArmFrontLimit(RobotMap.Values.armFrontLower);
+    } else {
+      Robot.arm.setArmFrontLimit(RobotMap.Values.armFrontParallel);
+    }
   }
 
   /*public void incrementIndex() {
@@ -222,10 +240,10 @@ public class Elevator extends Subsystem {
   }
 
   public void updatePID() {
-    pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
-    pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));
-    pidController.setD(SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD));
-    pidController.setFF(SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF));
+    //pidController.setP(SmartDashboard.getNumber("Elevator Pid P", RobotMap.Values.elevatorPidP));
+    //pidController.setI(SmartDashboard.getNumber("Elevator Pid I", RobotMap.Values.elevatorPidI));
+    //pidController.setD(SmartDashboard.getNumber("Elevator Pid D", RobotMap.Values.elevatorPidD));
+    //pidController.setFF(SmartDashboard.getNumber("Elevator Pid F", RobotMap.Values.elevatorPidF));
   }
 
   public void updateSmartDashboard() {
@@ -233,6 +251,7 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator/Elevator Height: ", GetPosition());
     SmartDashboard.putBoolean("Elevator/Bottom Limit Switch", limitSwitchBottom.get());
     SmartDashboard.putBoolean("Elevator/Top Limit Switch", limitSwitchTop.get());
+    SmartDashboard.putNumber("Elevator Pid F", pidController.getFF());
     //SmartDashboard.putNumber("Elevator/Elevator", master.getOutputCurrent());
     //SmartDashboard.putNumber("Elevator/Elevator Internal Encoder", getInternalEncoderPos());
     //SmartDashboard.putNumber("Elevator/Elevator Master Temp", getMasterTemp());

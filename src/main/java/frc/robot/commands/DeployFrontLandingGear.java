@@ -28,7 +28,7 @@ public class DeployFrontLandingGear extends Command {
   
   @Override
   protected boolean isFinished() {
-    return Robot.liftGear.getFrontIRSensorVoltage() < 0.4;
+    return true; //Robot.liftGear.getFrontIRSensorVoltage() < 0.4;
   }
 
   @Override

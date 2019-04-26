@@ -43,7 +43,7 @@ public class OI {
     //#region Gamepad1 Controls
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
-    deployLandingGear.whenPressed(new DeployFrontLandingGear());
+    deployLandingGear.whenPressed(new ToggleFrontLandingGear());
 
     deployBackLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
     deployBackLandingGear.whenPressed(new ToggleRearLandingGear());
@@ -51,8 +51,9 @@ public class OI {
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
 
-    driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
-    driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
+    //it's not safe
+    //driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
+    //driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
 
     flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     flip.whenPressed(new FlipArmChain());
