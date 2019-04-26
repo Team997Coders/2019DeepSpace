@@ -12,7 +12,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -22,45 +21,47 @@ import org.json.simple.parser.ParseException;
  */
 public class JsonLoader {
   /**
-   * Takes hard coded pathnames and loads setpoints from
-   * a file.
+   * Takes hard coded pathnames and loads setpoints from a file.
    */
   private HashMap<String, HashMap> setpoints = new HashMap<String, HashMap>();
 
   public JsonLoader() throws ParseException, FileNotFoundException, IOException {
-      JSONParser parser = new JSONParser();
-      
-      // TODO: Use "deploy/ElevatorArmSetpoints.json"
-      try (FileReader reader = new FileReader("C:/Users/RED/Local Documents/GitHub/2019DeepSpace/src/main/deploy/ElevatorArmSetpoints.json"))
-      {
-          // Read JSON file
-          JSONObject obj = (JSONObject) parser.parse(reader);
+    load("C:/Users/RED/Local Documents/GitHub/2019DeepSpace/src/main/deploy/ElevatorArmSetpoints.json");
+  }
 
-          //Iterate over setpoint array
-          setpoints = ((HashMap<String, HashMap>) obj.get("Setpoints"));
-          
-          // iterating address Map 
-          for (String name : setpoints.keySet()){ 
-            System.out.println("Name: "+name);
-            HashMap<String, Integer> values = (HashMap<String, Integer>) setpoints.get(name);
-            /*
-            System.out.println("   Scoring Side: "+values.get("side"));
-            System.out.println("   Height: "+values.get("height"));
-            System.out.println("   Angle: "+values.get("angle"));
-            System.out.println("   Valid?: "+values.get("valid"));
-            System.out.println("    .... side: "+getSide(name));
-            System.out.println("    .... height: "+getHeight(name));
-            System.out.println("    .... angle: "+getAngle(name));
-            System.out.println("    .... valid: "+isValid(name)); 
-            */
-          }          
-      } catch (FileNotFoundException e) {
-          e.printStackTrace();
-      } catch (IOException e) {
-          e.printStackTrace();
-      } catch (ParseException e) {
-          e.printStackTrace();
+  public void load(String fileName) throws ParseException, FileNotFoundException, IOException {
+    JSONParser parser = new JSONParser();
+
+    // TODO: Use "deploy/ElevatorArmSetpoints.json"
+    try (FileReader reader = new FileReader( fileName )) {
+      // Read JSON file
+      JSONObject obj = (JSONObject) parser.parse(reader);
+
+      // Iterate over setpoint array
+      setpoints = ((HashMap<String, HashMap>) obj.get("Setpoints"));
+
+      // iterating address Map
+      for (String name : setpoints.keySet()) {
+        System.out.println("Name: " + name);
+        HashMap<String, Integer> values = (HashMap<String, Integer>) setpoints.get(name);
+        /*
+         * System.out.println("   Scoring Side: "+values.get("side"));
+         * System.out.println("   Height: "+values.get("height"));
+         * System.out.println("   Angle: "+values.get("angle"));
+         * System.out.println("   Valid?: "+values.get("valid"));
+         * System.out.println("    .... side: "+getSide(name));
+         * System.out.println("    .... height: "+getHeight(name));
+         * System.out.println("    .... angle: "+getAngle(name));
+         * System.out.println("    .... valid: "+isValid(name));
+         */
       }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
   }
 
   public boolean isValid(String _key) {

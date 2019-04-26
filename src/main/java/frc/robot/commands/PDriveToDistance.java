@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.Utils;
 
 /**
  *
@@ -92,7 +93,7 @@ public class PDriveToDistance extends Command {
   // Called repeatedly when this Command is scheduled to run
   protected void execute() {
     // compute the pid P value
-    double pfactor = speed * Robot.oi.clamp(-1, 1, this.pFactor());
+    double pfactor = speed * Utils.clamp(-1, 1, this.pFactor());
     double pfactor2 = linearAccel(pfactor);
     double deltaTheta = Robot.driveTrain.getGyroAngle() - initYaw;
     deltaT = timer.get() - lastTime;

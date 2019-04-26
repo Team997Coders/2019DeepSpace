@@ -18,41 +18,8 @@ public class DeadbandClampUnitTest {
 
   @Test
   public void TestStuff() {
-    double a = bing(0.05, -0.1, -1, 1);
+    double a = Utils.condition_gamepad_axis(0.05, -0.1, -1, 1);
     assertTrue("Output is " + a, a == -0.1);
-  }
-
-  public double deadBand(double value, double dead) {
-    if (Math.abs(value) < dead) {
-      return 0;
-    } else {
-      return value;
-    }
-  }
-
-  public double clamp(double min, double max, double val) {
-    if (min > val) {
-      return min;
-    } else if (max < val) {
-      return max;
-    } else {
-      return val;
-    }
-  }
-
-  /**
-   * I really wish programmers would name methods descriptively so that I do
-   * not have to waste my time figuring out what things like "bing" and "stuff" do!
-   * I am guessing that this does good "stuff" to my joystick. CCB.
-   * 
-   * @param dead
-   * @param val
-   * @param min
-   * @param max
-   * @return    I wish I knew
-   */
-  public double bing(double dead, double val, double min, double max) {
-    return clamp(min, max, deadBand(val, dead));
   }
 
 }

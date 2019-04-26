@@ -56,16 +56,6 @@ public class DriveTrain extends Subsystem {
         null, NetworkTableInstance.getDefault().getTable("SmartDashboard"));
   }
 
-  public void resetGyro() {
-    if (gyro != null) {
-      gyro.reset();
-      init_angle = gyro.getAngle();
-      gyro.zeroYaw();
-    } else {
-      // programmer.sadness()
-    }
-  }
-
   /**
    * Drivetrain constructor to use for testing purposes.
    * 
@@ -106,6 +96,17 @@ public class DriveTrain extends Subsystem {
     setCoast();
 
     table = smartDashboardNetworkTable;
+  }
+
+  /**
+   * reset the gyro to 0 angle.  Also zero out the yaw value.
+   */
+  public void resetGyro() {
+    if (gyro != null) {
+      gyro.reset();
+      init_angle = gyro.getAngle();
+      gyro.zeroYaw();
+    }
   }
 
   /**
