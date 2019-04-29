@@ -21,7 +21,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
 import frc.robot.data.ArmData;
 import frc.robot.data.RobotState.ScoringDirectionStates;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -36,7 +35,6 @@ public class Arm extends Subsystem {
   private CANifier dataBus;
   private CANDigitalInput frontLimitSwitch, backLimitSwitch;
 
-  private Solenoid discBrake;
   private double armFrontLimit = RobotMap.Values.armFrontParallel;
 
   // Read Encoder Vars
@@ -79,8 +77,6 @@ public class Arm extends Subsystem {
     dataBus = Robot.armCanifier;
 
     pidController.setReference(0.0, ControlType.kDutyCycle);
-
-    discBrake = new Solenoid(RobotMap.Ports.discBrake);
 
     /*SmartDashboard.putNumber("Arm/Arm Pid P", RobotMap.Values.armPidP);
     SmartDashboard.putNumber("Arm/Arm Pid I", RobotMap.Values.armPidI);
