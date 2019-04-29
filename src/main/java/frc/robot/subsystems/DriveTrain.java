@@ -112,7 +112,7 @@ public class DriveTrain extends Subsystem {
   /**
    * Sets the percentage input for the left and right talon to zero
    */
-  public void stopVolts() {
+  public void stop() {
     // Set Motor Volts to 0
     leftTalon.set(ControlMode.PercentOutput, 0);
     rightTalon.set(ControlMode.PercentOutput, 0);

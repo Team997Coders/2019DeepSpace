@@ -24,6 +24,7 @@ import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LineDetector;
+import frc.robot.vision.ProcessVision;
 import edu.wpi.first.cameraserver.CameraServer;
 
 /**
@@ -53,6 +54,7 @@ public class Robot extends TimedRobot {
   public static InfraredRangeFinder frontInfraredRangeFinder;
   public static CANifier armCanifier;
   public static CANifier elevatorCanifier;
+  public static ProcessVision processVision;
 
   public static OI oi;
 
@@ -77,8 +79,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    cameraServer = CameraServer.getInstance();
-    cameraServer.startAutomaticCapture(0);
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();
@@ -94,6 +94,9 @@ public class Robot extends TimedRobot {
       RobotMap.Ports.lineSensorFrontCenter, 
       RobotMap.Ports.lineSensorFrontRight);
     frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor);
+
+    // since the vision system can call the drivetrain.  Make sure this is after both the systems.
+    processVision = new ProcessVision();
 
     // Create the logging instance so we can use it for tuning the PID subsystems
     //logger = Logger.getInstance();
@@ -132,7 +135,8 @@ public class Robot extends TimedRobot {
       loopCount++;
     }
 
-    deltaTime = (System.currentTimeMillis() - lastTime) / 1000;
+    // Keep a counter with the loop time to use for our PID loops.
+    deltaTime = System.currentTimeMillis() - lastTime;
     lastTime = System.currentTimeMillis();
 
     boolean safe = elevator.GetPosition() > RobotMap.Values.armSwitchHeight + 2000;
@@ -179,7 +183,6 @@ public class Robot extends TimedRobot {
       // should be logged...
       autonomousCommand = new AutoDoNothing();
     } else {
-      // TODO: Fill in these commands with the appropriate actions.
       // You can call cameraControlStateMachine.autoLockRight(), 
       // cameraControlStateMachine.autoLockLeft(), or cameraControlStateMachine.autoLock()
       // from your commands if you want to sandwich in vision autolocking after initial

@@ -46,7 +46,7 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.stopVolts();
+    Robot.driveTrain.stop();
   }
 
   @Override

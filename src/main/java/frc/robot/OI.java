@@ -28,8 +28,8 @@ public class OI {
   public JoystickButton ArmForward; // Back 2
   public JoystickButton ArmReverse; // Start 2
 
-  private JoystickButton deployLandingGear; // B 1
-  private JoystickButton deployBackLandingGear; // Y 1
+  private JoystickButton deployFrontLandingGear; // B 1
+  private JoystickButton deployBackLandingGear; // A 1
   private JoystickButton retractLandingGear; // Back 1
   private JoystickButton toggleHatch; // B 2
   private JoystickButton autoDriveToTarget; // A 2
@@ -43,8 +43,8 @@ public class OI {
 
     //#region Gamepad1 Controls
 
-    deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
-    deployLandingGear.whenPressed(new ToggleFrontLandingGear());
+    deployFrontLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
+    deployFrontLandingGear.whenPressed(new ToggleFrontLandingGear());
 
     deployBackLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
     deployBackLandingGear.whenPressed(new ToggleRearLandingGear());
@@ -54,6 +54,9 @@ public class OI {
 
     flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     flip.whenPressed(new FlipArmChain());
+
+    autoDriveToTarget = new JoystickButton(gamepad1, RobotMap.Buttons.buttonY);
+    autoDriveToTarget.whenPressed(new DriveWithVision());
 
     //flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     //flip.whenPressed(new SetArmPosition(RobotMap.Values.armFrontParallel, 10));
@@ -78,7 +81,7 @@ public class OI {
     ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballOutake.whileHeld(new BallOuttake());
 
-    autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);

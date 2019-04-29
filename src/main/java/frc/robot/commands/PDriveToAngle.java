@@ -85,7 +85,7 @@ public class PDriveToAngle extends Command {
   }
 
   protected void end() {
-    Robot.driveTrain.stopVolts();
+    Robot.driveTrain.stop();
   }
 
   protected void interrupted() {
