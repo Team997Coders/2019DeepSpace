@@ -14,7 +14,7 @@ public class RobotState {
     private static ScoringDirectionStates scoringDirectionState;
     private static ScoringArtifactStates scoringArtifactState;
     private static ScoringDestinationStates scoringDestinationState;
-    private static PositionStates positionState;
+    private static LiftPositionStates liftPositionState;
     private static boolean intakeState;
 
     public enum ScoringDirectionStates {
@@ -29,7 +29,7 @@ public class RobotState {
         None, CargoShip, Rocket
     }
 
-    public enum PositionStates {
+    public enum LiftPositionStates {
         None, High, Medium, Low
     }
 
@@ -45,8 +45,8 @@ public class RobotState {
         return scoringArtifactState;
     }
 
-    public static PositionStates getPositionState() {
-        return positionState;
+    public static LiftPositionStates getPositionState() {
+        return liftPositionState;
     }
 
     public static boolean getIntakeState() {
@@ -60,7 +60,7 @@ public class RobotState {
         scoringDirectionState = ScoringDirectionStates.None;
         scoringArtifactState = ScoringArtifactStates.None;
         scoringDestinationState = ScoringDestinationStates.None;
-        positionState = PositionStates.None;
+        liftPositionState = LiftPositionStates.None;
         intakeState = false;
     }
 
@@ -72,7 +72,7 @@ public class RobotState {
         scoringDirectionState = ScoringDirectionStates.Back;
         scoringArtifactState = ScoringArtifactStates.Hatch;
         scoringDestinationState = ScoringDestinationStates.CargoShip;
-        positionState = PositionStates.None;
+        liftPositionState = LiftPositionStates.None;
         intakeState = false;
     }
 
@@ -81,11 +81,11 @@ public class RobotState {
      * set scoring direction to back.
      */
     public static void setRobotState(ScoringDirectionStates _direction, ScoringArtifactStates _artifact,
-            ScoringDestinationStates _destination, PositionStates _position) {
+            ScoringDestinationStates _destination, LiftPositionStates _position) {
         scoringDirectionState = _direction;
         scoringArtifactState = _artifact;
         scoringDestinationState = _destination;
-        positionState = _position;
+        liftPositionState = _position;
         intakeState = false;
     }
 

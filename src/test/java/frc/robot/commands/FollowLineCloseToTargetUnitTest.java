@@ -33,7 +33,7 @@ public class FollowLineCloseToTargetUnitTest {
 		RobotState.setRobotState(RobotState.ScoringDirectionStates.Front, 
 		RobotState.ScoringArtifactStates.Ball, 
 		RobotState.ScoringDestinationStates.Rocket,
-		RobotState.PositionStates.Low);
+		RobotState.LiftPositionStates.Low);
 	}
 
 	@Test

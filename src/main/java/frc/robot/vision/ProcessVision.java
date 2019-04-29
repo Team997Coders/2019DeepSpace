@@ -12,6 +12,7 @@ import org.opencv.imgproc.Imgproc;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionThread;
+import frc.robot.Robot;
 import frc.robot.vision.GripPipeline;
 
 /**
@@ -22,7 +23,7 @@ public class ProcessVision {
     private static final int IMG_HEIGHT = 240;
     private VisionThread visionThread;
     private double centerX = 0.0;
-    private final Object imgLock = new Object();
+    public final Object imgLock = new Object();
 
     public ProcessVision() {
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -36,5 +37,15 @@ public class ProcessVision {
                 }
             }
         });
+        visionThread.start();
     }
+
+    public void driveVision() {
+        double centerX;
+        synchronized (imgLock) {
+            centerX = this.centerX;
+        }
+        double turn = centerX - (IMG_WIDTH / 2);
+        Robot.driveTrain.setRampArcadeVolts(-0.6, turn * 0.005);
+    } 
 }

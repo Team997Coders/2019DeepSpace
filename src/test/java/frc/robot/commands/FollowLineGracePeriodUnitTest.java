@@ -35,7 +35,7 @@ public class FollowLineGracePeriodUnitTest {
 		RobotState.setRobotState(RobotState.ScoringDirectionStates.Front, 
 		RobotState.ScoringArtifactStates.Hatch, 
 		RobotState.ScoringDestinationStates.Rocket,
-		RobotState.PositionStates.Low);
+		RobotState.LiftPositionStates.Low);
 	}
 
 	@Test
