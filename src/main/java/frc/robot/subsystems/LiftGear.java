@@ -31,8 +31,6 @@ public class LiftGear extends Subsystem {
 
     backPiston = new Solenoid(RobotMap.Ports.rearGearPiston);
     backPiston.set(false);
-
-    backDistanceIR = new AnalogInput(RobotMap.Ports.rearGearFloorSensor);
   }
   
   /**

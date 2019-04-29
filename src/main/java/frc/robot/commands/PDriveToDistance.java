@@ -34,7 +34,6 @@ public class PDriveToDistance extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.driveTrain);
-    // requires(Robot.collector);
     distSetpoint = _dist;
     speed = _speed;
   }
@@ -43,7 +42,6 @@ public class PDriveToDistance extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.driveTrain);
-    // requires(Robot.collector);
     distSetpoint = _dist;
     speed = 0.5;
   }
@@ -75,56 +73,68 @@ public class PDriveToDistance extends Command {
     return Volts;
   }
 
-  public double pFactor() {
-    // Calculate full PID
-    // pfactor = (P × error) + (I × ∑error) + (D × δerrorδt)
+  /**
+   * Calculate PID feedback term.
+   * pfactor = (P × error) + (I × sum_error) + (D × sum_changes_error)
+   * Assumes that the timestep is calculated before this step (see execute step)
+   * @return Calculated PID feedback
+   */
+  public double calcPID() {
     double error = this.piderror();
     // Integral is increased by the error*time (which is .02 seconds using normal
+    
     // IterativeRobot)
-    this.integral += (error * .02);
+    this.integral += (error * deltaT);
+    
     // Derivative is change in error over time
-    double derivative = (error - this.previous_error) / .02;
+    double derivative = (error - this.previous_error) / deltaT;
     this.previous_error = error;
+
     return (RobotMap.Values.driveDistanceP * error) + (RobotMap.Values.driveDistanceI * this.integral)
         + (RobotMap.Values.driveDistanceD * derivative);
   }
 
   // Called repeatedly when this Command is scheduled to run
   protected void execute() {
-    // compute the pid P value
-    double pfactor = speed * Robot.oi.clamp(-1, 1, this.pFactor());
-    double pfactor2 = linearAccel(pfactor);
-    double deltaTheta = Robot.driveTrain.getGyroAngle() - initYaw;
+    // compute the actual timestep, only do this once per loop...
     deltaT = timer.get() - lastTime;
     lastTime = timer.get();
 
-    // calculate yaw correction
+    // compute the pid P value...
+    double pfactor = speed * Robot.oi.clamp(-1, 1, this.calcPID());
+    double pfactor2 = linearAccel(pfactor);    
+
+    // calculate yaw correction...
+    double deltaTheta = Robot.driveTrain.getGyroYaw();
     double yawcorrect = deltaTheta * Ktheta;
 
     // set the output voltage
-    Robot.driveTrain.setVolts(pfactor2 - yawcorrect, pfactor2 + yawcorrect); // TODO check these signs...
+    Robot.driveTrain.setVolts(pfactor2 - yawcorrect, pfactor2 + yawcorrect);
     // Robot.driveTrain.SetVoltages(-pfactor, -pfactor); //without yaw correction,
     // accel
 
     // Debug information to be placed on the smart dashboard.
-    SmartDashboard.putNumber("PDTD/Setpoint", distSetpoint);
-    SmartDashboard.putNumber("PDTD/Encoder Distance", this.encoderDistance());
-    SmartDashboard.putNumber("PDTD/Distance Error", piderror());
-    SmartDashboard.putNumber("PDTD/K-P factor", pfactor);
-    SmartDashboard.putNumber("PDTD/K-P factor Accel", pfactor2);
-    SmartDashboard.putNumber("PDTD/deltaT", deltaT);
-    SmartDashboard.putNumber("PDTD/Theta Correction", yawcorrect);
-    SmartDashboard.putBoolean("PDTD/On Target", onTarget());
-    SmartDashboard.putNumber("PDTD/NavX Heading", Robot.driveTrain.getGyroAngle());
-    SmartDashboard.putNumber("PDTD/Init Yaw", initYaw);
+    if (Robot.DEBUG) {
+      SmartDashboard.putNumber("PDTD/Setpoint", distSetpoint);
+      SmartDashboard.putNumber("PDTD/Encoder Distance", this.encoderDistance());
+      SmartDashboard.putNumber("PDTD/Distance Error", piderror());
+      SmartDashboard.putNumber("PDTD/K-P factor", pfactor);
+      SmartDashboard.putNumber("PDTD/K-P factor Accel", pfactor2);
+      SmartDashboard.putNumber("PDTD/deltaT", deltaT);
+      SmartDashboard.putNumber("PDTD/Theta Correction", yawcorrect);
+      SmartDashboard.putBoolean("PDTD/On Target", onTarget());
+      SmartDashboard.putNumber("PDTD/NavX Heading", Robot.driveTrain.getGyroAngle());
+      SmartDashboard.putNumber("PDTD/Init Yaw", initYaw);
+    }
   }
 
   private double piderror() {
-    // shouldn't we average this out between both of the encoders?
-    return distSetpoint - this.encoderDistance();
+    // shouldn't we average this out between both of the encoders? No. See below.
+    return distSetpoint - Robot.driveTrain.leftEncoderTicks();
   }
 
   private double encoderDistance() {
+    // our encoders are not reading the same.  The left side seems to be correct.
     return (Robot.driveTrain.leftEncoderTicks() + Robot.driveTrain.rightEncoderTicks()) / 2;
   }
 

@@ -7,13 +7,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
- *
+ * Move the drivetrain to an relative angle
  */
 public class PDriveToAngle extends Command {
   private double angSetpoint;
@@ -21,6 +22,8 @@ public class PDriveToAngle extends Command {
   private double initYaw = -999;
   private double integral = 0;
   private double previousError = 0;
+  private double lastTime = 0;
+  private double deltaT = 0;
 
   public PDriveToAngle(double _ang) {
     requires(Robot.driveTrain);
@@ -28,10 +31,14 @@ public class PDriveToAngle extends Command {
   }
 
   protected void initialize() {
-    initYaw = Robot.driveTrain.getGyroAngle();
+    initYaw = Robot.driveTrain.getGyroHeading();
     Robot.driveTrain.setBrake();
+    lastTime = Timer.getFPGATimestamp();
   }
 
+  /**
+   * @return Calculated PID angle feedback
+   */
   public double yawCorrect() {
     // Calculate full PID
     // pfactor = (P × error) + (I × ∑error) + (D × δerrorδt)
@@ -47,17 +54,25 @@ public class PDriveToAngle extends Command {
   }
 
   protected void execute() {
-    // calculate yaw correction
+    // compute the actual timestep, only do this once per loop...
+    deltaT = Timer.getFPGATimestamp() - lastTime;
+    lastTime = Timer.getFPGATimestamp();
+    
+    // Apply yaw correction
     double yawcorrect = this.yawCorrect();
     Robot.driveTrain.setVolts(Robot.oi.clamp(-1, 1, yawcorrect), Robot.oi.clamp(-1, 1, -yawcorrect));
+
     // Debug information to be placed on the smart dashboard.
-    SmartDashboard.putNumber("PDTA/Angle Error", piderror());
-    SmartDashboard.putNumber("PDTA/Theta Angle Correction", yawcorrect);
-    SmartDashboard.putBoolean("PDTA/On Angle Target", onTarget());
+    if (Robot.DEBUG) {
+      SmartDashboard.putNumber("PDTA/Delta Time", deltaT);
+      SmartDashboard.putNumber("PDTA/Angle Error", piderror());
+      SmartDashboard.putNumber("PDTA/Theta Angle Correction", yawcorrect);
+      SmartDashboard.putBoolean("PDTA/On Angle Target", onTarget());
+    }
   }
 
   private double piderror() {
-    return initYaw + angSetpoint - Robot.driveTrain.getGyroAngle();
+    return initYaw + angSetpoint - Robot.driveTrain.getGyroHeading();
   }
 
   private boolean onTarget() {

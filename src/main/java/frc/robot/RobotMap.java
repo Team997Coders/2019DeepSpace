@@ -85,8 +85,6 @@ public class RobotMap {
       lineSensorBackRight = 3,   
       backInfraredSensor = 3,  
 
-
-
       //BALL PORTS
       ballMotor = 12,
       // ball sensor on the arm canifier rev limit switch connection 
@@ -107,14 +105,7 @@ public class RobotMap {
       //LANDING GEAR PORTS
       landingGearPiston = 0,
       landingGearFloorSensor = 1,
-      rearGearPiston = 3, //TODO: find the actual port value for this
-      rearGearFloorSensor = 0, //TODO: find the actual port value for this
-
-      //CAMERA PORTS
-      frontPanServo = 9,
-      frontTiltServo = 8,
-      backPanServo = 1,
-      backTiltServo = 0,
+      rearGearPiston = 3,
 
       // placeholder so we can always just end with commas :-)
       end_of_ports = 999;
@@ -169,8 +160,9 @@ public class RobotMap {
       elevatorPidF = 0.0000,
       elevatorPidFMax = 0, //0.0005,
       elevatorTopHeight = 100000000, //placeholder
+      elevatorBottomHeightInches = 14.0,
 
-      armSwitchHeight= 22775, //placeholer for height in order for arm to switch
+      armSwitchHeight= 22775, //height in order for arm to switch sides
       armBackParallel = 520,
       armFrontParallel = 7,
       armFrontLower = 7,
@@ -182,10 +174,6 @@ public class RobotMap {
       armPidK = 0,
       armMaxPidF = 0.002, // 0.0005
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackParallel-armFrontParallel)),
-
-      // Camera values
-      leftAngleInDegrees = 75,
-      rightAngleInDegrees = 115,
       
       // Elevator Deccel/Accel Values
       bottomElevatorAccelPosLimit = 5000,
@@ -205,7 +193,6 @@ public class RobotMap {
       pf_Ka = 0.0,
       //pf_Kt = 0.35,
       
-
       robotLength = 0.75, //in inches (includes bumpers)
       robotWidth = 0.8,	
       robotWheelBase = 0.62, // inches or 2.5ft or 0.6 meters.  Use 0.0254 meters/in or 39.37in/m

@@ -131,7 +131,7 @@ public class MotionProfile {
 		} else {
 			left_speed = m_left_follower.calculate((int) Robot.driveTrain.leftEncoderTicks());
 			right_speed = m_right_follower.calculate((int) Robot.driveTrain.rightEncoderTicks());
-			heading = Robot.driveTrain.getHeading();
+			heading = Robot.driveTrain.getGyroYaw();
 			desired_heading = Pathfinder.r2d(m_left_follower.getHeading()); //FIX: Another defect in PathWeaver
 			if (!forwards) {
 				desired_heading += 180;
