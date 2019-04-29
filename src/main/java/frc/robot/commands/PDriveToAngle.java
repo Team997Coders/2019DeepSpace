@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.misc.Utils;
 
 /**
  * Move the drivetrain to an relative angle
@@ -60,7 +61,7 @@ public class PDriveToAngle extends Command {
     
     // Apply yaw correction
     double yawcorrect = this.yawCorrect();
-    Robot.driveTrain.setVolts(Robot.oi.clamp(-1, 1, yawcorrect), Robot.oi.clamp(-1, 1, -yawcorrect));
+    Robot.driveTrain.setVolts(Utils.clamp(-1, 1, yawcorrect), Utils.clamp(-1, 1, -yawcorrect));
 
     // Debug information to be placed on the smart dashboard.
     if (Robot.DEBUG) {

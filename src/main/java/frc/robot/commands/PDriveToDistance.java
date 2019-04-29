@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.misc.Utils;
 
 /**
  *
@@ -101,7 +102,7 @@ public class PDriveToDistance extends Command {
     lastTime = timer.get();
 
     // compute the pid P value...
-    double pfactor = speed * Robot.oi.clamp(-1, 1, this.calcPID());
+    double pfactor = speed * Utils.clamp(-1, 1, this.calcPID());
     double pfactor2 = linearAccel(pfactor);    
 
     // calculate yaw correction...

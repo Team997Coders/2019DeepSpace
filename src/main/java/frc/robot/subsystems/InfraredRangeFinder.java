@@ -27,7 +27,6 @@ public class InfraredRangeFinder extends Subsystem {
   }
 
   public int getRangeInInches() {
-    // TODO: Calibrate and fill in...
     return 0;
   }
 

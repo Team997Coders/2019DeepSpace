@@ -67,7 +67,7 @@ public class LineDetector extends Subsystem {
    * 
    * @return True if not white is seen. False if there is
    */
-  public boolean noLineSeen() { //TODO: Make static before testing code in Auto Alignment
+  public boolean noLineSeen() { 
     return !anyLineSeen();
   }
 

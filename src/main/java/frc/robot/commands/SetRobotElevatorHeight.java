@@ -34,14 +34,14 @@ public class SetRobotElevatorHeight extends Command {
                   case Low:
                     setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, 0);
                     break;
-                  case None:
+                  default:
                     break;
                 }
                 break;
               case CargoShip:
                 setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, 0);
                 break;
-              case None:
+              default:
                 break;
             }
             break;
@@ -58,21 +58,18 @@ public class SetRobotElevatorHeight extends Command {
                   case Low:
                     setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, 0);
                     break;
-                  case None:
-                    //TODO: add in what should happen when none
+                  default:
                     break;
                 }
                 break;
               case CargoShip:
                 setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, 0);
                 break;
-              case None:
-                //TODO Add in case
+              default:
                 break;
             }
             break;
-          case None:
-            //TODO add in case
+          default:
             break;
         }
         break;
@@ -91,15 +88,14 @@ public class SetRobotElevatorHeight extends Command {
                   case Low:
                     setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, 180);
                     break;
-                  case None:
+                  default:
                     break;
                 }
                 break;
               case CargoShip:
                 setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, 180);
                 break;
-              case None:
-                //TODO: add in case
+              default:
                 break;
             }
             break;
@@ -116,26 +112,22 @@ public class SetRobotElevatorHeight extends Command {
                   case Low:
                     setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomHatchHeight, 180);
                     break;
-                  case None:
-                    //TODO: add in what should happen when none
+                  default:
                     break;
                 }
                 break;
               case CargoShip:
                 setpoint = new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, 180);
                 break;                
-              case None:
-                //TODO: add in case
+              default:
                 break;
             }
             break;
-          case None:
-            //TODO: add in case
+          default:
             break;
         }
         break;
-      case None:
-        //TODO: add in case
+      default:
         break;
     }
     if (setpoint != null) {
