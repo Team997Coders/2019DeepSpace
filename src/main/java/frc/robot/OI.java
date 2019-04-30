@@ -121,18 +121,6 @@ public class OI {
 
   //#region Configuration Methods
 
-  /**
-   * Purge the contorls
-   * 
-   * @deprecated Not need to remap controls. Just run one of the other configurations
-   */
-  public void purgeConfig() {
-    autoDriveToTarget.close();
-    toggleHatch.close();
-    elevatorGoDown.close();
-    elevatorGoUp.close();
-  }
-
   public void manualConfig() {
 
     SmartDashboard.putString("Controller Config", "Manual");

@@ -38,7 +38,7 @@ public class Elevator extends Subsystem {
   private CANifier canifier;
   //public int index = 0;
   //public double[]  heightList;
-  public boolean gamePieceType; 
+  //public boolean gamePieceType; 
   //This is to switch between balls and hatches for elevator heights.
   //// Balls = true Hatches = false
   public boolean isZeroed;
@@ -61,8 +61,6 @@ public class Elevator extends Subsystem {
     
     limitSwitchBottom= new CANDigitalInput(master, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
     limitSwitchBottom.enableLimitSwitch(true);
-
-    //master.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 
     master.setIdleMode(IdleMode.kBrake);
     follower.setIdleMode(IdleMode.kBrake);

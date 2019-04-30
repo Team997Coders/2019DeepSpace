@@ -116,23 +116,22 @@ public class RobotMap {
   }
 
   public static class Values {
-    public static int 
-      ticksPerRev = 4096; // Protobot
-      //PDriveToDistance PID Variables
+    public static final int ticksPerRev = 4096;
     public static double
+      // Drivetrain: Approx 217 encoder tics per inch
+      wheelDiameter = 6.0,
+      inchesPerTick = (wheelDiameter*Math.PI)/4096, //inches per encoder tick
+      ticksPerFoot = ((49152/(wheelDiameter*Math.PI)))*.9, //3940, //encoder ticks per foot
+
+      // PDriveToDistance PID Variables
       driveDistanceP = .003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
-      protobotTickPerFoot= 2449,
-
+      
       // PDriveToAngle PID Variables
       driveAngleP = .007, //placeholders
       driveAngleI = 0.0,
       driveAngleD = 0.0,
-
-      wheelDiameter = 6.0,
-      inchesPerTick = (wheelDiameter*Math.PI)/4096, //inches per encoder tick
-      ticksPerFoot = ((49152/(wheelDiameter*Math.PI)))*.9, //3940, //encoder ticks per foot
 
       //INFRARED DISTANCES for Line Following
       frontUltrasonicSensorHatchCargoship = 91,     
@@ -142,10 +141,7 @@ public class RobotMap {
       frontUltrasonicSensorBallCargoship = 5,      
       frontInfraredSensorBallCargoship = 5,      
       frontUltrasonicSensorBallRocket = 5,   
-      frontInfraredSensorBallRocket = 5,  
-      backInfraredSensorHatchCargoship = 1200,  
-      backInfraredSensorBallRocket = 5, 
-      backInfraredSensorBallCargoship = 5,
+      frontInfraredSensorBallRocket = 5,
 
       // Line following voltage values
       powerMotor = 0.5, 
@@ -153,14 +149,13 @@ public class RobotMap {
       normal = .10,
       straight = .3, 
 
-      // Arm and Elevator Values
+      // Arm and Elevator Control Values
       elevatorPidP = 0.00055, //0.00005 
       elevatorPidI = 0.0000000001,//0, // 
       elevatorPidD = 0.007, // 0.0005
       elevatorPidF = 0.0000,
       elevatorPidFMax = 0, //0.0005,
       elevatorTopHeight = 100000000, //placeholder
-      elevatorBottomHeightInches = 14.0,
 
       armSwitchHeight= 22775, //height in order for arm to switch sides
       armBackParallel = 520,
