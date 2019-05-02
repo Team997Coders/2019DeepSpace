@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorUppity extends Command {
+  private double m_pos;
+
   public ElevatorUppity() {
     requires(Robot.elevator);
     // Use requires() here to declare subsystem dependencies
@@ -21,6 +23,7 @@ public class ElevatorUppity extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+      m_pos = Robot.elevator.GetPosition();
   }
 
   // Called repeatedly when this Command is scheduled to run

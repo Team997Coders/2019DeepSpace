@@ -8,14 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class ElevatorTestGotoPosition extends Command {
-  double height;
-
-  public ElevatorTestGotoPosition(double height) {
-    requires(Robot.elevator);
-    this.height = height;
+public class ToggleElevatorMode extends Command {
+  double m_pos = -1;
+  
+  public ToggleElevatorMode() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -23,12 +22,16 @@ public class ElevatorTestGotoPosition extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.elevator.SetPosition(height);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(Robot.ElevatorMode == true) {
+      Robot.ElevatorMode = false;
+    } else {
+      Robot.ElevatorMode = true;
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -39,13 +42,10 @@ public class ElevatorTestGotoPosition extends Command {
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
+  protected void end() {}
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-    end();
-  }
+  protected void interrupted() {}
 }

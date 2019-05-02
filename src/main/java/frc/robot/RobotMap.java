@@ -44,6 +44,10 @@ public class RobotMap {
       end_of_buttons;
   }
 
+  public enum POVStates {
+		LEFT, RIGHT, UP, DOWN, NONE
+  }
+
   public static class Ports {
     public static final SerialPort.Port AHRS = SerialPort.Port.kUSB;
     public static int
@@ -203,30 +207,5 @@ public class RobotMap {
       elevatorFrontShipCargoHeight = 38125,
 
       elevatorCollectCargoHeight = 0;
-
-      public static int[]
-      elevatorFrontHatchHeightArray = {
-        elevatorFrontTopHatchHeight, 
-        elevatorFrontMiddleHatchHeight, 
-        elevatorFrontBottomHatchHeight 
-      },
-    
-      elevatorBackHatchHeightArray = {
-        elevatorBackTopHatchHeight, 
-        elevatorBackMiddleHatchHeight,
-        elevatorBackBottomHatchHeight
-      },
-
-      elevatorFrontCargoHeightArray = {
-        elevatorFrontTopCargoHeight,
-        elevatorFrontMiddleCargoHeight,
-        elevatorFrontBottomCargoHeight
-      },
-
-      elevatorBackCargoHeightArray = {
-        elevatorBackTopCargoHeight,
-        elevatorBackMiddleCargoHeight,
-        elevatorBackBottomCargoHeight
-      };
   }
 }

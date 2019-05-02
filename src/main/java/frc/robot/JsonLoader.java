@@ -11,7 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Arrays;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -23,7 +26,10 @@ public class JsonLoader {
   /**
    * Takes hard coded pathnames and loads setpoints from a file.
    */
+  private JSONArray cargo_order = new JSONArray();
+  private JSONArray hatch_order = new JSONArray();
   private HashMap<String, HashMap> setpoints = new HashMap<String, HashMap>();
+  
 
   public JsonLoader() throws ParseException, FileNotFoundException, IOException {
     load("C:/Users/RED/Local Documents/GitHub/2019DeepSpace/src/main/deploy/ElevatorArmSetpoints.json");
@@ -39,22 +45,8 @@ public class JsonLoader {
 
       // Iterate over setpoint array
       setpoints = ((HashMap<String, HashMap>) obj.get("Setpoints"));
-
-      // iterating address Map
-      for (String name : setpoints.keySet()) {
-        System.out.println("Name: " + name);
-        HashMap<String, Integer> values = (HashMap<String, Integer>) setpoints.get(name);
-        /*
-         * System.out.println("   Scoring Side: "+values.get("side"));
-         * System.out.println("   Height: "+values.get("height"));
-         * System.out.println("   Angle: "+values.get("angle"));
-         * System.out.println("   Valid?: "+values.get("valid"));
-         * System.out.println("    .... side: "+getSide(name));
-         * System.out.println("    .... height: "+getHeight(name));
-         * System.out.println("    .... angle: "+getAngle(name));
-         * System.out.println("    .... valid: "+isValid(name));
-         */
-      }
+      cargo_order = (JSONArray) obj.get("CargoElevatorHeights");
+      hatch_order = (JSONArray) obj.get("HatchElevatorHeights");
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -83,4 +75,15 @@ public class JsonLoader {
     HashMap<String, String> values = (HashMap<String, String>) setpoints.get(_key);
     return values.get("side");
   }
+            
+  public String nextHeight() {
+    // loop array
+    Iterator<String> iterator = cargo_order.iterator();
+    while (iterator.hasNext()) {
+      return iterator.next();
+    }
+    return "";
+  }
+
+
 }
