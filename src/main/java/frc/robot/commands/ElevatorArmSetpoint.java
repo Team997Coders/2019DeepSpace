@@ -6,42 +6,41 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ElevatorArmSetpoint extends Command {
-  
+
   private boolean longWay = false, armMoving = false, elevatorMoving = false, end = false;
   private double angle, height;
 
   private SetElevatorHeight e = null;
   private SetArmPosition a = null;
-  
-  //TODO: Make height represent inches.
-  //TODO: Do we need angle guards?
 
   public ElevatorArmSetpoint() {
-    // TODO: Crab position
   }
 
   /**
    * Sets the elevator and arm position in one command activity.
    * 
    * @param height
-   * @param angle   In degrees with 0 being front horizontal and 180 being back horizontal.
+   * @param angle  In degrees with 0 being front horizontal and 180 being back
+   *               horizontal.
    */
   public ElevatorArmSetpoint(double height, double angle) {
     this.height = height;
     this.angle = (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) * (angle / 180);
   }
 
-  public void setHeightAndAngle(double height, double angle) {
-    this.height = height;
+  public ElevatorArmSetpoint(int index) {
+    this.height = 0;
     this.angle = (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) * (angle / 180);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Math.abs(angle - Robot.arm.readEncoder()) > (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) / 2) {
-      //needsFlip = true;
-      if ((Robot.elevator.GetPosition() < RobotMap.Values.armSwitchHeight) && (height < RobotMap.Values.armSwitchHeight)) {
+    if (Math.abs(angle - Robot.arm.readEncoder()) > (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel)
+        / 2) {
+      // needsFlip = true;
+      if ((Robot.elevator.GetPosition() < RobotMap.Values.armSwitchHeight)
+          && (height < RobotMap.Values.armSwitchHeight)) {
         longWay = true;
       }
     }
@@ -87,7 +86,8 @@ public class ElevatorArmSetpoint extends Command {
         Scheduler.getInstance().add(e);
         elevatorMoving = true;
       }
-      if (a == null && ((Robot.elevator.GetPosition() >= RobotMap.Values.armSwitchHeight - 500) || (getArmError() < 130))) {
+      if (a == null
+          && ((Robot.elevator.GetPosition() >= RobotMap.Values.armSwitchHeight - 500) || (getArmError() < 130))) {
         a = new SetArmPosition(angle, 30);
         Scheduler.getInstance().add(a);
         armMoving = true;
@@ -95,7 +95,9 @@ public class ElevatorArmSetpoint extends Command {
     }
   }
 
-  public double getArmError() { return Math.abs(angle - Robot.arm.readEncoder()); }
+  public double getArmError() {
+    return Math.abs(angle - Robot.arm.readEncoder());
+  }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

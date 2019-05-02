@@ -8,8 +8,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class ToggleElevatorMode extends Command {
   double m_pos = -1;
@@ -27,11 +28,13 @@ public class ToggleElevatorMode extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.ElevatorMode == true) {
-      Robot.ElevatorMode = false;
+    if(RobotMap.ElevatorMode == true) {
+      RobotMap.ElevatorMode = false;
     } else {
-      Robot.ElevatorMode = true;
+      RobotMap.ElevatorMode = true;
     }
+
+    Robot.oi.reconfigureButtons();
   }
 
   // Make this return true when this Command no longer needs to run execute()

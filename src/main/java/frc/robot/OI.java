@@ -16,22 +16,25 @@ public class OI {
   Joystick gamepad3;
 
   //main configuration buttons.
-  public POVTrigger elevatorGoUp; // Y 2
-  public POVTrigger elevatorGoDown; // X 2
+ 
   public JoystickButton ballIntake; // Right Bumper 2
   public JoystickButton ballOutake; // Left Bumper 2
   public JoystickButton driveSafe; // Right Bumper 1
   public JoystickButton flip;
   public JoystickButton elevatorToggle;
 
-  public POVTrigger ArmForward; // POV RIGHT
-  public POVTrigger ArmReverse; // POV LEFT
+  public POVTrigger POVUpButton; // POV UP
+  public POVTrigger POVDownButon; // POV DOWN
+  public POVTrigger POVRightButton; // POV RIGHT
+  public POVTrigger POVLeftButton; // POV LEFT
 
   private JoystickButton deployFrontLandingGear; // B 1
   private JoystickButton deployBackLandingGear; // Y 1
   private JoystickButton retractLandingGear; // Back 1
   private JoystickButton toggleHatch; // B 2
   private JoystickButton autoDriveToTarget; // A 2
+
+  private boolean CurrentConfig = false;
 
   public OI() {
     // driver controls... game sticks control the motion of the robot
@@ -64,17 +67,17 @@ public class OI {
     //#endregion
 
     //#region Gamepad2 Controls
-    elevatorGoDown = new POVTrigger(gamepad3, RobotMap.POVStates.DOWN);
-    elevatorGoDown.whileHeld(new ElevatorDownity());
+    POVDownButon = new POVTrigger(gamepad3, RobotMap.POVStates.DOWN);
+    POVDownButon.whileHeld(new ElevatorDownity());
 
-    elevatorGoUp = new POVTrigger(gamepad3, RobotMap.POVStates.UP);
-    elevatorGoUp.whileHeld(new ElevatorUppity());
+    POVUpButton = new POVTrigger(gamepad3, RobotMap.POVStates.UP);
+    POVUpButton.whileHeld(new ElevatorUppity());
 
-    ArmForward = new POVTrigger(gamepad3, RobotMap.POVStates.RIGHT);
-    ArmForward.whileHeld(new MoveArm(-0.5));
+    POVRightButton = new POVTrigger(gamepad3, RobotMap.POVStates.RIGHT);
+    POVRightButton.whileHeld(new MoveArm(-0.5));
 
-    ArmReverse = new POVTrigger(gamepad3, RobotMap.POVStates.LEFT);
-    ArmReverse.whileHeld(new MoveArm(0.5));
+    POVLeftButton = new POVTrigger(gamepad3, RobotMap.POVStates.LEFT);
+    POVLeftButton.whileHeld(new MoveArm(0.5));
 
     ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonLeftShoulder);
     ballIntake.whileHeld(new BallIntake());
@@ -86,7 +89,9 @@ public class OI {
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
 
     elevatorToggle = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
-    elevatorToggle.whenPressed(new SetElevatorMode());
+    elevatorToggle.whenPressed(new ToggleElevatorMode());
+
+    manualConfig();
     //#endregion
   }
 
@@ -111,6 +116,45 @@ public class OI {
   //autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, RobotMap.Values.armFrontParallel));
 
   //#endregion
+
+  public void manualConfig() {
+    SmartDashboard.putString("Controller Config", "Cargo Front");
+
+    POVDownButon.whileHeld(new ElevatorDownity());
+    POVUpButton.whileHeld(new ElevatorUppity());
+    POVRightButton.whileHeld(new MoveArm(-0.5));
+    POVLeftButton.whileHeld(new MoveArm(0.5));
+
+  }
+
+  public void setpointConfig() {
+    // High Rocket
+    POVUpButton.whileHeld(new ElevatorArmSetpoint());
+
+    // Mid Rocket / Cargoship Cargo Drop
+    POVRightButton.whileHeld(new ElevatorArmSetpoint());
+
+    // Bottom Rocket / Low Hatch
+    POVDownButon.whileHeld(new ElevatorArmSetpoint());
+
+    // Map left to flip...
+    POVLeftButton.whileHeld(new FlipArmChain());
+  }
+
+  public void reconfigureButtons() {
+    if (CurrentConfig == RobotMap.ElevatorMode) {
+      return;
+    }
+
+    if (RobotMap.ElevatorMode == true) {
+      setpointConfig();
+    } else {
+      manualConfig();
+    }
+
+    CurrentConfig = RobotMap.ElevatorMode;
+  }
+
 
   // KEEP THESE COMMENTS
   //// TRIGGERING COMMANDS WITH BUTTONS

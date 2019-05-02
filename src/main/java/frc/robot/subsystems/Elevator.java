@@ -178,9 +178,7 @@ public class Elevator extends Subsystem {
   }
 
   public void ZeroElevator(){
-
     if (limitSwitchBottom.get()){
-
       resetElevatorEncoder();
       isZeroed = true;
     } 

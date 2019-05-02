@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.SerialPort;
 public class RobotMap {
   public static class Buttons {
     public static int
-
       GamePad1 = 0,
       GamePad3 = 2, 
       buttonA = 1,
@@ -43,6 +42,8 @@ public class RobotMap {
 
       end_of_buttons;
   }
+
+  public static boolean ElevatorMode = false; // false = manual control, true = Setpoints
 
   public enum POVStates {
 		LEFT, RIGHT, UP, DOWN, NONE

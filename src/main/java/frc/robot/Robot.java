@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
   private double lastTime = 0; // millis seconds
   private static double deltaTime = 0; // seconds
   private int loopCount = 0, executeLoopCount = 30;
-  public static boolean ElevatorMode = false; // false = manual control, true = Setpoints
+  
   public static int ElevatorIndex = -1; // pointer to height array
 
   Command autonomousCommand;
@@ -311,7 +311,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Delta Time", deltaTime);
     // SmartDashboard.putBoolean("Paths Loaded",
     // PathManager.getInstance().isLoaded());
-    SmartDashboard.putBoolean("Elevator Mode", ElevatorMode);
+    SmartDashboard.putBoolean("Elevator Mode", RobotMap.ElevatorMode);
   }
 
   public void updateSmartDashboardRequired() {
