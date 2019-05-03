@@ -5,62 +5,52 @@
         "FrontBallRocketHigh": {
             "side": "front",
             "height": 52400,
-            "angle": 45,
-            "valid": true
+            "angle": 45
         },
         "FrontBallRocketMiddle": {
             "side": "front",
             "height": 45360,
-            "angle": 0,
-            "valid": true
+            "angle": 0
         },
         "FrontBallRocketLow": {
             "side": "front",
             "height": 22200,
-            "angle": 0,
-            "valid": true
+            "angle": 0
         },
         "FrontBallCargoShip": {
             "side": "front",
             "height": 38125,
-            "angle": 0,
-            "valid": true
+            "angle": 0
         },
         "FrontHatchRocketHigh": {
             "side": "front",
             "height": 52400,
-            "angle": 0,
-            "valid": true
+            "angle": 0
         },
         "FrontHatchRocketMiddle": {
             "side": "front",
             "height": 30530,
-            "angle": 0,
-            "valid": true
+            "angle": 0
         },
         "FrontHatchRocketLow": {
             "side": "front",
             "height": 0,
-            "angle": 0,
-            "valid": true
+            "angle": 0
         },
         "FrontHatchCargoShip": {
             "side": "front",
             "height": 0,
-            "angle": 0,
-            "valid": true
+            "angle": 0
         },
         "Collect": {
             "side": "front",
             "height": 0,
-            "angle": 0,
-            "valid": true
+            "angle": 0
         },
         "SafeMode": {
             "side": "back",
             "height": 0,
-            "angle": 45,
-            "valid": true
+            "angle": 45
         }
     }
 }

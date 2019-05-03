@@ -10,18 +10,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifier.PWMChannel;
 import com.ctre.phoenix.CANifier.GeneralPin;
-import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-import com.revrobotics.CANDigitalInput.LimitSwitch;
-import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Robot;
 import frc.robot.data.ArmData;
 import frc.robot.data.RobotState.ScoringDirectionStates;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -50,9 +46,7 @@ public class Arm extends Subsystem {
 
   private CANSparkMax sparkMax;
   private CANifier dataBus;
-  private CANDigitalInput frontLimitSwitch, backLimitSwitch;
 
-  private Solenoid discBrake;
   private double armFrontLimit = RobotMap.Values.armFrontParallel;
 
   // Read Encoder Vars
@@ -83,17 +77,10 @@ public class Arm extends Subsystem {
     pidController.setOutputRange(-0.6, 0.6);
 
     pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
-    
-    frontLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
-    frontLimitSwitch.enableLimitSwitch(false);
-    backLimitSwitch = new CANDigitalInput(sparkMax, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
-    backLimitSwitch.enableLimitSwitch(false);
 
     dataBus = Robot.armCanifier;
 
     pidController.setReference(0.0, ControlType.kDutyCycle);
-
-    discBrake = new Solenoid(RobotMap.Ports.discBrake);
 
     SmartDashboard.putNumber("Arm/Arm Pid P", RobotMap.Values.armPidP);
     SmartDashboard.putNumber("Arm/Arm Pid I", RobotMap.Values.armPidI);
@@ -249,8 +236,6 @@ public class Arm extends Subsystem {
     a.current = sparkMax.getOutputCurrent();
     a.ticks = readEncoder();
     a.velocity = 0;
-    a.front = frontLimitSwitch.get();
-    a.back = backLimitSwitch.get();
 
     return a;
   }
@@ -265,12 +250,9 @@ public class Arm extends Subsystem {
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Arm/Arm Absolute Raw", getRawEncoder());
     SmartDashboard.putNumber("Arm/Absolute Parsed", readEncoder());
-    SmartDashboard.putBoolean("Arm/Disc Brake state: ", discBrake.get());
     SmartDashboard.putBoolean("Arm/Arm forward limit switch", getForwardLimitSwitch());
 
     SmartDashboard.putNumber("Arm/Arm F", pidController.getFF());
-    SmartDashboard.putBoolean("Arm/Arm Front Limit Switch", frontLimitSwitch.get());
-    SmartDashboard.putBoolean("Arm/Arm Back Limit Switch", backLimitSwitch.get());
     SmartDashboard.putNumber("Arm/Arm voltage", sparkMax.getAppliedOutput());
     SmartDashboard.putNumber("Arm/Arm Current", getCurrent());
     //SmartDashboard.putNumber("Arm/Arm Motor Temp", getMotorTemp());

@@ -23,14 +23,22 @@ public class ElevatorArmSetpoint extends Command {
    * @param angle  In degrees with 0 being front horizontal and 180 being back
    *               horizontal.
    */
-  public ElevatorArmSetpoint(double height, double angle) {
+  public ElevatorArmSetpoint(double height, double angleTics) {
     this.height = height;
-    this.angle = (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) * (angle / 180);
+    this.angle = (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) * (angleTics / 180);
   }
 
   public ElevatorArmSetpoint(int index) {
-    this.height = 0;
-    this.angle = (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel) * (angle / 180);
+    Object _setp = Robot.jl.cargo_order.get(index);
+    this.height = Robot.jl.getHeight((String) _setp);
+    this.angle = Robot.jl.getAngle((String) _setp);
+    System.out.println("Extracted Element in Cargo Array: "+_setp+", height="+height+", angle="+angle);
+  }
+
+  public ElevatorArmSetpoint(String name) {
+    this.height = Robot.jl.getHeight(name);
+    this.angle = Robot.jl.getAngle(name);
+    System.out.println("Extracted "+name+" from Cargo Array: height="+height+", angle="+angle);
   }
 
   // Called just before this Command runs the first time
