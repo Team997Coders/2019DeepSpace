@@ -129,16 +129,16 @@ public class OI {
 
   public void setpointConfig() {
     // High Rocket
-    POVUpButton.whileHeld(new ElevatorArmSetpoint());
+    POVUpButton.whenPressed(new ElevatorArmSetpoint("FrontHatchRocketHigh"));
 
     // Mid Rocket / Cargoship Cargo Drop
-    POVRightButton.whileHeld(new ElevatorArmSetpoint());
+    POVRightButton.whenPressed(new ElevatorArmSetpoint("FrontHatchRocketMiddle"));
 
     // Bottom Rocket / Low Hatch
-    POVDownButon.whileHeld(new ElevatorArmSetpoint());
+    POVDownButon.whenPressed(new ElevatorArmSetpoint("FrontHatchRocketLow"));
 
     // Map left to flip...
-    POVLeftButton.whileHeld(new FlipArmChain());
+    POVLeftButton.whenPressed(new FlipArmChain());
   }
 
   public void reconfigureButtons() {
