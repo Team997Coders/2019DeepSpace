@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
     jl = null;
     try {
       jl = new JsonLoader();
+      jl.load("/home/lvuser/deploy/ElevatorArmSetpoints.json");
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     } catch (IOException e) {

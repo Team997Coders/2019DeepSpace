@@ -29,18 +29,18 @@ public class JsonLoader {
   public JSONArray hatch_order = new JSONArray();
   public HashMap<String, HashMap> setpoints = new HashMap<String, HashMap>();
 
-  public JsonLoader() throws ParseException, FileNotFoundException, IOException {
-    load("C:/Users/RED/Local Documents/GitHub/2019DeepSpace/src/main/deploy/ElevatorArmSetpoints.json");
+  public JsonLoader() {
   }
 
   public void load(String fileName) throws ParseException, FileNotFoundException, IOException {
     JSONParser parser = new JSONParser();
 
     // TODO: Use "deploy/ElevatorArmSetpoints.json"
-    try (FileReader reader = new FileReader(fileName)) {
+    try {
+      FileReader reader = new FileReader(fileName);
       // Read JSON file
       JSONObject obj = (JSONObject) parser.parse(reader);
-      System.out.println(obj);
+      //System.out.println(obj);
 
       // get the setpoint ordering arrays:
       cargo_order = (JSONArray) obj.get("CargoElevatorHeights");
@@ -72,14 +72,5 @@ public class JsonLoader {
   public String getSide(String _key) {
     HashMap<String, String> values = (HashMap<String, String>) setpoints.get(_key);
     return values.get("side");
-  }
-
-  public String nextHeight() {
-    // loop array
-    Iterator<String> iterator = cargo_order.iterator();
-    while (iterator.hasNext()) {
-      return iterator.next();
-    }
-    return "";
   }
 }

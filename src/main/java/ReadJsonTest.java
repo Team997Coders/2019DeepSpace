@@ -11,8 +11,10 @@ public class ReadJsonTest
     public static JsonLoader jl;
     public static void main(String[] args)
     {
+        String fileName = "C:/Users/RED/Local Documents/GitHub/2019DeepSpace/src/main/deploy/ElevatorArmSetpoints.json";
+        jl = new JsonLoader();
         try {
-            jl = new JsonLoader();
+            jl.load(fileName);
             System.out.println("FrontBallRocketLow:");
             System.out.println("Side: "+jl.getSide("FrontBallRocketLow"));
             System.out.println("Height: "+jl.getHeight("FrontBallRocketLow"));
