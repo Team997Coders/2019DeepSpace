@@ -26,9 +26,9 @@ public class JsonLoader {
   /**
    * Takes hard coded pathnames and loads setpoints from a file.
    */
-  private JSONArray cargo_order = new JSONArray();
-  private JSONArray hatch_order = new JSONArray();
-  private HashMap<String, HashMap> setpoints = new HashMap<String, HashMap>();
+  public JSONArray cargo_order = new JSONArray();
+  public JSONArray hatch_order = new JSONArray();
+  public HashMap<String, HashMap> setpoints = new HashMap<String, HashMap>();
   
 
   public JsonLoader() throws ParseException, FileNotFoundException, IOException {
@@ -42,6 +42,11 @@ public class JsonLoader {
     try (FileReader reader = new FileReader( fileName )) {
       // Read JSON file
       JSONObject obj = (JSONObject) parser.parse(reader);
+      System.out.println(obj);
+
+      // get the setpoint ordering arrays:
+      cargo_order = (JSONArray) obj.get("CargoElevatorHeights");
+      hatch_order = (JSONArray) obj.get("HatchElevatorHeights");
 
       // Iterate over setpoint array
       setpoints = ((HashMap<String, HashMap>) obj.get("Setpoints"));
