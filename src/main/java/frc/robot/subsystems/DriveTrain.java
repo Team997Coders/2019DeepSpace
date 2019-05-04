@@ -29,7 +29,7 @@ public class DriveTrain extends Subsystem {
 
   public boolean decell = true;
 
-  private double maxSpeed = 1.0;
+  private double maxSpeed = 0.5;
 
   // Decell Data
   private double ramp = 4.0;

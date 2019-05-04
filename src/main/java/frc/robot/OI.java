@@ -92,7 +92,7 @@ public class OI {
     //elevatorGoUp.whileHeld(new ElevatorUppity());
 
     manualConfig();
-
+    reconfigureButtons();
     //#endregion
   }
 

@@ -65,7 +65,7 @@ public class Arm extends Subsystem {
     pidController.setI(RobotMap.Values.armPidI);
     pidController.setD(RobotMap.Values.armPidD);
     pidController.setFF(0);
-    pidController.setOutputRange(-0.8, 0.8);
+    pidController.setOutputRange(-0.6, 0.6);
 
     pidController.setIAccum(0);
 
@@ -129,7 +129,7 @@ public class Arm extends Subsystem {
     //releaseBrake();
     //System.out.println("Setting arm position to " + setpoint);
     pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
-    UpdateF();
+    //UpdateF();
   }
 
   public double readEncoder() {
