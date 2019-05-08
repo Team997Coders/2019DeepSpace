@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
+import frc.robot.subsystems.Arm;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -92,7 +93,7 @@ public class OI {
     //elevatorGoUp.whileHeld(new ElevatorUppity());
 
     manualConfig();
-    reconfigureButtons();
+    //reconfigureButtons();
     //#endregion
   }
 
@@ -185,8 +186,8 @@ public class OI {
 
     SmartDashboard.putString("Controller Config", "Manual");
 
-    autoDriveToTarget.whenPressed(new AutoDoNothing());
-    toggleHatch.whenPressed(new ToggleHatch());
+    autoDriveToTarget.whenPressed(new SetArmPosition(RobotMap.Values.armFrontParallel,50));
+    toggleHatch.whenPressed(new SetArmPosition(RobotMap.Values.armBackParallel,50));
     elevatorGoUp.whileHeld(new ElevatorUppity());
     elevatorGoDown.whileHeld(new ElevatorDownity());
 

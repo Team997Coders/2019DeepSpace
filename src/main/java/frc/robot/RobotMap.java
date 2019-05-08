@@ -176,7 +176,7 @@ public class RobotMap {
       armFrontLower = 288,
       armVertical = 501,
 
-      armPidP = 0.0006, //0.0012
+      armPidP = 0.002, //0.0012
       armPidI = 0,
       armPidD = 0.001,
       armPidK = 0,

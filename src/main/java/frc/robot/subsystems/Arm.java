@@ -13,11 +13,15 @@ import com.ctre.phoenix.CANifier.GeneralPin;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+//import org.mockito.internal.reporting.SmartPrinter;
+
 import frc.robot.Robot;
 import frc.robot.data.ArmData;
 import frc.robot.data.RobotState.ScoringDirectionStates;
@@ -33,6 +37,7 @@ public class Arm extends Subsystem {
   public CANPIDController pidController;
 
   private CANSparkMax sparkMax;
+  private CANEncoder internalEncoder;
   private CANifier dataBus;
   private CANDigitalInput frontLimitSwitch, backLimitSwitch;
 
@@ -56,6 +61,9 @@ public class Arm extends Subsystem {
 
     sparkMax.setInverted(true);
 
+    internalEncoder = sparkMax.getEncoder();
+    internalEncoder.setPositionConversionFactor(42);
+
     //sparkMax.setOpenLoopRampRate(0);
 
     //sparkMax.setIdleMode(IdleMode.kBrake);
@@ -65,7 +73,7 @@ public class Arm extends Subsystem {
     pidController.setI(RobotMap.Values.armPidI);
     pidController.setD(RobotMap.Values.armPidD);
     pidController.setFF(0);
-    pidController.setOutputRange(-0.6, 0.6);
+    pidController.setOutputRange(-0.8, 0.8);
 
     pidController.setIAccum(0);
 
@@ -128,7 +136,9 @@ public class Arm extends Subsystem {
   public void SetPostion(double setpoint){
     //releaseBrake();
     //System.out.println("Setting arm position to " + setpoint);
+    internalEncoder.setPosition(0);
     pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
+
     //UpdateF();
   }
 
@@ -235,6 +245,7 @@ public class Arm extends Subsystem {
     //SmartDashboard.putBoolean("Arm/Arm Front Limit Switch", frontLimitSwitch.get());
     //SmartDashboard.putBoolean("Arm/Arm Back Limit Switch", backLimitSwitch.get());
     SmartDashboard.putNumber("Arm/Arm voltage", sparkMax.getAppliedOutput());
+    SmartDashboard.putNumber("Arm/Arm Internal Read", internalEncoder.getPosition());
     //SmartDashboard.putNumber("Arm/Arm Current", getCurrent());
     //SmartDashboard.putNumber("Arm/Arm Motor Temp", getMotorTemp());
   }

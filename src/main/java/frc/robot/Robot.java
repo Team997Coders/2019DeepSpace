@@ -134,6 +134,8 @@ public class Robot extends TimedRobot {
 
     deltaTime = (System.currentTimeMillis() - lastTime) / 1000;
     lastTime = System.currentTimeMillis();
+    //oi.reconfigureButtons();
+
 
     boolean safe = elevator.GetPosition() > RobotMap.Values.armSwitchHeight + 2000;
     SmartDashboard.putBoolean("wtf/Safe?", safe);

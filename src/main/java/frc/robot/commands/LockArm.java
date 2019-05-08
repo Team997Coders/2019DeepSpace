@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -26,6 +27,7 @@ public class LockArm extends Command {
 
     protected void execute() {
       Robot.arm.SetPostion(position);
+      SmartDashboard.putNumber("Arm/Arm position", position);
       //System.out.println("Locking Arm at position " + position + "\nArm at " + Robot.arm.readEncoder());
     }
 
