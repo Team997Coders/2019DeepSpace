@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.CANifier;
@@ -20,8 +13,6 @@ import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-//import org.mockito.internal.reporting.SmartPrinter;
-
 import frc.robot.Robot;
 import frc.robot.data.ArmData;
 import frc.robot.data.RobotState.ScoringDirectionStates;
@@ -29,6 +20,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+
 /**
  * Add your docs here.
  */
@@ -62,7 +54,8 @@ public class Arm extends Subsystem {
     sparkMax.setInverted(true);
 
     internalEncoder = sparkMax.getEncoder();
-    internalEncoder.setPositionConversionFactor(42);
+    double conversionFactor = RobotMap.Values.internalFlipTickCount / (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel);
+    internalEncoder.setPositionConversionFactor(conversionFactor);
 
     //sparkMax.setOpenLoopRampRate(0);
 
@@ -136,8 +129,9 @@ public class Arm extends Subsystem {
   public void SetPostion(double setpoint){
     //releaseBrake();
     //System.out.println("Setting arm position to " + setpoint);
-    internalEncoder.setPosition(0);
-    pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
+    internalEncoder.setPosition(readEncoder());
+    pidController.setReference(setpoint, ControlType.kPosition);
+    //pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
 
     //UpdateF();
   }
