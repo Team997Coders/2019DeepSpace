@@ -32,7 +32,6 @@ import edu.wpi.first.vision.VisionPipeline;
 public class GripPipeline implements VisionPipeline {
 
 	// Outputs
-	private Mat cvResizeOutput = new Mat();
 	private Mat hsvThresholdOutput = new Mat();
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
@@ -47,19 +46,11 @@ public class GripPipeline implements VisionPipeline {
 	 */
 	@Override
 	public void process(Mat source0) {
-		// Step CV_resize0:
-		Mat cvResizeSrc = source0;
-		Size cvResizeDsize = new Size(0, 0);
-		double cvResizeFx = 0.25;
-		double cvResizeFy = 0.25;
-		int cvResizeInterpolation = Imgproc.INTER_LINEAR;
-		cvResize(cvResizeSrc, cvResizeDsize, cvResizeFx, cvResizeFy, cvResizeInterpolation, cvResizeOutput);
-
 		// Step HSV_Threshold0:
-		Mat hsvThresholdInput = cvResizeOutput;
-		double[] hsvThresholdHue = { 75.0, 100.0 };
-		double[] hsvThresholdSaturation = { 186.0, 255.0 };
-		double[] hsvThresholdValue = { 88.0, 255.0 };
+		Mat hsvThresholdInput = source0;
+		double[] hsvThresholdHue = {62.8, 103.7 };
+		double[] hsvThresholdSaturation = { 101.1, 255.0 };
+		double[] hsvThresholdValue = { 74.7, 207.1 };
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
 		// Step Find_Contours0:
@@ -69,14 +60,14 @@ public class GripPipeline implements VisionPipeline {
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 2.0;
+		double filterContoursMinArea = 500.0;
 		double filterContoursMinPerimeter = 0.0;
 		double filterContoursMinWidth = 0;
-		double filterContoursMaxWidth = 1000;
+		double filterContoursMaxWidth = 200;
 		double filterContoursMinHeight = 0;
 		double filterContoursMaxHeight = 1000;
-		double[] filterContoursSolidity = { 0.0, 100 };
-		double filterContoursMaxVertices = 1000000;
+		double[] filterContoursSolidity = { 80.0, 100 };
+		double filterContoursMaxVertices = 100;
 		double filterContoursMinVertices = 0.0;
 		double filterContoursMinRatio = 0.0;
 		double filterContoursMaxRatio = 1000.0;
@@ -85,15 +76,6 @@ public class GripPipeline implements VisionPipeline {
 				filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio,
 				filterContoursMaxRatio, filterContoursOutput);
 
-	}
-
-	/**
-	 * This method is a generated getter for the output of a CV_resize.
-	 * 
-	 * @return Mat output from CV_resize.
-	 */
-	public Mat cvResizeOutput() {
-		return cvResizeOutput;
 	}
 
 	/**
@@ -121,23 +103,6 @@ public class GripPipeline implements VisionPipeline {
 	 */
 	public ArrayList<MatOfPoint> filterContoursOutput() {
 		return filterContoursOutput;
-	}
-
-	/**
-	 * Resizes an image.
-	 * 
-	 * @param src           The image to resize.
-	 * @param dSize         size to set the image.
-	 * @param fx            scale factor along X axis.
-	 * @param fy            scale factor along Y axis.
-	 * @param interpolation type of interpolation to use.
-	 * @param dst           output image.
-	 */
-	private void cvResize(Mat src, Size dSize, double fx, double fy, int interpolation, Mat dst) {
-		if (dSize == null) {
-			dSize = new Size(0, 0);
-		}
-		Imgproc.resize(src, dst, dSize, fx, fy, interpolation);
 	}
 
 	/**

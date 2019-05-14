@@ -1,0 +1,152 @@
+<grip:Pipeline>
+  <sources>
+    <grip:MultiImageFile>
+      <property name="path[13]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190841.jpg"/>
+      <property name="path[9]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190817.jpg"/>
+      <property name="path[10]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190825.jpg"/>
+      <property name="path[6]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190804.jpg"/>
+      <property name="path[3]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190753.jpg"/>
+      <property name="path[0]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190512.jpg"/>
+      <property name="path[12]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190837.jpg"/>
+      <property name="path[8]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190813.jpg"/>
+      <property name="index" value="7"/>
+      <property name="numImages" value="14"/>
+      <property name="path[5]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190801.jpg"/>
+      <property name="path[2]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190750.jpg"/>
+      <property name="path[11]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190834.jpg"/>
+      <property name="path[7]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190810.jpg"/>
+      <property name="path[4]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190757.jpg"/>
+      <property name="path[1]" value="C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision\calibration_images\2019-01-18-190557.jpg"/>
+    </grip:MultiImageFile>
+  </sources>
+  <steps>
+    <grip:Step name="HSV Threshold">
+      <grip:Input step="0" socket="0"/>
+      <grip:Input step="0" socket="1">
+        <value>
+          <double>62.776486442342765</double>
+          <double>103.72285744258808</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="0" socket="2">
+        <value>
+          <double>101.138546082405</double>
+          <double>255.0</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="0" socket="3">
+        <value>
+          <double>74.70133617901087</double>
+          <double>207.0720956640645</double>
+        </value>
+      </grip:Input>
+      <grip:Output step="0" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Find Contours">
+      <grip:Input step="1" socket="0"/>
+      <grip:Input step="1" socket="1">
+        <value>false</value>
+      </grip:Input>
+      <grip:Output step="1" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Filter Contours">
+      <grip:Input step="2" socket="0"/>
+      <grip:Input step="2" socket="1">
+        <value>500.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="2">
+        <value>0.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="3">
+        <value>0.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="4">
+        <value>200.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="5">
+        <value>0.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="6">
+        <value>1000.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="7">
+        <value>
+          <double>80.03597122302158</double>
+          <int>100</int>
+        </value>
+      </grip:Input>
+      <grip:Input step="2" socket="8">
+        <value>100.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="9">
+        <value>8.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="10">
+        <value>0.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="11">
+        <value>1000.0</value>
+      </grip:Input>
+      <grip:Output step="2" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="NTPublish ContoursReport">
+      <grip:Input step="3" socket="0"/>
+      <grip:Input step="3" socket="1">
+        <value>myContoursReport</value>
+      </grip:Input>
+      <grip:Input step="3" socket="2">
+        <value>true</value>
+      </grip:Input>
+      <grip:Input step="3" socket="3">
+        <value>true</value>
+      </grip:Input>
+      <grip:Input step="3" socket="4">
+        <value>true</value>
+      </grip:Input>
+      <grip:Input step="3" socket="5">
+        <value>true</value>
+      </grip:Input>
+      <grip:Input step="3" socket="6">
+        <value>true</value>
+      </grip:Input>
+      <grip:Input step="3" socket="7">
+        <value>false</value>
+      </grip:Input>
+    </grip:Step>
+  </steps>
+  <connections>
+    <grip:Connection>
+      <grip:Output step="0" socket="0" previewed="false"/>
+      <grip:Input step="1" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="2" socket="0" previewed="true"/>
+      <grip:Input step="3" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="1" socket="0" previewed="false"/>
+      <grip:Input step="2" socket="0"/>
+    </grip:Connection>
+  </connections>
+  <settings>
+    <teamNumber>997</teamNumber>
+    <publishAddress>roboRIO-997-FRC.local</publishAddress>
+    <deployAddress>roboRIO-997-FRC.local</deployAddress>
+    <deployDir>/home/lvuser</deployDir>
+    <deployUser>lvuser</deployUser>
+    <deployJavaHome>/usr/local/frc/JRE/</deployJavaHome>
+    <deployJvmOptions>-Xmx50m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:MaxNewSize=16m</deployJvmOptions>
+  </settings>
+  <codeGenerationSettings>
+    <language>Java</language>
+    <className>GripPipeline</className>
+    <implementWpilibPipeline>true</implementWpilibPipeline>
+    <saveDir>C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision</saveDir>
+    <packageName>vision</packageName>
+    <moduleName>grip</moduleName>
+  </codeGenerationSettings>
+</grip:Pipeline>
