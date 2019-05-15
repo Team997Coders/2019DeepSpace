@@ -16,8 +16,11 @@ public class LockArm extends Command {
     }
     
     protected void initialize() {
+
+      Robot.arm.miniBoi.reset();
+
       Robot.arm.engageBrake();
-      Robot.arm.resetPID();
+      //Robot.arm.resetPID();
       position = Robot.arm.readEncoder();
       //System.out.println("---------------------\ninitted lockArm at " + position);
       //System.out.println("read arm encoder as " + Robot.arm.readEncoder());

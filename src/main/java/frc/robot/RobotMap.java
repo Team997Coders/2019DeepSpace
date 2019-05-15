@@ -205,7 +205,7 @@ public class RobotMap {
       pf_Ka = 0.0,
       //pf_Kt = 0.35,
 
-      internalFlipTickCount = 999999, // Temp Number
+      internalFlipTickCount = 118428, // Temp Number
 
       robotLength = 0.75, //in inches (includes bumpers)
       robotWidth = 0.8,	

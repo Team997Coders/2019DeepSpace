@@ -21,10 +21,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
+import frc.robot.misc.MiniPID;
+
 /**
  * Add your docs here.
  */
 public class Arm extends Subsystem {
+
+  public double setpoint = 0;
 
   public CANPIDController pidController;
 
@@ -45,7 +49,11 @@ public class Arm extends Subsystem {
   private double fConstant = RobotMap.Values.armMaxPidF;
   public boolean armState;
 
+  public MiniPID miniBoi;
+
   public Arm() {
+
+    miniBoi = new MiniPID(RobotMap.Values.armPidP, RobotMap.Values.armPidI, RobotMap.Values.armPidD, RobotMap.Values.armMaxPidF);
 
     sparkMax = new CANSparkMax(RobotMap.Ports.armSpark, MotorType.kBrushless);
     
@@ -129,9 +137,13 @@ public class Arm extends Subsystem {
   public void SetPostion(double setpoint){
     //releaseBrake();
     //System.out.println("Setting arm position to " + setpoint);
-    internalEncoder.setPosition(readEncoder());
-    pidController.setReference(setpoint, ControlType.kPosition);
+    //internalEncoder.setPosition(readEncoder());
+    //pidController.setReference(setpoint, ControlType.kPosition);
     //pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
+    this.setpoint = setpoint;
+    double a = miniBoi.getOutput(readEncoder(), setpoint);
+    //SmartDashboard.putNumber("Arm/MiniPID Output", a);
+    //sparkMax.set(a);
 
     //UpdateF();
   }
