@@ -144,7 +144,7 @@
   <codeGenerationSettings>
     <language>Java</language>
     <className>GripPipeline</className>
-    <implementWpilibPipeline>true</implementWpilibPipeline>
+    <implementWpilibPipeline>false</implementWpilibPipeline>
     <saveDir>C:\Users\RED\Local Documents\GitHub\2019DeepSpace\Vision</saveDir>
     <packageName>vision</packageName>
     <moduleName>grip</moduleName>
