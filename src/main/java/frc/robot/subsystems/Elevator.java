@@ -17,6 +17,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.CANifier.LEDChannel;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -43,6 +44,8 @@ public class Elevator extends Subsystem {
   //This is to switch between balls and hatches for elevator heights.
   //// Balls = true Hatches = false
   public boolean isZeroed;
+
+  private boolean lightOn;
 
   public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
@@ -135,6 +138,24 @@ public class Elevator extends Subsystem {
   public void SetPower(double volts){
     master.set(volts);
     //updateF();
+  }
+
+  public void setLightOn() {
+    lightOn = true;
+    setLightPercent(1);
+  }
+
+  public void setLightOff() {
+    lightOn = false;
+    setLightPercent(0);
+  }
+
+  public void setLightPercent(double brightness) {
+    canifier.setLEDOutput(brightness, LEDChannel.LEDChannelA);
+  }
+
+  public boolean lightIsOn() {
+    return lightOn;
   }
 
   /**

@@ -185,7 +185,7 @@ public class OI {
 
     SmartDashboard.putString("Controller Config", "Manual");
 
-    autoDriveToTarget.whenPressed(new AutoDoNothing());
+    autoDriveToTarget.whenPressed(new ToggleLight());
     toggleHatch.whenPressed(new ToggleHatch());
     elevatorGoUp.whileHeld(new ElevatorUppity());
     elevatorGoDown.whileHeld(new ElevatorDownity());
