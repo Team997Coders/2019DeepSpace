@@ -44,6 +44,8 @@ public class Elevator extends Subsystem {
   //// Balls = true Hatches = false
   public boolean isZeroed;
 
+  public boolean lightYes = false;
+
   public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.Ports.followerElevatorMotor, MotorType.kBrushless);
@@ -102,6 +104,10 @@ public class Elevator extends Subsystem {
 
   public void resetElevatorEncoder() {
     canifier.setQuadraturePosition(0, 10);
+  }
+
+  public void toggleLight() {
+
   }
 
   public int GetPosition() {

@@ -266,8 +266,8 @@ public class Robot extends TimedRobot {
     //oi.reconfigureButtons();
     elevator.ZeroElevator();
 
-    double a = arm.miniBoi.getOutput(arm.readEncoder(), arm.setpoint);
-    System.out.println("OUTPUT-> " + a);
+    //double a = arm.miniBoi.getOutput(arm.readEncoder(), arm.setpoint);
+    //System.out.println("OUTPUT-> " + a);
   }
 
   @Override

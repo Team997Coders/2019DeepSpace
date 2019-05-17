@@ -46,14 +46,15 @@ public class Arm extends Subsystem {
   private double prevRead = -1;
   private int revs = 0;
   private int flipModifier = 1;
-  private double fConstant = RobotMap.Values.armMaxPidF;
+  private double fConstant = 0.002;
   public boolean armState;
 
   public MiniPID miniBoi;
 
   public Arm() {
 
-    miniBoi = new MiniPID(RobotMap.Values.armPidP, RobotMap.Values.armPidI, RobotMap.Values.armPidD, RobotMap.Values.armMaxPidF);
+    miniBoi = new MiniPID(0.0006, 0.0, 0.001, 0);
+    miniBoi.setOutputLimits(-0.4, 0.4);
 
     sparkMax = new CANSparkMax(RobotMap.Ports.armSpark, MotorType.kBrushless);
     
@@ -125,9 +126,11 @@ public class Arm extends Subsystem {
   }
 
   // This function only works if the inital read of the arm is horizontal
-  public void UpdateF(){
+  public double UpdateF(){
     //pidController.setFF(0);
-    pidController.setFF(-1 * Math.cos(((readEncoder() - RobotMap.Values.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant);
+    double f = -1 * Math.cos(((readEncoder() - RobotMap.Values.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant;
+    //pidController.setFF(f);
+    return f;
   }
 
   public double getCurrent() {
@@ -141,9 +144,12 @@ public class Arm extends Subsystem {
     //pidController.setReference(setpoint, ControlType.kPosition);
     //pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
     this.setpoint = setpoint;
-    double a = miniBoi.getOutput(readEncoder(), setpoint);
+    double actual = readEncoder();
+    double a = miniBoi.getOutput(actual, setpoint);
+    SmartDashboard.putNumber("Arm/Error", setpoint - actual);
+    SmartDashboard.putNumber("Arm/PID Output", a + UpdateF());
     //SmartDashboard.putNumber("Arm/MiniPID Output", a);
-    //sparkMax.set(a);
+    sparkMax.set(a + UpdateF());
 
     //UpdateF();
   }
