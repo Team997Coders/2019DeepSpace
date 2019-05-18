@@ -9,6 +9,10 @@ public class SecretSpeedBoost {
 
   public static void toggleSpeedBoost() {
 
+    if (!(checkA && checkB)) {
+      return;
+    }
+
     checkA = false;
     checkB = false;
 

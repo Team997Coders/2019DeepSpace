@@ -267,6 +267,8 @@ public class Robot extends TimedRobot {
     oi.reconfigureButtons();
     elevator.ZeroElevator();
 
+    SecretSpeedBoost.toggleSpeedBoost();
+
     //double a = arm.miniBoi.getOutput(arm.readEncoder(), arm.setpoint);
     //System.out.println("OUTPUT-> " + a);
   }
