@@ -146,8 +146,8 @@ public class Arm extends Subsystem {
     this.setpoint = setpoint;
     double actual = readEncoder();
     double a = miniBoi.getOutput(actual, setpoint);
-    SmartDashboard.putNumber("Arm/Error", setpoint - actual);
-    SmartDashboard.putNumber("Arm/PID Output", a + UpdateF());
+    //SmartDashboard.putNumber("Arm/Error", setpoint - actual);
+    //SmartDashboard.putNumber("Arm/PID Output", a + UpdateF());
     //SmartDashboard.putNumber("Arm/MiniPID Output", a);
     sparkMax.set(a + UpdateF());
 

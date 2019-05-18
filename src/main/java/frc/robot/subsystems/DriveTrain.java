@@ -29,10 +29,10 @@ public class DriveTrain extends Subsystem {
 
   public boolean decell = true;
 
-  private double maxSpeed = 0.5;
+  public double maxSpeed = 0.5;
 
   // Decell Data
-  private double ramp = 4.0;
+  public double ramp = 0.25;
   private double prevY = 0;
   private double init_angle;
   public boolean gyropresent = false;

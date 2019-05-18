@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
+import frc.robot.misc.SecretSpeedBoost;
 //import frc.robot.subsystems.Logger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -263,7 +264,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    //oi.reconfigureButtons();
+    oi.reconfigureButtons();
     elevator.ZeroElevator();
 
     //double a = arm.miniBoi.getOutput(arm.readEncoder(), arm.setpoint);
@@ -277,10 +278,13 @@ public class Robot extends TimedRobot {
   public static double getDeltaTime() { return deltaTime; }
 
   public void updateSmartDashboard() {
-    liftGear.updateSmartDashboard();
+
+    SmartDashboard.putBoolean("-=[SECRET MODE]=-", SecretSpeedBoost.speedBoostActive);
+
+    //liftGear.updateSmartDashboard();
     //driveTrain.updateSmartDashboard();
-    arm.updateSmartDashboard();
-    elevator.updateSmartDashboard();
+    //arm.updateSmartDashboard();
+    //elevator.updateSmartDashboard();
     //frontLineDetector.updateSmartDashboard();
     //frontInfraredRangeFinder.updateSmartDashboard();
     SmartDashboard.putNumber("Delta Time", deltaTime);

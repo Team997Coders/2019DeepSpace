@@ -34,6 +34,8 @@ public class OI {
   private JoystickButton toggleHatch; // B 2
   private JoystickButton autoDriveToTarget; // A 2
 
+  public int secretModeCounterA = 0, secretModeCounterB = 0;
+
   public OI() {
     // driver controls... game sticks control the motion of the robot
     //    left stick Y-axis is drive power
@@ -95,6 +97,16 @@ public class OI {
     manualConfig();
     //reconfigureButtons();
     //#endregion
+  }
+
+  public void nudgeSecret(int id) {
+    switch (id) {
+      case 0:
+        secretModeCounterA++;
+        if (secretModeCounterA >= 2) {
+
+        }
+    }
   }
 
   //#region Controller Data
@@ -194,6 +206,7 @@ public class OI {
     currentConfig = CurrentConfig.Manual;
   }
 
+  // Altered for secret commands
   public void cargoFrontConfig() {
 
     SmartDashboard.putString("Controller Config", "Cargo Front");
@@ -202,7 +215,8 @@ public class OI {
     autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, RobotMap.Values.armFrontParallel));
 
     //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, RobotMap.Values.armFrontParallel));
+    //toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, RobotMap.Values.armFrontParallel));
+    toggleHatch.whenPressed(new SpeedBoostB());
 
     //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, RobotMap.Values.armFrontParallel));
@@ -220,7 +234,8 @@ public class OI {
     SmartDashboard.putString("Controller Config", "Cargo Back");
 
     //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
-    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, RobotMap.Values.armBackParallel));
+    //autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, RobotMap.Values.armBackParallel));
+    autoDriveToTarget.whenPressed(new SpeedBoostA());
 
     //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, RobotMap.Values.armBackParallel));
