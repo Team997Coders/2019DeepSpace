@@ -95,6 +95,8 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator/Elevator Pid I", RobotMap.Values.elevatorPidI);
     SmartDashboard.putNumber("Elevator/Elevator Pid D", RobotMap.Values.elevatorPidD);
     SmartDashboard.putNumber("Elevator/Elevator Pid F", RobotMap.Values.elevatorPidF);
+
+    lightOn = false;
   }
 
   public void SetPosition(double height) {
@@ -143,15 +145,19 @@ public class Elevator extends Subsystem {
   public void setLightOn() {
     lightOn = true;
     setLightPercent(1);
+    SmartDashboard.putBoolean("Light", lightOn);
   }
 
   public void setLightOff() {
     lightOn = false;
     setLightPercent(0);
+    SmartDashboard.putBoolean("Light", lightOn);
   }
 
   public void setLightPercent(double brightness) {
     canifier.setLEDOutput(brightness, LEDChannel.LEDChannelA);
+    canifier.setLEDOutput(brightness, LEDChannel.LEDChannelB);
+    canifier.setLEDOutput(brightness, LEDChannel.LEDChannelC);
   }
 
   public boolean lightIsOn() {
