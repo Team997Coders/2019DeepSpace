@@ -129,6 +129,12 @@ public class RobotMap {
       ticksPerRev = 4096; // Protobot
       //PDriveToDistance PID Variables
     public static double
+
+      limeTestP = 0.015,
+      limeTestI = 0.0,
+      limeTestD = 0.0,
+      limeTestF = 0.0,
+
       driveDistanceP = .003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,

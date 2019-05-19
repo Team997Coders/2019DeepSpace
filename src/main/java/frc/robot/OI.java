@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.LimeLight.CameraState;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -17,7 +18,7 @@ public class OI {
 
   private CurrentConfig currentConfig = CurrentConfig.Manual;
 
-  //temporary elevator testing buttons.
+  // temporary elevator testing buttons.
   public JoystickButton elevatorGoUp; // Y 2
   public JoystickButton elevatorGoDown; // X 2
   public JoystickButton ballIntake; // Right Bumper 2
@@ -38,12 +39,12 @@ public class OI {
 
   public OI() {
     // driver controls... game sticks control the motion of the robot
-    //    left stick Y-axis is drive power
-    //    right stick X-axis is drive direction
+    // left stick Y-axis is drive power
+    // right stick X-axis is drive direction
     gamepad1 = new Joystick(RobotMap.Buttons.GamePad1);
     gamepad3 = new Joystick(RobotMap.Buttons.GamePad3);
 
-    //#region Gamepad1 Controls
+    // #region Gamepad1 Controls
 
     deployLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonB);
     deployLandingGear.whenPressed(new ToggleFrontLandingGear());
@@ -54,23 +55,23 @@ public class OI {
     retractLandingGear = new JoystickButton(gamepad1, RobotMap.Buttons.buttonBack);
     retractLandingGear.whenPressed(new RetractLandingGear());
 
-    //it's not safe
-    //driveSafe = new JoystickButton(gamepad1, RobotMap.Buttons.buttonRightShoulder);
-    //driveSafe.whenPressed(new SafeMode());  // TODO: implement safe mode
+    // it's not safe
+    // driveSafe = new JoystickButton(gamepad1,
+    // RobotMap.Buttons.buttonRightShoulder);
+    // driveSafe.whenPressed(new SafeMode()); // TODO: implement safe mode
 
     flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     flip.whenPressed(new FlipArmChain());
 
-    //flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
-    //flip.whenPressed(new SetArmPosition(RobotMap.Values.armFrontParallel, 10));
+    // flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    // flip.whenPressed(new SetArmPosition(RobotMap.Values.armFrontParallel, 10));
 
-    
-    //followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
-    //followLine.whenPressed(new FollowLine(1000));
+    // followLine = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+    // followLine.whenPressed(new FollowLine(1000));
 
-    //#endregion
+    // #endregion
 
-    //#region Gamepad2 Controls
+    // #region Gamepad2 Controls
 
     ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
     ArmForward.whileHeld(new MoveArm(-0.5));
@@ -84,32 +85,31 @@ public class OI {
     ballOutake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballOutake.whileHeld(new BallOuttake());
 
-    autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
-    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    resetConfig();
 
-    //autoDriveToTarget.whenPressed(new SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight, 100));
-    //toggleHatch.whenPressed(new ToggleHatch());
-    //elevatorGoDown.whileHeld(new ElevatorDownity());
-    //elevatorGoUp.whileHeld(new ElevatorUppity());
+    // autoDriveToTarget.whenPressed(new
+    // SetElevatorHeight(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight,
+    // 100));
+    // toggleHatch.whenPressed(new ToggleHatch());
+    // elevatorGoDown.whileHeld(new ElevatorDownity());
+    // elevatorGoUp.whileHeld(new ElevatorUppity());
 
     manualConfig();
-    //reconfigureButtons();
-    //#endregion
+    // reconfigureButtons();
+    // #endregion
   }
 
   public void nudgeSecret(int id) {
     switch (id) {
-      case 0:
-        secretModeCounterA++;
-        if (secretModeCounterA >= 2) {
+    case 0:
+      secretModeCounterA++;
+      if (secretModeCounterA >= 2) {
 
-        }
+      }
     }
   }
 
-  //#region Controller Data
+  // #region Controller Data
 
   public double getLeftYAxis() {
     return condition_gamepad_axis(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.leftYAxis), -1, 1);
@@ -127,13 +127,15 @@ public class OI {
     return condition_gamepad_axis(0.05, -gamepad1.getRawAxis(RobotMap.Buttons.rightYAxis), -1, 1);
   }
 
-  public int getPOV() { return gamepad3.getPOV(); }
+  public int getPOV() {
+    return gamepad3.getPOV();
+  }
 
   /**
    * Make the gamepad axis less sensitive to changes near their null/zero point.
    * 
    * @param value raw value from the gamepad axis
-   * @param dead  value for the deadband size 
+   * @param dead  value for the deadband size
    * @return
    */
   public double deadBand(double value, double dead) {
@@ -146,6 +148,7 @@ public class OI {
 
   /**
    * Clamp/Limit the value to only be within two limits
+   * 
    * @param min lower limit
    * @param max upper limit
    * @param val value to check
@@ -164,42 +167,47 @@ public class OI {
   /**
    * Combine both a joystick limit and a clamp within standard limits.
    * 
-   * I really wish programmers would name methods descriptively so that I do
-   * not have to waste my time figuring out what things like "bing" and "stuff" do!
-   * I am guessing that this does good "stuff" to my joystick. CCB.
+   * I really wish programmers would name methods descriptively so that I do not
+   * have to waste my time figuring out what things like "bing" and "stuff" do! I
+   * am guessing that this does good "stuff" to my joystick. CCB.
    * 
    * @param dead deadband limit, no output within this limit. Normally 0.05
-   * @param val raw value from axis
-   * @param min lower limit for axis. Normally -1
-   * @param max upper limit on axis. Normally +1
-   * @return    conditioned value from axis (limited -1 to +1, with a )
+   * @param val  raw value from axis
+   * @param min  lower limit for axis. Normally -1
+   * @param max  upper limit on axis. Normally +1
+   * @return conditioned value from axis (limited -1 to +1, with a )
    */
   public double condition_gamepad_axis(double dead, double val, double min, double max) {
     return clamp(min, max, deadBand(val, dead));
   }
 
-  //#endregion
+  // #endregion
 
-  //#region Configuration Methods
+  // #region Configuration Methods
 
   /**
-   * Purge the contorls
-   * 
-   * @deprecated Not need to remap controls. Just run one of the other configurations
+   * Reset the contorls
    */
-  public void purgeConfig() {
-    autoDriveToTarget.close();
-    toggleHatch.close();
-    elevatorGoDown.close();
-    elevatorGoUp.close();
+  public void resetConfig() {
+    if (autoDriveToTarget == null) {
+      autoDriveToTarget.close();
+      toggleHatch.close();
+      elevatorGoDown.close();
+      elevatorGoUp.close();
+    }
+
+    autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
   }
 
   public void manualConfig() {
 
     SmartDashboard.putString("Controller Config", "Manual");
 
-    autoDriveToTarget.whenPressed(new SetArmPosition(RobotMap.Values.armFrontParallel,50));
-    toggleHatch.whenPressed(new SetArmPosition(RobotMap.Values.armBackParallel,50));
+    autoDriveToTarget.whenPressed(new SetArmPosition(Robot.arm.readEncoder(), 50));
+    toggleHatch.whenPressed(new SetArmPosition(Robot.arm.readEncoder(), 50));
     elevatorGoUp.whileHeld(new ElevatorUppity());
     elevatorGoDown.whileHeld(new ElevatorDownity());
 
@@ -211,20 +219,25 @@ public class OI {
 
     SmartDashboard.putString("Controller Config", "Cargo Front");
 
-    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
-    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, RobotMap.Values.armFrontParallel));
+    // autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight,
+        RobotMap.Values.armFrontParallel));
 
-    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-    //toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, RobotMap.Values.armFrontParallel));
+    // toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    // toggleHatch.whenPressed(new
+    // ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight,
+    // RobotMap.Values.armFrontParallel));
     toggleHatch.whenPressed(new SpeedBoostB());
 
-    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, RobotMap.Values.armFrontParallel));
-    //elevatorGoUp.whenInactive(new AutoDoNothing());
+    // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight,
+        RobotMap.Values.armFrontParallel));
+    // elevatorGoUp.whenInactive(new AutoDoNothing());
 
-    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, RobotMap.Values.armFrontParallel));
-    //elevatorGoDown.whenInactive(new AutoDoNothing());
+    // elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight,
+        RobotMap.Values.armFrontParallel));
+    // elevatorGoDown.whenInactive(new AutoDoNothing());
 
     currentConfig = CurrentConfig.CargoFront;
   }
@@ -233,20 +246,25 @@ public class OI {
 
     SmartDashboard.putString("Controller Config", "Cargo Back");
 
-    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
-    //autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, RobotMap.Values.armBackParallel));
+    // autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    // autoDriveToTarget.whenPressed(new
+    // ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight,
+    // RobotMap.Values.armBackParallel));
     autoDriveToTarget.whenPressed(new SpeedBoostA());
 
-    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, RobotMap.Values.armBackParallel));
+    // toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(
+        new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, RobotMap.Values.armBackParallel));
 
-    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, RobotMap.Values.armBackParallel));
-    //elevatorGoUp.whenInactive(new AutoDoNothing());
+    // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight,
+        RobotMap.Values.armBackParallel));
+    // elevatorGoUp.whenInactive(new AutoDoNothing());
 
-    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight, RobotMap.Values.armBackParallel));
-    //elevatorGoDown.whenInactive(new AutoDoNothing());
+    // elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight,
+        RobotMap.Values.armBackParallel));
+    // elevatorGoDown.whenInactive(new AutoDoNothing());
 
     currentConfig = CurrentConfig.CargoBack;
   }
@@ -255,19 +273,23 @@ public class OI {
 
     SmartDashboard.putString("Controller Config", "Hatch Front");
 
-    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
-    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, RobotMap.Values.armFrontParallel));
+    // autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight,
+        RobotMap.Values.armFrontParallel));
 
-    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight, RobotMap.Values.armFrontParallel));
+    // toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight,
+        RobotMap.Values.armFrontParallel));
 
-    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, RobotMap.Values.armFrontParallel));
-    //elevatorGoUp.whenInactive(new AutoDoNothing());
-    
-    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight, RobotMap.Values.armFrontParallel));
-    //elevatorGoDown.whenInactive(new AutoDoNothing());
+    // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight,
+        RobotMap.Values.armFrontParallel));
+    // elevatorGoUp.whenInactive(new AutoDoNothing());
+
+    // elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight,
+        RobotMap.Values.armFrontParallel));
+    // elevatorGoDown.whenInactive(new AutoDoNothing());
 
     currentConfig = CurrentConfig.HatchFront;
   }
@@ -276,26 +298,27 @@ public class OI {
 
     SmartDashboard.putString("Controller Config", "Hatch Back");
 
-    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
-    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, RobotMap.Values.armBackParallel));
+    // autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(
+        new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, RobotMap.Values.armBackParallel));
 
-    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    // toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new AutoDoNothing());
 
-    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    // elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoUp.whenPressed(new AutoDoNothing());
-    //elevatorGoUp.whenInactive(new AutoDoNothing());
+    // elevatorGoUp.whenInactive(new AutoDoNothing());
 
-    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    // elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     elevatorGoDown.whenPressed(new AutoDoNothing());
-    //elevatorGoDown.whenInactive(new AutoDoNothing());
+    // elevatorGoDown.whenInactive(new AutoDoNothing());
 
     currentConfig = CurrentConfig.HatchBack;
   }
 
-  //#endregion
+  // #endregion
 
-  //#region Configuration Processors
+  // #region Configuration Processors
 
   public void reconfigureButtons() {
     int pov = gamepad3.getPOV(0);
@@ -304,32 +327,32 @@ public class OI {
       return;
     }
 
-    //purgeConfig();
+    resetConfig();
 
     switch (pov) {
-      case -1:
-        manualConfig();
-        return;
-      case 0: // Cargo Front
-        cargoFrontConfig();
-        return;
-      case 90: // Hatch Front
-        hatchFrontConfig();
-        return;
-      case 180: // Hatch Back
-        hatchBackConfig();
-        return;
-      case 270: // Cargo Back
-        cargoBackConfig();
-        return;
+    case -1:
+      manualConfig();
+      return;
+    case 0: // Cargo Front
+      cargoFrontConfig();
+      return;
+    case 90: // Hatch Front
+      hatchFrontConfig();
+      return;
+    case 180: // Hatch Back
+      hatchBackConfig();
+      return;
+    case 270: // Cargo Back
+      cargoBackConfig();
+      return;
     }
   }
 
   private enum CurrentConfig {
-    Manual(-1), CargoFront(0), CargoBack(270),
-    HatchFront(90), HatchBack(180);
+    Manual(-1), CargoFront(0), CargoBack(270), HatchFront(90), HatchBack(180);
 
     public int value;
+
     private CurrentConfig(int value) {
       this.value = value;
     }
@@ -339,22 +362,5 @@ public class OI {
     }
   }
 
-  //#endregion
-
-  // KEEP THESE COMMENTS
-  //// TRIGGERING COMMANDS WITH BUTTONS
-  // Once you have a button, it's trivial to bind it to a button in one of
-  // three ways:
-
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
-
-  // Run the command while the button is being held down and interrupt it once
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
-
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
+  // #endregion
 }

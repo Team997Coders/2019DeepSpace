@@ -24,6 +24,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
 import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LineDetector;
 import edu.wpi.first.cameraserver.CameraServer;
 
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
   public static final boolean DEBUG = true;
 
   public static Arm arm;
+  public static LimeLight limeLight;
  // public StaticDeoptimizingNode;               
   public static Elevator elevator;
   public static BallManipulator ballManipulator;
@@ -78,6 +80,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    limeLight = new LimeLight();
     cameraServer = CameraServer.getInstance();
     cameraServer.startAutomaticCapture(0);
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
