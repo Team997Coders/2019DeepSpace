@@ -28,8 +28,9 @@ public class SetElevatorHeight extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    SmartDashboard.putNumber("Elevator Setpoint", setpoint);
-    Robot.elevator.updatePID();
+    System.out.println("init-ed elevatorToHeight with setpoint " + setpoint);
+    //SmartDashboard.putNumber("Elevator Setpoint", setpoint);
+    //Robot.elevator.updatePID();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -41,7 +42,7 @@ public class SetElevatorHeight extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    SmartDashboard.putNumber("Elevator Error", setpoint - Robot.elevator.GetPosition());
+    //SmartDashboard.putNumber("Elevator Error", setpoint - Robot.elevator.GetPosition());
     return ((Robot.elevator.GetPosition() < setpoint + tolerance) && Robot.elevator.GetPosition() > setpoint - tolerance);
   }
 

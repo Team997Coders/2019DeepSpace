@@ -23,15 +23,19 @@ public class AutoRetractLandingGear extends Command {
   protected void execute() {
 
     // If the IR sensor detects the platform
-    if (Robot.liftGear.getIRSensorVoltage() > 0.95) {
-      Robot.liftGear.retract();
+    if (Robot.liftGear.getFrontIRSensorVoltage() > 0.95) {
+      Robot.liftGear.retractFront();
     }
 
+    if (Robot.liftGear.getBackIRSensorVoltage() > 0.95) {
+      Robot.liftGear.retractBack();
+    }
   }
   
   @Override
-  protected boolean isFinished() { return !Robot.liftGear.getPistonState(); }
-  
+  protected boolean isFinished() {
+   return !Robot.liftGear.getFrontPistonState();
+  }
   @Override
   protected void end() { }
   

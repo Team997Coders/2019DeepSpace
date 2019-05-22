@@ -21,10 +21,10 @@ public class PathManager {
   private static PathManager instance = null;
 
   private Queue<String> pathnames;
-  private ArrayList<MotionProfile> profiles;
+  public ArrayList<MotionProfile> profiles;
 
   private Thread[] daemons;
-  private final int daemonCount = 2;
+  private final int daemonCount = 1;
 
   /**
    * Implement the singleton pattern
@@ -56,12 +56,16 @@ public class PathManager {
     pathnames = new ConcurrentLinkedQueue<String>();
     profiles = new ArrayList<MotionProfile>();
     pathnames.add("Hab1MiddleToShipRight");
-    //pathnames.add("ShipRightToLoadingStationRight");
+    pathnames.add("ShipRightToLoadingStationRight");
     pathnames.add("LoadingStationRightToCargoCenterLeft");
+    pathnames.add("DriftRight");
 
     daemons = new Thread[daemonCount];
     for (int i = 0; i < daemonCount; i++) {
       daemons[i] = new Thread(this::loadPath);
+    }
+
+    for (int i = 0; i < daemonCount; i++) {
       daemons[i].start();
     }
   }
@@ -70,11 +74,9 @@ public class PathManager {
    * Given a profile name, gets you back the loaded profile.
    */
   public MotionProfile getProfile(String name) {
-    if (isLoaded()) {
-      for (int i = 0; i < profiles.size(); i++) {
-        if (profiles.get(i).name.equals(name)) {
-          return profiles.get(i);
-        }
+    for (int i = 0; i < profiles.size(); i++) {
+      if (profiles.get(i).name.equalsIgnoreCase(name)) {
+        return profiles.get(i);
       }
     }
     return null;
@@ -103,9 +105,9 @@ public class PathManager {
           mp = new MotionProfile(pathname);
           lock.lock();
           profiles.add(mp);
-          lock.unlock();
+          System.out.println("\n\nLoading profile '" + pathname + "' has passed.\n\n");
         } catch (Exception e) {
-          System.out.println("\n\nLoading profile '" + pathname + "' has failed.'\n\n");
+          System.out.println("\n\nLoading profile '" + pathname + "' has failed.\n\n");
           e.printStackTrace();
         }
       }

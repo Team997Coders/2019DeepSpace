@@ -31,7 +31,7 @@ public class DriveTrain extends Subsystem {
 
   // Decell Data
   private double ramp = 4.0;
-  private double prevL = 0, prevR = 0, prevY = 0;
+  private double prevY = 0;
   private double init_angle;
   public boolean gyropresent = false;
 
@@ -126,10 +126,11 @@ public class DriveTrain extends Subsystem {
     rightTalon.set(ControlMode.PercentOutput, right);
   }
 
-
   public double getGyroAngle(){
     if (gyro != null){
-    return gyro.getAngle();
+    return gyro.getAngle() % 360;
+    //return (gyro.getAngle()-Math.floor(gyro.getAngle()/360)*360);
+    //Not TESTED
   } else{
     return 0;
   }

@@ -6,8 +6,6 @@ import frc.robot.Robot;
 
 public class ArcadeDrive extends Command {
 
-  private double prevFront = 0;
-
   public ArcadeDrive() {
     requires(Robot.driveTrain);
   }

@@ -6,14 +6,22 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.Scheduler;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.data.RobotState.ScoringDirectionStates;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class ElevatorDownity extends Command {
-  public ElevatorDownity() {
-    requires(Robot.elevator);
+public class FlipArm extends Command {
+
+  private double tolerance;
+  private double setpoint;
+
+  public FlipArm(double tolerance) {
+    requires(Robot.arm);
+    this.setpoint = Robot.arm.readEncoder();
+    this.tolerance = tolerance;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -21,31 +29,40 @@ public class ElevatorDownity extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    //if (Robot.arm.getArmSide() == ScoringDirectionStates.Front) {
+      //setpoint = RobotMap.Values.armBackParallel;
+    //} else {
+      setpoint = RobotMap.Values.armFrontParallel;
+    //}
+
+    //System.out.println("Initialized flipArm with setpoint " + setpoint);
+
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.SetPower(-.1);
+    Robot.arm.SetPostion(setpoint);
+      //System.out.println("FlipArm error is " + Math.abs(setpoint - Robot.arm.readEncoder()));
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return (Math.abs(setpoint - Robot.arm.readEncoder()) <= tolerance);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.elevator.SetPosition(Robot.elevator.GetPosition());
-    Scheduler.getInstance().add(new LockElevator());
+    Robot.arm.setPower(0);
+    Scheduler.getInstance().add(new LockArm());
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

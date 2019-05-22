@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -16,14 +15,14 @@ public class LockArm extends Command {
     }
     
     protected void initialize() {
-      //Robot.arm.engageBrake();
+      Robot.arm.engageBrake();
       position = Robot.arm.readEncoder();
-      Robot.arm.updatePID();
+      //Robot.arm.updatePID();
     }
 
     protected void execute() {
       Robot.arm.SetPostion(position);
-      System.out.println("Locking Arm at position " + position);
+      //System.out.println("Locking Arm at position " + position);
     }
 
     protected boolean isFinished() {
@@ -31,12 +30,17 @@ public class LockArm extends Command {
     }
 
     protected void end() {
-      //Robot.arm.SetPostion(Robot.arm.readEncoder());
+<<<<<<< HEAD
+      Robot.arm.SetPostion(Robot.arm.readEncoder());
       Robot.arm.releaseBrake();
+=======
+      //Robot.arm.SetPostion(Robot.arm.readEncoder());
+      //Robot.arm.releaseBrake();
+>>>>>>> 1ee790430ce328940005cf310b0f123314d722ad
     }
 
     protected void interrupted() {
-      System.out.println("arm lock interrupted");
+      //System.out.println("arm lock interrupted");
       end();
     }
 }

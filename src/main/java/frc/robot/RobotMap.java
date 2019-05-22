@@ -18,29 +18,6 @@ import edu.wpi.first.wpilibj.SerialPort;
  */
 public class RobotMap {
   public static class Buttons {
-    public static class ButtonBox {
-      public static int
-        ButtonBoxJoystickId = 1,          
-        hatchJoystickButtonId = 1,
-        ballJoystickButtonId = 2,
-        mediumHeightJoystickButtonId = 3,
-        activateJoystickButtonId = 4,
-        lowHeightJoystickButtonId = 5,
-        frontJoystickButtonId = 6,
-        backJoystickButtonId = 7,
-        rocketJoystickButtonId = 8,
-        cargoShipJoystickButtonId = 9,
-        highHeightJoystickButtonId = 10,
-        cancelJoystickButtonId = 11,
-        intakeJoystickButtonId = 12,
-        AJoystickButtonId = 13,
-        BJoystickButtonId = 14,
-        XJoystickButtonId = 15,
-        leftJoystickHatAngle = 315,
-        centerJoystickHatAngle = 0,
-        rightJoystickHatAngle = 45;      
-    }
-
     public static class Logitech {
       public static int 
         Gamepad4 = 3,
@@ -64,13 +41,11 @@ public class RobotMap {
       buttonA = 1,
       buttonB = 2,
       buttonX = 3,            
-      buttonY = 4,            // TODO: Need to check this
-      buttonLeftShoulder = 5,       // TODO: Need to check this
-      buttonRightShoulder = 6,      // TODO: Need to check this
-      buttonLeftThumbstick = 9,     // TODO: Need to check this
-      buttonRightThumbstick = 10,    // TODO: Need to check this
-      buttonRightTrigger = 9,        // TODO: Need to check this
-      buttonLeftTrigger = 10,      // TODO: Need to check this
+      buttonY = 4,
+      buttonLeftShoulder = 5,
+      buttonRightShoulder = 6,
+      buttonLeftThumbstick = 9,
+      buttonRightThumbstick = 10,
       buttonBack = 7,
       buttonStart = 8,
 
@@ -79,6 +54,8 @@ public class RobotMap {
       leftYAxis = 1,
       rightXAxis = 4,
       rightYAxis = 5,
+      buttonRightTrigger = 3,
+      buttonLeftTrigger = 2,
 
       end_of_buttons;
   }
@@ -130,6 +107,8 @@ public class RobotMap {
       //LANDING GEAR PORTS
       landingGearPiston = 0,
       landingGearFloorSensor = 1,
+      rearGearPiston = 3, //TODO: find the actual port value for this
+      rearGearFloorSensor = 0, //TODO: find the actual port value for this
 
       //CAMERA PORTS
       frontPanServo = 9,
@@ -148,8 +127,8 @@ public class RobotMap {
   public static class Values {
     public static int 
       ticksPerRev = 4096; // Protobot
+      //PDriveToDistance PID Variables
     public static double
-      // PDriveToDistance PID Variables
       driveDistanceP = .003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
@@ -160,48 +139,47 @@ public class RobotMap {
       driveAngleI = 0.0,
       driveAngleD = 0.0,
 
-      //
-
-      inchesPerTick = (3.954*Math.PI)/4096, //inches per encoder tick
-      ticksPerFoot = ((49152/(3.97*Math.PI)))*.9, //3940, //encoder ticks per foot
+      wheelDiameter = 6.0,
+      inchesPerTick = (wheelDiameter*Math.PI)/4096, //inches per encoder tick
+      ticksPerFoot = ((49152/(wheelDiameter*Math.PI)))*.9, //3940, //encoder ticks per foot
 
       //INFRARED DISTANCES for Line Following
-      frontUltrasonicSensorHatchCargoship = 91,     //TODO: Need to check this      
+      frontUltrasonicSensorHatchCargoship = 91,     
       frontInfraredSensorHatchCargoship = 550,      
-      frontUltrasonicSensorHatchRocket = 5,         //TODO: Need to check this   
-      frontInfraredSensorHatchRocket = 5,           //TODO: Need to check this 
-      frontUltrasonicSensorBallCargoship = 5,       //TODO: Need to check this      
-      frontInfraredSensorBallCargoship = 5,         //TODO: Need to check this      
-      frontUltrasonicSensorBallRocket = 5,          //TODO: Need to check this   
-      frontInfraredSensorBallRocket = 5,            //TODO: Need to check this   
+      frontUltrasonicSensorHatchRocket = 5,  
+      frontInfraredSensorHatchRocket = 5,
+      frontUltrasonicSensorBallCargoship = 5,      
+      frontInfraredSensorBallCargoship = 5,      
+      frontUltrasonicSensorBallRocket = 5,   
+      frontInfraredSensorBallRocket = 5,  
       backInfraredSensorHatchCargoship = 1200,  
-      backInfraredSensorBallRocket = 5,             //TODO: Need to check this
-      backInfraredSensorBallCargoship = 5,          //TODO: Need to check this 
+      backInfraredSensorBallRocket = 5, 
+      backInfraredSensorBallCargoship = 5,
 
       // Line following voltage values
-      powerMotor = 0.5,       //TODO: Need to check this 
-      noPowerMotor = -.25,    //TODO: Need to check this 
-      normal = .10,        //for double line seen
-      straight = .3,          //TODO: Need to check this 
+      powerMotor = 0.5, 
+      noPowerMotor = -.25,
+      normal = .10,
+      straight = .3, 
 
       // Arm and Elevator Values
-      elevatorPidP = 0.00005, // 0.0005
-      elevatorPidI = 0.0,
-      elevatorPidD = 0.000, // 0.0005
+      elevatorPidP = 0.0005, //0.00005 
+      elevatorPidI = 0.0000000001, //0
+      elevatorPidD = 0.005, // 0.0005
       elevatorPidF = 0.0000,
       elevatorTopHeight = 100000000, //placeholder
 
-      armSwitchHeight= 9002, //placeholer for height in order for arm to switch
-      armEncoderCenter= 462,//another place holder
-      armFrontLimit = 195, //encoder ticks @ the front limit. placeholder.
-      armBackLimit = 702, //encoder ticks @ the back limit. placeholder.
+      armSwitchHeight= 22775, //placeholer for height in order for arm to switch
+      armBackParallel = 517,
+      armFrontParallel = 14,
+      armVertical = 264,
 
-      armPidP = 0.0006,
+      armPidP = 0.0012,
       armPidI = 0,
-      armPidD = 0,
+      armPidD = 0.001,
       armPidK = 0,
       armMaxPidF = 0.0055, // 0.0055
-      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackLimit-armFrontLimit)),
+      ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackParallel-armFrontParallel)),
 
       // Camera values
       leftAngleInDegrees = 75,
@@ -212,9 +190,10 @@ public class RobotMap {
       bottomElevatorLimitVelocity = -0.28,
       topElevatorAccelPosLimit = 49000,
       topElevatorLimitVelocity = 0.4,
+
       //PathFnder values
       pf_timestep = 0.02,
-      pf_max_vel = 2.5, // max velocity in ft/sec.
+      pf_max_vel = 2.5, // max velocity in m/sec.
       pf_max_acc = 6.79,
       pf_max_jerk = 60,
       pf_Kp = 0.001,
@@ -247,9 +226,9 @@ public class RobotMap {
       elevatorBackBottomCargoHeight = 9100,
       elevatorBackShipCargoHeight = 24650,
 
-      elevatorFrontTopHatchHeight = 52400, // probably higher
-      elevatorFrontMiddleHatchHeight = 30530,
-      elevatorFrontBottomHatchHeight = 1520,
+      elevatorFrontTopHatchHeight = 52317, // probably higher
+      elevatorFrontMiddleHatchHeight = 28360,
+      elevatorFrontBottomHatchHeight = 0,
       elevatorFrontShipHatchHeight = 1520,
 
       elevatorFrontTopCargoHeight = 52400,
@@ -257,13 +236,7 @@ public class RobotMap {
       elevatorFrontBottomCargoHeight = 22200,
       elevatorFrontShipCargoHeight = 38125,
 
-      elevatorCollectCargoHeight = 0,
-      
-      elevatorSafeFlipHeight = 23000,
-
-      armBackParallel = 702,
-      armFrontParallel = 195,
-      armVertical = 462;
+      elevatorCollectCargoHeight = 0;
 
       public static int[]
       elevatorFrontHatchHeightArray = {

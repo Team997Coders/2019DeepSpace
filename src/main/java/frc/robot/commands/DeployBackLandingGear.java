@@ -8,31 +8,48 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 
-public class RetractLandingGear extends Command {
-  public RetractLandingGear() {
+public class DeployBackLandingGear extends Command {
+
+  private boolean deployed;
+
+  public DeployBackLandingGear() {
     requires(Robot.liftGear);
+    deployed = false;
   }
   
   @Override
   protected void initialize() { }
   
   @Override
-  protected void execute() { 
-    Robot.liftGear.retractFront();
-    Robot.liftGear.retractBack();
+  protected void execute() {
+    if (!Robot.liftGear.getBackPistonState()) {
+      Robot.liftGear.extendBack();
+    }
+
+    if (Robot.liftGear.getBackIRSensorVoltage() < 0.7) {
+      deployed = true;
+    }
   }
   
   @Override
   protected boolean isFinished() {
-    return true;
+    return (Robot.liftGear.getBackIRSensorVoltage() > 0.7 && deployed);
+  }
+
+  @Override
+  protected void end() {
+    if (Robot.liftGear.getBackPistonState()) {
+      Robot.liftGear.retractBack();
+    }
   }
   
   @Override
-  protected void end() { }
-  
-  @Override
-  protected void interrupted() { end(); }
-  
+  protected void interrupted() { 
+    if (Robot.liftGear.getBackPistonState()) {
+      Robot.liftGear.retractBack();
+    }
+  }
 }

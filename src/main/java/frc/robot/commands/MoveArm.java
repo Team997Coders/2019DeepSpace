@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.ControlType;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,9 +43,9 @@ public class MoveArm extends Command {
     //   Robot.elevator.SetPower(value);
     // }
 
-    if ((Robot.arm.readEncoder() > RobotMap.ElevatorHeights.armBackParallel) && speed > 0) {
+    if ((Robot.arm.readEncoder() > RobotMap.Values.armBackParallel) && speed > 0) {
       moveSpeed = 0;
-    } else if ((Robot.arm.readEncoder() < RobotMap.ElevatorHeights.armFrontParallel) && speed < 0) {
+    } else if ((Robot.arm.readEncoder() < RobotMap.Values.armFrontParallel) && speed < 0) {
       moveSpeed = 0;
     } else {
       moveSpeed = speed;
@@ -61,7 +59,7 @@ public class MoveArm extends Command {
   }
 
   protected void end() {
-    Robot.arm.engageBrake();
+    //Robot.arm.engageBrake();
     Robot.arm.setPower(0);
     Scheduler.getInstance().add(new LockArm());
     //Robot.arm.SetPostion(Robot.arm.readEncoder());

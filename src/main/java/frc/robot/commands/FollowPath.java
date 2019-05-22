@@ -20,15 +20,15 @@ public class FollowPath extends Command {
 
   public boolean failsafe = false;
 
-  public FollowPath(String Pathname) {
+  public FollowPath(MotionProfile path) {
     requires(Robot.driveTrain);
-    this._pathName = Pathname;
+    this.path = path;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    path = PathManager.getInstance().getProfile(_pathName);
+    //path = PathManager.getInstance().getProfile(_pathName);
 
     if (path == null) {
       System.out.println("\nPath '" + _pathName + "' is null\n");

@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import java.io.File;
 import java.io.IOException;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -26,12 +27,11 @@ public class MotionProfile {
 
   public String name;
 
-	private static MotionProfile instance;
 	private Notifier m_follower_notifier;
 	private EncoderFollower m_left_follower;
 	private EncoderFollower m_right_follower;
-	Trajectory left_trajectory;
-	Trajectory right_trajectory;
+	private Trajectory left_trajectory;
+	private Trajectory right_trajectory;
 
 	public double left_speed;
 	public double right_speed;
@@ -92,8 +92,11 @@ public class MotionProfile {
 		right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right"); // FIX:  See screensteps documentation*/
 
     // MARK: Screensteps fix
-		left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
-    right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+		//left_trajectory = PathfinderFRC.getTrajectory(Pathname + ".right");
+    //right_trajectory = PathfinderFRC.getTrajectory(Pathname + ".left");
+
+    left_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/paths/" + Pathname + ".left.pf1.csv"));
+    right_trajectory = Pathfinder.readFromCSV(new File("/home/lvuser/deploy/paths/" + Pathname + ".right.pf1.csv"));
 
 		m_left_follower = new EncoderFollower(left_trajectory);
 		m_right_follower = new EncoderFollower(right_trajectory);
@@ -130,8 +133,12 @@ public class MotionProfile {
 			left_speed = m_left_follower.calculate((int) Robot.driveTrain.leftEncoderTicks());
 			right_speed = m_right_follower.calculate((int) Robot.driveTrain.rightEncoderTicks());
 			heading = Robot.driveTrain.getHeading();
-			desired_heading = -Pathfinder.r2d(m_left_follower.getHeading()); //FIX: Another defect in PathWeaver
-			double heading_difference = Pathfinder.boundHalfDegrees(-desired_heading - heading); // You may need to reverse the heading when going backwards. IDK
+			desired_heading = Pathfinder.r2d(m_left_follower.getHeading()); //FIX: Another defect in PathWeaver
+			if (!forwards) {
+				desired_heading += 180;
+			}
+			double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading); // You may need to reverse the heading when going backwards. IDK
+			//double backwards_heading_difference = Pathfinder.boundHalfDegrees(heading - desired_heading);
 			turn = (-1.0 / 80.0) * heading_difference;
 
 			// left_drive = (left_speed  * 12 * 223); //+ turn;
