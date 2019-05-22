@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.RobotMap;
 
 /**
  * Class for controller the LimeLight
@@ -19,10 +20,17 @@ public class LimeLight {
 
   public LimeLight() {
     table = NetworkTableInstance.getDefault().getTable("limelight");
+
+    setDouble(RobotMap.LimeLight.ledMode, LEDState.ForceOff);
+    //setDouble(RobotMap.LimeLight., value);
   }
 
   public void setDouble(String entry, double value) {
     table.getEntry(entry).setDouble(value);
+  }
+  
+  public void setDouble(String entry, LimeLightValue value) {
+    table.getEntry(entry).setDouble(value.getValue());
   }
 
   public double getDouble(String entry, double defaultValue) {
@@ -35,36 +43,36 @@ public class LimeLight {
 
   public enum CameraState implements LimeLightValue {
     VisionProccessing(0), DriverStation(1);
-
+  
     int value;
     CameraState(int value) {
       this.value = value;
     }
-
+  
     @Override
     public int getValue() { return value; }
   }
-
+  
   public enum LEDState implements LimeLightValue {
     PipelinePreference(0), ForceOff(1), ForceBlink(2), ForceOn(3);
-
+  
     int value;
     LEDState(int value) {
       this.value = value;
     }
-
+  
     @Override
     public int getValue() { return value; }
   }
-
+  
   public enum SnapshotMode implements LimeLightValue {
     StopTakingSnapshots(0), TakeSnapshots(1);
-
+  
     int value;
     SnapshotMode(int value) {
       this.value = value;
     }
-
+  
     @Override
     public int getValue() { return value; }
   }

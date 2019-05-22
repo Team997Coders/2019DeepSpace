@@ -17,6 +17,19 @@ import edu.wpi.first.wpilibj.SerialPort;
  * floating around.
  */
 public class RobotMap {
+
+  public static class LimeLight {
+    public static String
+      ledMode = "ledMode",
+      cameraMode = "camMode",
+      captureMode = "snapshot",
+      streamSelection = "stream",
+      targetX = "tx",
+      targetY = "ty",
+      targetArea = "ta",
+      targetVisible = "tv";
+  }
+
   public static class Buttons {
     public static class Logitech {
       public static int 
