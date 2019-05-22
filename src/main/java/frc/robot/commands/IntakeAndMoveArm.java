@@ -8,55 +8,48 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-public class SetArmPosition extends Command {
-
-  private double setpoint;
-  private double tolerance;
-
-  public SetArmPosition(double setpoint, double tolerance) {
-
-    this.setpoint = setpoint;
-    this.tolerance = tolerance;
-
+public class IntakeAndMoveArm extends Command {
+  public IntakeAndMoveArm() {
     requires(Robot.arm);
+    requires(Robot.ballManipulator);
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("Initted armToPosition");
-    //Robot.arm.updatePID();
+    Robot.arm.setArmFrontLimit(RobotMap.Values.armFrontParallel);
+    Scheduler.getInstance().add(new SetArmPosition(RobotMap.Values.armFrontParallel, 10));
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.SetPostion(setpoint);
-    //Robot.arm.UpdateF();
+    Robot.ballManipulator.ballIntake();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.arm.readEncoder() > setpoint - tolerance) && (Robot.arm.readEncoder() < setpoint + tolerance);
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.engageBrake();
-    Robot.arm.setPower(0);
-    Scheduler.getInstance().add(new LockArm());
+    Robot.arm.setArmFrontLimit(RobotMap.Values.armFrontParallel);
+    Robot.ballManipulator.stopMotor();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    System.out.println("ArmToPosition interrupted");
     end();
   }
 }

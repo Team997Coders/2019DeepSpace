@@ -29,6 +29,8 @@ public class DriveTrain extends Subsystem {
 
   public boolean decell = true;
 
+  private double maxSpeed = 0.5;
+
   // Decell Data
   private double ramp = 4.0;
   private double prevY = 0;
@@ -156,8 +158,8 @@ public class DriveTrain extends Subsystem {
       newY = (maxIncrement * sign) + prevY;
     }
 
-    if (Math.abs(newY) > 0.6) {
-      newY = (Math.abs(newY) / newY) * 0.6;
+    if (Math.abs(newY) > maxSpeed) {
+      newY = (Math.abs(newY) / newY) * maxSpeed;
     }
 
     leftTalon.set(ControlMode.PercentOutput, newY + turn);

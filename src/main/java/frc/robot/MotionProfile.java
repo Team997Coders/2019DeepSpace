@@ -12,7 +12,6 @@ import java.io.IOException;
 
 import edu.wpi.first.wpilibj.Notifier;
 import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
 import frc.robot.MotionProfile;

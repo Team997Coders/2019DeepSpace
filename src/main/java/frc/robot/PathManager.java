@@ -105,6 +105,7 @@ public class PathManager {
           mp = new MotionProfile(pathname);
           lock.lock();
           profiles.add(mp);
+          lock.unlock();
           System.out.println("\n\nLoading profile '" + pathname + "' has passed.\n\n");
         } catch (Exception e) {
           System.out.println("\n\nLoading profile '" + pathname + "' has failed.\n\n");

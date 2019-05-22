@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.command.Command;
  * Used for moving the elevator high enough to swap the arm's side if so required.
  */
 public class ElevatorToArmHeight extends Command {
-  private double tolerance;
 
   public ElevatorToArmHeight() {
     requires(Robot.elevator);
@@ -49,7 +48,6 @@ public class ElevatorToArmHeight extends Command {
     System.out.println("finished arm to height");
     Robot.elevator.SetPower(0);
     Scheduler.getInstance().add(new LockElevator());
-    Scheduler.getInstance().add(new SetArmPosition(RobotMap.Values.armFrontParallel, 10));
   }
 
   // Called when another command which requires one or more of the same

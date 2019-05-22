@@ -16,13 +16,17 @@ public class LockArm extends Command {
     
     protected void initialize() {
       Robot.arm.engageBrake();
+      Robot.arm.resetPID();
       position = Robot.arm.readEncoder();
+      //System.out.println("---------------------\ninitted lockArm at " + position);
+      //System.out.println("read arm encoder as " + Robot.arm.readEncoder());
+      //System.out.println("raw arm encoder is " + Robot.arm.getRawEncoder());
       //Robot.arm.updatePID();
     }
 
     protected void execute() {
       Robot.arm.SetPostion(position);
-      //System.out.println("Locking Arm at position " + position);
+      //System.out.println("Locking Arm at position " + position + "\nArm at " + Robot.arm.readEncoder());
     }
 
     protected boolean isFinished() {
@@ -30,13 +34,8 @@ public class LockArm extends Command {
     }
 
     protected void end() {
-<<<<<<< HEAD
       Robot.arm.SetPostion(Robot.arm.readEncoder());
       Robot.arm.releaseBrake();
-=======
-      //Robot.arm.SetPostion(Robot.arm.readEncoder());
-      //Robot.arm.releaseBrake();
->>>>>>> 1ee790430ce328940005cf310b0f123314d722ad
     }
 
     protected void interrupted() {
