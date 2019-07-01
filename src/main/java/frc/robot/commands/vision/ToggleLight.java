@@ -8,45 +8,43 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class ApproachTarget extends Command {
-
-  private double speed, maximumArea;
-
-  public ApproachTarget(double speed, double maximumArea) {
-    requires(Robot.driveTrain);
-    this.speed = speed;
-    this.maximumArea = maximumArea;
+public class ToggleLight extends Command {
+  public ToggleLight() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
+  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
 
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double mod = 0.01;
-    double error = Robot.limeLight.getDouble("tx", 0);
-    double turn = mod * error;
-    Robot.driveTrain.setVolts(speed + turn, speed - turn);
-
-    SmartDashboard.putNumber("Vision Turn Value", turn);
+    if (Robot.limeLight.getLED() == 1.0 || Robot.limeLight.getLED() == 0.0) {
+      Robot.limeLight.setLED(3);
+    } else {
+      Robot.limeLight.setLED(1);
+    }
   }
 
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.limeLight.getDouble("ta", 0) >= maximumArea ? true : false;
+    return false;
   }
 
+  // Called once after isFinished returns true
   @Override
   protected void end() {
-    SmartDashboard.putBoolean("Approaching", false);
   }
 
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

@@ -7,8 +7,6 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.FollowPath;
-import frc.robot.*;
 
 public class Hab1ToCargoRightRocketLow extends CommandGroup {
   /**

@@ -12,8 +12,6 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 
-//TODO: Drive to distance should take inches, not ticks.
-
 public class DriveToDistance extends Command {
 
   private double errorMargin = 0;

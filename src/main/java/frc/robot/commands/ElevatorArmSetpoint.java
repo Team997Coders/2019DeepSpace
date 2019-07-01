@@ -12,9 +12,6 @@ public class ElevatorArmSetpoint extends Command {
 
   private SetElevatorHeight e = null;
   private SetArmPosition a = null;
-  
-  //TODO: Make height represent inches.
-  //TODO: Do we need angle guards?
 
   /**
    * Sets the elevator and arm position in one command activity.

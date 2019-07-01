@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
-import frc.robot.misc.SecretSpeedBoost;
 //import frc.robot.subsystems.Logger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -40,7 +39,6 @@ public class Robot extends TimedRobot {
   public static final boolean DEBUG = true;
 
   public static Arm arm;
-  public static LimeLight limeLight;
  // public StaticDeoptimizingNode;               
   public static Elevator elevator;
   public static BallManipulator ballManipulator;
@@ -56,6 +54,7 @@ public class Robot extends TimedRobot {
   public static InfraredRangeFinder frontInfraredRangeFinder;
   public static CANifier armCanifier;
   public static CANifier elevatorCanifier;
+  public static LimeLight limeLight;
 
   public static OI oi;
 
@@ -80,7 +79,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    limeLight = new LimeLight();
     cameraServer = CameraServer.getInstance();
     cameraServer.startAutomaticCapture(0);
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
@@ -92,6 +90,7 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
+    limeLight = new LimeLight();
     //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
     //backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
     frontLineDetector = new LineDetector(RobotMap.Ports.lineSensorFrontLeft, 
@@ -185,7 +184,6 @@ public class Robot extends TimedRobot {
       // should be logged...
       autonomousCommand = new AutoDoNothing();
     } else {
-      // TODO: Fill in these commands with the appropriate actions.
       // You can call cameraControlStateMachine.autoLockRight(), 
       // cameraControlStateMachine.autoLockLeft(), or cameraControlStateMachine.autoLock()
       // from your commands if you want to sandwich in vision autolocking after initial
@@ -267,13 +265,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    oi.reconfigureButtons();
     elevator.ZeroElevator();
-
-    SecretSpeedBoost.toggleSpeedBoost();
-
-    //double a = arm.miniBoi.getOutput(arm.readEncoder(), arm.setpoint);
-    //System.out.println("OUTPUT-> " + a);
   }
 
   @Override
@@ -283,9 +275,6 @@ public class Robot extends TimedRobot {
   public static double getDeltaTime() { return deltaTime; }
 
   public void updateSmartDashboard() {
-
-    SmartDashboard.putBoolean("-=[SECRET MODE]=-", SecretSpeedBoost.speedBoostActive);
-
     //liftGear.updateSmartDashboard();
     //driveTrain.updateSmartDashboard();
     //arm.updateSmartDashboard();

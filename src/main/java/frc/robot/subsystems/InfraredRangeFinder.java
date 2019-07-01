@@ -26,14 +26,8 @@ public class InfraredRangeFinder extends Subsystem {
     return m_infraredSensorInput.getValue();
   }
 
-  public int getRangeInInches() {
-    // TODO: Calibrate and fill in...
-    return 0;
-  }
-
   public void updateSmartDashboard() {
     SmartDashboard.putNumber("Raw infrared sensor", getRawValue());
-    SmartDashboard.putNumber("Infrared range (in)", getRangeInInches());
   }
 
   @Override
