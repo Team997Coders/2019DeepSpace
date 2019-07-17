@@ -16,6 +16,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.CANifier.LEDChannel;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -43,7 +44,7 @@ public class Elevator extends Subsystem {
   //// Balls = true Hatches = false
   public boolean isZeroed;
 
-  public boolean lightYes = false;
+  public boolean lightOn = false;
 
   public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);
@@ -93,6 +94,8 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator/Elevator Pid I", RobotMap.Values.elevatorPidI);
     SmartDashboard.putNumber("Elevator/Elevator Pid D", RobotMap.Values.elevatorPidD);
     SmartDashboard.putNumber("Elevator/Elevator Pid F", RobotMap.Values.elevatorPidF);
+
+    lightOn = false;
   }
 
   public void SetPosition(double height) {
@@ -140,6 +143,28 @@ public class Elevator extends Subsystem {
   public void SetPower(double volts){
     master.set(volts);
     //updateF();
+  }
+
+  public void setLightOn() {
+    lightOn = true;
+    setLightPercent(1);
+    SmartDashboard.putBoolean("Light", lightOn);
+  }
+
+  public void setLightOff() {
+    lightOn = false;
+    setLightPercent(0);
+    SmartDashboard.putBoolean("Light", lightOn);
+  }
+
+  public void setLightPercent(double brightness) {
+    canifier.setLEDOutput(brightness, LEDChannel.LEDChannelA);
+    canifier.setLEDOutput(brightness, LEDChannel.LEDChannelB);
+    canifier.setLEDOutput(brightness, LEDChannel.LEDChannelC);
+  }
+
+  public boolean lightIsOn() {
+    return lightOn;
   }
 
   /**

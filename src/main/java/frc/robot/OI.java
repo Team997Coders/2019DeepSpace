@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.commands.vision.ApproachTarget;
 
@@ -32,6 +33,8 @@ public class OI {
   private JoystickButton autoDriveToTarget; // A 2
 
   public int secretModeCounterA = 0, secretModeCounterB = 0;
+
+  public CurrentConfig currentConfig;
 
   public OI() {
     // driver controls... game sticks control the motion of the robot
@@ -80,6 +83,8 @@ public class OI {
 
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whileHeld(new ToggleHatch());
+
+    manualConfig();
 
     // #endregion
   }
@@ -155,5 +160,164 @@ public class OI {
   public double condition_gamepad_axis(double dead, double val, double min, double max) {
     return clamp(min, max, deadBand(val, dead));
   }
-  // #endregion
+
+  //#endregion
+
+  //#region Configuration Methods
+
+  /**
+   * Purge the contorls
+   * 
+   * @deprecated Not need to remap controls. Just run one of the other configurations
+   */
+  public void purgeConfig() {
+    autoDriveToTarget.close();
+    toggleHatch.close();
+    elevatorGoDown.close();
+    elevatorGoUp.close();
+  }
+
+  public void manualConfig() {
+
+    SmartDashboard.putString("Controller Config", "Manual");
+
+    autoDriveToTarget.whenPressed(new ToggleLight());
+    toggleHatch.whenPressed(new ToggleHatch());
+    elevatorGoUp.whileHeld(new ElevatorUppity());
+    elevatorGoDown.whileHeld(new ElevatorDownity());
+
+    currentConfig = CurrentConfig.Manual;
+  }
+
+  public void cargoFrontConfig() {
+
+    SmartDashboard.putString("Controller Config", "Cargo Front");
+
+    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipCargoHeight, RobotMap.Values.armFrontParallel));
+
+    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopCargoHeight, RobotMap.Values.armFrontParallel));
+
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomCargoHeight, RobotMap.Values.armFrontParallel));
+    //elevatorGoUp.whenInactive(new AutoDoNothing());
+
+    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleCargoHeight, RobotMap.Values.armFrontParallel));
+    //elevatorGoDown.whenInactive(new AutoDoNothing());
+
+    currentConfig = CurrentConfig.CargoFront;
+  }
+
+  public void cargoBackConfig() {
+
+    SmartDashboard.putString("Controller Config", "Cargo Back");
+
+    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipCargoHeight, RobotMap.Values.armBackParallel));
+
+    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackTopCargoHeight, RobotMap.Values.armBackParallel));
+
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackBottomCargoHeight, RobotMap.Values.armBackParallel));
+    //elevatorGoUp.whenInactive(new AutoDoNothing());
+
+    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackMiddleCargoHeight, RobotMap.Values.armBackParallel));
+    //elevatorGoDown.whenInactive(new AutoDoNothing());
+
+    currentConfig = CurrentConfig.CargoBack;
+  }
+
+  public void hatchFrontConfig() {
+
+    SmartDashboard.putString("Controller Config", "Hatch Front");
+
+    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontShipHatchHeight, RobotMap.Values.armFrontParallel));
+
+    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontTopHatchHeight, RobotMap.Values.armFrontParallel));
+
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontBottomHatchHeight, RobotMap.Values.armFrontParallel));
+    //elevatorGoUp.whenInactive(new AutoDoNothing());
+    
+    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorFrontMiddleHatchHeight, RobotMap.Values.armFrontParallel));
+    //elevatorGoDown.whenInactive(new AutoDoNothing());
+
+    currentConfig = CurrentConfig.HatchFront;
+  }
+
+  public void hatchBackConfig() {
+
+    SmartDashboard.putString("Controller Config", "Hatch Back");
+
+    //autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    autoDriveToTarget.whenPressed(new ElevatorArmSetpoint(RobotMap.ElevatorHeights.elevatorBackShipHatchHeight, RobotMap.Values.armBackParallel));
+
+    //toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    toggleHatch.whenPressed(new AutoDoNothing());
+
+    //elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoUp.whenPressed(new AutoDoNothing());
+    //elevatorGoUp.whenInactive(new AutoDoNothing());
+
+    //elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
+    elevatorGoDown.whenPressed(new AutoDoNothing());
+    //elevatorGoDown.whenInactive(new AutoDoNothing());
+
+    currentConfig = CurrentConfig.HatchBack;
+  }
+
+  //#endregion
+
+  //#region Configuration Processors
+
+  public void reconfigureButtons() {
+    int pov = gamepad3.getPOV(0);
+
+    if (currentConfig.isSame(pov)) {
+      return;
+    }
+
+    //purgeConfig();
+
+    switch (pov) {
+      case -1:
+        manualConfig();
+        return;
+      case 0: // Cargo Front
+        cargoFrontConfig();
+        return;
+      case 90: // Hatch Front
+        hatchFrontConfig();
+        return;
+      case 180: // Hatch Back
+        hatchBackConfig();
+        return;
+      case 270: // Cargo Back
+        cargoBackConfig();
+        return;
+    }
+  }
+
+  private enum CurrentConfig {
+    Manual(-1), CargoFront(0), CargoBack(270),
+    HatchFront(90), HatchBack(180);
+
+    public int value;
+    private CurrentConfig(int value) {
+      this.value = value;
+    }
+
+    public boolean isSame(int val) {
+      return val == value;
+    }
+  }
+
+  //#endregion
 }
