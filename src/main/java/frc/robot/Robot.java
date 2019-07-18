@@ -88,6 +88,7 @@ public class Robot extends TimedRobot {
     //pdp = new PowerDistributionPanel();
     hatchManipulator = new HatchManipulator();
     elevator = new Elevator();
+    
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     limeLight = new LimeLight();

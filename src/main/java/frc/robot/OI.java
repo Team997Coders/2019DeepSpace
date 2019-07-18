@@ -22,12 +22,13 @@ public class OI {
   public JoystickButton ballOutake; // Left Bumper 2
   public JoystickButton driveSafe; // Right Bumper 1
   public JoystickButton flip;
+  //public JoystickButton elevatorSetPositionMid; // Left Bumper 1
 
   public JoystickButton ArmForward; // Back 2
   public JoystickButton ArmReverse; // Start 2
 
   private JoystickButton deployLandingGear; // B 1
-  private JoystickButton deployBackLandingGear; // Y 1
+  private JoystickButton deployBackLandingGear; // A 1
   private JoystickButton retractLandingGear; // Back 1
   private JoystickButton toggleHatch; // B 2
   private JoystickButton autoDriveToTarget; // A 2
@@ -56,9 +57,11 @@ public class OI {
 
     flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     flip.whenPressed(new FlipArmChain());
-
-    autoDriveToTarget = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
-    autoDriveToTarget.whenPressed(new ApproachTarget(0.3, 100));
+    
+    //elevatorSetPositionMid = new JoystickButton(gamepad1, RobotMap.Buttons.buttonLeftTrigger);
+    //elevatorSetPositionMid.whenPressed(new SetArmPosition(12, 1));
+    //flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
+    //flip.whenPressed(new SetArmPosition(RobotMap.Values.armFrontParallel, 10));
 
     // #endregion
 
