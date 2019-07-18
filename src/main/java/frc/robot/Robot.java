@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
     //pdp = new PowerDistributionPanel();
     hatchManipulator = new HatchManipulator();
     elevator = new Elevator();
+    
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
