@@ -57,6 +57,8 @@ public class OI {
 
     flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     flip.whenPressed(new FlipArmChain());
+
+    autoDriveToTarget = new JoystickButton(gamepad1, 1);
     
     //elevatorSetPositionMid = new JoystickButton(gamepad1, RobotMap.Buttons.buttonLeftTrigger);
     //elevatorSetPositionMid.whenPressed(new SetArmPosition(12, 1));
