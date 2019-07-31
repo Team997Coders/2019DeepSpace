@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
-  public static CameraServer cameraServer;
+  //public static CameraServer cameraServer; uncomment if camera exists
   //public static MotionProfile motionProfile;
   //public static PathManager pathManager;
   //public static Logger logger;
@@ -79,8 +79,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    cameraServer = CameraServer.getInstance();
-    cameraServer.startAutomaticCapture(0);
+    //cameraServer = CameraServer.getInstance(); uncomment if camera exists
+    //cameraServer.startAutomaticCapture(0); uncomment if camera exists
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
     elevatorCanifier = new CANifier(RobotMap.Ports.elevatorCanifier);
     arm = new Arm();

@@ -108,10 +108,6 @@ public class Elevator extends Subsystem {
     canifier.setQuadraturePosition(0, 10);
   }
 
-  public void toggleLight() {
-
-  }
-
   public int GetPosition() {
     return canifier.getQuadraturePosition();
   }

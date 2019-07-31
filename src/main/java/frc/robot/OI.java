@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
-import frc.robot.commands.vision.ApproachTarget;
+import frc.robot.commands.vision.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,6 +32,7 @@ public class OI {
   private JoystickButton retractLandingGear; // Back 1
   private JoystickButton toggleHatch; // B 2
   private JoystickButton autoDriveToTarget; // A 2
+  private JoystickButton limelightDrive;
 
   public int secretModeCounterA = 0, secretModeCounterB = 0;
 
@@ -58,7 +59,10 @@ public class OI {
     flip = new JoystickButton(gamepad1, RobotMap.Buttons.buttonX);
     flip.whenPressed(new FlipArmChain());
 
-    autoDriveToTarget = new JoystickButton(gamepad1, 1);
+    autoDriveToTarget = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
+
+    limelightDrive = new JoystickButton(gamepad1, RobotMap.Buttons.buttonStart);
+    limelightDrive.whenPressed(new ApproachTarget(0.2, 30));
     
     //elevatorSetPositionMid = new JoystickButton(gamepad1, RobotMap.Buttons.buttonLeftTrigger);
     //elevatorSetPositionMid.whenPressed(new SetArmPosition(12, 1));
@@ -151,10 +155,6 @@ public class OI {
 
   /**
    * Combine both a joystick limit and a clamp within standard limits.
-   * 
-   * I really wish programmers would name methods descriptively so that I do not
-   * have to waste my time figuring out what things like "bing" and "stuff" do! I
-   * am guessing that this does good "stuff" to my joystick. CCB.
    * 
    * @param dead deadband limit, no output within this limit. Normally 0.05
    * @param val  raw value from axis
