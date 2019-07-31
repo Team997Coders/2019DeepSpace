@@ -9,10 +9,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class LockArm extends Command {
 
-	public double position;
+	public double position = Double.MAX_VALUE;
 	
     public LockArm() {
     	requires(Robot.arm);
+    }
+
+    public LockArm(double position) {
+      requires(Robot.arm);
+      this.position = position;
     }
     
     protected void initialize() {
@@ -21,7 +26,7 @@ public class LockArm extends Command {
 
       Robot.arm.engageBrake();
       //Robot.arm.resetPID();
-      position = Robot.arm.readEncoder();
+      position = position == Double.MAX_VALUE ? Robot.arm.readEncoder() : position;
       //System.out.println("---------------------\ninitted lockArm at " + position);
       //System.out.println("read arm encoder as " + Robot.arm.readEncoder());
       //System.out.println("raw arm encoder is " + Robot.arm.getRawEncoder());

@@ -28,6 +28,9 @@ public class RobotMap {
       targetY = "ty",
       targetArea = "ta",
       targetVisible = "tv";
+
+    public static double
+      reachedPanelArea = 22.2;
   }
 
   public static class Buttons {
