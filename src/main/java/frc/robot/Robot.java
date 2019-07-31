@@ -287,7 +287,7 @@ public class Robot extends TimedRobot {
   }
 
   public void updateSmartDashboardRequired() {
-    //elevator.updateSmartDashboard();
+    elevator.updateSmartDashboard();
     SmartDashboard.putNumber("Delta Time", deltaTime);
   }
 

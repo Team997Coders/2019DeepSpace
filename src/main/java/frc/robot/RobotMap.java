@@ -195,11 +195,11 @@ public class RobotMap {
       armFrontLower = 288,
       armVertical = 501,
 
-      armPidP = 0.007, //0.005
+      armPidP = 0.0010, //0.0006
       armPidI = 0,
-      armPidD = 0.00, // 0.001
+      armPidD = 0.001,
       armPidK = 0,
-      armMaxPidF = 0.0, // 0.002
+      armMaxPidF = 0.002, // 0.0005
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackParallel-armFrontParallel)),
 
       // Camera values

@@ -62,7 +62,7 @@ public class OI {
     autoDriveToTarget = new JoystickButton(gamepad1, RobotMap.Buttons.buttonA);
 
     limelightDrive = new JoystickButton(gamepad1, RobotMap.Buttons.buttonStart);
-    limelightDrive.whenPressed(new ApproachTarget(0.2, 30));
+    limelightDrive.whenPressed(new ApproachTarget(0.2, 19));
     
     //elevatorSetPositionMid = new JoystickButton(gamepad1, RobotMap.Buttons.buttonLeftTrigger);
     //elevatorSetPositionMid.whenPressed(new SetArmPosition(12, 1));
@@ -91,7 +91,7 @@ public class OI {
     ballOutake.whileHeld(new BallOuttake());
 
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
-    toggleHatch.whileHeld(new ToggleHatch());
+    toggleHatch.whenPressed(new ToggleHatch());
 
     manualConfig();
 
