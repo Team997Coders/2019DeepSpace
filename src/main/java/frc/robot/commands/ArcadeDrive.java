@@ -30,7 +30,8 @@ public class ArcadeDrive extends Command {
 
     //Robot.driveTrain.setVolts(front + turn, front - turn);
 
-    Robot.driveTrain.setRampArcadeVolts(front, 0.8 * turn);
+    //Robot.driveTrain.setRampArcadeVolts(front, 0.8 * turn);
+    Robot.driveTrain.setVolts(front + turn, front - turn);
 
     /*if (Robot.driveTrain.decell) {
       Robot.driveTrain.setRampArcadeVolts(front, turn);

@@ -79,10 +79,10 @@ public class OI {
     elevatorGoDown.whileHeld(new ElevatorDownity());
 
     ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
-    ArmForward.whileHeld(new MoveArm(-0.5));
+    ArmForward.whileHeld(new MoveArm(-0.2));
 
     ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
-    ArmReverse.whileHeld(new MoveArm(0.5));
+    ArmReverse.whileHeld(new MoveArm(0.2));
 
     ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballIntake.whileHeld(new BallIntake());
