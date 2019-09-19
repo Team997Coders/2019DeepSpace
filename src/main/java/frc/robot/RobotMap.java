@@ -193,8 +193,8 @@ public class RobotMap {
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 22775, //placeholer for height in order for arm to switch
-      armBackParallel = 788,
-      armFrontParallel = 288,
+      armBackParallel = 288,
+      armFrontParallel = -120,
       armFrontLower = 288,
       armVertical = 501,
 
