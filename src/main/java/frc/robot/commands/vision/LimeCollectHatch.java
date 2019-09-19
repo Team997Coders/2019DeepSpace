@@ -38,7 +38,7 @@ public class LimeCollectHatch extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double sideCorrection = controller.getOutput(0, Robot.limeLight.getDouble(RobotMap.LimeLight.targetX, 0));
+    // double sideCorrection = controller.getOutput(0, Robot.limeLight.getDouble(RobotMap.LimeLight.targetX, 0));
   }
 
   // Make this return true when this Command no longer needs to run execute()

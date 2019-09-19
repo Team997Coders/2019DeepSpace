@@ -25,7 +25,6 @@ import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LineDetector;
-import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
