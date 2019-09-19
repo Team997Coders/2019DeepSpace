@@ -102,7 +102,7 @@ public class PDriveToDistance extends Command {
     double yawcorrect = deltaTheta * Ktheta;
 
     // set the output voltage
-    Robot.driveTrain.setVolts(pfactor2 - yawcorrect, pfactor2 + yawcorrect); // TODO check these signs...
+    Robot.driveTrain.setVolts(pfactor2 - yawcorrect, pfactor2 + yawcorrect);
     // Robot.driveTrain.SetVoltages(-pfactor, -pfactor); //without yaw correction,
     // accel
 

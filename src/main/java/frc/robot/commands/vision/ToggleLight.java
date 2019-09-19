@@ -5,15 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-import frc.robot.Robot;
+package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
-public class LockElevator extends Command {
-  private double position;
-  public LockElevator() {
-    requires(Robot.elevator);
+public class ToggleLight extends Command {
+  public ToggleLight() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -21,21 +19,22 @@ public class LockElevator extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    position = Robot.elevator.GetPosition();
-    Robot.elevator.updatePID();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    System.out.println("ran lockelevator");
-    Robot.elevator.SetPosition(position);
+    if (Robot.limeLight.getLED() == 1.0 || Robot.limeLight.getLED() == 0.0) {
+      Robot.limeLight.setLED(3);
+    } else {
+      Robot.limeLight.setLED(1);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (Robot.elevator.GetBottomLimitSwitch());
+    return true;
   }
 
   // Called once after isFinished returns true

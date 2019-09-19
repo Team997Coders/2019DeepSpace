@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import frc.robot.commands.LockElevator;
-import frc.robot.commands.SetArmPosition;
 import frc.robot.data.ElevatorData;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,7 +44,7 @@ public class Elevator extends Subsystem {
   //// Balls = true Hatches = false
   public boolean isZeroed;
 
-  private boolean lightOn;
+  public boolean lightOn = false;
 
   public Elevator() {
     master = new CANSparkMax(RobotMap.Ports.masterElevatorMotor, MotorType.kBrushless);

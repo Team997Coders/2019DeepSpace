@@ -17,6 +17,22 @@ import edu.wpi.first.wpilibj.SerialPort;
  * floating around.
  */
 public class RobotMap {
+
+  public static class LimeLight {
+    public static String
+      ledMode = "ledMode",
+      cameraMode = "camMode",
+      captureMode = "snapshot",
+      streamSelection = "stream",
+      targetX = "tx",
+      targetY = "ty",
+      targetArea = "ta",
+      targetVisible = "tv";
+
+    public static double
+      reachedPanelArea = 22.2;
+  }
+
   public static class Buttons {
     public static class Logitech {
       public static int 
@@ -107,8 +123,8 @@ public class RobotMap {
       //LANDING GEAR PORTS
       landingGearPiston = 0,
       landingGearFloorSensor = 1,
-      rearGearPiston = 3, //TODO: find the actual port value for this
-      rearGearFloorSensor = 0, //TODO: find the actual port value for this
+      rearGearPiston = 3,
+      rearGearFloorSensor = 0,
 
       //CAMERA PORTS
       frontPanServo = 9,
@@ -129,6 +145,12 @@ public class RobotMap {
       ticksPerRev = 4096; // Protobot
       //PDriveToDistance PID Variables
     public static double
+
+      limeTestP = 0.015,
+      limeTestI = 0.0,
+      limeTestD = 0.0,
+      limeTestF = 0.0,
+
       driveDistanceP = .003, //placeholders
       driveDistanceI = 0.0,
       driveDistanceD = 0.0,
@@ -176,7 +198,7 @@ public class RobotMap {
       armFrontLower = 288,
       armVertical = 501,
 
-      armPidP = 0.0006, //0.0012
+      armPidP = 0.0010, //0.0006
       armPidI = 0,
       armPidD = 0.001,
       armPidK = 0,
@@ -204,7 +226,8 @@ public class RobotMap {
       pf_Kv = (1/pf_max_vel),
       pf_Ka = 0.0,
       //pf_Kt = 0.35,
-      
+
+      internalFlipTickCount = 118428, // Temp Number
 
       robotLength = 0.75, //in inches (includes bumpers)
       robotWidth = 0.8,	

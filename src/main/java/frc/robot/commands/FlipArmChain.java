@@ -9,13 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class FlipArmChain extends Command {
 
-  private Command elevatorCom = null, armCom = null, elevatorTwoCom = null, armBoop = null;
-  private boolean noInterrupt = false;
+  private Command elevatorCom = null, armCom = null;
   private FlipStep step;
 
   public FlipArmChain() {
@@ -28,7 +26,6 @@ public class FlipArmChain extends Command {
   protected void initialize() {
     elevatorCom = null; 
     armCom = null;
-    armBoop = null;
     step = FlipStep.elevatorOne;
     //armBoop = new SetArmPosition(RobotMap.Values.armBackParallel, 10)
     //Scheduler.getInstance().add();

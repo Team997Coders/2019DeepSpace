@@ -27,6 +27,9 @@ public class SetArmPosition extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+
+    Robot.arm.miniBoi.reset();
+
     System.out.println("Initted armToPosition");
     //Robot.arm.updatePID();
   }

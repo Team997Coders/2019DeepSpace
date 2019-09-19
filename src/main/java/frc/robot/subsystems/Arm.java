@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.CANifier;
@@ -13,30 +6,36 @@ import com.ctre.phoenix.CANifier.GeneralPin;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import frc.robot.Robot;
 import frc.robot.data.ArmData;
 import frc.robot.data.RobotState.ScoringDirectionStates;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+
+import frc.robot.misc.MiniPID;
+
 /**
  * Add your docs here.
  */
 public class Arm extends Subsystem {
 
+  public double setpoint = 0;
+
   public CANPIDController pidController;
 
   private CANSparkMax sparkMax;
+  private CANEncoder internalEncoder;
   private CANifier dataBus;
   private CANDigitalInput frontLimitSwitch, backLimitSwitch;
 
-  private Solenoid discBrake;
   private double armFrontLimit = RobotMap.Values.armFrontParallel;
 
   // Read Encoder Vars
@@ -45,16 +44,25 @@ public class Arm extends Subsystem {
   private double prevRead = -1;
   private int revs = 0;
   private int flipModifier = 1;
-  private double fConstant = RobotMap.Values.armMaxPidF;
+  private double fConstant = 0.002;
   public boolean armState;
 
+  public MiniPID miniBoi;
+
   public Arm() {
+
+    miniBoi = new MiniPID(0.0006, 0.0, 0.001, 0);
+    miniBoi.setOutputLimits(-0.4, 0.4);
 
     sparkMax = new CANSparkMax(RobotMap.Ports.armSpark, MotorType.kBrushless);
     
     sparkMax.restoreFactoryDefaults();
 
     sparkMax.setInverted(true);
+
+    internalEncoder = sparkMax.getEncoder();
+    double conversionFactor = RobotMap.Values.internalFlipTickCount / (RobotMap.Values.armBackParallel - RobotMap.Values.armFrontParallel);
+    internalEncoder.setPositionConversionFactor(conversionFactor);
 
     //sparkMax.setOpenLoopRampRate(0);
 
@@ -65,7 +73,7 @@ public class Arm extends Subsystem {
     pidController.setI(RobotMap.Values.armPidI);
     pidController.setD(RobotMap.Values.armPidD);
     pidController.setFF(0);
-    pidController.setOutputRange(-0.6, 0.6);
+    pidController.setOutputRange(-0.8, 0.8);
 
     pidController.setIAccum(0);
 
@@ -79,8 +87,6 @@ public class Arm extends Subsystem {
     dataBus = Robot.armCanifier;
 
     pidController.setReference(0.0, ControlType.kDutyCycle);
-
-    discBrake = new Solenoid(RobotMap.Ports.discBrake);
 
     /*SmartDashboard.putNumber("Arm/Arm Pid P", RobotMap.Values.armPidP);
     SmartDashboard.putNumber("Arm/Arm Pid I", RobotMap.Values.armPidI);
@@ -116,9 +122,11 @@ public class Arm extends Subsystem {
   }
 
   // This function only works if the inital read of the arm is horizontal
-  public void UpdateF(){
+  public double UpdateF(){
     //pidController.setFF(0);
-    pidController.setFF(-1 * Math.cos(((readEncoder() - RobotMap.Values.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant);
+    double f = -1 * Math.cos(((readEncoder() - RobotMap.Values.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant;
+    //pidController.setFF(f);
+    return f;
   }
 
   public double getCurrent() {
@@ -128,7 +136,17 @@ public class Arm extends Subsystem {
   public void SetPostion(double setpoint){
     //releaseBrake();
     //System.out.println("Setting arm position to " + setpoint);
-    pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
+    //internalEncoder.setPosition(readEncoder());
+    //pidController.setReference(setpoint, ControlType.kPosition);
+    //pidController.setReference(setpoint - readEncoder(), ControlType.kPosition);
+    this.setpoint = setpoint;
+    double actual = readEncoder();
+    double a = miniBoi.getOutput(actual, setpoint);
+    //SmartDashboard.putNumber("Arm/Error", setpoint - actual);
+    //SmartDashboard.putNumber("Arm/PID Output", a + UpdateF());
+    //SmartDashboard.putNumber("Arm/MiniPID Output", a);
+    sparkMax.set(a + UpdateF());
+
     //UpdateF();
   }
 
@@ -235,6 +253,7 @@ public class Arm extends Subsystem {
     //SmartDashboard.putBoolean("Arm/Arm Front Limit Switch", frontLimitSwitch.get());
     //SmartDashboard.putBoolean("Arm/Arm Back Limit Switch", backLimitSwitch.get());
     SmartDashboard.putNumber("Arm/Arm voltage", sparkMax.getAppliedOutput());
+    SmartDashboard.putNumber("Arm/Arm Internal Read", internalEncoder.getPosition());
     //SmartDashboard.putNumber("Arm/Arm Current", getCurrent());
     //SmartDashboard.putNumber("Arm/Arm Motor Temp", getMotorTemp());
   }
