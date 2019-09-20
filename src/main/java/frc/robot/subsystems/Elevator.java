@@ -100,16 +100,17 @@ public class Elevator extends Subsystem {
 
   public void SetPosition(double height) {
     //System.out.println("Set elevator to go to height " + height); 
-    pidController.setReference(height - GetPosition(), ControlType.kPosition);
+    pidController.setReference(height, ControlType.kPosition);
     updateF();
   }
 
   public void resetElevatorEncoder() {
-    canifier.setQuadraturePosition(0, 10);
+    //canifier.setQuadraturePosition(0, 10);
+    encoder.setPosition(0);
   }
 
-  public int GetPosition() {
-    return canifier.getQuadraturePosition();
+  public double GetPosition() {
+    return encoder.getPosition();// canifier.getQuadraturePosition();
   }
 
   public double getInternalEncoderPos() {

@@ -274,8 +274,8 @@ public class Robot extends TimedRobot {
   public void updateSmartDashboard() {
     //liftGear.updateSmartDashboard();
     //driveTrain.updateSmartDashboard();
-    //arm.updateSmartDashboard();
-    //elevator.updateSmartDashboard();
+    arm.updateSmartDashboard();
+    elevator.updateSmartDashboard();
     //frontLineDetector.updateSmartDashboard();
     //frontInfraredRangeFinder.updateSmartDashboard();
     SmartDashboard.putNumber("Delta Time", deltaTime);

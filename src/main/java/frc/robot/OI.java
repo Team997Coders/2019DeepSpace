@@ -73,16 +73,16 @@ public class OI {
 
     // #region Gamepad2 Controls
     elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
-    elevatorGoUp.whileHeld(new ElevatorUppity());
+    //elevatorGoUp.whileHeld(new ElevatorUppity());
 
     elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoDown.whileHeld(new ElevatorDownity());
 
     ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
-    ArmForward.whileHeld(new MoveArm(-0.2));
+    ArmForward.whileHeld(new MoveArm(-0.25));
 
     ArmReverse = new JoystickButton(gamepad3, RobotMap.Buttons.buttonBack);
-    ArmReverse.whileHeld(new MoveArm(0.2));
+    ArmReverse.whileHeld(new MoveArm(0.25));
 
     ballIntake = new JoystickButton(gamepad3, RobotMap.Buttons.buttonRightShoulder);
     ballIntake.whileHeld(new BallIntake());
