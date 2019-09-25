@@ -184,13 +184,22 @@ public class RobotMap {
       normal = .10,
       straight = .3, 
 
-      // Arm and Elevator Values
-      elevatorPidP = 0.0, // 0.0006, 
-      elevatorPidI = 0.0, // 0.0000000001,
-      elevatorPidD = 0.0, // 0.006,
-      elevatorPidF = 0.032, // 0.0000,
-      elevatorPidFMax = 0.032, // Needs to be bigger to compensate
+      // For Position
+
+      elevatorPid0P = 0.0, // 0.0006, 
+      elevatorPid0I = 0.0, // 0.0000000001,
+      elevatorPid0D = 0.0, // 0.006,
+      elevatorPid0F = 0.032, // 0.0000,
+      elevatorPid0FMax = 0.032, // Needs to be bigger to compensate
       elevatorTopHeight = 100000000, //placeholder
+
+      // For DutyCycle
+      
+      elevatorPid1P = 0.0,
+      elevatorPid1I = 0.0,
+      elevatorPid1D = 0.0,
+      elevatorPid1F = 0.032,
+      elevatorPid1FMax = 0.032,
 
       armSwitchHeight= 22775, //placeholer for height in order for arm to switch
       armBackParallel = 203,
@@ -198,11 +207,21 @@ public class RobotMap {
       armFrontLower = 288,
       armVertical = 501,
 
-      armPidP = 0.0010, //0.0006
-      armPidI = 0,
-      armPidD = 0.001,
-      armPidK = 0,
-      armMaxPidF = 0.002, // 0.0005
+      // For Position
+
+      armPid0P = 0.0010, //0.0006
+      armPid0I = 0,
+      armPid0D = 0.001,
+      armPid0K = 0,
+      armPid0FMax = 0.002, // 0.0005
+
+      // For DutyCycle
+      
+      armPid1P = 0.0, //0.0006
+      armPid1I = 0.0,
+      armPid1D = 0.0,
+      armPid1FMax = 0.002, // 0.0005
+
       ticksToRadiansArm= 3.141592653589793238/(Math.abs(armBackParallel-armFrontParallel)),
 
       // Camera values

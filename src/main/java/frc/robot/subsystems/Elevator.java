@@ -82,20 +82,25 @@ public class Elevator extends Subsystem {
 
     pidController = master.getPIDController();
     pidController.setOutputRange(-0.3, 0.5);
-    pidController.setP(RobotMap.Values.elevatorPidP);
-    pidController.setI(RobotMap.Values.elevatorPidI);
-    pidController.setD(RobotMap.Values.elevatorPidD);
-    pidController.setFF(RobotMap.Values.elevatorPidF);
+    pidController.setP(RobotMap.Values.elevatorPid0P, 0);
+    pidController.setI(RobotMap.Values.elevatorPid0I, 0);
+    pidController.setD(RobotMap.Values.elevatorPid0D, 0);
+    pidController.setFF(RobotMap.Values.elevatorPid0F, 0);
+
+    pidController.setP(RobotMap.Values.elevatorPid1P, 1);
+    pidController.setI(RobotMap.Values.elevatorPid1I, 1);
+    pidController.setD(RobotMap.Values.elevatorPid1D, 1);
+    pidController.setFF(RobotMap.Values.elevatorPid1F, 1);
     
     pidController.setReference(0.0/*total - current*/, ControlType.kPosition);
 
     SetPosition(GetPosition());
     isZeroed = limitSwitchBottom.get();
 
-    SmartDashboard.putNumber("Elevator/Elevator Pid P", RobotMap.Values.elevatorPidP);
-    SmartDashboard.putNumber("Elevator/Elevator Pid I", RobotMap.Values.elevatorPidI);
-    SmartDashboard.putNumber("Elevator/Elevator Pid D", RobotMap.Values.elevatorPidD);
-    SmartDashboard.putNumber("Elevator/Elevator Pid F", RobotMap.Values.elevatorPidF);
+    SmartDashboard.putNumber("Elevator/Elevator Pid 0 P", RobotMap.Values.elevatorPid0P);
+    SmartDashboard.putNumber("Elevator/Elevator Pid 0 I", RobotMap.Values.elevatorPid0I);
+    SmartDashboard.putNumber("Elevator/Elevator Pid 0 D", RobotMap.Values.elevatorPid0D);
+    SmartDashboard.putNumber("Elevator/Elevator Pid 0 F", RobotMap.Values.elevatorPid0F);
 
     lightOn = false;
   }
@@ -104,6 +109,10 @@ public class Elevator extends Subsystem {
     // pidController.setFF(arbFF / height); /* Use for if you are actively tuning */
     updateF(height);
     pidController.setReference(height, ControlType.kPosition);
+  }
+
+  public void SetSpeed(double speed) {
+    pidController.setReference(speed, ControlType.kDutyCycle, 1);
   }
 
   public void resetElevatorEncoder() {
@@ -215,9 +224,9 @@ public class Elevator extends Subsystem {
 
   public void updateF(double setpoint) {
     if (GetPosition() > RobotMap.ElevatorHeights.elevatorMiddleHeight) {
-      pidController.setFF(RobotMap.Values.elevatorPidFMax / setpoint);
+      pidController.setFF(RobotMap.Values.elevatorPid0FMax / setpoint);
     } else {
-      pidController.setFF(RobotMap.Values.elevatorPidF / setpoint);
+      pidController.setFF(RobotMap.Values.elevatorPid0F / setpoint);
     }
   }
 

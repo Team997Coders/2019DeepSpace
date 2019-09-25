@@ -69,9 +69,9 @@ public class Arm extends Subsystem {
     //sparkMax.setIdleMode(IdleMode.kBrake);
     
     pidController = sparkMax.getPIDController();
-    pidController.setP(RobotMap.Values.armPidP);
-    pidController.setI(RobotMap.Values.armPidI);
-    pidController.setD(RobotMap.Values.armPidD);
+    pidController.setP(RobotMap.Values.armPid0P);
+    pidController.setI(RobotMap.Values.armPid0I);
+    pidController.setD(RobotMap.Values.armPid0D);
     pidController.setFF(0);
     pidController.setOutputRange(-0.8, 0.8);
 
@@ -127,7 +127,7 @@ public class Arm extends Subsystem {
     double angleMod = Math.PI / Math.abs(RobotMap.Values.armFrontParallel - RobotMap.Values.armBackParallel);
     double angle = (readEncoder() - RobotMap.Values.armFrontParallel) * angleMod;
 
-    pidController.setFF((-Math.cos(angle) * RobotMap.Values.armMaxPidF) / setpoint);
+    pidController.setFF((-Math.cos(angle) * RobotMap.Values.armPid0FMax) / setpoint);
   }
 
   public double getCurrent() {
