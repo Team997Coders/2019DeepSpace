@@ -101,10 +101,9 @@ public class Elevator extends Subsystem {
   }
 
   public void SetPosition(double height) {
-    //System.out.println("Set elevator to go to height " + height);
-    pidController.setFF(arbFF / height);
+    // pidController.setFF(arbFF / height); /* Use for if you are actively tuning */
+    updateF(height);
     pidController.setReference(height, ControlType.kPosition);
-    //updateF();
   }
 
   public void resetElevatorEncoder() {
@@ -113,7 +112,7 @@ public class Elevator extends Subsystem {
   }
 
   public double GetPosition() {
-    return encoder.getPosition();// canifier.getQuadraturePosition();
+    return encoder.getPosition(); // canifier.getQuadraturePosition();
   }
 
   public double getInternalEncoderPos() {
@@ -214,11 +213,11 @@ public class Elevator extends Subsystem {
     return ((ctre / 1024) / 2.5) * 42;
   }
 
-  public void updateF() {
+  public void updateF(double setpoint) {
     if (GetPosition() > RobotMap.ElevatorHeights.elevatorMiddleHeight) {
-      pidController.setFF(RobotMap.Values.elevatorPidFMax);
+      pidController.setFF(RobotMap.Values.elevatorPidFMax / setpoint);
     } else {
-      pidController.setFF(RobotMap.Values.elevatorPidF);
+      pidController.setFF(RobotMap.Values.elevatorPidF / setpoint);
     }
   }
 

@@ -188,8 +188,8 @@ public class RobotMap {
       elevatorPidP = 0.0, // 0.0006, 
       elevatorPidI = 0.0, // 0.0000000001,
       elevatorPidD = 0.0, // 0.006,
-      elevatorPidF = 0.0, // 0.0000,
-      elevatorPidFMax = 0,
+      elevatorPidF = 0.032, // 0.0000,
+      elevatorPidFMax = 0.032, // Needs to be bigger to compensate
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 22775, //placeholer for height in order for arm to switch
@@ -241,6 +241,9 @@ public class RobotMap {
   public static class ElevatorHeights {
     //in inches
     public static int
+
+      // TODO: Need to adjust these to the new internal encoder
+
       elevatorMiddleHeight = 28360,
 
       elevatorBackTopHatchHeight = 0, //impossible

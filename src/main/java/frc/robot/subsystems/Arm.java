@@ -44,7 +44,7 @@ public class Arm extends Subsystem {
   private double prevRead = -1;
   private int revs = 0;
   private int flipModifier = 1;
-  private double fConstant = 0.002;
+  // private double fConstant = 0.002;
   public boolean armState;
 
   public MiniPID miniBoi;
@@ -122,11 +122,12 @@ public class Arm extends Subsystem {
   }
 
   // This function only works if the inital read of the arm is horizontal
-  public double UpdateF(){
-    //pidController.setFF(0);
-    double f = -1 * Math.cos(((readEncoder() - RobotMap.Values.armFrontParallel) * RobotMap.Values.ticksToRadiansArm)) * fConstant;
-    //pidController.setFF(f);
-    return f;
+  public void updateF(double setpoint){
+
+    double angleMod = Math.PI / Math.abs(RobotMap.Values.armFrontParallel - RobotMap.Values.armBackParallel);
+    double angle = (readEncoder() - RobotMap.Values.armFrontParallel) * angleMod;
+
+    pidController.setFF((-Math.cos(angle) * RobotMap.Values.armMaxPidF) / setpoint);
   }
 
   public double getCurrent() {
@@ -134,7 +135,12 @@ public class Arm extends Subsystem {
   }
 
   public void SetPostion(double setpoint){
-    //releaseBrake();
+
+    updateF(setpoint);
+    pidController.setReference(setpoint, ControlType.kPosition);
+
+    /*
+    releaseBrake();
     //System.out.println("Setting arm position to " + setpoint);
     //internalEncoder.setPosition(readEncoder());
     //pidController.setReference(setpoint, ControlType.kPosition);
@@ -146,8 +152,8 @@ public class Arm extends Subsystem {
     //SmartDashboard.putNumber("Arm/PID Output", a + UpdateF());
     //SmartDashboard.putNumber("Arm/MiniPID Output", a);
     sparkMax.set(a + UpdateF());
-
     //UpdateF();
+    */
   }
 
   public double readEncoder() {
