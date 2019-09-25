@@ -127,7 +127,7 @@ public class Arm extends Subsystem {
     double angleMod = Math.PI / Math.abs(RobotMap.Values.armFrontParallel - RobotMap.Values.armBackParallel);
     double angle = (readEncoder() - RobotMap.Values.armFrontParallel) * angleMod;
 
-    pidController.setFF((-Math.cos(angle) * RobotMap.Values.armPid0FMax) / setpoint);
+    pidController.setFF((Math.cos(angle) * RobotMap.Values.armPid0FMax) / setpoint);
   }
 
   public double getCurrent() {
