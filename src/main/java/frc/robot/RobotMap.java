@@ -185,16 +185,16 @@ public class RobotMap {
       straight = .3, 
 
       // Arm and Elevator Values
-      elevatorPidP = 0.0006, 
-      elevatorPidI = 0.0000000001,
-      elevatorPidD = 0.006,
-      elevatorPidF = 0.0000,
+      elevatorPidP = 0.0, // 0.0006, 
+      elevatorPidI = 0.0, // 0.0000000001,
+      elevatorPidD = 0.0, // 0.006,
+      elevatorPidF = 0.0, // 0.0000,
       elevatorPidFMax = 0,
       elevatorTopHeight = 100000000, //placeholder
 
       armSwitchHeight= 22775, //placeholer for height in order for arm to switch
-      armBackParallel = 288,
-      armFrontParallel = -120,
+      armBackParallel = 203,
+      armFrontParallel = -203,
       armFrontLower = 288,
       armVertical = 501,
 

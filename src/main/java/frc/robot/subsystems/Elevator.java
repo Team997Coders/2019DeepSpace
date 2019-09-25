@@ -44,6 +44,8 @@ public class Elevator extends Subsystem {
   //// Balls = true Hatches = false
   public boolean isZeroed;
 
+  public double arbFF =  0.032; // HEKKIN GOOD M8
+
   public boolean lightOn = false;
 
   public Elevator() {
@@ -99,9 +101,10 @@ public class Elevator extends Subsystem {
   }
 
   public void SetPosition(double height) {
-    //System.out.println("Set elevator to go to height " + height); 
+    //System.out.println("Set elevator to go to height " + height);
+    pidController.setFF(arbFF / height);
     pidController.setReference(height, ControlType.kPosition);
-    updateF();
+    //updateF();
   }
 
   public void resetElevatorEncoder() {
@@ -278,7 +281,13 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator/Elevator Height: ", GetPosition());
     SmartDashboard.putBoolean("Elevator/Bottom Limit Switch", limitSwitchBottom.get());
     SmartDashboard.putBoolean("Elevator/Top Limit Switch", limitSwitchTop.get());
-    SmartDashboard.putNumber("Elevator Pid F", pidController.getFF());
+
+    if (!SmartDashboard.isPersistent("Elevator/Feed Forward")) {
+      SmartDashboard.putNumber("Elevator/Feed Forward", 0.0);
+      SmartDashboard.setPersistent("Elevator/Feed Forward");
+    }
+    
+    arbFF = SmartDashboard.getNumber("Elevator/Feed Forward", 0.0);
     //SmartDashboard.putNumber("Elevator/Elevator", master.getOutputCurrent());
     //SmartDashboard.putNumber("Elevator/Elevator Internal Encoder", getInternalEncoderPos());
     //SmartDashboard.putNumber("Elevator/Elevator Master Temp", getMasterTemp());

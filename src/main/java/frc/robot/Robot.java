@@ -136,6 +136,8 @@ public class Robot extends TimedRobot {
     lastTime = System.currentTimeMillis();
     //oi.reconfigureButtons();
 
+    elevator.updateSmartDashboard();
+
 
     boolean safe = elevator.GetPosition() > RobotMap.Values.armSwitchHeight + 2000;
     SmartDashboard.putBoolean("wtf/Safe?", safe);
@@ -157,6 +159,7 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
     //elevator.ZeroElevator();
+    elevator.updateSmartDashboard();
   }
 
   @Override
