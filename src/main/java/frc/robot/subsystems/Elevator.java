@@ -107,8 +107,7 @@ public class Elevator extends Subsystem {
 
   public void SetPosition(double height) {
     // pidController.setFF(arbFF / height); /* Use for if you are actively tuning */
-    updateF(height);
-    pidController.setReference(height, ControlType.kPosition);
+    pidController.setReference(height, ControlType.kPosition, 0, getElevatorF(height));
   }
 
   public void SetSpeed(double speed) {
@@ -222,11 +221,11 @@ public class Elevator extends Subsystem {
     return ((ctre / 1024) / 2.5) * 42;
   }
 
-  public void updateF(double setpoint) {
+  public double getElevatorF(double setpoint) {
     if (GetPosition() > RobotMap.ElevatorHeights.elevatorMiddleHeight) {
-      pidController.setFF(RobotMap.Values.elevatorPid0FMax / setpoint);
+      return RobotMap.Values.elevatorPid0FMax;
     } else {
-      pidController.setFF(RobotMap.Values.elevatorPid0F / setpoint);
+      return RobotMap.Values.elevatorPid0F;
     }
   }
 

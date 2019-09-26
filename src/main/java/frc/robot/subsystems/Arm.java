@@ -122,12 +122,12 @@ public class Arm extends Subsystem {
   }
 
   // This function only works if the inital read of the arm is horizontal
-  public void updateF(double setpoint){
+  public double getArmF(double setpoint){
 
     double angleMod = Math.PI / Math.abs(RobotMap.Values.armFrontParallel - RobotMap.Values.armBackParallel);
     double angle = (readEncoder() - RobotMap.Values.armFrontParallel) * angleMod;
 
-    pidController.setFF((Math.cos(angle) * RobotMap.Values.armPid0FMax) / setpoint);
+    return (Math.cos(angle) * RobotMap.Values.armPid0FMax);
   }
 
   public double getCurrent() {
@@ -135,9 +135,7 @@ public class Arm extends Subsystem {
   }
 
   public void SetPostion(double setpoint){
-
-    updateF(setpoint);
-    pidController.setReference(setpoint, ControlType.kPosition);
+    pidController.setReference(setpoint, ControlType.kPosition, 0, getArmF(setpoint));
 
     /*
     releaseBrake();
