@@ -72,12 +72,13 @@ public class OI {
     // #endregion
 
     // #region Gamepad2 Controls
+    /*
     elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
     //elevatorGoUp.whileHeld(new ElevatorUppity());
 
     elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
     elevatorGoDown.whileHeld(new ElevatorDownity());
-
+    */
     ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
     ArmForward.whileHeld(new MoveArm(-0.25));
 
@@ -93,6 +94,7 @@ public class OI {
     toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
     toggleHatch.whenPressed(new ToggleHatch());
 
+    purgeConfig();
     manualConfig();
 
     // #endregion
@@ -180,6 +182,11 @@ public class OI {
     toggleHatch.close();
     elevatorGoDown.close();
     elevatorGoUp.close();
+
+    autoDriveToTarget = new JoystickButton(gamepad3, RobotMap.Buttons.buttonA);
+    toggleHatch = new JoystickButton(gamepad3, RobotMap.Buttons.buttonB);
+    elevatorGoUp = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
+    elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonY);
   }
 
   public void manualConfig() {
