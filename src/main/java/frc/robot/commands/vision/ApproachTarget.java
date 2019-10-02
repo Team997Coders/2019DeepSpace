@@ -30,8 +30,8 @@ public class ApproachTarget extends Command {
 
   @Override
   protected void execute() {
-    double mod = 0.01;
-    double error = Robot.limeLight.getDouble("tx", 0);
+    double mod = 0.03; // 0.01;
+    double error = Robot.limeLight.getDouble("tx", 0) + 3.3;
     double turn = mod * error;
     Robot.driveTrain.setVolts(speed + turn, speed - turn);
 
