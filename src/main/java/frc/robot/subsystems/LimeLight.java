@@ -25,7 +25,7 @@ public class LimeLight {
   public LimeLight() {
     limeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-    setDouble(RobotMap.LimeLight.ledMode, LEDState.ForceOn);
+    setDouble(RobotMap.LimeLight.ledMode, LEDState.ForceOff);
     // setDouble(RobotMap.LimeLight., value);
   }
 

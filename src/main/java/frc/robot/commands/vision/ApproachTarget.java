@@ -10,6 +10,8 @@ package frc.robot.commands.vision;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.LimeLight;
 
 public class ApproachTarget extends Command {
 
@@ -23,6 +25,7 @@ public class ApproachTarget extends Command {
 
   @Override
   protected void initialize() {
+    Robot.limeLight.setLED(LimeLight.LEDState.ForceOn.getValue());
   }
 
   @Override
@@ -43,6 +46,7 @@ public class ApproachTarget extends Command {
   @Override
   protected void end() {
     SmartDashboard.putBoolean("Approaching", false);
+    Robot.limeLight.setLED(LimeLight.LEDState.ForceOff.getValue());
   }
 
   @Override

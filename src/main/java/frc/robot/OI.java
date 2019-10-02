@@ -76,7 +76,7 @@ public class OI {
     //elevatorGoUp.whileHeld(new ElevatorUppity());
 
     elevatorGoDown = new JoystickButton(gamepad3, RobotMap.Buttons.buttonX);
-    elevatorGoDown.whileHeld(new ElevatorDownity());
+    //elevatorGoDown.whileHeld(new ElevatorDownity());
 
     ArmForward = new JoystickButton(gamepad3, RobotMap.Buttons.buttonStart);
     ArmForward.whileHeld(new MoveArm(-0.25));
