@@ -30,6 +30,9 @@ public class ApproachTarget extends Command {
 
   @Override
   protected void execute() {
+
+    Robot.limeLight.getDat();
+
     double mod = 0.03; // 0.01;
     double error = Robot.limeLight.getDouble("tx", 0) + 3.3;
     double turn = mod * error;
@@ -40,7 +43,7 @@ public class ApproachTarget extends Command {
 
   @Override
   protected boolean isFinished() {
-    return Robot.limeLight.getDouble("ta", 0) >= maximumArea ? true : false;
+    return (!Robot.limeLight.hasTarget) || (Robot.limeLight.getDouble("ta", 0) >= maximumArea ? true : false);
   }
 
   @Override
