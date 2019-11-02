@@ -10,6 +10,8 @@ package frc.robot.commands.vision;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.LimeLight;
 
 public class ApproachTarget extends Command {
 
@@ -23,12 +25,16 @@ public class ApproachTarget extends Command {
 
   @Override
   protected void initialize() {
+    Robot.limeLight.setLED(LimeLight.LEDState.ForceOn.getValue());
   }
 
   @Override
   protected void execute() {
-    double mod = 0.01;
-    double error = Robot.limeLight.getDouble("tx", 0);
+
+    Robot.limeLight.getDat();
+
+    double mod = 0.03; // 0.01;
+    double error = Robot.limeLight.getDouble("tx", 0) + 3.3;
     double turn = mod * error;
     Robot.driveTrain.setVolts(speed + turn, speed - turn);
 
@@ -37,12 +43,13 @@ public class ApproachTarget extends Command {
 
   @Override
   protected boolean isFinished() {
-    return Robot.limeLight.getDouble("ta", 0) >= maximumArea ? true : false;
+    return (!Robot.limeLight.hasTarget) || (Robot.limeLight.getDouble("ta", 0) >= maximumArea ? true : false);
   }
 
   @Override
   protected void end() {
     SmartDashboard.putBoolean("Approaching", false);
+    Robot.limeLight.setLED(LimeLight.LEDState.ForceOff.getValue());
   }
 
   @Override
