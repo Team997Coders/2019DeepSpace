@@ -21,10 +21,8 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.BallManipulator;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchManipulator;
-import frc.robot.subsystems.InfraredRangeFinder;
 import frc.robot.subsystems.LiftGear;
 import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.LineDetector;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -44,12 +42,6 @@ public class Robot extends TimedRobot {
   public static HatchManipulator hatchManipulator;
   public static LiftGear liftGear;
   public static DriveTrain driveTrain;
-  //public static MotionProfile motionProfile;
-  //public static PathManager pathManager;
-  //public static Logger logger;
-  //public static PowerDistributionPanel pdp;
-  public static LineDetector frontLineDetector;
-  public static InfraredRangeFinder frontInfraredRangeFinder;
   public static CANifier armCanifier;
   public static CANifier elevatorCanifier;
   public static LimeLight limeLight;
@@ -64,17 +56,7 @@ public class Robot extends TimedRobot {
   SendableChooser<AutonomousOptions> chooser = new SendableChooser<>();
 
   public static int heightIndex;
-  // used by the scoringHeight logic commands to grab the correct height from
-  // the height array in RobotMap.
 
-  /*public Robot() {
-    super(0.02);
-  }*/
-
-  /**
-   * This function is run when the robot is first started up and should be used
-   * for any initialization code.
-   */
   @Override
   public void robotInit() {
     armCanifier = new CANifier(RobotMap.Ports.armCanifier);
@@ -88,12 +70,6 @@ public class Robot extends TimedRobot {
     liftGear = new LiftGear();
     driveTrain = new DriveTrain();
     limeLight = new LimeLight();
-    //frontCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.frontLightRing, RobotMap.Ports.frontPanServo, RobotMap.Ports.frontTiltServo, ButtonBox.ScoringDirectionStates.Front);
-    //backCameraMount = new CameraMount(0, 120, 10, 170, 2, 40, RobotMap.Ports.backLightRing, RobotMap.Ports.backPanServo, RobotMap.Ports.backTiltServo,  ButtonBox.ScoringDirectionStates.Back);
-    frontLineDetector = new LineDetector(RobotMap.Ports.lineSensorFrontLeft, 
-      RobotMap.Ports.lineSensorFrontCenter, 
-      RobotMap.Ports.lineSensorFrontRight);
-    frontInfraredRangeFinder = new InfraredRangeFinder(RobotMap.Ports.frontInfraredSensor);
 
     // Create the logging instance so we can use it for tuning the PID subsystems
     //logger = Logger.getInstance();
@@ -205,12 +181,6 @@ public class Robot extends TimedRobot {
           break;
         case DoNothing:
           autonomousCommand = new AutoDoNothing();
-          break;
-        case DriveOffHab1:
-          autonomousCommand = new PDriveToDistance(0.4, 4);
-          break;
-        case DriveOffHab2:
-          autonomousCommand = new PDriveToDistance(0.4, 9);
           break;
         case TestMotionProfile:
           autonomousCommand = new AutoDoNothing();//FollowPath(PathManager.getInstance().profiles.get(3));
